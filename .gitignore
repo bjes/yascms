@@ -1,0 +1,13 @@
+development.ini
+production.ini
+wsgi.py
+__pycache__
+*.egg-info
+*.swp
+.coverage
+.pytest_cache
+.vscode
+.venv
+.tox
+data
+!*/data

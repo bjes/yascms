@@ -1,0 +1,3 @@
+[run]
+source = tp_yass
+omit = tp_yass/test*

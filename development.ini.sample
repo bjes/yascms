@@ -1,0 +1,101 @@
+###
+# app configuration
+# https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/environment.html
+###
+
+[app:main]
+use = egg:tp_yass
+
+pyramid.reload_templates = true
+pyramid.debug_authorization = false
+pyramid.debug_notfound = false
+pyramid.debug_routematch = false
+pyramid.default_locale_name = en
+pyramid.includes =
+    pyramid_debugtoolbar
+
+# activate some useful filters of jinja2
+jinja2.filters =
+    route_url = pyramid_jinja2.filters:route_url_filter
+    static_url = pyramid_jinja2.filters:static_url_filter
+    route_path = pyramid_jinja2.filters:route_path_filter
+    static_path = pyramid_jinja2.filters:static_path_filter
+
+# secret key for pyramid security framework
+auth.secret = CHANGE_ME
+
+# pyramid_beaker settings
+session.type = file
+session.data_dir = %(here)s/data/sessions/data
+session.lock_dir = %(here)s/data/sessions/lock
+session.key = tp_yass
+session.secret = CHANGE_ME
+session.cookie_on_exception = true
+
+#sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
+sqlalchemy.url = sqlite:///%(here)s/tp_yass.sqlite
+
+retry.attempts = 3
+
+# By default, the toolbar only appears for clients from IP addresses
+# '127.0.0.1' and '::1'.
+# debugtoolbar.hosts = 127.0.0.1 ::1
+
+###
+# wsgi server configuration
+###
+
+[alembic]
+# path to migration scripts
+script_location = tp_yass/alembic
+file_template = %%(year)d%%(month).2d%%(day).2d_%%(rev)s
+# file_template = %%(rev)s_%%(slug)s
+
+[server:main]
+use = egg:waitress#main
+listen = localhost:6543
+
+###
+# logging configuration
+# https://docs.pylonsproject.org/projects/pyramid/en/latest/narr/logging.html
+###
+
+[loggers]
+keys = root, tp_yass, sqlalchemy, alembic
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_tp_yass]
+level = DEBUG
+handlers =
+qualname = tp_yass
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+# "level = INFO" logs SQL queries.
+# "level = DEBUG" logs SQL queries and results.
+# "level = WARN" logs neither.  (Recommended for production systems.)
+
+[logger_alembic]
+level = INFO
+handlers =
+qualname = alembic
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
