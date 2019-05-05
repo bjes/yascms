@@ -1,3 +1,7 @@
 [run]
-source = tp_yass
-omit = tp_yass/test*
+omit =
+    tp_yass/__init__.py
+    tp_yass/routes.py
+    tp_yass/alembic/*
+    tp_yass/models/*
+    tp_yass/tests/*
