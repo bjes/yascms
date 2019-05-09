@@ -1,7 +1,7 @@
 """Pyramid bootstrap environment. """
 from alembic import context
 from pyramid.paster import get_appsettings, setup_logging
-from sqlalchemy import engine_from_config
+from sqlalchemy import engine_from_config, pool
 
 from tp_yass.models import BaseObject
 
@@ -10,6 +10,7 @@ config = context.config
 setup_logging(config.config_file_name)
 
 settings = get_appsettings(config.config_file_name)
+
 target_metadata = BaseObject.metadata
 
 
@@ -40,18 +41,17 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    engine = engine_from_config(settings, prefix='sqlalchemy.')
+    engine = engine_from_config(settings,
+                                prefix='sqlalchemy.',
+                                poolclass=pool.NullPool)
 
-    connection = engine.connect()
-    context.configure(connection=connection,
-                      target_metadata=target_metadata,
-                      compare_type=True)
+    with engine.connect() as connection:
+        context.configure(connection=connection,
+                          target_metadata=target_metadata,
+                          compare_type=True)
 
-    try:
         with context.begin_transaction():
             context.run_migrations()
-    finally:
-        connection.close()
 
 
 if context.is_offline_mode():
