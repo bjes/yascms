@@ -1,64 +1,261 @@
-<!DOCTYPE html>
-<html lang="{{request.locale_name}}">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="pyramid web application">
-    <meta name="author" content="Pylons Project">
-    <link rel="shortcut icon" href="{{request.static_url('tp_yass:themes/default/static/pyramid-16x16.png')}}">
+<!doctype html>
+<html lang="zh-Hant-TW">
 
-    <title>Cookiecutter Starter project for the Pyramid Web Framework</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:themes/default/static/css/bootstrap-4.3.1.min.css') }}">
+  <title>濱江國小網站</title>
+  <style>
+    .footer-bg {
+      background-color: #e2f7ff;
+    }
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    .jumbotron-bg {
+      background-image: url("https://picsum.photos/2000/400/?random");
+      background-size: cover;
+      background-position: center center;
+    }
 
-    <!-- Custom styles for this scaffold -->
-    <link href="{{request.static_url('tp_yass:themes/default/static/theme.css')}}" rel="stylesheet">
+    .bg-trans {
+      background-color: rgba(255, 255, 255, .25);
+    }
+  </style>
+</head>
 
-    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js" integrity="sha384-0s5Pv64cNZJieYFkXYOTId2HMA2Lfb6q2nAcx2n0RTLUnCAoTTsS0nKEO27XyKcY" crossorigin="anonymous"></script>
-      <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
-    <![endif]-->
-  </head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">濱江國小</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <body>
-
-    <div class="starter-template">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <img class="logo img-responsive" src="{{request.static_url('tp_yass:themes/default/static/pyramid.png') }}" alt="pyramid web framework">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">首頁 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarNewsDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            最新消息
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
+            <a class="dropdown-item" href="#">顯示全部</a>
+            <a class="dropdown-item" href="#">行政公告</a>
+            <a class="dropdown-item" href="#">學校榮譽</a>
           </div>
-          <div class="col-md-10">
-            {% block content %}
-                <p>No content</p>
-            {% endblock content %}
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarSchoolDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            學校簡介
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarSchoolDropdown">
+            <a class="dropdown-item" href="#">關於學校</a>
+            <a class="dropdown-item" href="#">行政處室</a>
+            <a class="dropdown-item" href="#">班級網頁</a>
           </div>
-        </div>
-        <div class="row">
-          <div class="links">
-            <ul>
-              <li><i class="glyphicon glyphicon-cog icon-muted"></i><a href="https://github.com/Pylons/pyramid">Github Project</a></li>
-              <li><i class="glyphicon glyphicon-globe icon-muted"></i><a href="https://webchat.freenode.net/?channels=pyramid">IRC Channel</a></li>
-              <li><i class="glyphicon glyphicon-home icon-muted"></i><a href="https://pylonsproject.org">Pylons Project</a></li>
-            </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarOutsideDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            外部資源
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarOutsideDropdown">
+            <a class="dropdown-item" href="#">好站連結</a>
           </div>
-        </div>
-        <div class="row">
-          <div class="copyright">
-            Copyright &copy; Pylons Project
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarOthersDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            其他連結
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarOthersDropdown">
+            <a class="dropdown-item" href="#">預算公開區</a>
+            <a class="dropdown-item" href="#">政策宣導</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="輸入關鍵字" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+      </form>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">登入</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron jumbotron-fluid jumbotron-bg">
+    <div class="container">
+      <div class="bg-trans p-2 text-white">
+        <h1 class="display-4">臺北市中山區濱江國民小學</h1>
+        <p class="lead">快樂學習 - 教學相長</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 d-none d-lg-block">
+        <div class="d-flex flex-column">
+          <div class="card border-primary mb-3">
+            <div class="card-header bg-primary text-white">最新消息</div>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">連結一</a>
+              <a href="#" class="list-group-item list-group-item-action">連結二</a>
+              <a href="#" class="list-group-item list-group-item-action">連結三</a>
+            </div>
+          </div>
+          <div class="card border-primary mb-3">
+            <div class="card-header bg-primary text-white">學校簡介</div>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">連結一</a>
+              <a href="#" class="list-group-item list-group-item-action">連結二</a>
+              <a href="#" class="list-group-item list-group-item-action">連結三</a>
+            </div>
+          </div>
+          <div class="card border-primary mb-3">
+            <div class="card-header bg-primary text-white">外部資源</div>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">連結一</a>
+              <a href="#" class="list-group-item list-group-item-action">連結二</a>
+              <a href="#" class="list-group-item list-group-item-action">連結三</a>
+            </div>
+          </div>
+          <div class="card border-primary mb-3">
+            <div class="card-header bg-primary text-white">其他連結</div>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">連結一</a>
+              <a href="#" class="list-group-item list-group-item-action">連結二</a>
+              <a href="#" class="list-group-item list-group-item-action">連結三</a>
+            </div>
           </div>
         </div>
       </div>
+      <div class="col-lg-10 col-12">
+        <div class="card border-primary mb-3">
+          <div class="card-header bg-primary text-white">最新消息</div>
+
+          <div class="table-responsive">
+            <table class="table table-hover table-striped text-center">
+              <thead>
+                <tr>
+                  <th scope="col" class="d-none d-md-table-cell" style="width: 60px;">編號</th>
+                  <th scope="col" class="d-none d-sm-table-cell">標題</th>
+                  <th scope="col" class="d-none d-sm-table-cell" style="width: 180px;">作者</th>
+                  <th scope="col" class="d-none d-md-table-cell" style="width: 170px;">時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">1</th>
+                  <td><a href="#">教甄開跑</a></td>
+                  <td class="d-none d-sm-table-cell">教務處資訊組</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">2</th>
+                  <td><a href="#">退休申請請於年底前送件</a></td>
+                  <td class="d-none d-sm-table-cell">人事室</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">3</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處資訊組</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">4</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處資訊組</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">5</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">6</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">7</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">8</th>
+                  <td><a href="#">助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">9</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">10</th>
+                  <td><a href="#">獎助學金開始申請</a></td>
+                  <td class="d-none d-sm-table-cell">教務處教務主任</td>
+                  <td class="d-none d-md-table-cell">2019/02/26</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <nav aria-label="分頁">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一頁</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">下一頁</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
+  </div>
 
+  <footer class="footer-bg p-1">
+    <div class="container">
+      <div class="row">
+        <div class="col py-3">
+          <p>聯絡電話：02-85021571</p>
+          <p>傳真電話：02-85011146</p>
+          <p>學校信箱：public@bjes.tp.edu.tw</p>
+          <p>學校地址：10462 臺北市中山區樂群二路266巷99號</p>
+        </div>
+        <div class="col d-none d-sm-block">
+          <iframe class="h-100 w-100"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.7043991522146!2d121.55944821523249!3d25.07800624267944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac72e5e39d17%3A0x3934b7c47c1bbf29!2zMTA0OTHlj7DljJfluILkuK3lsbHljYDmqILnvqTkuozot68yNjblt7c5OeiZnw!5e0!3m2!1szh-TW!2stw!4v1551164410802"
+            frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col text-center">© 2018 臺北市中山區濱江國小</div>
+      </div>
+    </div>
+  </footer>
+  <script src="{{ request.static_path('tp_yass:themes/default/static/js/jquery-3.4.1.slim.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:themes/default/static/js/popper-1.15.0.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:themes/default/static/js/bootstrap-4.3.1.min.js') }}"></script>
+</body>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  </body>
 </html>
