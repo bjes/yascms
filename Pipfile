@@ -15,6 +15,7 @@ alembic = "*"
 pyramid_retry = "*"
 pyramid_sqlalchemy = "*"
 pyramid_tm = "*"
+tp_yass = {path = ".",editable = true}
 
 [dev-packages]
 "autopep8" = "*"
@@ -29,4 +30,3 @@ rope = "*"
 tox = "*"
 WebTest = "*"
 waitress = "*"
-tp_yass = {path = ".",editable = true}
