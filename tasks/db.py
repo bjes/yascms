@@ -7,7 +7,7 @@ from tp_yass.tests.helper import get_ini_settings, import_test_db_data
 
 @task(name='create')
 def db_create(c, ini_file):
-    """Create database"""
+    """建立資料庫"""
     # Find database name via ini file
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'/(\w+)\?', sqlalchemy_url)[0]
@@ -19,7 +19,7 @@ def db_create(c, ini_file):
 
 @task(name='delete')
 def db_delete(c, ini_file):
-    """Delete database"""
+    """刪除資料庫"""
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'/(\w+)\?', sqlalchemy_url)[0]
     c.run('sudo mysql -uroot -e "DROP DATABASE IF EXISTS {}"'.format(db_name))
@@ -27,21 +27,21 @@ def db_delete(c, ini_file):
 
 @task(db_create, name='init')
 def init_db(c, ini_file):
-    """Create database and import basic data"""
+    """匯入初始資料至資料庫"""
     c.run('alembic -c {} upgrade head'.format(ini_file))
     c.run('initialize_tp_yass_db {}'.format(ini_file))
 
 
 @task(db_delete, db_create, name='init-test')
 def init_test_db(c, ini_file):
-    """Create database and import test data"""
+    """匯入開發測試用的初始資料"""
     c.run('alembic -c {} upgrade head'.format(ini_file))
     import_test_db_data(ini_file)
 
 
 @task(name='upgrade', optional=['ini_file'])
 def db_upgrade(c, ini_file=None):
-    """將 db migrate 至最新版"""
+    """將資料庫 migrate 至最新版"""
 
     if ini_file is None:
         if os.path.exists('production.ini'):
@@ -56,7 +56,7 @@ def db_upgrade(c, ini_file=None):
 
 @task(name='downgrade', optional=['ini_file'])
 def db_downgrade(c, ini_file=None):
-    """將 db downgrade 至前一版"""
+    """將資料庫 downgrade 至前一版"""
 
     if ini_file is None:
         if os.path.exists('production.ini'):

@@ -10,7 +10,7 @@ from . import db, test
 
 @task(optional=['ini_file'])
 def deploy(c, ini_file=None):
-    """Deploy project"""
+    """佈署此專案"""
 
     if ini_file is None:
         if os.path.exists('production.ini'):
