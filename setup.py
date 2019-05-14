@@ -40,8 +40,9 @@ setup(
     description='tp_yass',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
-        'Programming Language :: Python',
         'Framework :: Pyramid',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
     ],
