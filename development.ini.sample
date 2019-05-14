@@ -32,8 +32,10 @@ session.key = tp_yass
 session.secret = CHANGE_ME
 session.cookie_on_exception = true
 
-#sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
-sqlalchemy.url = sqlite:///%(here)s/tp_yass.sqlite
+# 以下範例假設資料庫帳號是 user，密碼是 pass，目標資料庫為 localhost，
+# 資料庫名稱為 foo，charset 為 utf8mb4:
+# sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
+sqlalchemy.url = 
 
 retry.attempts = 3
 

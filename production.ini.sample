@@ -31,7 +31,7 @@ session.secret = CHANGE_ME
 session.cookie_on_exception = true
 
 #sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
-sqlalchemy.url = sqlite:///%(here)s/tp_yass.sqlite
+sqlalchemy.url = 
 
 retry.attempts = 3
 
