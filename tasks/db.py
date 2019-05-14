@@ -38,3 +38,33 @@ def init_test_db(c, ini_file):
     c.run('alembic -c {} upgrade head'.format(ini_file))
     import_test_db_data(ini_file)
 
+
+@task(name='upgrade', optional=['ini_file'])
+def db_upgrade(c, ini_file=None):
+    """將 db migrate 至最新版"""
+
+    if ini_file is None:
+        if os.path.exists('production.ini'):
+            ini_file = 'production.ini'
+        elif os.path.exists('development.ini'):
+            ini_file = 'development.ini'
+        else:
+            raise ParseError('--ini-file 必須指定合法的 ini 設定檔')
+
+    c.run('alembic -c {} upgrade head'.format(ini_file))
+
+
+@task(name='downgrade', optional=['ini_file'])
+def db_downgrade(c, ini_file=None):
+    """將 db downgrade 至前一版"""
+
+    if ini_file is None:
+        if os.path.exists('production.ini'):
+            ini_file = 'production.ini'
+        elif os.path.exists('development.ini'):
+            ini_file = 'development.ini'
+        else:
+            raise ParseError('--ini-file 必須指定合法的 ini 設定檔')
+
+    c.run('alembic -c {} downgrade -1'.format(ini_file))
+
