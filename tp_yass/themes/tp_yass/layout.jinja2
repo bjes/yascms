@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="{{ request.static_path('tp_yass:themes/default/static/css/bootstrap-4.3.1.min.css') }}">
   <title>濱江國小網站</title>
   <style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
     .footer-bg {
       background-color: #e2f7ff;
     }
@@ -90,7 +93,7 @@
     </div>
   </nav>
 
-  <div class="jumbotron jumbotron-fluid jumbotron-bg">
+  <div class="jumbotron jumbotron-fluid jumbotron-bg my-3">
     <div class="container">
       <div class="bg-trans p-2 text-white">
         <h1 class="display-4">臺北市中山區濱江國民小學</h1>
@@ -98,44 +101,17 @@
       </div>
     </div>
   </div>
+
+  <div class="jumbotron jumbotron-fluid mb-3 p-4" style="background-color:#3498db;">
+    <div class="container">
+      <h1 class="display-4 text-center text-white">最新消息</h1>
+    </div>
+  </div>
+
   <div class="container">
     <div class="row">
-      <div class="col-md-2 d-none d-lg-block">
-        <div class="d-flex flex-column">
-          <div class="card border-primary mb-3">
-            <div class="card-header bg-primary text-white"><i class="fas fa-bullhorn"></i> 最新消息</div>
-            <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-action">顯示全部</a>
-              <a href="#" class="list-group-item list-group-item-action">行政公告</a>
-              <a href="#" class="list-group-item list-group-item-action">學校榮譽</a>
-            </div>
-          </div>
-          <div class="card border-primary mb-3">
-            <div class="card-header bg-primary text-white"><i class="fas fa-school"></i> 學校簡介</div>
-            <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-action">關於學校</a>
-              <a href="#" class="list-group-item list-group-item-action">行政處室</a>
-              <a href="#" class="list-group-item list-group-item-action">班級網頁</a>
-            </div>
-          </div>
-          <div class="card border-primary mb-3">
-            <div class="card-header bg-primary text-white"><i class="fas fa-link"></i> 其他連結</div>
-            <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-action">預算公開區</a>
-              <a href="#" class="list-group-item list-group-item-action">政策宣導</a>
-            </div>
-          </div>
-          <div class="card border-primary mb-3">
-            <div class="card-header bg-primary text-white"><i class="fas fa-globe-asia"></i> 外部資源</div>
-            <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-action">好站連結</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-10 col-12">
+      <div class=" col-12">
         <div class="card border-primary mb-3">
-          <div class="card-header bg-primary text-white">最新消息</div>
           <div class="table-responsive">
             <table class="table table-hover table-striped text-left">
               <thead>
@@ -211,24 +187,53 @@
             </table>
           </div>
         </div>
-        <nav aria-label="分頁">
-          <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一頁</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">下一頁</a>
-            </li>
-          </ul>
-        </nav>
+      </div>
+      <div class="col-12 text-center"><button type="button" class="btn btn-primary btn-lg">觀看</button></div>
+    </div>
+  </div>
+
+  <div class="jumbotron jumbotron-fluid my-3 p-4" style="background-color: #1abc9c;">
+    <div class="container">
+      <h1 class="display-4 text-center text-white">好站連結</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <footer class="footer-bg p-1">
+  <footer class="footer-bg mt-3 p-1">
     <div class="container">
       <div class="row">
         <div class="col py-3">
