@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c5f42adb29ecb0ec0d134753b52a6517e020669e393222e0b18f05fbb0bcb827"
+            "sha256": "8f90acb370f287264f4cf22385a639f5a8bf728b8337299bf03c228b94c49f9d"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -541,6 +541,12 @@
             "index": "pypi",
             "version": "==3.7.8"
         },
+        "future": {
+            "hashes": [
+                "sha256:67045236dcfd6816dc439556d009594abf643e5eb48992e36beac09c2ca659b8"
+            ],
+            "version": "==0.17.1"
+        },
         "hupper": {
             "hashes": [
                 "sha256:5869ec2a46ba8ad481b0a27ca68f3e01dc7d3424925b7c872d9fcdff44b43442",
@@ -802,6 +808,19 @@
                 "sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"
             ],
             "version": "==2.8.0"
+        },
+        "python-jsonrpc-server": {
+            "hashes": [
+                "sha256:59ce9c9523c14c493a327b3a27ee37464a36dc2b9d8ab485ecbcedd38840380a"
+            ],
+            "version": "==0.2.0"
+        },
+        "python-language-server": {
+            "hashes": [
+                "sha256:e289db3e29cf13534e7dc75e0d66eb1357d8d4421dc60f0b0dcf5004848c71e1"
+            ],
+            "index": "pypi",
+            "version": "==0.28.1"
         },
         "repoze.lru": {
             "hashes": [
