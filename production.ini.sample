@@ -32,6 +32,7 @@ session.cookie_on_exception = true
 
 #sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
 sqlalchemy.url = 
+sqlalchemy.pool_recycle = 3600
 
 retry.attempts = 3
 
@@ -81,7 +82,7 @@ qualname = sqlalchemy.engine
 # "level = WARN" logs neither.  (Recommended for production systems.)
 
 [logger_alembic]
-level = INFO
+level = WARN
 handlers =
 qualname = alembic
 
