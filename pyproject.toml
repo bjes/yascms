@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "tp_yass"
+version = "0.0.1"
+description = "臺北市高國中小網站集中化系統"
+authors = ["William Wu <william@pylabs.org>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+invoke = "^1.3"
+pyramid = "^1.10"
+pyramid_beaker = "^0.8.0"
+pyramid_mailer = "^0.15.1"
+pyramid_wtforms = "^2.6"
+pyramid_jinja2 = "^2.8"
+PyMySQL = "^0.9.3"
+alembic = "^1.2"
+pyramid_retry = "^2.1"
+pyramid_sqlalchemy = "^1.6"
+pyramid_tm = "^2.3"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.4"
+flake8 = "^3.7"
+mixer = "^6.1"
+pyramid_debugtoolbar = "^4.5"
+pyramid_ipython = "^0.2.0"
+pytest = "^5.2"
+pytest-cov = "^2.8"
+pytest-mock = "^1.11"
+rope = "^0.14.0"
+tox = "^3.14"
+WebTest = "^2.0"
+waitress = "^1.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
