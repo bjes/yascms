@@ -18,11 +18,11 @@
 
 - 更新套件管理工具
 
-    .venv/bin/pip install --upgrade pip setuptools pipenv
+    .venv/bin/pip install --upgrade pip setuptools poetry
 
 - 同步開發專案需要安裝的套件
 
-    .venv/bin/pipenv sync --dev
+    poetry install
 
 - 建立開發用的測試資料庫，並將資料庫 migrate 到最新版
 
