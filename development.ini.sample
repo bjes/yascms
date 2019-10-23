@@ -34,8 +34,9 @@ session.cookie_on_exception = true
 
 # 以下範例假設資料庫帳號是 user，密碼是 pass，目標資料庫為 localhost，
 # 資料庫名稱為 foo，charset 為 utf8mb4:
-# sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
-sqlalchemy.url = 
+# sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo?charset=utf8mb4
+sqlalchemy.url =
+sqlalchemy.pool_recycle = 3600
 
 retry.attempts = 3
 

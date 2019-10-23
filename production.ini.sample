@@ -30,7 +30,7 @@ session.key = tp_yass
 session.secret = CHANGE_ME
 session.cookie_on_exception = true
 
-#sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo??charset=utf8mb4
+#sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo?charset=utf8mb4
 sqlalchemy.url = 
 sqlalchemy.pool_recycle = 3600
 
