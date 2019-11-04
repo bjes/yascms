@@ -2,10 +2,11 @@ from passlib.hash import sha512_crypt
 from sqlalchemy import (Column,
                         Integer,
                         String,
-                        Text,
                         ForeignKey)
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
+
+from .news import News
 
 
 class User(BaseObject):
@@ -67,3 +68,6 @@ class Group(BaseObject):
     ancestor = relationship('Group', backref='descendants', remote_side=[id])
 
     users = relationship('User', backref='group')
+
+    # 最新消息
+    news = relationship(News, backref='group')
