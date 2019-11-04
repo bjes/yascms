@@ -321,6 +321,14 @@ version = "0.5.1"
 
 [[package]]
 category = "main"
+description = "comprehensive password hashing framework supporting over 30 schemes"
+name = "passlib"
+optional = false
+python-versions = "*"
+version = "1.7.1"
+
+[[package]]
+category = "main"
 description = "Load, configure, and compose WSGI applications and servers"
 name = "pastedeploy"
 optional = false
@@ -884,7 +892,7 @@ transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
 [metadata]
-content-hash = "d53bed3210d8e085b7ab3548f977080007fc3cc73320fd94710e82bb4ebe2b7c"
+content-hash = "d3ea0862bb4782491a6080a7670e4ed235f56b206317c31b345839e6ae70f804"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -920,6 +928,7 @@ mixer = ["3601e84134b79cd4ac663f79a39fc3005d6a3f37692e7062cc3c0a727ab79940", "f1
 more-itertools = ["409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832", "92b8c4b06dac4f0611c0729b2f2ede52b2e1bac1ab48f089c7ddc12e26bb60c4"]
 packaging = ["28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47", "d9551545c6d761f3def1677baf08ab2a3ca17c56879e70fecba2fc4dde4ed108"]
 parso = ["63854233e1fadb5da97f2744b6b24346d2750b85965e7e399bec1620232797dc", "666b0ee4a7a1220f65d367617f2cd3ffddff3e205f3f16a0284df30e774c2a9c"]
+passlib = ["3d948f64138c25633613f303bcc471126eae67c04d5e3f6b7b8ce6242f8653e0", "43526aea08fa32c6b6dbbbe9963c4c767285b78147b7437597f992812f69d280"]
 pastedeploy = ["d423fb9d51fdcf853aa4ff43ac7ec469b643ea19590f67488122d6d0d772350a", "fe53697ec2754703096b75d0ba29112b0590b4ce46726fe4f9408fd006e4eefc"]
 pexpect = ["2094eefdfcf37a1fdbfb9aa090862c1a4878e5c7e0e7e7088bdb511c558e5cd1", "9e2c1fd0e6ee3a49b28f95d4b33bc389c89b20af6a1255906e90ff1262ce62eb"]
 pickleshare = ["87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca", "9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"]
