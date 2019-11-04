@@ -15,7 +15,6 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_ipython',
     'pyramid_mailer',
-    'pyramid_wtforms',
     'pyramid_jinja2',
     'waitress',
     'PyMySQL',

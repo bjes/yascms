@@ -2,7 +2,9 @@ from passlib.hash import sha512_crypt
 from sqlalchemy import (Column,
                         Integer,
                         String,
-                        Text)
+                        Text,
+                        ForeignKey)
+from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
 
@@ -11,11 +13,24 @@ class User(BaseObject):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
+
+    # 名
     first_name = Column(String(20), nullable=False)
+
+    # 姓
     last_name = Column(String(20), nullable=False)
+
+    # 電子郵件
     email = Column(String(50), nullable=False)
+
+    # 帳號
     account = Column(String(50), nullable=False, unique=True)
-    _password = Column('password', String(130), nullable=False, default='*')
+
+    # 群組
+    group_id = Column(Integer, ForeignKey('groups.id'))
+
+    # 密碼 hash
+    _password = Column('password', String(130), nullable=False, default='*', server_default='*')
 
     @property
     def password(self):
@@ -26,9 +41,26 @@ class User(BaseObject):
         self._password = self.gen_password_hash(value)
 
     def gen_password_hash(self, value):
-        '''產生密碼 hash'''
         return sha512_crypt.hash(value)
 
     def verify_password(self, value):
-        '''驗證密碼是否正確'''
         return sha512_crypt.verify(value, self._password)
+
+
+class Group(BaseObject):
+
+    __tablename__ = 'groups'
+
+    id = Column(Integer, primary_key=True)
+
+    # 群組名稱
+    name = Column(String(100))
+
+    # 類別， 0 為管理者可無視權限設定， 1 為普通使用者會套用權限設定
+    _type = Column('type', Integer, nullable=False, default=1, server_default='1')
+
+    # self-referential relationship
+    ancestor_id = Column(Integer, ForeignKey('groups.id'))
+    ancestor = relationship('Group', backref='descendants', remote_side=[id])
+
+    users = relationship('User', backref='group')
