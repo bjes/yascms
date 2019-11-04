@@ -19,10 +19,10 @@ def db_create(c, ini_file=None):
     db_user, db_pass = re.findall(r'//(\w+):(\w+)@', sqlalchemy_url)[0]
     c.run(f'sudo mysql -uroot -e "CREATE DATABASE IF NOT EXISTS {db_name} '
            'CHARSET utf8mb4"')
-    c.run(f'sudo mysql -uroot -e "CREATE USER {db_user}@localhost '
+    c.run(f'sudo mysql -uroot -e "CREATE USER IF NOT EXISTS {db_user}@localhost '
           f'IDENTIFIED BY \'{db_pass}\'"')
     c.run(f'sudo mysql -uroot -e "GRANT ALL ON {db_name}.* '
-          f'TO {db_user}@localhost')
+          f'TO {db_user}@localhost"')
 
 
 @task(name='delete', optional=['ini_file'])
@@ -62,7 +62,7 @@ def init_test_db(c, ini_file=None):
 @task(name='upgrade', optional=['ini_file'])
 def db_upgrade(c, ini_file=None):
     """將資料庫 migrate 至最新版"""
-    
+
     if ini_file is None:
         ini_file = find_ini_file()
 
@@ -77,4 +77,3 @@ def db_downgrade(c, ini_file=None):
         ini_file = find_ini_file()
 
     c.run(f'alembic -c {ini_file} downgrade -1')
-
