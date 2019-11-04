@@ -14,8 +14,12 @@ def setup_models(dbsession):
     Add or update models / fixtures in the database.
 
     """
-    model = models.mymodel.MyModel(name='one', value=1)
-    dbsession.add(model)
+    group = models.user.Group(name='管理者', _type=0)
+    user = models.user.User(first_name='管理者', last_name='管理者', email='webmaster@xxx.tp.edu.tw',
+                            account='admin', password='admin', group=group)
+
+    dbsession.add(group)
+    dbsession.add(user)
 
     dbsession.commit()
 
