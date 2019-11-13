@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: db_name
+      prompt: "請輸入資料庫名稱："
+      private: no
+    - name: db_user
+      prompot: "請輸入資料庫帳號"
+      private: no
+    - name: db_pass
+      prompt: "請輸入資料庫密碼"
+    - name: 建立專案 .venv 目錄
+      command: python3 -m venv .venv
+    - name: 更新專案 venv 套件
+      command: .venv/bin/pip install --upgrade pip setuptools poetry
+    - name: 使用 poetry 安裝專案相依套件
+      command: .venv/bin/poetry install
+    - name: 建立 development.ini ，若檔案已存在則不覆蓋
+      command: cp -u development.ini.sample development.ini
+    - name: 設定資料庫連線
+      lineinfile:
+        path: development.ini
+        regexp: "^sqlalchemy.url =$"
+        line: "sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@localhost/{{ db_name }}?charset=utf8mb4"
+    - name: 建立測試資料庫並建立測試資料
+      command: .venv/bin/inv db.init-test
+    - name: "顯示提示資訊"
+      debug:
+        msg: "執行 .venv/bin/pserve development.ini --reload 以啟動開發伺服器"
