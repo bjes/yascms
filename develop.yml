@@ -1,15 +1,16 @@
 ---
 - hosts: localhost
   connection: local
-  tasks:
+  vars_prompt:
     - name: db_name
-      prompt: "請輸入資料庫名稱："
+      prompt: "請輸入資料庫名稱"
       private: no
     - name: db_user
-      prompot: "請輸入資料庫帳號"
+      prompt: "請輸入資料庫帳號"
       private: no
     - name: db_pass
       prompt: "請輸入資料庫密碼"
+  tasks:
     - name: 建立專案 .venv 目錄
       command: python3 -m venv .venv
     - name: 更新專案 venv 套件
@@ -24,7 +25,7 @@
         regexp: "^sqlalchemy.url =$"
         line: "sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@localhost/{{ db_name }}?charset=utf8mb4"
     - name: 建立測試資料庫並建立測試資料
-      command: .venv/bin/inv db.init-test
+      command: .venv/bin/poetry run .venv/bin/inv db.init-test
     - name: "顯示提示資訊"
       debug:
         msg: "執行 .venv/bin/pserve development.ini --reload 以啟動開發伺服器"
