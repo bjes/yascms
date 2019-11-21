@@ -506,6 +506,17 @@ pyramid-mako = ">=0.3.1"
 "repoze.lru" = "*"
 
 [[package]]
+category = "main"
+description = "A package which logs to a Python logger when an exception is raised by a Pyramid application"
+name = "pyramid-exclog"
+optional = false
+python-versions = "*"
+version = "1.0"
+
+[package.dependencies]
+pyramid = ">=1.5"
+
+[[package]]
 category = "dev"
 description = "pyramid ipython pshell"
 name = "pyramid-ipython"
@@ -892,7 +903,7 @@ transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
 [metadata]
-content-hash = "d3ea0862bb4782491a6080a7670e4ed235f56b206317c31b345839e6ae70f804"
+content-hash = "d5300040d8ac165e0f959e64f75bebbcdace0bbef0ffaafd4b3516e7e2034e06"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -946,6 +957,7 @@ pyparsing = ["6f98a7b9397e206d78cc01df10131398f1c8b8510a2f4d97d9abd82e1aacdd80",
 pyramid = ["51bf64647345237c00d2fe558935e0e4938c156e29f17e203457fd8e1d757dc7", "d80ccb8cfa550139b50801591d4ca8a5575334adb493c402fce2312f55d07d66"]
 pyramid-beaker = ["77dc658c2c84c8c384b6c07f60dd9d2ccaa30df97a147c790db43636f1e8d441"]
 pyramid-debugtoolbar = ["74c5f52ce33765423810e156949b0f97852c66056c97de8c35a6db9b00195774", "f7c87b4931c17a189a26758c40619e379b670cd18ae1823500ffdc7e79fb6ec9"]
+pyramid-exclog = ["9ddb5035c0fbd9e71dea07269944ed54c2f1758601ac239de3c4e451386c63ba", "d05ced5c12407507154de6750036bc83861b85c11be70b3ec3098c929652c14b"]
 pyramid-ipython = ["1c8bc09648e6f5aaebbbd01e55d36a73d7cfb5c369a8eb32696d32f759eca815", "be2a349f2830d36ab5de67cdfae65c92b69d8f129c0852d3989a31d7c847775b"]
 pyramid-jinja2 = ["81e0615cb3108f2a251ff3141ad0d698a5d03685819f3a836ea84787e8489502", "c7ce77a2ec5cfb7b29c9eabec9e5c167698d13adb2524c0c47cc6fe6a0a09ab1"]
 pyramid-mailer = ["28d4a7829ebc19dd40e712d8cb1998cec03c296ba675b2c112a503539738bdc1", "ec0aff54d9179b2aa2922ff82c2016a4dc8d1da5dc3408d6594f0e2096446f9b"]
