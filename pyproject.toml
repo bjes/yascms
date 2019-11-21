@@ -20,6 +20,7 @@ webargs = "^5.5"
 marshmallow-sqlalchemy = "^0.19.0"
 passlib = "^1.7"
 pyramid_exclog = "^1.0"
+requests = "^2.22"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
