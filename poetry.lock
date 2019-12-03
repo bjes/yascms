@@ -950,7 +950,7 @@ transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
 [metadata]
-content-hash = "2fc1b786a0abdd1420df3c93cfc3ae1bbf28d3195652f801d2d0183a86b93202"
+content-hash = "59076dc2f6d33d0d42a9790a83988a08f9e9ceb8a670a8900295cb0371ef4cec"
 python-versions = "^3.7"
 
 [metadata.hashes]
