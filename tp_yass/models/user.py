@@ -61,7 +61,7 @@ class Group(BaseObject):
     name = Column(String(100))
 
     # 類別， 0 為管理者可無視權限設定， 1 為普通使用者會套用權限設定
-    _type = Column('type', Integer, nullable=False, default=1, server_default='1')
+    type = Column('type', Integer, nullable=False, default=1, server_default='1')
 
     # self-referential relationship
     ancestor_id = Column(Integer, ForeignKey('groups.id'))
