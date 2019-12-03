@@ -61,10 +61,10 @@ listen = *:6543
 keys = root, tp_yass, sqlalchemy, alembic, exc_logger
 
 [handlers]
-keys = file, exc_logger
+keys = file, exc_handler
 
 [formatters]
-keys = generic, exc_logger
+keys = generic, exc_formatter
 
 [logger_root]
 level = WARN
