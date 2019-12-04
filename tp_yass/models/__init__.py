@@ -1,4 +1,4 @@
 from pyramid_sqlalchemy import BaseObject
 
-from .user import User, Group  # flake8: noqa
-from .news import News, Attachment  # flake8: noqa
+from .user import UserModel, GroupModel  # flake8: noqa
+from .news import NewsModel, NewsAttachmentModel  # flake8: noqa
