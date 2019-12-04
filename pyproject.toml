@@ -16,12 +16,10 @@ alembic = "*"
 pyramid_retry = "*"
 pyramid_sqlalchemy = "*"
 pyramid_tm = "*"
-webargs = "^5.5"
-marshmallow-sqlalchemy = "^0.19.0"
 passlib = "^1.7"
 pyramid_exclog = "^1.0"
 requests = "^2.22"
-marshmallow_sqlalchemy = "^0.19.0"
+pyramid_wtforms = "^2.6"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
