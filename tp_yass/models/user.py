@@ -6,10 +6,10 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
-from .news import News
+from .news import NewsModel
 
 
-class User(BaseObject):
+class UserModel(BaseObject):
 
     __tablename__ = 'users'
 
@@ -51,7 +51,7 @@ class User(BaseObject):
         return sha512_crypt.verify(value, self._password)
 
 
-class Group(BaseObject):
+class GroupModel(BaseObject):
 
     __tablename__ = 'groups'
 
@@ -65,9 +65,9 @@ class Group(BaseObject):
 
     # self-referential relationship
     ancestor_id = Column(Integer, ForeignKey('groups.id'))
-    ancestor = relationship('Group', backref='descendants', remote_side=[id])
+    ancestor = relationship('GroupModel', backref='descendants', remote_side=[id])
 
-    users = relationship('User', backref='group')
+    users = relationship('UserModel', backref='group')
 
     # 最新消息
-    news = relationship(News, backref='group')
+    news = relationship(NewsModel, backref='group')

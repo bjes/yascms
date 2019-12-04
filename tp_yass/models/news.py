@@ -11,7 +11,7 @@ from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
 
-class Attachment(BaseObject):
+class NewsAttachmentModel(BaseObject):
     '''news 的上傳附檔'''
 
     __tablename__ = 'news_attachments'
@@ -27,7 +27,7 @@ class Attachment(BaseObject):
     news_id = Column(Integer, ForeignKey('news.id'))
 
 
-class News(BaseObject):
+class NewsModel(BaseObject):
 
     __tablename__ = 'news'
 
@@ -37,7 +37,7 @@ class News(BaseObject):
 
     content = Column(Text, nullable=False, default='')
 
-    attachments = relationship('Attachment', backref='news')
+    attachments = relationship('NewsAttachment', backref='news')
 
     # 是否置頂，預設為否
     is_pinned = Column(Boolean, default=False, server_default='0')
