@@ -37,7 +37,7 @@ class NewsModel(BaseObject):
 
     content = Column(Text, nullable=False, default='')
 
-    attachments = relationship('NewsAttachment', backref='news')
+    attachments = relationship('NewsAttachmentModel', backref='news')
 
     # 是否置頂，預設為否
     is_pinned = Column(Boolean, default=False, server_default='0')
