@@ -34,16 +34,16 @@ class LoginView:
                 self.request.session['group_id'] = user.group_id
                 self.request.session['group_name'] = user.group.name
                 self.request.session['group_type'] = user.group.type
-                self.request.flash('您已成功登入', 'success')
-                logger.info('帳號 %s 已登入', user.account)
+                self.request.session.flash('您已成功登入', 'success')
+                logger.info('帳號 "%s" 已登入', user.account)
                 headers = remember(self.request, user.account)
                 return HTTPFound(location=self.request.route_url('index'),
                                  headers=headers)
             else:
-                logger.warning('帳號 %s 登入失敗', user.account)
-                self.request.flash('登入失敗，請檢查帳號密碼是否有誤', 'success')
+                logger.warning('帳號 "%s" 登入失敗', login_form.account.data)
+                self.request.session.flash('登入失敗，請檢查帳號密碼是否有誤', 'success')
         else:
-            logger.error('表單驗證失敗，可能有人入侵：account 欄位為 %s，password 欄位為 %s',
+            logger.error('表單驗證失敗，可能有人入侵：account 欄位為 "%s"，password 欄位為 "%s"',
                          login_form.account.data, login_form.password.data)
         return {'login_form': login_form}
 
@@ -58,7 +58,7 @@ class LogoutView:
         headers = forget(self.request)
         account = self.request.session['account']
         self.request.session.clear()
-        self.request.flash('帳號已登出', 'success')
-        logger.info('帳號 %s 已登出', account)
+        self.request.session.flash('帳號已登出', 'success')
+        logger.info('帳號 "%s" 已登出', account)
         return HTTPFound(location=self.request.route_url('index'),
                          headers=headers)
