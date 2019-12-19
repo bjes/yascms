@@ -23,15 +23,43 @@
     .bg-trans {
       background-color: rgba(255, 255, 255, .25);
     }
+
+    @media (min-width: 992px) {
+      .navbar-toggler {
+        display: none;
+      }
+      .navbar-expand-lg {
+        flex-flow: column nowrap;
+        height: 100%;
+      }
+      .navbar-collapse {
+        flex-flow: column nowrap;
+      }
+    }
+
+    .sidebar {
+      flex-grow: 0;
+    }
+
+    .search-btn-icon {
+      border-radius: 0px;
+    }
+
   </style>
 </head>
 
 <body>
-  {% block navbar %}{% include "navbar.jinja2" %}{% endblock navbar %}
-
-  {% block content %}{% include "content.jinja2" %}{% endblock content %}
-
-  {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg sidebar px-3 px-lg-0 bg-black">
+        {% block navbar %}{% include "navbar.jinja2" %}{% endblock navbar %}
+      </div>
+      <div class="col-lg main-content px-3 px-lg-0">
+        {% block content %}{% include "content.jinja2" %}{% endblock content %}
+        {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
+      </div>
+    </div>
+  </div>
 
   <script src="{{ 'tp_yass:themes/default/static/js/jquery-3.4.1.slim.min.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/popper-1.16.0.min.js'|static_path }}"></script>
