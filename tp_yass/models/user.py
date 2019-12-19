@@ -1,5 +1,6 @@
 from passlib.hash import sha512_crypt
-from sqlalchemy import (Column,
+from sqlalchemy import (Table,
+                        Column,
                         Integer,
                         String,
                         ForeignKey)
@@ -7,6 +8,12 @@ from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
 from .news import NewsModel
+
+
+association_table = Table('users_groups_association',
+                          BaseObject.metadata,
+                          Column('users_id', Integer, ForeignKey('users.id')),
+                          Column('groups_id', Integer, ForeignKey('groups.id')))
 
 
 class UserModel(BaseObject):
@@ -27,8 +34,9 @@ class UserModel(BaseObject):
     # 帳號
     account = Column(String(50), nullable=False, unique=True)
 
-    # 群組
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    groups = relationship('GroupModel',
+                          secondary=association_table,
+                          back_populates='users')
 
     # 密碼 hash
     _password = Column('password', String(130), nullable=False, default='*', server_default='*')
@@ -67,7 +75,9 @@ class GroupModel(BaseObject):
     ancestor_id = Column(Integer, ForeignKey('groups.id'))
     ancestor = relationship('GroupModel', backref='descendants', remote_side=[id])
 
-    users = relationship('UserModel', backref='group')
+    users = relationship('UserModel',
+                         secondary=association_table,
+                         back_populates='groups')
 
     # 最新消息
     news = relationship(NewsModel, backref='group')
