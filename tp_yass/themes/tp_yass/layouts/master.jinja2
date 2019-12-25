@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/bootstrap-4.4.1.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.smartmenus.bootstrap-4.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/tp_yass.css'|static_path }}">
+  <title>濱江國小網站</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg sidebar px-3 px-lg-0 bg-black">
+        {% block navbar %}{% include "navbar.jinja2" %}{% endblock navbar %}
+      </div>
+      <div class="col-lg main-content px-3 px-lg-0">
+        {% block content %}{% endblock content %}
+        {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery-3.4.1.slim.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/popper-1.16.0.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/bootstrap-4.4.1.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/fontawesome-all-5.11.2.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.bootstrap-4.min.js'|static_path }}"></script>
+</body>
+
+</html>
