@@ -31,9 +31,19 @@ class LoginView:
                 self.request.session['first_name'] = user.first_name
                 self.request.session['last_name'] = user.last_name
                 self.request.session['account'] = user.account
-                self.request.session['group_id'] = user.group_id
-                self.request.session['group_name'] = user.group.name
-                self.request.session['group_type'] = user.group.type
+                user_groups = []
+                for each_group in user_groups:
+                    group_tree = []
+                    while True:
+                        if each_group.ancestor:
+                            # 代表還有上層群組
+                            group_tree.append({'name': each_group.name, 'id': each_group.id,'type': each_group.type})
+                        else:
+                            # 代表已經到了最上層群組
+                            group_tree.append({'name': each_group.name, 'id': each_group.id,'type': each_group.type})
+                            user_groups.append(group_tree)
+                            break
+                self.request.session['groups'] = user_groups
                 self.request.session.flash('您已成功登入', 'success')
                 logger.info('帳號 "%s" 已登入', user.account)
                 headers = remember(self.request, user.account)
