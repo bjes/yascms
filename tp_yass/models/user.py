@@ -41,8 +41,8 @@ class UserModel(BaseObject):
     # 密碼 hash
     _password = Column('password', String(130), nullable=False, default='*', server_default='*')
 
-    # 是否沒換過密碼，沒換過為 0 有換過為 1
-    password_status = Column(Integer, nullable=False, default=0, server_default='0')
+    # 0 還沒改密碼， 1 正常狀態， 2 被鎖定
+    status = Column(Integer, nullable=False, default=0, server_default='0')
 
     @property
     def password(self):
