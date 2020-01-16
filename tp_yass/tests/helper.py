@@ -12,7 +12,7 @@ def get_ini_settings(ini_file_path):
 def import_test_db_data(ini_file_path):
     """Import test data to test database"""
     from tp_yass.models.user import GroupModel, UserModel
-    from tp_yass.models.news import NewsModel
+    from tp_yass.models.news import NewsModel, NewsCategoryModel
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
@@ -36,9 +36,13 @@ def import_test_db_data(ini_file_path):
                       account='user2', password='user2', status=1)
     user2.groups = [group6, group3]
 
+    # 建最新消息分類群組
+    category1 = NewsCategoryModel(id=1, name='行政公告')
+    category2 = NewsCategoryModel(id=2, name='學校榮譽')
+
     # 建最新消息
-    news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6)
-    news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1)
+    news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category_id=1)
+    news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category_id=2)
 
     session.add(group1)
     session.add(group2)
@@ -48,6 +52,8 @@ def import_test_db_data(ini_file_path):
     session.add(group6)
     session.add(user1)
     session.add(user2)
+    session.add(category1)
+    session.add(category2)
     session.add(news1)
     session.add(news2)
 
