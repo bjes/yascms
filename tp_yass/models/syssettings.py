@@ -3,6 +3,7 @@ from pyramid_sqlalchemy import BaseObject
 
 
 class SysSettingsModel(BaseObject):
+    '''存放系統設定值'''
 
     __tablename__ = 'sys_settings'
 
@@ -13,3 +14,6 @@ class SysSettingsModel(BaseObject):
 
     # 設定值
     value = Column(String(50), nullable=False)
+
+    # 說明文字
+    description = Column(String(50), nullable=False)
