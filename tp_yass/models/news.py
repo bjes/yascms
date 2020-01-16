@@ -49,3 +49,16 @@ class NewsModel(BaseObject):
     last_updated_date = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     group_id = Column(Integer, ForeignKey('groups.id'))
+
+    category_id = Column(Integer, ForeignKey('news_categories.id'))
+
+
+class NewsCategoryModel(BaseObject):
+
+    __tablename__ = 'news_categories'
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(String(50), nullable=False)
+
+    news = relationship(NewsModel, backref='category')
