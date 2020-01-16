@@ -22,7 +22,7 @@ def setup_models(dbsession):
                                  email='webmaster@xxx.tp.edu.tw',
                                  account='admin',
                                  password='admin',
-                                 group=group)
+                                 groups=[group])
     dbsession.add(group)
     dbsession.add(user)
 
