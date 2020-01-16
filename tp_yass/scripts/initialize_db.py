@@ -14,6 +14,8 @@ def setup_models(dbsession):
     Add or update models / fixtures in the database.
 
     """
+
+    # 建立管理者帳號
     group = models.user.GroupModel(name='管理者', type=0)
     user = models.user.UserModel(first_name='管理者',
                                  last_name='管理者',
@@ -21,9 +23,12 @@ def setup_models(dbsession):
                                  account='admin',
                                  password='admin',
                                  group=group)
-
     dbsession.add(group)
     dbsession.add(user)
+
+    # 建立基本系統設定值
+    dbsession.add(models.syssettings.SysSettingsModel(name='school_name', value='臺北市中山區無名國小', description='設定學校全名'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='maintenance_mode', value='true', description='設定全站是否唯讀'))
 
     dbsession.commit()
 
