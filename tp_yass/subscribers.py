@@ -1,11 +1,10 @@
 from pyramid.events import NewRequest
 from pyramid.events import subscriber
-from pyramid.httpexceptions import HTTPServiceUnavailable
 
 from tp_yass.dal import DAL
 
+
 @subscriber(NewRequest)
 def sysconfig(event):
+    """為避免不必要的權限檢查造成過多的資料庫存取，採用 event 在每次 request 時將 sysconfig 存入 request 下"""
     event.request.sysconfig = {config.name: config.value for config in DAL.get_sys_config()}
-    if event.request.sysconfig['maintenance_mode'] != 'false':
-        raise HTTPServiceUnavailable('唯讀模式啟用中。')
