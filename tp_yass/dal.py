@@ -18,4 +18,4 @@ class DAL:
     @staticmethod
     def get_news_list():
         '''傳回最新消息列表'''
-        return DBSession.query(NewsModel).order_by(is_pinned).order_by(NewsModel.id.desc())
+        return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())
