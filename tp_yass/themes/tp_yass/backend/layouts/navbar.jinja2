@@ -6,77 +6,23 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-column">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarNewsDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-bullhorn"></i> 最新消息
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
-          <li><a class="dropdown-item" href="#">行政公告</a></li>
-          <li><a class="dropdown-item" href="#">學校榮譽</a></li>
-          <li><a class="dropdown-item" href="#">教師甄試</a></li>
-          <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">下一層選單</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">子子選單</a></li>
-              <li><a class="dropdown-item" href="#">子子選單</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#"><i class="fas fa-newspaper"></i> 顯示全部</a></li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-bullhorn"></i> 最新消息</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarSchoolIntroDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-school"></i> 學校簡介
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarSchoolIntroDropdown">
-          <li><a class="dropdown-item" href="#">學校歷史</a></li>
-          <li><a class="dropdown-item" href="#">特色課程</a></li>
-          <li><a class="dropdown-item" href="#">班群教室</a></li>
-          <li class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#"><i class="fas fa-calendar-alt"></i> 行事曆</a></li>
-          <li><a class="dropdown-item" href="#"><i class="fas fa-phone"></i> 分機表</a></li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-phone"></i> 常用分機</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarSchoolOfficeDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="far fa-building"></i> 校園單位
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarSchoolOfficeDropdown">
-          <li class="dropdown-item" href="#">校長室</li>
-          <li class="dropdown-item" href="#">教務處</li>
-          <li class="dropdown-item" href="#">學務處</li>
-          <li class="dropdown-item" href="#">輔導室</li>
-          <li class="dropdown-item" href="#">總務處</li>
-          <li class="dropdown-item" href="#">幼兒園</a>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-link"></i> 好站連結</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarSchoolGardenDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="far fa-sun"></i> 師生園地
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarSchoolGardenDropdown">
-          <li><a class="dropdown-item" href="#">資訊中心</a></li>
-          <li><a class="dropdown-item" href="#">校內服務</a></li>
-          <li><a class="dropdown-item" href="#">課後社團報名 <i class="fas fa-external-link-alt"></i></a></li>
-          <li class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#"><i class="fas fa-chalkboard-teacher"></i> 班級網頁</a></li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-users-cog"></i> 帳號管理</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarOthersDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-globe-asia"></i> 外站連結
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarOthersDropdown">
-          <li><a class="dropdown-item" href="#">臺北市政府教育局</a></li>
-          <li><a class="dropdown-item" href="#">臺北市政府</a></li>
-          <li class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#"><i class="fas fa-link"></i> 好站連結</a></li>
-        </ul>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-map-signs"></i> 導覽列管理</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-cogs"></i> 系統設定</a>
       </li>
       {% if request.session['account'] %}
       <li class="nav-item dropdown">
@@ -89,10 +35,6 @@
           <li class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="{{ 'logout'|route_path }}">登出</a></li>
         </ul>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ 'login'|route_path }}"><i class="fas fa-sign-in-alt"></i> 登入</a>
       </li>
       {% endif %}
     </ul>
