@@ -9,5 +9,9 @@ __pycache__
 .vscode
 .venv
 .tox
+.idea/workspace.xml
+.idea/dataSources/
+.idea/dataSources.local.xml
 data
 !*/data
+
