@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 from pyramid_sqlalchemy import BaseObject
 
 
@@ -13,7 +13,7 @@ class SysConfigModel(BaseObject):
     name= Column(String(50), nullable=False)
 
     # 設定值
-    value = Column(String(50), nullable=False)
+    value = Column(Text, nullable=False)
 
     # 說明文字
     description = Column(String(50), nullable=False)
