@@ -28,4 +28,5 @@ def main(global_config, **settings):
 
         config.include('.routes')
         config.scan('.views')
+        config.scan('.subscribers')
     return config.make_wsgi_app()
