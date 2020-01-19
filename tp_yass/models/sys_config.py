@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, String
 from pyramid_sqlalchemy import BaseObject
 
 
-class SysSettingsModel(BaseObject):
+class SysConfigModel(BaseObject):
     '''存放系統設定值'''
 
-    __tablename__ = 'sys_settings'
+    __tablename__ = 'sys_config'
 
     id = Column(Integer, primary_key=True)
 
