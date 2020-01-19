@@ -28,11 +28,14 @@ def setup_models(dbsession):
 
     # 建立基本系統設定值
     dbsession.add(models.sys_config.SysConfigModel(name='site_name', value='', description='設定全名'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_slogan', value='', description='設定標語'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_phone', value='', description='設定電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_fox', value='', description='設定傳真電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_email', value='', description='設定聯絡 Email'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_adress', value='', description='設定地址'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map', value='', description='設定 Google Map 位置'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_zip', value='', description='設定郵遞區號'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_address', value='', description='設定地址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_url', value='', description='設定 Google Map 網址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_embedded_url', value='', description='設定 Google Map 嵌入網址'))
 
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
     dbsession.add(models.sys_config.SysConfigModel(name='maintenance_mode', value='false', description='設定全站是否唯讀'))

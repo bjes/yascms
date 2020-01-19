@@ -13,12 +13,25 @@ def import_test_db_data(ini_file_path):
     """Import test data to test database"""
     from tp_yass.models.user import GroupModel, UserModel
     from tp_yass.models.news import NewsModel, NewsCategoryModel
+    from tp_yass.models.sys_config import SysConfigModel
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
     Session = sessionmaker(bind=engine)
 
     session = Session()
+
+    # 初始化系統設定
+    session.query(SysConfigModel).filter_by(name='site_name').update({'value': '臺北市中山區濱江國小'})
+    session.query(SysConfigModel).filter_by(name='site_slogan').update({'value': '快樂學習 - 教學相長'})
+    session.query(SysConfigModel).filter_by(name='site_phone').update({'value': '02-85021571'})
+    session.query(SysConfigModel).filter_by(name='site_fox').update({'value': '02-85011146'})
+    session.query(SysConfigModel).filter_by(name='site_email').update({'value': 'public@bjes.tp.edu.tw'})
+    session.query(SysConfigModel).filter_by(name='site_zip').update({'value': '10462'})
+    session.query(SysConfigModel).filter_by(name='site_address').update({'value': '臺北市中山區樂群二路266巷99號'})
+    session.query(SysConfigModel).filter_by(name='site_google_map_url').update({'value': 'https://goo.gl/maps/X6Y4E37U66aMqQHY6'})
+    session.query(SysConfigModel).filter_by(name='site_google_map_embedded_url').update({'value': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.7043991522146!2d121.55944821523249!3d25.07800624267944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac72e5e39d17%3A0x3934b7c47c1bbf29!2zMTA0OTHlj7DljJfluILkuK3lsbHljYDmqILnvqTkuozot68yNjblt7c5OeiZnw!5e0!3m2!1szh-TW!2stw!4v1551164410802'})
+    session.commit()
 
     # 建群組。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始
     group1 = GroupModel(id=2, name='測試國小', type=1)
