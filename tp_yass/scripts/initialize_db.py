@@ -19,7 +19,7 @@ def setup_models(dbsession):
     group = models.user.GroupModel(name='管理者', type=0)
     user = models.user.UserModel(first_name='管理者',
                                  last_name='管理者',
-                                 email='webmaster@xxx.tp.edu.tw',
+                                 email='webmaster@example.org',
                                  account='admin',
                                  password='admin',
                                  groups=[group])
@@ -27,8 +27,17 @@ def setup_models(dbsession):
     dbsession.add(user)
 
     # 建立基本系統設定值
-    dbsession.add(models.syssettings.SysSettingsModel(name='school_name', value='臺北市中山區無名國小', description='設定學校全名'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_name', value='', description='設定全名'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_phone', value='', description='設定電話'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_fox', value='', description='設定傳真電話'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_email', value='', description='設定聯絡 Email'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_adress', value='', description='設定地址'))
+    dbsession.add(models.syssettings.SysSettingsModel(name='site_google_map', value='', description='設定 Google Map 位置'))
+
+    # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
     dbsession.add(models.syssettings.SysSettingsModel(name='maintenance_mode', value='true', description='設定全站是否唯讀'))
+
+    dbsession.add(models.syssettings.SysSettingsModel(name='homepage_news_quantity', value='20', description='設定首頁顯示幾筆最新消息'))
 
     dbsession.commit()
 
