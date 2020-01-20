@@ -8,3 +8,4 @@ def includeme(config):
 
     # backend
     config.add_route('backend_homepage', '/backend/')
+    config.add_route('backend_user_list_groups', '/backend/user/list_groups')

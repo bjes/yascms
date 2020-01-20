@@ -1,0 +1,19 @@
+{% extends "layouts/master.jinja2" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>使用者群組管理</h1></div>
+    <div class="col-12">
+      {% for group in group_trees recursive %}
+      <ul>
+        <li><a href="#">{{ group.name }}</a>
+          {% if group.descendants %}
+            {{ loop(group.descendants) }}
+          {% endif %}
+        </li>
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
