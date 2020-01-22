@@ -71,6 +71,9 @@ class GroupModel(BaseObject):
     # 類別， 0 為管理者可無視權限設定， 1 為普通使用者會套用權限設定
     type = Column('type', Integer, nullable=False, default=1, server_default='1')
 
+    # 排序的依據，數字愈小排越前面
+    order = Column(Integer, nullable=False, default=0, server_default='0')
+
     # self-referential relationship
     ancestor_id = Column(Integer, ForeignKey('groups.id'))
     ancestor = relationship('GroupModel', backref='descendants', remote_side=[id])
