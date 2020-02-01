@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/bootstrap-4.4.1.min.css'|static_path }}">
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.smartmenus.bootstrap-4-1.1.0.css'|static_path }}">
   {% block layout_css %}{% endblock layout_css %}
+  {% block page_css %}{% endblock page_css %}
   <title>{{ request.sysconfig['site_name'] }}</title>
 </head>
 
@@ -30,6 +31,7 @@
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.min-1.1.0.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js'|static_path }}"></script>
   {% block layout_js %}{% endblock layout_js %}
+  {% block page_js %}{% endblock page_js %}
 </body>
 
 </html>
