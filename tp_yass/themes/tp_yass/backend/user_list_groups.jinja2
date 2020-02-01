@@ -5,8 +5,8 @@
     <div class="col-12"><h1>使用者群組管理</h1></div>
     <div class="col-12">
       {% for group in group_trees recursive %}
-      <ul>
-        <li><a href="#">{{ group.name }}</a>
+      <ul class="list-group">
+        <li class="list-group-item"><a href="#">{{ group.name }}</a>
           {% if group.descendants %}
             {{ loop(group.descendants) }}
           {% endif %}
