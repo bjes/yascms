@@ -1,19 +1,40 @@
 {% extends "layouts/master.jinja2" %}
+{% block page_css %}
+<link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+{% endblock page_css %}
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col-12"><h1>使用者群組管理</h1></div>
     <div class="col-12">
       {% for group in group_trees recursive %}
-      <ul class="list-group">
-        <li class="list-group-item"><a href="#">{{ group.name }}</a>
-          {% if group.descendants %}
-            {{ loop(group.descendants) }}
+        {% if loop.first %}
+          {% if not group.ancestor %}
+            <ul class="list-group" id="root-group">
+          {% else %}
+            <ul class="list-group">
           {% endif %}
-        </li>
-      </ul>
+        {% endif %}
+          <li class="list-group-item"><a href="#">{{ group.name }}</a>
+            {% if group.descendants %}
+              {{ loop(group.descendants) }}
+            {% endif %}
+          </li>
+        {% if loop.last %}
+        </ul>
+        {% endif %}
       {% endfor %}
     </div>
   </div>
 </div>
 {% endblock content %}
+{% block page_js %}
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script>
+  $(function() {
+    $('#root-group').bonsai({
+      expandAll: true
+    });
+  });
+</script>
+{% endblock page_js %}
