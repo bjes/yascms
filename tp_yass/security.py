@@ -3,8 +3,8 @@ def group_finder(user_name, request):
 
     groups = request.session.get('groups', None)
     if groups:
-        # groups 為一個多個 dict 組成的陣列，其中 key id 儲存了每個 group 的 id
+        # groups 為一個多個 dict 組成的二維陣列，其中 key id 儲存了每個 group 的 id
         # group name 可能會改，但 id 不會改，所以用 id 作為判斷依據
-        return [ i['id'] for i in groups ]
+        return [ i['id'] for each_group_list in groups for i in each_group_list ]
     else:
         return None
