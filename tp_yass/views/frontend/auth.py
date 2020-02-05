@@ -32,7 +32,7 @@ class LoginView:
                 self.request.session['last_name'] = user.last_name
                 self.request.session['account'] = user.account
                 user_groups = []
-                for each_group in user_groups:
+                for each_group in user.groups:
                     group_tree = []
                     while True:
                         if each_group.ancestor:
