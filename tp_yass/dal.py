@@ -28,5 +28,8 @@ class DAL:
 
     @staticmethod
     def get_user_groups():
-        """傳回使用者的群組列表"""
-        return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.type).all()
+        """傳回使用者的群組列表
+
+        排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
+        """
+        return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
