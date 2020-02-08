@@ -6,6 +6,22 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-cogs"></i> 系統設定</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-users-cog"></i> 使用者與群組
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+          <li><a class="dropdown-item" href="#">帳號管理</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_path('backend_user_list_groups') }}">群組管理</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-map-signs"></i> 導覽列管理</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarNewsDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
@@ -22,26 +38,10 @@
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="fas fa-link"></i> 好站連結</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-users-cog"></i> 使用者管理
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-          <li><a class="dropdown-item" href="#">帳號管理</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_path('backend_user_list_groups') }}">群組管理</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-map-signs"></i> 導覽列管理</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-cogs"></i> 系統設定</a>
-      </li>
       {% if request.session['account'] %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+          aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
           {{ request.session['first_name']}}{{ request.session['last_name']}}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarAccountDropdown">
