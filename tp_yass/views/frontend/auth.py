@@ -35,13 +35,15 @@ class LoginView:
                 user_groups = []
                 for each_group in user.groups:
                     group_tree = []
+                    current_group = each_group
                     while True:
-                        if each_group.ancestor:
+                        if current_group.ancestor:
                             # 代表還有上層群組
-                            group_tree.append({'name': each_group.name, 'id': each_group.id,'type': each_group.type})
+                            group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
+                            current_group = current_group.ancestor
                         else:
                             # 代表已經到了最上層群組
-                            group_tree.append({'name': each_group.name, 'id': each_group.id,'type': each_group.type})
+                            group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
                             user_groups.append(group_tree)
                             break
                 self.request.session['groups'] = user_groups
