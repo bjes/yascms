@@ -1,9 +1,11 @@
-<!doctype html>
-<html lang="zh-Hant-TW">
-<head>
-  <title>找不到網頁</title>
-</head>
-<body>
-<h1>找不到網頁</h1>
-</body>
-</html>
+{% extends "layouts/skeleton.jinja2" %}
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center mt-3">找不到網頁，請確認網址是否正確。</h1>
+      </div>
+    </div>
+  </div>
+{% endblock body %}
+

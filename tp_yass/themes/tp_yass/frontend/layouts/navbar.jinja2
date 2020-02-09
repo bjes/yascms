@@ -78,23 +78,9 @@
           <li><a class="dropdown-item" href="#"><i class="fas fa-link"></i> 好站連結</a></li>
         </ul>
       </li>
-      {% if request.session['account'] %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
-          {{ request.session['first_name']}}{{ request.session['last_name']}}
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarAccountDropdown">
-          <li><a class="dropdown-item" href="#">帳號設定</a></li>
-          <li class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="{{ 'logout'|route_path }}">登出</a></li>
-        </ul>
-      </li>
-      {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{{ 'login'|route_path }}"><i class="fas fa-sign-in-alt"></i> 登入</a>
       </li>
-      {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <div class="input-group">

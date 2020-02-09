@@ -11,7 +11,7 @@ from tp_yass.dal import DAL
 logger = logging.getLogger(__name__)
 
 
-@view_defaults(route_name='login', renderer='themes/default/frontend/login.jinja2')
+@view_defaults(route_name='login', renderer='themes/default/login.jinja2')
 class LoginView:
 
     def __init__(self, request):
@@ -50,7 +50,7 @@ class LoginView:
                 self.request.session.flash('您已成功登入', 'success')
                 logger.info('帳號 "%s" 已登入', user.account)
                 headers = remember(self.request, user.account)
-                return HTTPFound(location=self.request.route_url('homepage'),
+                return HTTPFound(location=self.request.route_url('backend_homepage'),
                                  headers=headers)
             else:
                 logger.warning('帳號 "%s" 登入失敗', login_form.account.data)
