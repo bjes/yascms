@@ -32,11 +32,16 @@ class LoginView:
                 self.request.session['first_name'] = user.first_name
                 self.request.session['last_name'] = user.last_name
                 self.request.session['account'] = user.account
+                self.request.session['is_admin'] = False
                 user_groups = []
                 for each_group in user.groups:
                     group_tree = []
                     current_group = each_group
                     while True:
+                        # 只要有任一個群組（含上層）為管理者權限，則 is_admin 就為 True
+                        if not self.request.session['is_admin']:
+                            if current_group.type == 0:
+                                self.request.session['is_admin'] = True
                         if current_group.ancestor:
                             # 代表還有上層群組
                             group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
@@ -47,9 +52,12 @@ class LoginView:
                             user_groups.append(group_tree)
                             break
                 self.request.session['groups'] = user_groups
-                self.request.session.flash('您已成功登入', 'success')
+                self.request.session['group_id_list'] = list({i['id'] for each_group_list in user_groups for i in each_group_list})
                 logger.info('帳號 "%s" 已登入', user.account)
                 logger.debug('帳號 "%s" 存在 session 的 groups 為 %s', user.account, user_groups)
+                logger.debug('帳號 "%s" 存在 session 的 group_id_list 為 %s', user.account, self.request.session['group_id_list'])
+                if self.request.session['is_admin']:
+                    logger.debug('帳號 "%s" 有管理者權限', user.account)
                 headers = remember(self.request, user.account)
                 return HTTPFound(location=self.request.route_url('backend_homepage'),
                                  headers=headers)
@@ -72,7 +80,6 @@ class LogoutView:
         headers = forget(self.request)
         account = self.request.session['account']
         self.request.session.clear()
-        self.request.session.flash('帳號已登出', 'success')
         logger.info('帳號 "%s" 已登出', account)
         return HTTPFound(location=self.request.route_url('homepage'),
                          headers=headers)
