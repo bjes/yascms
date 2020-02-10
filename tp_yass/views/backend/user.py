@@ -11,7 +11,9 @@ def recursive_search(group_node, group):
         for descendant_group in group_node['descendants']:
             recursive_search(descendant_group, group)
 
-@view_config(route_name='backend_user_list_groups', renderer='themes/default/backend/user_list_groups.jinja2')
+@view_config(route_name='backend_user_list_groups',
+             renderer='themes/default/backend/user_list_groups.jinja2',
+             permission='view')
 def user_list_groups_view(request):
     all_groups = DAL.get_user_groups()
     group_trees = []

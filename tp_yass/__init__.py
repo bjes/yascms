@@ -3,7 +3,6 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
 from .security import group_finder
-from .resources import Resource
 
 
 def main(global_config, **settings):

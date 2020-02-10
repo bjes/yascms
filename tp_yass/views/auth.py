@@ -49,6 +49,7 @@ class LoginView:
                 self.request.session['groups'] = user_groups
                 self.request.session.flash('您已成功登入', 'success')
                 logger.info('帳號 "%s" 已登入', user.account)
+                logger.debug('帳號 "%s" 存在 session 的 groups 為 %s', user.account, user_groups)
                 headers = remember(self.request, user.account)
                 return HTTPFound(location=self.request.route_url('backend_homepage'),
                                  headers=headers)
