@@ -14,7 +14,7 @@ def _recursive_append(group_node, group):
 @view_config(route_name='backend_user_group_list',
              renderer='themes/default/backend/user_group_list.jinja2',
              permission='view')
-def user_group_list_view(request):
+def backend_user_group_list_view(request):
     all_groups = DAL.get_user_groups()
     group_trees = []
     for group in all_groups:
