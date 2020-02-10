@@ -3,13 +3,13 @@ from pyramid.view import view_config
 from tp_yass.dal import DAL
 
 
-def recursive_search(group_node, group):
+def _recursive_append(group_node, group):
     if group.ancestor_id == group_node['id']:
         group_node['descendants'].append({'id': group.id, 'name': group.name, 'descendants': []})
         return True
     else:
         for descendant_group in group_node['descendants']:
-            recursive_search(descendant_group, group)
+            _recursive_append(descendant_group, group)
 
 @view_config(route_name='backend_user_list_groups',
              renderer='themes/default/backend/user_list_groups.jinja2',
@@ -24,6 +24,6 @@ def user_list_groups_view(request):
         else:
             # 代表是第二層以下的群組
             for root_node in group_trees:
-                if recursive_search(root_node, group):
+                if _recursive_append(root_node, group):
                     break
     return {'group_trees': group_trees}
