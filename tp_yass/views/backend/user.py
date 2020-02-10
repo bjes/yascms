@@ -15,7 +15,7 @@ def _recursive_append(group_node, group):
              renderer='themes/default/backend/user_group_list.jinja2',
              permission='view')
 def backend_user_group_list_view(request):
-    all_groups = DAL.get_user_groups()
+    all_groups = DAL.get_user_group_list()
     group_trees = []
     for group in all_groups:
         if not group.ancestor_id:

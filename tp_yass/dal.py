@@ -20,12 +20,12 @@ class DAL:
         return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
 
     @staticmethod
-    def get_sys_config():
+    def get_sys_config_list():
         """傳回系統設定檔"""
         return DBSession.query(SysConfigModel).all()
 
     @staticmethod
-    def get_user_groups():
+    def get_user_group_list():
         """傳回使用者的群組列表
 
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
