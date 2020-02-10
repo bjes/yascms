@@ -12,7 +12,7 @@ def _recursive_append(group_node, group):
             _recursive_append(descendant_group, group)
 
 @view_config(route_name='backend_user_group_list',
-             renderer='themes/default/backend/user_group_list.jinja2',
+             renderer='themes/default/backend/tree_node_list.jinja2',
              permission='view')
 def backend_user_group_list_view(request):
     all_groups = DAL.get_user_group_list()
@@ -26,4 +26,4 @@ def backend_user_group_list_view(request):
             for root_node in group_trees:
                 if _recursive_append(root_node, group):
                     break
-    return {'group_trees': group_trees}
+    return {'title': '使用者群組管理', 'group_trees': group_trees}
