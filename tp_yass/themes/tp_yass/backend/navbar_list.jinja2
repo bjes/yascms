@@ -1,0 +1,44 @@
+{% extends "layouts/master.jinja2" %}
+{% block page_css %}
+<link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>導覽列列表</h1></div>
+    <div class="col-12">
+      {% for navbar in navbar_trees recursive %}
+        {% if loop.first %}
+          {% if not navbar.ancestor %}
+            <ul class="list-group" id="root-navbar">
+          {% else %}
+            <ul class="list-group">
+          {% endif %}
+        {% endif %}
+        {% if navbar.type == 3 %}
+          <li class="my-1"><a href="#">{{ navbar.name }}</a>
+        {% else %}
+          <li class="list-group-item"><a href="#">{{ navbar.name }}</a>
+        {% endif %}
+            {% if navbar.descendants %}
+              {{ loop(navbar.descendants) }}
+            {% endif %}
+          </li>
+        {% if loop.last %}
+        </ul>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script>
+  $(function() {
+    $('#root-navbar').bonsai({
+      expandAll: true
+    });
+  });
+</script>
+{% endblock page_js %}

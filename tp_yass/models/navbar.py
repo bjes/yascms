@@ -19,7 +19,7 @@ class NavbarModel(BaseObject):
     name = Column(String(50), nullable=False, server_default='')
 
     # 連結的 url
-    link = Column(String(190), nullable=False, default='#', server_default='#')
+    url = Column(String(190), nullable=False, default='#', server_default='#')
 
     # 是否為外部連結，若是，點選連結時另開分頁
     external = Column(Boolean, nullable=False, default=False, server_default='0')

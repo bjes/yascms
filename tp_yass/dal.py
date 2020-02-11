@@ -2,8 +2,8 @@ from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.user import UserModel, GroupModel
-from tp_yass.models.navbar import NavbarModel
 from tp_yass.models.news import NewsModel
+from tp_yass.models.navbar import NavbarModel
 
 
 class DAL:
@@ -33,11 +33,10 @@ class DAL:
         """
         return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
 
-
     @staticmethod
     def get_navbar_list():
         """傳回導覽列列表
 
-        排序的依據讓同一個父群組的導覽列排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
+        排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
         """
         return DBSession.query(NavbarModel).order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
