@@ -29,6 +29,7 @@ def setup_models(dbsession):
     # 建立基本系統設定值
     dbsession.add(models.sys_config.SysConfigModel(name='site_name', value='', description='設定全名'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_slogan', value='', description='設定標語'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_theme', value='tp_yass', description='設定樣板'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_phone', value='', description='設定電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_fox', value='', description='設定傳真電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_email', value='', description='設定聯絡 Email'))
