@@ -1,16 +1,17 @@
 from sqlalchemy import (Column,
                         Integer,
                         String,
+                        Boolean,
                         ForeignKey)
 from sqlalchemy.orm import relationship
 
 from pyramid_sqlalchemy import BaseObject
 
 
-class NavbarModel(BaseObject):
-    """用來定義主選單，其為巢狀架構"""
+class NavbarCustomModel(BaseObject):
+    """用來定義可讓使用者自訂的導覽列，其為巢狀架構"""
 
-    __tablename__ = 'navbar'
+    __tablename__ = 'navbar_custom'
 
     id = Column(Integer, primary_key=True)
 
@@ -26,6 +27,29 @@ class NavbarModel(BaseObject):
     # 排序
     order = Column(Integer, nullable=False, default=0, server_default='0')
 
+    # 是否顯示，有時候只是想暫時隱藏
+    visible = Column(Boolean, nullable=False, default=1, server_default='1')
+
     # self-referential relationship
-    ancestor_id  = Column(Integer, ForeignKey('navbar.id'))
-    ancestor = relationship('NavbarModel', backref='descendants', remote_side=[id])
+    ancestor_id  = Column(Integer, ForeignKey('navbar_custom.id'))
+    ancestor = relationship('NavbarCustomModel', backref='descendants', remote_side=[id])
+
+
+class NavbarOrder(BaseObject):
+    """用來定義第一層的導覽列顯示順序"""
+
+    __tablename__ = 'navbar_order'
+
+    id = Column(Integer, primary_key=True)
+
+    # 選單名稱
+    name = Column(String(50), nullable=False, server_default='')
+
+    # 排序
+    order = Column(Integer, nullable=False, default=0, server_default='0')
+
+    # 可否編輯與刪除，若可，代表是可讓使用者自訂的選單，否則就是內建選單，比方最新消息
+    editable = Column(Boolean, nullable=False, default=True, server_default='1')
+
+    navbar_custom_id = Column(Integer, ForeignKey('navbar_custom.id'))
+    navbar_custom = relationship(NavbarCustomModel, backref='navbar_order')
