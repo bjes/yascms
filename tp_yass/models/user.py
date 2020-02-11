@@ -1,4 +1,4 @@
-from passlib.hash import sha512_crypt
+from passlib.hash import sha256_crypt
 from sqlalchemy import (Table,
                         Column,
                         Integer,
@@ -39,7 +39,7 @@ class UserModel(BaseObject):
                           back_populates='users')
 
     # 密碼 hash
-    _password = Column('password', String(130), nullable=False, default='*', server_default='*')
+    _password = Column('password', String(77), nullable=False, default='*', server_default='*')
 
     # 0 還沒改密碼， 1 正常狀態， 2 被鎖定
     status = Column(Integer, nullable=False, default=0, server_default='0')
@@ -53,10 +53,10 @@ class UserModel(BaseObject):
         self._password = self.gen_password_hash(value)
 
     def gen_password_hash(self, value):
-        return sha512_crypt.hash(value)
+        return sha256_crypt.hash(value)
 
     def verify_password(self, value):
-        return sha512_crypt.verify(value, self._password)
+        return sha256_crypt.verify(value, self._password)
 
 
 class GroupModel(BaseObject):
