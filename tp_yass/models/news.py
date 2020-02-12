@@ -39,10 +39,22 @@ class NewsModel(BaseObject):
 
     attachments = relationship('NewsAttachmentModel', backref='news')
 
-    # 是否置頂，預設為否
-    is_pinned = Column(Boolean, default=False, server_default='0')
+    # 是否置頂，預設為 0 (否)
+    is_pinned = Column(Integer, default=0, server_default='0')
 
-    # 發佈時間
+    # 置頂開始時間
+    pinned_start_date = Column(DateTime, nullable=True)
+
+    # 置頂結束時間
+    pinned_end_date = Column(DateTime, nullable=True)
+
+    # 顯示開始時間，時間到了才會顯示在網頁上
+    visible_start_date = Column(DateTime, nullable=False, default=datetime.now)
+
+    # 顯示結束時間，時間到了才會消失在網頁上。若沒指定 (null) 則代表永久顯示
+    visible_end_date = Column(DateTime, nullable=True)
+
+    # 發佈時間，建立這篇最新消息當下的時間
     publication_date = Column(DateTime, nullable=False, default=datetime.now)
 
     # 最後更新時間

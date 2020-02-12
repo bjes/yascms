@@ -22,7 +22,7 @@ class NavbarModel(BaseObject):
     url = Column(String(190), nullable=False, default='#', server_default='#')
 
     # 是否為外部連結，若是，點選連結時另開分頁
-    external = Column(Boolean, nullable=False, default=False, server_default='0')
+    is_external = Column(Integer, nullable=False, default=0, server_default='0')
 
     # 使用的 fontawesome icon
     icon = Column(String(50), nullable=False, default='', server_default='')
@@ -38,7 +38,7 @@ class NavbarModel(BaseObject):
     order = Column(Integer, nullable=False, default=0, server_default='0')
 
     # 是否顯示，有時候只是想暫時隱藏
-    visible = Column(Boolean, nullable=False, default=1, server_default='1')
+    is_visible = Column(Integer, nullable=False, default=1, server_default='1')
 
     # self-referential relationship
     ancestor_id  = Column(Integer, ForeignKey('navbar.id'))

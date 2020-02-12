@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 9846b66ad44e
+Revision ID: bc8a073a926f
 Revises: 
-Create Date: 2020-02-11 22:08:13.555377
+Create Date: 2020-02-12 15:32:39.621190
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9846b66ad44e'
+revision = 'bc8a073a926f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,12 +30,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), server_default='', nullable=False),
     sa.Column('url', sa.String(length=190), server_default='#', nullable=False),
-    sa.Column('external', sa.Boolean(), server_default='0', nullable=False),
+    sa.Column('is_external', sa.Integer(), server_default='0', nullable=False),
     sa.Column('icon', sa.String(length=50), server_default='', nullable=False),
     sa.Column('type', sa.Integer(), nullable=False),
     sa.Column('module_name', sa.String(length=50), nullable=True),
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('visible', sa.Boolean(), server_default='1', nullable=False),
+    sa.Column('is_visible', sa.Integer(), server_default='1', nullable=False),
     sa.Column('ancestor_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['ancestor_id'], ['navbar.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -67,7 +67,11 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
-    sa.Column('is_pinned', sa.Boolean(), server_default='0', nullable=True),
+    sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=True),
+    sa.Column('pinned_start_date', sa.DateTime(), nullable=True),
+    sa.Column('pinned_end_date', sa.DateTime(), nullable=True),
+    sa.Column('visible_start_date', sa.DateTime(), nullable=False),
+    sa.Column('visible_end_date', sa.DateTime(), nullable=True),
     sa.Column('publication_date', sa.DateTime(), nullable=False),
     sa.Column('last_updated_date', sa.DateTime(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=True),
