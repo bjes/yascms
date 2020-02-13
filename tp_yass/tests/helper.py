@@ -60,14 +60,12 @@ def import_test_db_data(ini_file_path):
     session.add(user1)
     session.add(user2)
 
-    # 建最新消息分類群組
-    category1 = NewsCategoryModel(id=1, name='行政公告')
-    category2 = NewsCategoryModel(id=2, name='學校榮譽')
+    # 最新消息分類群組
+    category1 = session.query(NewsCategoryModel).filter_by(name='行政公告')
+    category2 = session.query(NewsCategoryModel).filter_by(name='學校榮譽')
     # 建最新消息
-    news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category_id=1)
-    news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category_id=2)
-    session.add(category1)
-    session.add(category2)
+    news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category=category1)
+    news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category=category2)
     session.add(news1)
     session.add(news2)
 

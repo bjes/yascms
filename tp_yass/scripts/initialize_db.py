@@ -78,6 +78,11 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=2, icon='fa-globe-asia', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=4, module_name='goodlinks', ancestor=outside_link))
+
+    # 建立預設的最新消息分類群組
+    dbsession.add(models.news.NewsCategoryModel(name='行政公告'))
+    dbsession.add(models.news.NewsCategoryModel(name='學校榮譽'))
+    dbsession.add(models.news.NewsCategoryModel(name='教師甄試'))
     dbsession.commit()
 
 
