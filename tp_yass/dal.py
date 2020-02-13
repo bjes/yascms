@@ -16,7 +16,7 @@ class DAL:
             return user
 
     @staticmethod
-    def get_news_list(quantity):
+    def get_latest_news(quantity):
         """傳回最新消息列表"""
         return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
 
