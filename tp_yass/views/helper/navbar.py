@@ -1,4 +1,5 @@
 def _recursive_append(navbar_node, navbar):
+    """遞迴的產生 sub navbar"""
     if navbar.ancestor_id == navbar_node['id']:
         navbar_node['descendants'].append({'id': navbar.id,
                                            'name': navbar.name,
@@ -16,6 +17,7 @@ def _recursive_append(navbar_node, navbar):
 
 
 def generate_navbar_trees(navbar_list):
+    """將傳入的 navbar list orms 轉成單純的 巢狀陣列，避免相依後端的 orm"""
     navbar_trees = []
     for navbar in navbar_list:
         if not navbar.ancestor_id:
