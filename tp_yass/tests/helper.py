@@ -61,8 +61,8 @@ def import_test_db_data(ini_file_path):
     session.add(user2)
 
     # 最新消息分類群組
-    category1 = session.query(NewsCategoryModel).filter_by(name='行政公告')
-    category2 = session.query(NewsCategoryModel).filter_by(name='學校榮譽')
+    category1 = session.query(NewsCategoryModel).filter_by(name='行政公告').one_or_none()
+    category2 = session.query(NewsCategoryModel).filter_by(name='學校榮譽').one_or_none()
     # 建最新消息
     news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category=category1)
     news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category=category2)

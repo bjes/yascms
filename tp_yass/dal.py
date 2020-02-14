@@ -9,7 +9,7 @@ from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.user import UserModel, GroupModel
-from tp_yass.models.news import NewsModel
+from tp_yass.models.news import NewsModel, NewsCategoryModel
 from tp_yass.models.navbar import NavbarModel
 
 
@@ -52,6 +52,11 @@ class DAL:
                           .filter(or_(NewsModel.visible_end_date==None, now<NewsModel.visible_end_date)))
         return (results.order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())
                 [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
+
+    @staticmethod
+    def get_news_category_list():
+        """回傳最新消息分類列表"""
+        return DBSession.query(NewsCategoryModel).order_by(NewsCategoryModel.order)
 
     @staticmethod
     def get_sys_config_list():

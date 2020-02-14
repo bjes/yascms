@@ -73,4 +73,7 @@ class NewsCategoryModel(BaseObject):
 
     name = Column(String(50), nullable=False)
 
+    # 排序
+    order = Column(Integer, nullable=False, default=0, server_default='0')
+
     news = relationship(NewsModel, backref='category')
