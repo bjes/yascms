@@ -6,6 +6,7 @@ def includeme(config):
 
     # frontend
     config.add_route('homepage', '/')
+    config.add_route('news_list', '/news/list')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
 
