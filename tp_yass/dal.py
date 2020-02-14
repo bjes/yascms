@@ -1,3 +1,10 @@
+"""資料庫存取抽象層
+
+為了避免 views 相依 orm 操作，所以抽象資料存取層
+"""
+from datetime import datetime
+
+from sqlalchemy import or_
 from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.sys_config import SysConfigModel
@@ -17,8 +24,33 @@ class DAL:
 
     @staticmethod
     def get_latest_news(quantity):
-        """傳回最新消息列表"""
+        """傳回指定筆數的最新消息
+
+        Args:
+          quantity: 指定要撈取幾筆最新消息
+
+        Returns:
+          回傳取得的最新消息
+        """
         return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
+
+    @staticmethod
+    def get_news_list(page=1, quantity_per_page=20, category_id=None):
+        """傳回最新消息列表
+
+        Args:
+          page: 指定頁數，若沒指定則回傳第一頁
+          quantity_per_page: 指定每頁的筆數，預設為 20 筆
+          category_id: 指定要撈取的最新消息分類，None 代表不指定
+        """
+        results = DBSession.query(NewsModel)
+        if category_id:
+            results = results.filter_by(category_id=category_id)
+        now = datetime.now()
+        results = (results.filter(now>=NewsModel.visible_start_date)
+                          .filter(or_(NewsModel.visible_end_date==None, now<NewsModel.visible_end_date)))
+        return (results.order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())
+                [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
 
     @staticmethod
     def get_sys_config_list():
