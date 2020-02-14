@@ -18,7 +18,7 @@
         {% if navbar.type == 3 %}
           <li class="my-1"><a href="#">{{ navbar.name }}</a>
         {% else %}
-          <li class="list-group-item"><a href="#">{{ navbar.name }}</a>
+          <li class="list-group-item"><a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
         {% endif %}
             {% if navbar.descendants %}
               {{ loop(navbar.descendants) }}
