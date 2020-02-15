@@ -11,6 +11,7 @@ from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.user import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel
 from tp_yass.models.navbar import NavbarModel
+from tp_yass.models.sys_config import SysConfigModel
 
 
 class DAL:
@@ -78,3 +79,13 @@ class DAL:
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
         """
         return DBSession.query(NavbarModel).order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
+
+    @staticmethod
+    def get_sys_config_list():
+        """回傳系統設定列表
+
+        其中 maintenance_mode 是用來升即時全站唯讀用，所以不給設定
+        """
+        return (DBSession.query(SysConfigModel)
+                         .filter(SysConfigModel.name != 'maintenance_mode')
+                         .order_by(SysConfigModel.id))

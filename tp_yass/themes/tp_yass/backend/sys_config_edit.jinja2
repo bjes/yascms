@@ -1,0 +1,21 @@
+{% extends "layouts/master.jinja2" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>系統設定 - 一般設定</h1></div>
+    <div class="col-12">
+      <form action="" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        {% for sys_config_entry in sys_config_form.config %}
+        <div class="form-group">
+          {{ sys_config_entry.form.name.label(text=sys_config_entry.data['name'].data) }}
+          <input type="text" class="form-control" id="{{ sys_config_entry.name }}" aria-describedby="{{ sys_config_entry.data['name'].data }}Help" value="{{ sys_config_entry.data['value'].data }}">
+          <small id="{{ sys_config_entry.data['name'].data }}emailHelp" class="form-text text-muted">{{ sys_config_entry.data['description'].data }}</small>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mb-3">更新</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
