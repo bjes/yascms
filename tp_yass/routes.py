@@ -14,4 +14,5 @@ def includeme(config):
     config.add_route('backend_homepage', '/backend/', factory=AuthUserResource())
     config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=AuthUserResource())
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=AdminResource())
+    config.add_route('backend_user_list', '/backend/user/list', factory=AdminResource())
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=AdminResource())

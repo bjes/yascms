@@ -1,0 +1,53 @@
+{% extends "layouts/master.jinja2" %}
+{% block page_css %}
+<link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>使用者列表</h1></div>
+    <div class="col-12">
+      <div class="card border-primary mb-3">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped text-center mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="d-none d-md-table-cell">編號</th>
+                <th scope="col" class="d-none d-sm-table-cell">姓名</th>
+                <th scope="col" class="d-none d-md-table-cell">帳號</th>
+                <th scope="col" class="d-none d-md-table-cell">Email</th>
+                <th scope="col" class="d-none d-sm-table-cell">群組</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for user in user_list %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="#">{{ user.first_name }}{{ user.last_name }}</a></td>
+                <td>{{ user.account }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                {% for group in user.groups %}
+                  <a href="#">{{ group.name }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script>
+  $(function() {
+    $('#root-group').bonsai({
+      expandAll: true
+    });
+  });
+</script>
+{% endblock page_js %}

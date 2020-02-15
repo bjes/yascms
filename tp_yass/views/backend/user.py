@@ -28,3 +28,11 @@ def backend_user_group_list_view(request):
                 if _recursive_append(root_node, group):
                     break
     return {'group_trees': group_trees}
+
+
+@view_config(route_name='backend_user_list',
+             renderer='themes/default/backend/user_list.jinja2',
+             permission='view')
+def backend_user_list_view(request):
+    user_list = DAL.get_user_list()
+    return {'user_list': user_list}

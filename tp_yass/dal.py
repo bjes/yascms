@@ -73,6 +73,11 @@ class DAL:
         return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
 
     @staticmethod
+    def get_user_list():
+        """傳回使用者列表"""
+        return DBSession.query(UserModel).order_by(UserModel.id.desc())
+
+    @staticmethod
     def get_navbar_list():
         """傳回導覽列列表
 
