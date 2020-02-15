@@ -39,8 +39,8 @@ def setup_models(dbsession):
     dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_embedded_url', value='', description='設定 Google 地圖嵌入網址'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_google_calendar_embedded_url', value='', description='設定 Google 行事曆嵌入網址'))
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
-    dbsession.add(models.sys_config.SysConfigModel(name='maintenance_mode', value='false', description='設定全站是否唯讀'))
-    dbsession.add(models.sys_config.SysConfigModel(name='homepage_news_quantity', value='20', description='設定首頁顯示幾筆最新消息'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_maintenance_mode', value='false', description='設定全站是否唯讀'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_homepage_news_quantity', value='20', description='設定首頁顯示幾筆最新消息'))
 
     # 建立導覽列的預設順序
     # 最新消息
