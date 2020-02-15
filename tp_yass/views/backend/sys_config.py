@@ -8,7 +8,9 @@ from tp_yass.dal import DAL
 logger = logging.getLogger(__name__)
 
 
-@view_defaults(route_name='backend_sys_config_edit', renderer='tp_yass:themes/default/backend/sys_config_edit.jinja2')
+@view_defaults(route_name='backend_sys_config_edit',
+               renderer='tp_yass:themes/default/backend/sys_config_edit.jinja2',
+               permission='edit')
 class SysConfigView:
 
     def __init__(self, request):
