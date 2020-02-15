@@ -27,20 +27,20 @@ def setup_models(dbsession):
     dbsession.add(user)
 
     # 建立基本系統設定值
-    dbsession.add(models.sys_config.SysConfigModel(name='site_name', value='', description='設定全名'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_slogan', value='', description='設定標語'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_theme', value='tp_yass', description='設定樣板'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_phone', value='', description='設定電話'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_fox', value='', description='設定傳真電話'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_email', value='', description='設定聯絡 Email'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_zip', value='', description='設定郵遞區號'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_address', value='', description='設定地址'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_url', value='', description='設定 Google Map 網址'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_embedded_url', value='', description='設定 Google 地圖嵌入網址'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_google_calendar_embedded_url', value='', description='設定 Google 行事曆嵌入網址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_name', value='', type='str', description='設定全名'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_slogan', value='', type='str', description='設定標語'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_theme', value='tp_yass', type='str', description='設定樣板'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_phone', value='', type='str', description='設定電話'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_fox', value='', type='str', description='設定傳真電話'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_email', value='', type='str', description='設定聯絡 Email'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_zip', value='', type='int', description='設定郵遞區號'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_address', value='', type='str', description='設定地址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_url', value='', type='str', description='設定 Google Map 網址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_google_map_embedded_url', value='', type='str', description='設定 Google 地圖嵌入網址'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_google_calendar_embedded_url', value='', type='str', description='設定 Google 行事曆嵌入網址'))
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
-    dbsession.add(models.sys_config.SysConfigModel(name='site_maintenance_mode', value='false', description='設定全站是否唯讀'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_homepage_news_quantity', value='20', description='設定首頁顯示幾筆最新消息'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_maintenance_mode', value='false', type='bool', description='設定全站是否唯讀'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_homepage_news_quantity', value='20', type='int', description='設定首頁顯示幾筆最新消息'))
 
     # 建立導覽列的預設順序
     # 最新消息
