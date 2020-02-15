@@ -2,15 +2,33 @@
 {% block content %}
 <div class="container">
   <div class="row">
+    {% if request.session.peek_flash('success') %}
+      <div class="col-12">
+        <div class="alert alert-success" role="alert">
+          {% for msg in request.session.pop_flash('success') %}
+            {{ msg }}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% if request.session.peek_flash('fail') %}
+      <div class="col-12">
+        <div class="alert alert-success" role="alert">
+          {% for msg in request.session.pop_flash('fail') %}
+            {{ msg }}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
     <div class="col-12"><h1>系統設定 - 一般設定</h1></div>
     <div class="col-12">
       <form action="" method="POST">
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        {% for sys_config_entry in sys_config_form.config %}
+        {% for each_config in config_list %}
         <div class="form-group">
-          {{ sys_config_entry.form.name.label(text=sys_config_entry.data['name'].data) }}
-          <input type="text" class="form-control" id="{{ sys_config_entry.name }}" aria-describedby="{{ sys_config_entry.data['name'].data }}Help" value="{{ sys_config_entry.data['value'].data }}">
-          <small id="{{ sys_config_entry.data['name'].data }}emailHelp" class="form-text text-muted">{{ sys_config_entry.data['description'].data }}</small>
+          <label for="{{ each_config.name }}">{{ each_config.name }}</label>
+          <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
+          <small id="{{ each_config.name }}Help" class="form-text text-muted">{{ each_config.description }}</small>
         </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary mb-3">更新</button> <button type="reset" class="btn btn-danger mb-3">重設</button>

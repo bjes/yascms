@@ -94,3 +94,10 @@ class DAL:
         return (DBSession.query(SysConfigModel)
                          .filter(SysConfigModel.name != 'maintenance_mode')
                          .order_by(SysConfigModel.id))
+
+    @staticmethod
+    def update_sys_config_list(updated_config_list):
+        """更新 sys config"""
+        for each_config in updated_config_list:
+            DBSession.query(SysConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
+        return True
