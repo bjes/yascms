@@ -3,8 +3,8 @@
 <div class="jumbotron jumbotron-fluid jumbotron-bg my-0">
   <div class="container">
     <div class="bg-trans p-2 text-white">
-      <h1 class="display-4 d-md-block d-sm-none d-none">{{ request.sysconfig['site_name'] }}</h1>
-      <p class="lead">{{ request.sysconfig['site_slogan'] }}</p>
+      <h1 class="display-4 d-md-block d-sm-none d-none">{{ request.sys_config['site_name'] }}</h1>
+      <p class="lead">{{ request.sys_config['site_slogan'] }}</p>
     </div>
   </div>
 </div>
@@ -58,7 +58,7 @@
 <div class="container d-none d-sm-block">
   <div class="row">
     <div class="col">
-      <iframe src="{{ request.sysconfig['site_google_calendar_embedded_url'] }}" style="border: 0" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+      <iframe src="{{ request.sys_config['site_google_calendar_embedded_url'] }}" style="border: 0" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
 </div>

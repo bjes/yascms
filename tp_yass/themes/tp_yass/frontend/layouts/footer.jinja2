@@ -2,17 +2,17 @@
   <div class="container">
     <div class="row">
       <div class="col py-3">
-        <p><a href="tel:+886-2-85021571"><i class="fas fa-phone"></i> 聯絡電話：{{ request.sysconfig['site_phone'] }}</a></p>
-        <p><a href="tel:+886-2-85011146"><i class="fas fa-fax"></i> 傳真電話：{{ request.sysconfig['site_fox'] }}</a></p>
-        <p><a href="mailto:public@bjes.tp.edu.tw"><i class="fas fa-envelope"></i> 學校信箱：{{ request.sysconfig['site_email'] }}</a></p>
-        <address><a href="{{ request.sysconfig['site_google_map_url'] }}" target="_blank"><i class="fas fa-map-marker-alt"></i> 學校地址：{{ request.sysconfig['site_zip'] }} {{ request.sysconfig['site_address'] }}</a></address>
+        <p><a href="tel:+886-2-85021571"><i class="fas fa-phone"></i> 聯絡電話：{{ request.sys_config['site_phone'] }}</a></p>
+        <p><a href="tel:+886-2-85011146"><i class="fas fa-fax"></i> 傳真電話：{{ request.sys_config['site_fox'] }}</a></p>
+        <p><a href="mailto:public@bjes.tp.edu.tw"><i class="fas fa-envelope"></i> 學校信箱：{{ request.sys_config['site_email'] }}</a></p>
+        <address><a href="{{ request.sys_config['site_google_map_url'] }}" target="_blank"><i class="fas fa-map-marker-alt"></i> 學校地址：{{ request.sys_config['site_zip'] }} {{ request.sys_config['site_address'] }}</a></address>
       </div>
       <div class="col d-none d-sm-block">
-        <iframe class="h-100 w-100" src="{{ request.sysconfig['site_google_map_embedded_url'] }}" frameborder="0" style="border:0" allowfullscreen></iframe>
+        <iframe class="h-100 w-100" src="{{ request.sys_config['site_google_map_embedded_url'] }}" frameborder="0" style="border:0" allowfullscreen></iframe>
       </div>
     </div>
     <div class="row my-2">
-      <div class="col text-center">© 2019 {{ request.sysconfig['site_name'] }}</div>
+      <div class="col text-center">© 2019 {{ request.sys_config['site_name'] }}</div>
     </div>
   </div>
 </footer>
