@@ -34,5 +34,7 @@ def backend_user_group_list_view(request):
              renderer='themes/default/backend/user_list.jinja2',
              permission='view')
 def backend_user_list_view(request):
-    user_list = DAL.get_user_list()
+    # 每頁顯示的筆數
+    quantity = int(request.GET.get('quantity', 20))
+    user_list = DAL.get_user_list(quantity)
     return {'user_list': user_list}

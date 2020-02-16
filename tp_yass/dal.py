@@ -2,9 +2,10 @@
 
 為了避免 views 相依 orm 操作，所以抽象資料存取層
 """
+import math
 from datetime import datetime
 
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.sys_config import SysConfigModel
@@ -49,15 +50,31 @@ class DAL:
             results = results.filter_by(category_id=category_id)
         now = datetime.now()
         # 只顯示在發佈時間內的最新消息
-        results = (results.filter(now>=NewsModel.visible_start_date)
-                          .filter(or_(NewsModel.visible_end_date==None, now<NewsModel.visible_end_date)))
-        return (results.order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())
+        results = (results.filter(now >= NewsModel.visible_start_date)
+                   .filter(or_(NewsModel.visible_end_date == None, now < NewsModel.visible_end_date)))
+        return (results.order_by(NewsModel.is_pinned.desc(), NewsModel.id.desc())
                 [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
 
     @staticmethod
     def get_news_category_list():
         """回傳最新消息分類列表"""
         return DBSession.query(NewsCategoryModel).order_by(NewsCategoryModel.order)
+
+    @staticmethod
+    def get_page_quantity_of_total_news(quantity_per_page, category_id=None):
+        """回傳最新消息總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息
+            category_id: 若有指定，則只會傳回符合此分類的最新消息
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(NewsModel.id))
+        if category_id:
+            results = results.filter_by(category_id=category_id)
+        return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
     def get_sys_config_list():
