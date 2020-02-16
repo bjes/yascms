@@ -63,4 +63,8 @@ def news_factory():
                             'category_id': each_category.id,
                             'category_name': each_category.name,
                             'category_url': '#'})
+    sub_navbars.append({'id': -1,
+                        'type': 'news_divider'})
+    sub_navbars.append({'id': -1,
+                        'type': 'news_show_all'})
     return sub_navbars

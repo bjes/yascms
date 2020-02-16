@@ -24,7 +24,9 @@
               {% elif navbar.type == 4 %}
                 {% if navbar.module_name == 'news' %}
                   {% for each_category in navbar.descendants %}
-                    <li><a class="dropdown-item" href="{{ request.route_url('news_list', _query={'c': each_category.category_id}) }}">{{ each_category.category_name }}</a></li>
+                    {% if each_category.type == 'news_category' %}
+                      <li><a class="dropdown-item" href="{{ request.route_url('news_list', _query={'c': each_category.category_id}) }}">{{ each_category.category_name }}</a></li>
+                    {% endif %}
                   {% endfor %}
                   <li class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="{{ request.route_url('news_list') }}">顯示全部</a></li>
