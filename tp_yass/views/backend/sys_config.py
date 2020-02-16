@@ -1,7 +1,10 @@
 import logging
+from pathlib import Path
+
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
+import tp_yass
 from tp_yass.dal import DAL
 
 
@@ -19,7 +22,25 @@ class SysConfigView:
     @view_config(request_method='GET')
     def list_view(self):
         config_list = DAL.get_sys_config_list()
-        return {'config_list': config_list}
+        available_themes_list = self._get_themes_list()
+        return {'config_list': config_list,
+                'available_themes_list': available_themes_list}
+
+    def _get_themes_list(self):
+        """回傳目前系統上的樣板名稱列表"""
+        proj_root = Path(tp_yass.__file__)
+        themes_dir = proj_root.parent / 'themes'
+        return [theme.name for theme in themes_dir.glob('*') if theme.name != 'default']
+
+    def _set_theme(theme_name):
+        """設定系統樣板"""
+        proj_root = Path(tp_yass.__file__)
+        default_theme_dir = proj_root.parent / 'themes' / 'default'
+        new_theme = proj_root.parent / 'themes' / theme_name
+        if default_theme_dir.exists():
+            default_theme_dir.unlink()
+        default_theme_dir.symlink_to(new_theme)
+        return True
 
     def _validate(self, post_data):
         """跟資料庫的 sys config 比對，除了驗證資料類型之外，只回傳需要更改的 config list
@@ -52,10 +73,15 @@ class SysConfigView:
     @view_config(request_method='POST')
     def post_view(self):
         updated_config_list = self._validate(self.request.POST)
+        for config in updated_config_list:
+            if config['name'] == 'site_theme':
+                self._set_theme(config['value'])
+                logger.info('系統樣板變更為 %s', config['value'])
+                break
         if updated_config_list:
             DAL.update_sys_config_list(updated_config_list)
             self.request.session.flash('更新設定成功', 'success')
             return HTTPFound(location=self.request.current_route_url())
         else:
-            self.request.session.flash('更新設定失敗', 'fail')
+            self.request.session.flash('設定沒有異動', 'fail')
             return HTTPFound(location=self.request.current_route_url())
