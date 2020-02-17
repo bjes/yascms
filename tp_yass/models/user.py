@@ -12,8 +12,8 @@ from .news import NewsModel
 
 association_table = Table('users_groups_association',
                           BaseObject.metadata,
-                          Column('users_id', Integer, ForeignKey('users.id')),
-                          Column('groups_id', Integer, ForeignKey('groups.id')))
+                          Column('user_id', Integer, ForeignKey('users.id')),
+                          Column('group_id', Integer, ForeignKey('groups.id')))
 
 
 class UserModel(BaseObject):

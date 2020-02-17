@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 7919fcd384e6
+Revision ID: a34da14b6a7e
 Revises: 
-Create Date: 2020-02-15 14:06:23.365395
+Create Date: 2020-02-17 23:49:48.016660
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7919fcd384e6'
+revision = 'a34da14b6a7e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -85,10 +85,10 @@ def upgrade():
     )
     op.create_index(op.f('ix_news_title'), 'news', ['title'], unique=False)
     op.create_table('users_groups_association',
-    sa.Column('users_id', sa.Integer(), nullable=True),
-    sa.Column('groups_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['groups_id'], ['groups.id'], ),
-    sa.ForeignKeyConstraint(['users_id'], ['users.id'], )
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], )
     )
     op.create_table('news_attachments',
     sa.Column('id', sa.Integer(), nullable=False),
