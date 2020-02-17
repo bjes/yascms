@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: a34da14b6a7e
+Revision ID: 8a3b6ecd96f8
 Revises: 
-Create Date: 2020-02-17 23:49:48.016660
+Create Date: 2020-02-17 23:54:03.796500
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a34da14b6a7e'
+revision = '8a3b6ecd96f8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -53,6 +53,11 @@ def upgrade():
     sa.Column('value', sa.Text(), nullable=False),
     sa.Column('type', sa.String(length=5), nullable=False),
     sa.Column('description', sa.String(length=50), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('tags',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -107,6 +112,7 @@ def downgrade():
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
     op.drop_table('users')
+    op.drop_table('tags')
     op.drop_table('sys_config')
     op.drop_table('news_categories')
     op.drop_table('navbar')
