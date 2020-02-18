@@ -17,3 +17,4 @@ class TagModel(BaseObject):
     name = Column(String(50), nullable=False)
 
     news = relationship('models.news.NewsModel', secondary=models.news.news_tags_association, back_populates='tags')
+    pages = relationship('models.page.PageModel', secondary=models.page.pages_tags_association, back_populates='tags')

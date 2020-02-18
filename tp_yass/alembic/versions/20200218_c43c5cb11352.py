@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 4964d73b132f
+Revision ID: c43c5cb11352
 Revises: 
-Create Date: 2020-02-18 14:30:06.462938
+Create Date: 2020-02-18 14:38:54.127981
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4964d73b132f'
+revision = 'c43c5cb11352'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -45,6 +45,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('pages',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=50), nullable=False),
+    sa.Column('content', sa.Text(), server_default='', nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('sys_config',
@@ -89,6 +95,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_news_title'), 'news', ['title'], unique=False)
+    op.create_table('pages_tags_association',
+    sa.Column('page_id', sa.Integer(), nullable=True),
+    sa.Column('tag_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['page_id'], ['pages.id'], ),
+    sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], )
+    )
     op.create_table('users_groups_association',
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('group_id', sa.Integer(), nullable=True),
@@ -116,11 +128,13 @@ def downgrade():
     op.drop_table('news_tags_association')
     op.drop_table('news_attachments')
     op.drop_table('users_groups_association')
+    op.drop_table('pages_tags_association')
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
     op.drop_table('users')
     op.drop_table('tags')
     op.drop_table('sys_config')
+    op.drop_table('pages')
     op.drop_table('news_categories')
     op.drop_table('navbar')
     op.drop_table('groups')
