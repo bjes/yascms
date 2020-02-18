@@ -22,7 +22,11 @@
             <tbody>
             {% for user in user_list %}
               <tr>
-                <td>{{ loop.index }}</td>
+              {% if page_id > 1 %}
+                <th scope="row">{{ loop.index * page_id * quantity_per_page }}</th>
+              {% else %}
+                <th scope="row">{{ loop.index * page_id }}</th>
+              {% endif %}
                 <td><a href="#">{{ user.first_name }}{{ user.last_name }}</a></td>
                 <td>{{ user.account }}</td>
                 <td>{{ user.email }}</td>
@@ -37,6 +41,29 @@
           </table>
         </div>
       </div>
+    {% if page_quantity_of_total_users > 1 %}
+      <nav aria-label="使用者列表分頁">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" href="{{ request.route_url('backend_user_list', _query={'p': 1, 'q': quantity_per_page}) }}">第一頁</a>
+          </li>
+          {% if page_id > 1 %}
+            <li class="page-item">
+              <a class="page-link" href="{{ request.route_url('backend_user_list', _query={'p': page_id-1, 'q': quantity_per_page}) }}">上一頁</a>
+            </li>
+          {% endif %}
+          {% if page_id < page_quantity_of_total_users %}
+            <li class="page-item">
+              <a class="page-link" href="{{ request.route_url('backend_user_list', _query={'p': page_id+1, 'q': quantity_per_page}) }}">下一頁</a>
+            </li>
+          {% endif %}
+          <li class="page-item">
+            <a class="page-link"
+               href="{{ request.route_url('backend_user_list', _query={'p': page_quantity_of_total_news, 'q': quantity_per_page}) }}">最後頁</a>
+          </li>
+        </ul>
+      </nav>
+    {% endif %}
     </div>
   </div>
 </div>

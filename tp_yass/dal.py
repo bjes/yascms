@@ -53,7 +53,7 @@ class DAL:
         results = (results.filter(now >= NewsModel.visible_start_date)
                    .filter(or_(NewsModel.visible_end_date == None, now < NewsModel.visible_end_date)))
         return (results.order_by(NewsModel.is_pinned.desc(), NewsModel.id.desc())
-                [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
+                   [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
 
     @staticmethod
     def get_news_category_list():
@@ -66,7 +66,7 @@ class DAL:
 
         Args:
             quantity_per_page: 每頁幾筆最新消息
-            category_id: 若有指定，則只會傳回符合此分類的最新消息
+            category_id: 若有指定，則只會傳回符合此分類的最新消息頁數
 
         Returns:
             回傳總共頁數
@@ -90,9 +90,35 @@ class DAL:
         return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
 
     @staticmethod
-    def get_user_list():
-        """傳回使用者列表"""
-        return DBSession.query(UserModel).order_by(UserModel.id.desc())
+    def get_user_list(page=1, quantity_per_page=20, group_id=None):
+        """傳回使用者列表
+
+        Args:
+          page: 指定頁數，若沒指定則回傳第一頁
+          quantity_per_page: 指定每頁的筆數，預設為 20 筆
+          group_id: 指定要撈取的使用者群組，None 代表不指定
+        """
+        results = DBSession.query(UserModel)
+        if group_id:
+            results = results.filter_by(group_id=group_id)
+        return (results.order_by(UserModel.id.desc())
+                   [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
+
+    @staticmethod
+    def get_page_quantity_of_total_users(quantity_per_page, group_id=None):
+        """回傳使用者列表總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息
+            group_id: 若有指定，則只會傳回符合此群組的使用者頁數
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(UserModel.id))
+        if group_id:
+            results = results.filter_by(group_id=group_id)
+        return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
     def get_navbar_list():

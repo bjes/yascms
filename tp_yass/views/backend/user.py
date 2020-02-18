@@ -1,6 +1,7 @@
 from pyramid.view import view_config
 
 from tp_yass.dal import DAL
+from tp_yass.views.helper import sanitize_input
 
 
 def _recursive_append(group_node, group):
@@ -35,6 +36,12 @@ def backend_user_group_list_view(request):
              permission='view')
 def backend_user_list_view(request):
     # 每頁顯示的筆數
-    quantity = int(request.GET.get('quantity', 20))
-    user_list = DAL.get_user_list(quantity)
-    return {'user_list': user_list}
+    quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
+    group_id = sanitize_input(request.GET.get('g', None), int, None)
+    page_id = sanitize_input(request.GET.get('p', 1), int, 1)
+    user_list = DAL.get_user_list(page=page_id, group_id=group_id, quantity_per_page=quantity_per_page)
+    return {'user_list': user_list,
+            'page_quantity_of_total_users': DAL.get_page_quantity_of_total_users(quantity_per_page, group_id),
+            'page_id': page_id,
+            'quantity_per_page': quantity_per_page}
+
