@@ -2,6 +2,9 @@ from pyramid_sqlalchemy import BaseObject
 from sqlalchemy import (Column,
                         Integer,
                         String)
+from sqlalchemy.orm import relationship
+
+from tp_yass import models
 
 
 class TagModel(BaseObject):
@@ -13,4 +16,4 @@ class TagModel(BaseObject):
 
     name = Column(String(50), nullable=False)
 
-    
+    news = relationship('models.news.NewsModel', secondary=models.news.news_tags_association, back_populates='tags')

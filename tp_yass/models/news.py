@@ -6,9 +6,16 @@ from sqlalchemy import (Column,
                         Boolean,
                         DateTime,
                         Text,
-                        ForeignKey)
+                        ForeignKey,
+                        Table)
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
+
+
+news_tags_association = Table('news_tags_association',
+                              BaseObject.metadata,
+                              Column('news_id', Integer, ForeignKey('news.id')),
+                              Column('tag_id', Integer, ForeignKey('tags.id')))
 
 
 class NewsAttachmentModel(BaseObject):
@@ -59,6 +66,9 @@ class NewsModel(BaseObject):
 
     # 最後更新時間
     last_updated_date = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+
+    # 標籤
+    tags = relationship('models.tag.TagModel', secondary=news_tags_association, back_populates='news')
 
     group_id = Column(Integer, ForeignKey('groups.id'))
 
