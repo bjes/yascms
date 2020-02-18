@@ -19,7 +19,7 @@ news_tags_association = Table('news_tags_association',
 
 
 class NewsAttachmentModel(BaseObject):
-    '''news 的上傳附檔'''
+    """news 的上傳附檔"""
 
     __tablename__ = 'news_attachments'
 
@@ -40,10 +40,13 @@ class NewsModel(BaseObject):
 
     id = Column(Integer, primary_key=True)
 
+    # 標題
     title = Column(String(100), nullable=False, index=True)
 
-    content = Column(Text, nullable=False, default='')
+    # 內容
+    content = Column(Text, nullable=False, default='', server_default='')
 
+    # 上傳附件
     attachments = relationship('NewsAttachmentModel', backref='news')
 
     # 是否置頂，預設為 0 (否)
@@ -76,11 +79,13 @@ class NewsModel(BaseObject):
 
 
 class NewsCategoryModel(BaseObject):
+    """最新消息分類"""
 
     __tablename__ = 'news_categories'
 
     id = Column(Integer, primary_key=True)
 
+    # 分類名稱
     name = Column(String(50), nullable=False)
 
     # 排序
