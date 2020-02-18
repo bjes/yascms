@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: c43c5cb11352
+Revision ID: 5c040142512d
 Revises: 
-Create Date: 2020-02-18 14:38:54.127981
+Create Date: 2020-02-18 18:49:11.176482
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c43c5cb11352'
+revision = '5c040142512d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -95,6 +95,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_news_title'), 'news', ['title'], unique=False)
+    op.create_table('page_attachments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('original_name', sa.String(length=100), nullable=False),
+    sa.Column('real_name', sa.String(length=100), nullable=False),
+    sa.Column('page_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['page_id'], ['pages.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('pages_tags_association',
     sa.Column('page_id', sa.Integer(), nullable=True),
     sa.Column('tag_id', sa.Integer(), nullable=True),
@@ -129,6 +137,7 @@ def downgrade():
     op.drop_table('news_attachments')
     op.drop_table('users_groups_association')
     op.drop_table('pages_tags_association')
+    op.drop_table('page_attachments')
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
     op.drop_table('users')
