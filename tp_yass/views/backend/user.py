@@ -37,7 +37,7 @@ def backend_user_group_list_view(request):
 def backend_user_list_view(request):
     # 每頁顯示的筆數
     quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
-    group_id = sanitize_input(request.GET.get('g', None), int, None)
+    group_id = sanitize_input(request.GET.get('g'), int, None)
     page_id = sanitize_input(request.GET.get('p', 1), int, 1)
     user_list = DAL.get_user_list(page=page_id, group_id=group_id, quantity_per_page=quantity_per_page)
     return {'user_list': user_list,

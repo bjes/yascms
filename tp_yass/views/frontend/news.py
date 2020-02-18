@@ -8,7 +8,7 @@ from tp_yass.dal import DAL
 @view_config(route_name='news_list', renderer='tp_yass:themes/default/frontend/news_list.jinja2')
 def news_list_view(request):
     quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
-    category_id = sanitize_input(request.GET.get('c', None), int, None)
+    category_id = sanitize_input(request.GET.get('c'), int, None)
     page_id = sanitize_input(request.GET.get('p', 1), int, 1)
     news_list = DAL.get_news_list(page=page_id, category_id=category_id, quantity_per_page=quantity_per_page)
     return {'news_list': news_list,
