@@ -10,7 +10,7 @@ from pyramid_sqlalchemy import BaseObject
 from .news import NewsModel
 
 
-association_table = Table('users_groups_association',
+users_groups_association = Table('users_groups_association',
                           BaseObject.metadata,
                           Column('user_id', Integer, ForeignKey('users.id')),
                           Column('group_id', Integer, ForeignKey('groups.id')))
@@ -35,7 +35,7 @@ class UserModel(BaseObject):
     account = Column(String(50), nullable=False, unique=True)
 
     groups = relationship('GroupModel',
-                          secondary=association_table,
+                          secondary=users_groups_association,
                           back_populates='users')
 
     # 密碼 hash
@@ -79,7 +79,7 @@ class GroupModel(BaseObject):
     ancestor = relationship('GroupModel', backref='descendants', remote_side=[id])
 
     users = relationship('UserModel',
-                         secondary=association_table,
+                         secondary=users_groups_association,
                          back_populates='groups')
 
     # 最新消息
