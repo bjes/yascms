@@ -1,7 +1,7 @@
 from pyramid.view import view_config
 
 from tp_yass.dal import DAL
-from tp_yass.views.helper import sanitize_input
+from tp_yass.helper import sanitize_input
 
 
 def _recursive_append(group_node, group):

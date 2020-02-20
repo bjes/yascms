@@ -1,6 +1,6 @@
 from pyramid.view import view_config
 
-from tp_yass.views.helper import sanitize_input
+from tp_yass.helper import sanitize_input
 from tp_yass.views.helper.navbar import generate_navbar_trees
 from tp_yass.dal import DAL
 
