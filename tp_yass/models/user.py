@@ -7,7 +7,7 @@ from sqlalchemy import (Table,
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
-from .news import NewsModel
+from tp_yass import models
 
 
 users_groups_association = Table('users_groups_association',
@@ -83,4 +83,4 @@ class GroupModel(BaseObject):
                          back_populates='groups')
 
     # 最新消息
-    news = relationship(NewsModel, backref='group')
+    news = relationship('models.NewsModel', backref='group')
