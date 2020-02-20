@@ -83,4 +83,4 @@ class GroupModel(BaseObject):
                          back_populates='groups')
 
     # 最新消息
-    news = relationship('models.NewsModel', backref='group')
+    news = relationship('models.news.NewsModel', backref='group')
