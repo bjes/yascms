@@ -1,6 +1,5 @@
-from .resources import (AdminResource,
-                        admin_factory,
-                        AuthUserResource)
+from .resources import (auth_user_factory,
+                        admin_factory)
 
 def includeme(config):
     config.add_static_view('static', 'tp_yass:themes/default/static', cache_max_age=3600)
@@ -12,8 +11,8 @@ def includeme(config):
     config.add_route('logout', '/logout')
 
     # backend
-    config.add_route('backend_homepage', '/backend/', factory=AuthUserResource())
-    config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=AuthUserResource())
+    config.add_route('backend_homepage', '/backend/', factory=auth_user_factory)
+    config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=auth_user_factory)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory)
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
