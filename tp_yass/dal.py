@@ -29,10 +29,10 @@ class DAL:
         """傳回指定筆數的最新消息
 
         Args:
-          quantity: 指定要撈取幾筆最新消息
+            quantity: 指定要撈取幾筆最新消息
 
         Returns:
-          回傳取得的最新消息
+            回傳取得的最新消息
         """
         return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
 
@@ -41,9 +41,9 @@ class DAL:
         """傳回最新消息列表
 
         Args:
-          page: 指定頁數，若沒指定則回傳第一頁
-          quantity_per_page: 指定每頁的筆數，預設為 20 筆
-          category_id: 指定要撈取的最新消息分類，None 代表不指定
+            page: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            category_id: 指定要撈取的最新消息分類，None 代表不指定
         """
         results = DBSession.query(NewsModel)
         if category_id:
@@ -94,9 +94,9 @@ class DAL:
         """傳回使用者列表
 
         Args:
-          page: 指定頁數，若沒指定則回傳第一頁
-          quantity_per_page: 指定每頁的筆數，預設為 20 筆
-          group_id: 指定要撈取的使用者群組，None 代表不指定
+            page: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            group_id: 指定要撈取的使用者群組，None 代表不指定
         """
         results = DBSession.query(UserModel)
         if group_id:
