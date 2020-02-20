@@ -11,9 +11,9 @@ from tp_yass import models
 
 
 users_groups_association = Table('users_groups_association',
-                          BaseObject.metadata,
-                          Column('user_id', Integer, ForeignKey('users.id')),
-                          Column('group_id', Integer, ForeignKey('groups.id')))
+                                 BaseObject.metadata,
+                                 Column('user_id', Integer, ForeignKey('users.id')),
+                                 Column('group_id', Integer, ForeignKey('groups.id')))
 
 
 groups_pages_association = Table('groups_pages_association',
