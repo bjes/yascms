@@ -16,6 +16,12 @@ users_groups_association = Table('users_groups_association',
                           Column('group_id', Integer, ForeignKey('groups.id')))
 
 
+groups_pages_association = Table('groups_pages_association',
+                                 BaseObject.metadata,
+                                 Column('group_id', Integer, ForeignKey('groups.id')),
+                                 Column('page_id', Integer, ForeignKey('pages.id')))
+
+
 class UserModel(BaseObject):
 
     __tablename__ = 'users'
@@ -84,3 +90,6 @@ class GroupModel(BaseObject):
 
     # 最新消息
     news = relationship('models.news.NewsModel', backref='group')
+
+    # 這個群組有編輯權限的單一頁面
+    pages = relationship('models.page.PageModel', secondary=groups_pages_association, back_populates='groups')

@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 5c040142512d
+Revision ID: 6a32b7b0b3b6
 Revises: 
-Create Date: 2020-02-18 18:49:11.176482
+Create Date: 2020-02-20 20:55:53.849200
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5c040142512d'
+revision = '6a32b7b0b3b6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -77,10 +77,16 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('account')
     )
+    op.create_table('groups_pages_association',
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.Column('page_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
+    sa.ForeignKeyConstraint(['page_id'], ['pages.id'], )
+    )
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
-    sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('content', sa.Text(), server_default='', nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=True),
     sa.Column('pinned_start_date', sa.DateTime(), nullable=True),
     sa.Column('pinned_end_date', sa.DateTime(), nullable=True),
@@ -140,6 +146,7 @@ def downgrade():
     op.drop_table('page_attachments')
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
+    op.drop_table('groups_pages_association')
     op.drop_table('users')
     op.drop_table('tags')
     op.drop_table('sys_config')

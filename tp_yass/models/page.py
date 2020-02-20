@@ -50,3 +50,6 @@ class PageModel(BaseObject):
 
     # 標籤
     tags = relationship('models.tag.TagModel', secondary=pages_tags_association, back_populates='pages')
+
+    # 擁有這個頁面編輯權限的群組
+    groups = relationship('models.user.GroupModel', secondary=models.user.groups_pages_association, back_populates='pages')
