@@ -13,6 +13,7 @@ from tp_yass.models.user import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel
 from tp_yass.models.navbar import NavbarModel
 from tp_yass.models.sys_config import SysConfigModel
+from tp_yass.models.page import PageModel
 
 
 class DAL:
@@ -144,3 +145,9 @@ class DAL:
         for each_config in updated_config_list:
             DBSession.query(SysConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
         return True
+
+    @staticmethod
+    def get_page(page_id):
+        """取得指定的單一頁面"""
+
+        return DBSession.query(PageModel).get(page_id)
