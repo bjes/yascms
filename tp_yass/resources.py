@@ -4,6 +4,9 @@ from pyramid.security import (Allow,
                               Everyone,
                               ALL_PERMISSIONS)
 
+from tp_yass.helper import sanitize_input
+from tp_yass.dal import DAL
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,3 +38,20 @@ def auth_user_factory(request):
         acl.__acl__ = []
     return acl
 
+
+def get_page_factory(request):
+    """單一頁面所屬的群組（們）才有後台編輯的權限"""
+    acl = ACL()
+    page_id = sanitize_input(request.GET.get('id'), int, None)
+    if page_id:
+        page = DAL.get_page(page_id)
+        # 若為管理者，權限全開
+        if 'is_admin' in request.session and request.session['is_admin']:
+            page.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+        # 否則只有 page 的群組有 edit 權限
+        else:
+            for each_group in page.groups:
+                page.__acl__.append((Allow, each_group.id, 'edit'))
+    else:
+        acl.__acl__ = []
+    return page or acl
