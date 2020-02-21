@@ -13,14 +13,13 @@ class ACL:
 
 
 def admin_factory(request):
-    """Admin 的群組 type 為 0，所以給 group type 為 0 的群組權限全開"""
+    """Admin 的群組 type 為 0，所以給 group type 為 0 的群組權限全開
+
+    只要有一個群組為 admin，則 acl 就設定對於該 group id 權限全開
+    """
     acl = ACL()
-    if 'groups' in request.session:
-        for each_group_tree in request.session['groups']:
-            for each_group in each_group_tree:
-                if each_group['type'] == 0:
-                    logger.debug('比對群組 %s 權限接受，權限為管理者', each_group)
-                    acl.__acl__ = [(Allow, each_group['id'], ALL_PERMISSIONS)]
+    if 'is_admin' in request.session and request.session['is_admin']:
+        acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
     else:
         acl.__acl__ = []
     return acl
