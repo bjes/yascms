@@ -12,7 +12,7 @@ def includeme(config):
 
     # backend
     config.add_route('backend_homepage', '/backend/', factory=auth_user_factory)
-    config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=auth_user_factory)
+    config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=admin_factory)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory)
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
