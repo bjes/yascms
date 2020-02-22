@@ -1,4 +1,5 @@
 {% extends "layouts/master.jinja2" %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
 {% block content %}
 <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#3498db;">
   <div class="container">
@@ -39,29 +40,7 @@
           </table>
         </div>
       </div>
-    {% if page_quantity_of_total_news > 1 %}
-      <nav aria-label="案件列表分頁">
-        <ul class="pagination justify-content-center">
-          <li class="page-item">
-            <a class="page-link" href="{{ request.route_url('news_list', _query={'p': 1, 'q': quantity_per_page}) }}">第一頁</a>
-          </li>
-          {% if page_id > 1 %}
-            <li class="page-item">
-              <a class="page-link" href="{{ request.route_url('news_list', _query={'p': page_id-1, 'q': quantity_per_page}) }}">上一頁</a>
-            </li>
-          {% endif %}
-          {% if page_id < page_quantity_of_total_news %}
-            <li class="page-item">
-              <a class="page-link" href="{{ request.route_url('news_list', _query={'p': page_id+1, 'q': quantity_per_page}) }}">下一頁</a>
-            </li>
-          {% endif %}
-          <li class="page-item">
-            <a class="page-link"
-               href="{{ request.route_url('news_list', _query={'p': page_quantity_of_total_news, 'q': quantity_per_page}) }}">最後頁</a>
-          </li>
-        </ul>
-      </nav>
-    {% endif %}
+    {{ paginate(request, "最新消息列表分頁", "news_list", page_quantity_of_total_news, page_id, quantity_per_page) }}
     </div>
   </div>
 </div>
