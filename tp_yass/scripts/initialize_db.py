@@ -52,8 +52,8 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='特色課程', order=2, type=2, ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='班群教室', order=3, type=2, ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=5, icon='fa-calendar-alt', module_name='calendar', ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=5, icon='fa-phone', module_name='telext', ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=7, icon='fa-calendar-alt', module_name='calendar', ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=8, icon='fa-phone', module_name='telext', ancestor=school_intro))
     # 校園單位
     school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=3, type=1, icon='fa-building')
     dbsession.add(school_org)
@@ -70,14 +70,14 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=2, ancestor=school_garden))
     dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=2, ancestor=school_garden, is_external=True))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_garden))
-    dbsession.add(models.navbar.NavbarModel(name='班級網頁', order=5, type=5, icon='fa-chalkboard-teacher', module_name='class_sites', ancestor=school_garden))
+    dbsession.add(models.navbar.NavbarModel(name='班級網頁', order=5, type=9, icon='fa-chalkboard-teacher', module_name='class_sites', ancestor=school_garden))
     # 外站連結
     outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=1, icon='fa-globe-asia')
     dbsession.add(outside_link)
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府教育局', order=1, type=2, icon='fa-university', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=2, icon='fa-globe-asia', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=outside_link))
-    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=5, icon='fa-link', module_name='links', ancestor=outside_link))
+    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=10, icon='fa-link', module_name='links', ancestor=outside_link))
 
     # 建立預設的最新消息分類群組
     dbsession.add(models.news.NewsCategoryModel(name='行政公告'))

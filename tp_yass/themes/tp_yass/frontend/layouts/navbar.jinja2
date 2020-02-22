@@ -8,7 +8,7 @@
     <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
       {% for navbar in navbar_trees recursive %}
         {# 有子選單的類型 #}
-        {% if navbar.type == 1 or navbar.type == 4%}
+        {% if navbar.type == 1 or navbar.type == 4 %}
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbar{{ navbar.aria_name }}Dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
@@ -22,19 +22,20 @@
               {% if navbar.type == 1 %}
                 {{ loop(navbar.descendants) }}
               {% elif navbar.type == 4 %}
-                {% if navbar.module_name == 'news' %}
-                  {% for each_category in navbar.descendants %}
-                    {% if each_category.type == 'news_category' %}
-                      <li><a class="dropdown-item" href="{{ request.route_url('news_list', _query={'c': each_category.category_id}) }}">{{ each_category.category_name }}</a></li>
-                    {% endif %}
-                  {% endfor %}
-                  <li class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{{ request.route_url('news_list') }}">顯示全部</a></li>
-                {% endif %}
+                {% for each_news_submenu in navbar.descendants %}
+                  {# 最新消息底下的每個分類連結 #}
+                  {% if each_news_submenu.type == 5 %}
+                    <li><a class="dropdown-item" href="{{ request.route_url('news_list', _query={'c': each_news_submenu.category_id}) }}">{{ each_news_submenu.name }}</a></li>
+                  {% elif each_news_submenu.type == 3 %}
+                    <li class="dropdown-divider"></li>
+                  {% elif each_news_submenu.type == 6 %}
+                    <li><a class="dropdown-item" href="{{ request.route_url('news_list') }}">顯示全部</a></li>
+                  {% endif %}
+                {% endfor %}
               {% endif %}
             </ul>
           </li>
-        {% elif navbar.type == 2 or navbar.type == 5%}
+        {% elif navbar.type in (2, 7, 8, 9, 10) %}
           <li>
             <a class="dropdown-item" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
               {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}

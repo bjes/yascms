@@ -54,17 +54,20 @@ def generate_navbar_trees(navbar_list):
     return navbar_trees
 
 def news_factory():
+    """存在資料庫的 navbar 只有 news 一筆 record，在這邊要手動的把子選單加進去"""
     sub_navbars = []
     for each_category in DAL.get_news_category_list():
-        # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 保證不會對到
-        # (None) 意思代表為 root_node 所以不適合採用，故改用 -1
+        # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 代表是 builtin
         sub_navbars.append({'id': -1,
-                            'type': 'news_category',
-                            'category_id': each_category.id,
-                            'category_name': each_category.name,
-                            'category_url': '#'})
+                            'type': 5,
+                            'category_id': each_category.id,  # 這個欄位是額外加上去的，因為要產生連結的 url 需要 category id
+                            'name': each_category.name,
+                            'url': '#'})
+    # 分隔線，這個是寫死在 news 子選單裡面，沒有要給使用者異動位置，所以 id 也是 -1
     sub_navbars.append({'id': -1,
-                        'type': 'news_divider'})
+                        'type': 3,
+                        'name': '分隔線'})
+    # 顯示全部最新消息的連結
     sub_navbars.append({'id': -1,
-                        'type': 'news_show_all'})
+                        'type': 6})
     return sub_navbars
