@@ -52,7 +52,7 @@
           <i class="fas fa-newspaper"></i> 單一頁面
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
-          <li><a class="dropdown-item" href="#">建立頁面</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_page_create') }}">建立頁面</a></li>
           <li><a class="dropdown-item" href="#">頁面列表</a></li>
         </ul>
       </li>
@@ -61,6 +61,18 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="fas fa-link"></i> 好站連結</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarTagsDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-tags"></i> 標籤管理
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarTagsDropdown">
+          {% if request.session['is_admin'] %}
+            <li><a class="dropdown-item" href="#">建立標籤</a></li>
+          {% endif %}
+          <li><a class="dropdown-item" href="#">標籤列表</a></li>
+        </ul>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" data-toggle="dropdown"

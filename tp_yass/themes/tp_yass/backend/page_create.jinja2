@@ -1,0 +1,37 @@
+{% extends "layouts/master.jinja2" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>單一頁面 - 建立</h1></div>
+    <div class="col-12">
+      {% if form.errors %}
+        <div class="alert alert-danger"  role="alert">
+            <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+              <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+      <form action="" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="form-group">
+          {{ form.title.label() }}
+          {{ form.title(class_='form-control', placeholder='請輸入頁面標題') }}
+          {{ form.content.label() }}
+          {{ form.content(class_='form-control', placeholder='請輸入內容', rows='10') }}
+          {{ form.groups.label() }}
+          {{ form.groups(class_='form-control', placeholder='請輸入負責管理的群組名稱（使用逗號分隔）') }}
+          {{ form.attachments.label() }}
+          {{ form.attachments(class_='form-control') }}
+          {{ form.tags.label() }}
+          {{ form.tags(class_='form-control', placeholder='請輸入標籤名稱（使用逗號分隔）') }}
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
