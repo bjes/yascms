@@ -270,3 +270,36 @@ class DAL:
             回傳該單一頁面上傳附件物件
         """
         return PageAttachmentModel(original_name=original_name, real_name=real_name)
+
+    @staticmethod
+    def get_page_quantity_of_total_pages(quantity_per_page, group_id=None):
+        """回傳單一頁面列表總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆單一頁面
+            group_id: 若有指定，則只會傳回符合此群組的單一頁面頁數
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(PageModel.id))
+        if group_id:
+            results = results.filter(GroupModel.id==group_id)
+        return math.ceil(results.scalar()/quantity_per_page)
+
+    @staticmethod
+    def get_page_list(page=1, quantity_per_page=20, group_id=None):
+        """傳回使用者列表
+
+        Args:
+            page: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            group_id: 指定要撈取的使用者群組，None 代表不指定
+
+        Returns:
+            回傳使用者列表
+        """
+        results = DBSession.query(PageModel)
+        if group_id:
+            results = results.filter(GroupModel.id==group_id)
+        return results.order_by(PageModel.id.desc())

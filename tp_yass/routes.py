@@ -21,3 +21,4 @@ def includeme(config):
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
+    config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)
