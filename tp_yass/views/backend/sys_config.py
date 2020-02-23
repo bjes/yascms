@@ -6,6 +6,7 @@ from pyramid.httpexceptions import HTTPFound
 
 import tp_yass
 from tp_yass.dal import DAL
+from tp_yass.views.helper.file import get_project_abspath
 
 
 logger = logging.getLogger(__name__)
@@ -29,15 +30,13 @@ class SysConfigView:
 
     def _get_themes_list(self):
         """回傳目前系統上的樣板名稱列表"""
-        proj_root = Path(tp_yass.__file__)
-        themes_dir = proj_root.parent / 'themes'
+        themes_dir =  get_project_abspath() / 'themes'
         return [theme.name for theme in themes_dir.glob('*') if theme.name != 'default']
 
     def _set_theme(theme_name):
         """設定系統樣板"""
-        proj_root = Path(tp_yass.__file__)
-        default_theme_dir = proj_root.parent / 'themes' / 'default'
-        new_theme = proj_root.parent / 'themes' / theme_name
+        default_theme_dir = get_project_abspath() / 'themes' / 'default'
+        new_theme = get_project_abspath() / 'themes' / theme_name
         if default_theme_dir.exists():
             default_theme_dir.unlink()
         default_theme_dir.symlink_to(new_theme)
