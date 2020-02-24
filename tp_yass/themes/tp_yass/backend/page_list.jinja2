@@ -14,6 +14,7 @@
                 <th scope="col" class="d-none d-sm-table-cell">標題</th>
                 <th scope="col" class="d-none d-md-table-cell">群組</th>
                 <th scope="col" class="d-none d-sm-table-cell">標籤</th>
+                <th scope="col" class="d-none d-sm-table-cell">動作</th>
               </tr>
             </thead>
             <tbody>
@@ -30,6 +31,19 @@
                 {% for each_tag in each_page.tags %}
                   {{ each_tag.name }}{% if not loop.last %}, {% endif %}
                 {% endfor %}
+                </td>
+                <td>
+                  {% if request.session['is_admin'] %}
+                    <a class="btn btn-primary" href="#">編輯</a>
+                    <a class="btn btn-danger" href="#">刪除</a>
+                  {% else %}
+                    {% for each_group in each_page.groups %}
+                      {% if each_group.id in request.session['group_id_list'] %}
+                        <a class="btn btn-primary" href="#">編輯</a>
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}
