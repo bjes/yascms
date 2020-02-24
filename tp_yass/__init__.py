@@ -11,6 +11,7 @@ def main(global_config, **settings):
     with Configurator(settings=settings) as config:
         config.include('pyramid_beaker')
         config.include('pyramid_jinja2')
+        config.add_jinja2_extension('jinja2.ext.loopcontrols')
         config.include('pyramid_tm')
         config.include('pyramid_mailer')
         config.include('pyramid_retry')
