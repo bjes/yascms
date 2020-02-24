@@ -23,11 +23,7 @@
             <tbody>
             {% for user in user_list %}
               <tr>
-              {% if page_id > 1 %}
-                <th scope="row">{{ loop.index * page_id * quantity_per_page }}</th>
-              {% else %}
-                <th scope="row">{{ loop.index * page_id }}</th>
-              {% endif %}
+                <th scope="row">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
                 <td><a href="#">{{ user.first_name }}{{ user.last_name }}</a></td>
                 <td>{{ user.account }}</td>
                 <td>{{ user.email }}</td>
