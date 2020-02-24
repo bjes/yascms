@@ -22,3 +22,4 @@ def includeme(config):
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)
+    config.add_route('backend_page_delete', '/backend/page/delete', factory=admin_factory)

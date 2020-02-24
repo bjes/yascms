@@ -250,6 +250,20 @@ class DAL:
         return page
 
     @staticmethod
+    def delete_page(page):
+        """刪除單一頁面
+
+        Args
+            page: PageModel
+        """
+        DBSession.delete(page)
+
+    @staticmethod
+    def get_page(page_id):
+        """取得單一頁面"""
+        return DBSession.query(PageModel).get(page_id)
+
+    @staticmethod
     def save_page(page):
         """將單一頁面物件存入 db session 中
 

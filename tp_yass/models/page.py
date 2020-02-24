@@ -46,7 +46,7 @@ class PageModel(BaseObject):
     content = Column(Text, nullable=False, default='', server_default='')
 
     # 上傳附件
-    attachments = relationship('PageAttachmentModel', backref='page')
+    attachments = relationship('PageAttachmentModel', backref='page', cascade='all, delete-orphan')
 
     # 標籤
     tags = relationship('models.tag.TagModel', secondary=pages_tags_association, back_populates='pages')

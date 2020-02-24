@@ -36,7 +36,8 @@ class PageCreateView:
         upload_file_name = Path(cgi_field_storage.filename)
         with NamedTemporaryFile(dir=str(get_static_abspath() / 'uploads' / 'pages'),
                                 prefix=prefix,
-                                suffix=upload_file_name.suffix) as destination_file:
+                                suffix=upload_file_name.suffix,
+                                delete=False) as destination_file:
             save_file(cgi_field_storage, destination_file)
             return str(Path(destination_file.name).name)
 
@@ -82,3 +83,32 @@ class PageListView:
                 'page_quantity_of_total_pages': DAL.get_page_quantity_of_total_pages(quantity_per_page, group_id),
                 'page_id': page_id,
                 'quantity_per_page': quantity_per_page}
+
+
+@view_defaults(route_name='backend_page_delete',
+               permission='edit')
+class PageDeleteView:
+    """刪除單一頁面，只有管理權限的帳號可刪"""
+
+    def __init__(self, request):
+        """
+        Args:
+            request: pyramid.request.Request
+        """
+        self.request = request
+
+    def _delete_attachment(self, attachment):
+        attachment_abspath = get_static_abspath() / 'uploads' / 'pages' / attachment.real_name
+        attachment_abspath.unlink()
+
+    @view_config()
+    def delete_view(self):
+        """刪除指定的單一頁面"""
+        page_id = sanitize_input(self.request.GET.get('p'), int, None)
+        if page_id:
+            page = DAL.get_page(page_id)
+            if page:
+                for each_attachment in page.attachments:
+                    self._delete_attachment(each_attachment)
+                DAL.delete_page(page)
+        return HTTPFound(self.request.route_url('backend_page_list'))
