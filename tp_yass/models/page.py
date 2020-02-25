@@ -40,7 +40,7 @@ class PageModel(BaseObject):
     id = Column(Integer, primary_key=True)
 
     # 標題
-    title = Column(String(50), nullable=False)
+    title = Column(String(100), nullable=False)
 
     # 內容
     content = Column(Text, nullable=False, default='', server_default='')

@@ -11,7 +11,7 @@ from pyramid_wtforms.validators import (InputRequired,
 class PageForm(Form):
     """單一網頁的建立表單"""
 
-    title = StringField('標題*', [InputRequired('此欄位必填'), Length(max=50, message='最長只接受 50 個字元')])
+    title = StringField('標題*', [InputRequired('此欄位必填'), Length(max=100, message='最長只接受 50 個字元')])
 
     content = TextAreaField('內容')
 
