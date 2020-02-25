@@ -34,8 +34,8 @@
                 </td>
                 <td>
                   {% if request.session['is_admin'] %}
-                    <a class="btn btn-primary" href="#">編輯</a>
-                    <a class="btn btn-danger" href="#">刪除</a>
+                    <a class="btn btn-primary" href="{{ request.route_url('backend_page_edit', page_id=each_page.id) }}">編輯</a>
+                    <a class="btn btn-danger" href="{{ request.route_url('backend_page_delete', page_id=each_page.id) }}">刪除</a>
                   {% else %}
                     {% for each_group in each_page.groups %}
                       {% if each_group.id in request.session['group_id_list'] %}
