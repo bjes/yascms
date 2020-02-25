@@ -1,4 +1,7 @@
 {% extends "layouts/master.jinja2" %}
+{% block page_css %}
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
+{% endblock page_css %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -21,7 +24,7 @@
           {{ form.title.label() }}
           {{ form.title(class_='form-control', placeholder='請輸入頁面標題') }}
           {{ form.content.label() }}
-          {{ form.content(class_='form-control', placeholder='請輸入內容', rows='10') }}
+          {{ form.content(class_='form-control', placeholder='請輸入內容') }}
           {{ form.groups.label() }}
           {{ form.groups(class_='form-control', placeholder='請輸入負責管理的群組名稱（使用逗號分隔）') }}
           {{ form.attachments.label() }}
@@ -37,3 +40,15 @@
   </div>
 </div>
 {% endblock content %}
+{% block page_js %}
+  <script src="{{ 'tp_yass:themes/default/static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
+  <script>
+    $(function (){
+      $('#content').summernote({
+        lang: 'zh-TW',
+        height: 300
+      });
+    });
+  </script>
+{% endblock %}
