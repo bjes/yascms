@@ -86,7 +86,7 @@ class NewsCategoryModel(BaseObject):
     id = Column(Integer, primary_key=True)
 
     # 分類名稱
-    name = Column(String(50), nullable=False)
+    name = Column(String(50), unique=True, nullable=False)
 
     # 排序
     order = Column(Integer, nullable=False, default=0, server_default='0')
