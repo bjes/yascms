@@ -13,13 +13,11 @@ from tp_yass.dal import DAL
 class PageCreateView:
     """建立單一頁面的 view class"""
 
-    def __init__(self, context, request):
+    def __init__(self, request):
         """
         Args:
-            context: 因為頁面還未建立，所以 context 為管理者才有權限的 acl
             request: pyramid.request.Request
         """
-        self.context = context
         self.request = request
 
     @view_config(request_method='GET')
@@ -50,13 +48,11 @@ class PageCreateView:
 class PageListView:
     """顯示單一頁面列表的 view class"""
 
-    def __init__(self, context, request):
+    def __init__(self, request):
         """
         Args:
-            context: context 為有註冊帳號才有權限的 acl
             request: pyramid.request.Request
         """
-        self.context = context
         self.request = request
 
     @view_config(request_method='GET')

@@ -5,7 +5,6 @@ from pyramid_wtforms import (Form,
                              MultipleFilesField)
 from pyramid_wtforms.validators import (InputRequired,
                                         Length,
-                                        FileRequired,
                                         FileSize)
 
 
