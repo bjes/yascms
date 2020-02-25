@@ -237,16 +237,45 @@ class DAL:
             回傳已建立的單一頁面物件
         """
         page = PageModel(title=form_data.title.data, content=form_data.content.data)
-        # 處理 tag
-        for each_tag_name in form_data.tags.data.split(','):
-            tag = DAL.get_or_create_tag(each_tag_name.strip())
+        # 處理 tags
+        tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
+        for each_tag_name in tags:
+            tag = DAL.get_or_create_tag(each_tag_name)
             page.tags.append(tag)
-        # 處理群組
-        for each_group_name in form_data.groups.data.split(','):
-            group = DAL.get_or_create_group(each_group_name.strip())
+        # 處理 groups
+        groups = {each_group.strip() for each_group in form_data.groups.data.split(',')}
+        for each_group_name in groups:
+            group = DAL.get_or_create_group(each_group_name)
             page.groups.append(group)
         DBSession.add(page)
         DBSession.flush()
+        return page
+
+    @staticmethod
+    def update_page(page, form_data):
+        """使用 form 的資料更新指定的單一頁面
+
+        Args:
+            page: PageModel 物件
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已更新的單一頁面物件
+        """
+        page.title = form_data.title.data
+        page.content = form_data.content.data
+        # 處理 tag
+        page.tags = []
+        tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
+        for each_tag_name in tags:
+            tag = DAL.get_or_create_tag(each_tag_name)
+            page.tags.append(tag)
+        # 處理群組
+        page.groups = []
+        groups = {each_group.strip() for each_group in form_data.groups.data.split(',')}
+        for each_group_name in groups:
+            group = DAL.get_or_create_group(each_group_name)
+            page.groups.append(group)
         return page
 
     @staticmethod
@@ -284,6 +313,15 @@ class DAL:
             回傳該單一頁面上傳附件物件
         """
         return PageAttachmentModel(original_name=original_name, real_name=real_name)
+
+    @staticmethod
+    def delete_page_attachment(page_attachment):
+        """刪除指定的 PageAttachment
+
+        Args:
+            page_attachment: PageAttachment 物件
+        """
+        DBSession.delete(page_attachment)
 
     @staticmethod
     def get_page_quantity_of_total_pages(quantity_per_page, group_id=None):

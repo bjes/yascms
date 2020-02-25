@@ -1,5 +1,6 @@
 from .resources import (auth_user_factory,
-                        admin_factory)
+                        admin_factory,
+                        page_edit_factory)
 
 def includeme(config):
     config.add_static_view('static', 'tp_yass:themes/default/static', cache_max_age=3600)
@@ -22,4 +23,5 @@ def includeme(config):
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)
-    config.add_route('backend_page_delete', '/backend/page/delete', factory=admin_factory)
+    config.add_route('backend_page_delete', '/backend/page/delete/{page_id:\d+}', factory=admin_factory)
+    config.add_route('backend_page_edit', '/backend/page/edit/{page_id:\d+}', factory=page_edit_factory)
