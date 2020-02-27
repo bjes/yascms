@@ -1,5 +1,6 @@
 from pyramid_wtforms import (Form,
                              StringField,
+                             IntegerField,
                              TextAreaField,
                              MultipleCheckboxField,
                              BooleanField,
@@ -23,17 +24,15 @@ class NewsForm(Form):
 
     is_pinned = BooleanField('是否置頂')
 
-    pinned_start_date = DateTimeField('置頂開始時間')
+    pinned_duration = IntegerField('置頂天數')
 
-    pinned_end_date = DateTimeField('置頂結束時間')
+    visible_start_date = DateTimeField('顯示開始時間（未指定則代表馬上顯示）')
 
-    visible_start_date = DateTimeField('顯示開始時間')
-
-    visible_end_date = DateTimeField('顯示結束時間')
+    visible_end_date = DateTimeField('顯示結束時間（未指定則代表永遠顯示）')
 
     tags = StringField('標籤（以逗號分隔）')
 
-    category_id = SelectField('分類群組')
+    category_id = SelectField('分類群組', coerce=int)
 
 
 class NewsEditForm(NewsForm):

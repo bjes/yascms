@@ -1,0 +1,91 @@
+{% extends "layouts/master.jinja2" %}
+{% block page_css %}
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.datetimepicker-master.min.css'|static_path }}">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>最新消息 - 建立</h1></div>
+    <div class="col-12">
+      {% if form.errors %}
+        <div class="alert alert-danger"  role="alert">
+            <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+              <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+      <form action="" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="form-group">
+          {{ form.title.label() }}
+          {{ form.title(class_='form-control', placeholder='請輸入標題') }}
+        </div>
+        <div class="form-group">
+          {{ form.content.label() }}
+          {{ form.content(class_='form-control', placeholder='請輸入內容') }}
+        </div>
+        <div class="form-group">
+          {{ form.category_id.label() }}
+          {{ form.category_id(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.attachments.label() }}
+          {{ form.attachments() }}
+        </div>
+        <div class="form-group form-check">
+          {{ form.is_pinned(class_='form-check-input') }}
+          {{ form.is_pinned.label() }}
+        </div>
+        <div class="form-group">
+          {{ form.pinned_duration.label() }}
+          {{ form.pinned_duration(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.visible_start_date.label() }}
+          {{ form.visible_start_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.visible_end_date.label() }}
+          {{ form.visible_end_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.tags.label() }}
+          {{ form.tags(class_='form-control', placeholder='請輸入標籤名稱（使用逗號分隔）') }}
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+  <script src="{{ 'tp_yass:themes/default/static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.datetimepicker.full-master.min.js'|static_path }}"></script>
+  <script>
+    $(function (){
+      $('#content').summernote({
+        lang: 'zh-TW',
+        height: 300
+      });
+      $.datetimepicker.setLocale('zh-TW');
+      $('#pinned_start_date').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
+      $('#pinned_end_date').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
+      $('#visible_start_date').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
+      $('#visible_end_date').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
+    });
+  </script>
+{% endblock %}

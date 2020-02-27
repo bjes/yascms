@@ -52,11 +52,8 @@ class NewsModel(BaseObject):
     # 是否置頂，預設為 0 (否)
     is_pinned = Column(Integer, default=0, server_default='0')
 
-    # 置頂開始時間
-    pinned_start_date = Column(DateTime, nullable=True)
-
-    # 置頂結束時間
-    pinned_end_date = Column(DateTime, nullable=True)
+    # 置頂天數，預設是 7 天
+    pinned_duration = Column(Integer, default=7, server_default='7')
 
     # 顯示開始時間，時間到了才會顯示在網頁上
     visible_start_date = Column(DateTime, nullable=False, default=datetime.now)
