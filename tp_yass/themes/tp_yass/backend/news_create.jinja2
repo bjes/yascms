@@ -42,8 +42,12 @@
           {{ form.is_pinned.label() }}
         </div>
         <div class="form-group">
-          {{ form.pinned_duration.label() }}
-          {{ form.pinned_duration(class_='form-control') }}
+          {{ form.pinned_start_date.label() }}
+          {{ form.pinned_start_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.pinned_end_date.label() }}
+          {{ form.pinned_end_date(class_='form-control') }}
         </div>
         <div class="form-group">
           {{ form.visible_start_date.label() }}
@@ -74,18 +78,27 @@
         height: 300
       });
       $.datetimepicker.setLocale('zh-TW');
-      $('#pinned_start_date').datetimepicker({
+      $('#visible_start_date, #visible_end_date').datetimepicker({
         format: 'Y-m-d H:i'
       });
-      $('#pinned_end_date').datetimepicker({
-        format: 'Y-m-d H:i'
+      $('#pinned_start_date, #pinned_end_date').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d'
       });
-      $('#visible_start_date').datetimepicker({
-        format: 'Y-m-d H:i'
-      });
-      $('#visible_end_date').datetimepicker({
-        format: 'Y-m-d H:i'
-      });
+      let pinned_checkbox = $('#is_pinned');
+      let pinned_inputs = $('#pinned_start_date, #pinned_end_date');
+      if (pinned_checkbox.prop('checked') === true) {
+        pinned_inputs.prop('disabled', false);
+      } else {
+        pinned_inputs.prop('disabled', true);
+      }
+      pinned_checkbox.change(function (){
+        if ($(this).prop('checked') === true) {
+          pinned_inputs.prop('disabled', false);
+        } else {
+          pinned_inputs.prop('disabled', true);
+        }
+      })
     });
   </script>
 {% endblock %}

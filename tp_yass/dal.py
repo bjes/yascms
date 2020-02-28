@@ -62,7 +62,7 @@ class DAL:
             results = results.filter_by(category_id=category_id)
         now = datetime.now()
         # 只顯示在發佈時間內的最新消息
-        results = (results.filter(now >= NewsModel.visible_start_date)
+        results = (results.filter(or_(NewsModel.visible_start_date == None, now >= NewsModel.visible_start_date))
                           .filter(or_(NewsModel.visible_end_date == None, now < NewsModel.visible_end_date)))
         return (results.order_by(NewsModel.is_pinned.desc(), NewsModel.id.desc())
                    [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])

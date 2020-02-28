@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlalchemy import (Column,
                         Integer,
                         String,
-                        Boolean,
                         DateTime,
+                        Date,
                         Text,
                         ForeignKey,
                         Table)
@@ -49,17 +49,20 @@ class NewsModel(BaseObject):
     # 上傳附件
     attachments = relationship('NewsAttachmentModel', backref='news')
 
-    # 是否置頂，預設為 0 (否)
-    is_pinned = Column(Integer, default=0, server_default='0')
+    # 是否置頂
+    is_pinned = Column(Integer, nullable=False, default=0, server_default='0')
 
-    # 置頂天數，預設是 7 天
-    pinned_duration = Column(Integer, default=7, server_default='7')
+    # 置頂開始時間
+    pinned_start_date = Column(Date)
 
-    # 顯示開始時間，時間到了才會顯示在網頁上
-    visible_start_date = Column(DateTime, nullable=False, default=datetime.now)
+    # 置頂結束時間
+    pinned_end_date = Column(Date)
+
+    # 顯示開始時間，時間到了才會顯示在網頁上。若沒指定（null）則代表馬上顯示
+    visible_start_date = Column(DateTime)
 
     # 顯示結束時間，時間到了才會消失在網頁上。若沒指定 (null) 則代表永久顯示
-    visible_end_date = Column(DateTime, nullable=True)
+    visible_end_date = Column(DateTime)
 
     # 發佈時間，建立這篇最新消息當下的時間
     publication_date = Column(DateTime, nullable=False, default=datetime.now)

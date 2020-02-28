@@ -24,7 +24,9 @@ class NewsForm(Form):
 
     is_pinned = BooleanField('是否置頂')
 
-    pinned_duration = IntegerField('置頂天數')
+    pinned_start_date = IntegerField('置頂開始時間')
+
+    pinned_end_date = IntegerField('置頂結束時間')
 
     visible_start_date = DateTimeField('顯示開始時間（未指定則代表馬上顯示）')
 
