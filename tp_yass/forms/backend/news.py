@@ -36,9 +36,15 @@ class NewsForm(Form):
 
     category_id = SelectField('分類群組', coerce=int)
 
+    class Meta:
+        locales = ['zh_TW', 'tw']
+
 
 class NewsEditForm(NewsForm):
     """最新消息的編輯表單"""
 
     # 用來顯示已上傳的附件檔案列表，讓使用者可自由勾選是否刪除或保留
     uploaded_attachments = MultipleCheckboxField('已上傳的附件', coerce=int)
+
+    class Meta:
+        locales = ['zh_TW', 'tw']

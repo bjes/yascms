@@ -22,9 +22,15 @@ class PageForm(Form):
 
     tags = StringField('標籤（以逗號分隔）')
 
+    class Meta:
+        locales = ['zh_TW', 'tw']
+
 
 class PageEditForm(PageForm):
     """單一網頁的編輯表單"""
 
     # 用來顯示已上傳的附件檔案列表，讓使用者可自由勾選是否刪除或保留
     uploaded_attachments = MultipleCheckboxField('已上傳的附件', coerce=int)
+
+    class Meta:
+        locales = ['zh_TW', 'tw']
