@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from pyramid_wtforms import (Form,
                              StringField,
@@ -42,14 +42,18 @@ class NewsForm(Form):
 
     tags = StringField('標籤（以逗號分隔）')
 
+    group_id = SelectField('張貼群組', coerce=int)
+
     category_id = SelectField('分類群組', coerce=int)
 
     def validate_is_pinned(form, field):
         """若勾選了置頂，那麼置頂起訖日期都要設定"""
         if field.data is True:
-            if not (isinstance(form.pinned_start_date.data, datetime)
-                    and isinstance(form.pinned_end_date.data, datetime)):
+            if not (isinstance(form.pinned_start_date.data, date)
+                    and isinstance(form.pinned_end_date.data, date)):
                 raise ValidationError('置頂起訖日期都需要指定')
+            if form.pinned_end_date.data < form.pinned_start_date.data:
+                raise ValidationError('置頂結束日期需晚於置頂開始日期')
 
     class Meta:
         locales = ['zh_TW', 'tw']

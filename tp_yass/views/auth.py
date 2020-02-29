@@ -29,10 +29,12 @@ class LoginView:
             user = DAL.get_user(login_form.account.data,
                                 login_form.password.data)
             if user:
+                self.request.session['user_id'] = user.id
                 self.request.session['first_name'] = user.first_name
                 self.request.session['last_name'] = user.last_name
                 self.request.session['account'] = user.account
                 self.request.session['is_admin'] = False
+                self.request.session['main_group_id_list'] = [each_group.id for each_group in user.groups]
                 user_groups = []
                 for each_group in user.groups:
                     group_tree = []

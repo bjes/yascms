@@ -36,10 +36,10 @@ def import_test_db_data(ini_file_path):
     session.commit()
 
     # 建群組。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始
-    group1 = GroupModel(id=2, name='測試國小', type=1)
+    group1 = GroupModel(id=2, name='測試國小', type=2)
     group2 = GroupModel(id=3, name='教務處', type=1, ancestor_id=2)
-    group3 = GroupModel(id=4, name='自然領域科任', type=1, ancestor_id=2)
-    group4 = GroupModel(id=5, name='藝文領域科任', type=1, ancestor_id=2)
+    group3 = GroupModel(id=4, name='自然領域科任', type=2, ancestor_id=2)
+    group4 = GroupModel(id=5, name='藝文領域科任', type=2, ancestor_id=2)
     group5 = GroupModel(id=6, name='資訊組', type=1, ancestor_id=3)
     group6 = GroupModel(id=7, name='系管師', type=1, ancestor_id=3)
     # 建帳號。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始

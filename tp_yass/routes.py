@@ -27,3 +27,4 @@ def includeme(config):
     config.add_route('backend_page_edit', '/backend/page/edit/{page_id:\d+}', factory=page_edit_factory)
 
     config.add_route('backend_news_create', '/backend/news/create', factory=auth_user_factory)
+    config.add_route('backend_news_list', '/backend/news/list', factory=auth_user_factory)

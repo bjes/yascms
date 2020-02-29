@@ -34,7 +34,7 @@ class PageCreateView:
             created_page = DAL.create_page(form)
             if form.attachments.data:
                 for each_upload in form.attachments.data:
-                    saved_file_name = upload_attachment(each_upload, f'{created_page.id}_')
+                    saved_file_name = upload_attachment(each_upload, 'pages', f'{created_page.id}_')
                     created_page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
             DAL.save_page(created_page)
             return HTTPFound(self.request.route_url('backend_page_list'))
@@ -60,11 +60,11 @@ class PageListView:
         """顯示單一頁面的列表"""
         quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
         group_id = sanitize_input(self.request.GET.get('g'), int, None)
-        page_id = sanitize_input(self.request.GET.get('p', 1), int, 1)
-        page_list = DAL.get_page_list(page=page_id, group_id=group_id, quantity_per_page=quantity_per_page)
+        page_number = sanitize_input(self.request.GET.get('p', 1), int, 1)
+        page_list = DAL.get_page_list(page_number=page_number, group_id=group_id, quantity_per_page=quantity_per_page)
         return {'page_list': page_list,
                 'page_quantity_of_total_pages': DAL.get_page_quantity_of_total_pages(quantity_per_page, group_id),
-                'page_id': page_id,
+                'page_number': page_number,
                 'quantity_per_page': quantity_per_page}
 
 
@@ -140,7 +140,7 @@ class PageEditView:
                 # 上傳新增的附件
                 if form.attachments.data:
                     for each_upload in form.attachments.data:
-                        saved_file_name = upload_attachment(each_upload, f'{page.id}_')
+                        saved_file_name = upload_attachment(each_upload, 'pages', f'{page.id}_')
                         page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
 
                 DAL.save_page(page)

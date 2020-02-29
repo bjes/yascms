@@ -3,13 +3,13 @@
 為了避免 views 相依 orm 操作，所以抽象資料存取層
 """
 import math
-from datetime import datetime
+from datetime import datetime, date
 
-from sqlalchemy import or_, and_, func
+from sqlalchemy import or_, func
 from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.user import UserModel, GroupModel
-from tp_yass.models.news import NewsModel, NewsCategoryModel
+from tp_yass.models.news import NewsModel, NewsCategoryModel, NewsAttachmentModel
 from tp_yass.models.navbar import NavbarModel
 from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
@@ -46,11 +46,11 @@ class DAL:
         return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
 
     @staticmethod
-    def get_news_list(page=1, quantity_per_page=20, category_id=None):
+    def get_news_list(page_number=1, quantity_per_page=20, category_id=None):
         """傳回最新消息列表
 
         Args:
-            page: 指定頁數，若沒指定則回傳第一頁
+            page_number: 指定頁數，若沒指定則回傳第一頁
             quantity_per_page: 指定每頁的筆數，預設為 20 筆
             category_id: 指定要撈取的最新消息分類，None 代表不指定
 
@@ -65,7 +65,7 @@ class DAL:
         results = (results.filter(or_(NewsModel.visible_start_date == None, now >= NewsModel.visible_start_date))
                           .filter(or_(NewsModel.visible_end_date == None, now < NewsModel.visible_end_date)))
         return (results.order_by(NewsModel.is_pinned.desc(), NewsModel.id.desc())
-                   [(page-1)*quantity_per_page : (page-1)*quantity_per_page+quantity_per_page])
+                   [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
 
     @staticmethod
     def get_news_category_list():
@@ -100,6 +100,20 @@ class DAL:
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
         """
         return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
+
+    @staticmethod
+    def get_staff_group_list(user_id):
+        """取得指定 user id 的所屬行政群組 (group type 為 1)
+
+        Args:
+            user_id: UserModel 的 primary key
+
+        Returns:
+            回傳行政群組列表
+        """
+        return (DBSession.query(GroupModel)
+                         .join(UserModel, GroupModel.users)
+                         .filter(UserModel.id==user_id, GroupModel.type==1))
 
     @staticmethod
     def get_group_by_name(name):
@@ -340,11 +354,11 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_page_list(page=1, quantity_per_page=20, group_id=None):
+    def get_page_list(page_number=1, quantity_per_page=20, group_id=None):
         """傳回使用者列表
 
         Args:
-            page: 指定頁數，若沒指定則回傳第一頁
+            page_number: 指定頁數，若沒指定則回傳第一頁
             quantity_per_page: 指定每頁的筆數，預設為 20 筆
             group_id: 指定要撈取的使用者群組，None 代表不指定
 
@@ -354,4 +368,81 @@ class DAL:
         results = DBSession.query(PageModel)
         if group_id:
             results = results.filter(GroupModel.id==group_id)
-        return results.order_by(PageModel.id.desc())
+        return (results.order_by(PageModel.id.desc())
+                    [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+
+    @staticmethod
+    def get_news_category(category_id):
+        """取得指定的 news category 物件
+
+        Args:
+            category_id: news category 的 id
+
+        Returns:
+            回傳 NewsCategory 物件
+        """
+        return DBSession.query(NewsCategoryModel).get(category_id)
+
+    @staticmethod
+    def create_news(form_data):
+        """建立最新消息
+
+        Args:
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已建立的最新消息物件
+        """
+        news = NewsModel(title=form_data.title.data, content=form_data.content.data, group_id=form_data.group_id.data)
+        # 處理 category
+        news_category = DAL.get_news_category(form_data.category_id.data)
+        if news_category:
+            news.category = news_category
+        else:
+            return False
+
+        # 處理置頂的邏輯，如果勾選了置頂，先確認是否有指定起訖時間，再檢查後者要比前者晚，
+        # 若現在是置頂期間，才將 is_pinned 設為 1 否則為 0 等待 cronjob 處理
+        if form_data.is_pinned.data:
+            news.pinned_start_date = form_data.pinned_start_date.data
+            news.pinned_end_date = form_data.pinned_end_date.data
+            today = date.today()
+            if news.pinned_start_date <= today <= news.pinned_end_date:
+                news.is_pinned = 1
+            else:
+                news.is_pinned = 0
+
+        if form_data.visible_start_date.data:
+            news.visible_start_date = form_data.visible_start_date.data
+        if form_data.visible_end_date.data:
+            news.visible_end_date = form_data.visible_end_date.data
+        # 處理 tags
+        tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
+        for each_tag_name in tags:
+            tag = DAL.get_or_create_tag(each_tag_name)
+            news.tags.append(tag)
+        DBSession.add(news)
+        DBSession.flush()
+        return news
+
+    @staticmethod
+    def create_news_attachment(original_name, real_name):
+        """建立最新消息的上傳附件選單
+
+        Args:
+            original_name: 上傳檔案的原本的名稱
+            real_name: 系統產生的亂入檔名
+
+        Returns:
+            回傳該單一頁面上傳附件物件
+        """
+        return NewsAttachmentModel(original_name=original_name, real_name=real_name)
+
+    @staticmethod
+    def save_news(news):
+        """將最新消息物件存入 db session 中
+
+        Args:
+            page: 最新消息物件
+        """
+        DBSession.add(news)
