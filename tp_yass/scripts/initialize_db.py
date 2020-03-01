@@ -29,7 +29,7 @@ def setup_models(dbsession):
     # 建立基本系統設定值
     dbsession.add(models.sys_config.SysConfigModel(name='site_name', value='', type='str', description='設定全名'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_slogan', value='', type='str', description='設定標語'))
-    dbsession.add(models.sys_config.SysConfigModel(name='site_theme', value='tp_yass', type='str', description='設定樣板'))
+    dbsession.add(models.sys_config.SysConfigModel(name='site_theme', value='tp_yass2020', type='str', description='設定樣板'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_phone', value='', type='str', description='設定電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_fox', value='', type='str', description='設定傳真電話'))
     dbsession.add(models.sys_config.SysConfigModel(name='site_email', value='', type='str', description='設定聯絡 Email'))

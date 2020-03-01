@@ -24,7 +24,7 @@ def import_test_db_data(ini_file_path):
     # 初始化系統設定
     session.query(SysConfigModel).filter_by(name='site_name').update({'value': '臺北市中山區濱江國小'})
     session.query(SysConfigModel).filter_by(name='site_slogan').update({'value': '快樂學習 - 教學相長'})
-    session.query(SysConfigModel).filter_by(name='site_theme').update({'value': 'tp_yass'})
+    session.query(SysConfigModel).filter_by(name='site_theme').update({'value': 'tp_yass2020'})
     session.query(SysConfigModel).filter_by(name='site_phone').update({'value': '02-85021571'})
     session.query(SysConfigModel).filter_by(name='site_fox').update({'value': '02-85011146'})
     session.query(SysConfigModel).filter_by(name='site_email').update({'value': 'public@bjes.tp.edu.tw'})
