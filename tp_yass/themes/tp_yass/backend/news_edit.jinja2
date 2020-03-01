@@ -1,11 +1,12 @@
 {% extends "layouts/master.jinja2" %}
 {% block page_css %}
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.datetimepicker-master.min.css'|static_path }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>單一頁面 - 編輯</h1></div>
+    <div class="col-12"><h1>最新消息 - 建立</h1></div>
     <div class="col-12">
       {% if form.errors %}
         <div class="alert alert-danger"  role="alert">
@@ -22,19 +23,43 @@
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         <div class="form-group">
           {{ form.title.label() }}
-          {{ form.title(class_='form-control', placeholder='請輸入頁面標題') }}
+          {{ form.title(class_='form-control', placeholder='請輸入標題') }}
         </div>
         <div class="form-group">
           {{ form.content.label() }}
           {{ form.content(class_='form-control', placeholder='請輸入內容') }}
         </div>
         <div class="form-group">
-          {{ form.groups.label() }}
-          {{ form.groups(class_='form-control', placeholder='請輸入負責管理的群組名稱（使用逗號分隔）') }}
+          {{ form.group_id.label() }}
+          {{ form.group_id(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.category_id.label() }}
+          {{ form.category_id(class_='form-control') }}
         </div>
         <div class="form-group">
           {{ form.attachments.label() }}
-          {{ form.attachments(class_='form-control') }}
+          {{ form.attachments() }}
+        </div>
+        <div class="form-group form-check">
+          {{ form.is_pinned(class_='form-check-input') }}
+          {{ form.is_pinned.label() }}
+        </div>
+        <div class="form-group">
+          {{ form.pinned_start_date.label() }}
+          {{ form.pinned_start_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.pinned_end_date.label() }}
+          {{ form.pinned_end_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.visible_start_date.label() }}
+          {{ form.visible_start_date(class_='form-control') }}
+        </div>
+        <div class="form-group">
+          {{ form.visible_end_date.label() }}
+          {{ form.visible_end_date(class_='form-control') }}
         </div>
         <div class="form-group">
           {{ form.tags.label() }}
@@ -55,12 +80,35 @@
 {% block page_js %}
   <script src="{{ 'tp_yass:themes/default/static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.datetimepicker.full-master.min.js'|static_path }}"></script>
   <script>
     $(function (){
       $('#content').summernote({
         lang: 'zh-TW',
         height: 300
       });
+      $.datetimepicker.setLocale('zh-TW');
+      $('#visible_start_date, #visible_end_date').datetimepicker({
+        format: 'Y-m-d H:i'
+      });
+      $('#pinned_start_date, #pinned_end_date').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d'
+      });
+      let pinned_checkbox = $('#is_pinned');
+      let pinned_inputs = $('#pinned_start_date, #pinned_end_date');
+      if (pinned_checkbox.prop('checked') === true) {
+        pinned_inputs.prop('disabled', false);
+      } else {
+        pinned_inputs.prop('disabled', true);
+      }
+      pinned_checkbox.change(function (){
+        if ($(this).prop('checked') === true) {
+          pinned_inputs.prop('disabled', false);
+        } else {
+          pinned_inputs.prop('disabled', true);
+        }
+      })
     });
   </script>
 {% endblock %}

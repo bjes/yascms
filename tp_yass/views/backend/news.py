@@ -3,7 +3,7 @@ from datetime import datetime
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
-from tp_yass.forms.backend.news import NewsForm
+from tp_yass.forms.backend.news import NewsForm, NewsEditForm
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
 from tp_yass.views.backend.helper import upload_attachment, delete_attachment
@@ -92,3 +92,75 @@ class NewsDeleteView:
                 delete_attachment(each_attachment, news.publication_date.strftime('news/%Y/%m'))
             DAL.delete_news(news)
         return HTTPFound(self.request.route_url('backend_news_list'))
+
+
+@view_defaults(route_name='backend_news_edit',
+               renderer='themes/default/backend/news_edit.jinja2',
+               permission='edit')
+class NewsEditView:
+
+    def __init__(self, context, request):
+        """
+        Args:
+            context: context 為對應的 NewsModel
+            request: pyramid.request.Request
+        """
+        self.context = context
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        form = NewsEditForm()
+        form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in self.context.attachments]
+        form.uploaded_attachments.default = [each_attachment.id for each_attachment in self.context.attachments]
+        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        form.group_id.default = self.context.group.id
+        form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
+        form.category_id.default = self.context.category.id
+        form.is_pinned.default = True if self.context.is_pinned else False
+        form.process(None, None,
+                     title=self.context.title,
+                     content=self.context.content,
+                     pinned_start_date=self.context.pinned_start_date,
+                     pinned_end_date=self.context.pinned_end_date,
+                     visible_start_date=self.context.visible_start_date,
+                     visible_end_date=self.context.visible_end_date,
+                     tags=', '.join([each_tag.name for each_tag in self.context.tags]))
+        return {'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = NewsEditForm()
+        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
+        form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in
+                                             self.context.attachments]
+        form.process(self.request.POST)
+        if form.validate():
+            news_id = int(self.request.matchdict['news_id'])
+            news = DAL.get_news(news_id)
+            if news:
+                news = DAL.update_news(news, form)
+
+                # 若發現使用者取消勾選已上傳的附件則刪除之
+                selected_attachment_ids = form.uploaded_attachments.data
+                for each_uploaded_attachment in news.attachments:
+                    if each_uploaded_attachment.id not in selected_attachment_ids:
+                        DAL.delete_news_attachment(each_uploaded_attachment)
+                        delete_attachment(each_uploaded_attachment, news.publication_date.strftime('news/%Y/%m'))
+
+                # 上傳新增的附件
+                if form.attachments.data:
+                    for each_upload in form.attachments.data:
+                        now = datetime.now()
+                        saved_file_name = upload_attachment(each_upload, now.strftime('news/%Y/%m'), f'{news.id}_')
+                        news.attachments.append(DAL.create_news_attachment(each_upload.filename, saved_file_name))
+
+                DAL.save_news(news)
+
+                return HTTPFound(self.request.route_url('backend_news_list'))
+            else:
+                self.request.flash('news 物件不存在', 'fail')
+        return {'form': form}

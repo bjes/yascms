@@ -31,3 +31,4 @@ def includeme(config):
     config.add_route('backend_news_create', '/backend/news/create', factory=staff_group_factory)
     config.add_route('backend_news_list', '/backend/news/list', factory=auth_user_factory)
     config.add_route('backend_news_delete', '/backend/news/delete/{news_id:\d+}', factory=news_edit_factory)
+    config.add_route('backend_news_edit', '/backend/news/edit/{news_id:\d+}', factory=news_edit_factory)

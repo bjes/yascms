@@ -66,13 +66,13 @@ def page_edit_factory(request):
 def staff_group_factory(request):
     """只有管理者或使用者擁有行政群組才有權限"""
     acl = ACL()
+    acl.__acl__ = []
     if 'groups' in request.session:
-        for each_group in request.session['groups']:
-            if each_group['type'] in (0, 1):
-                acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
-                break
-    else:
-        acl.__acl__ = []
+        for each_sub_group in request.session['groups']:
+            for each_group in each_sub_group:
+                if each_group['type'] in (0, 1):
+                    acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+                    return acl
     return acl
 
 

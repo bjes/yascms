@@ -393,13 +393,10 @@ class DAL:
         Returns:
             回傳已建立的最新消息物件
         """
-        news = NewsModel(title=form_data.title.data, content=form_data.content.data, group_id=form_data.group_id.data)
-        # 處理 category
-        news_category = DAL.get_news_category(form_data.category_id.data)
-        if news_category:
-            news.category = news_category
-        else:
-            return False
+        news = NewsModel(title=form_data.title.data,
+                         content=form_data.content.data,
+                         group_id=form_data.group_id.data,
+                         category_id=form_data.category_id.data)
 
         # 處理置頂的邏輯，如果勾選了置頂，先確認是否有指定起訖時間，再檢查後者要比前者晚，
         # 若現在是置頂期間，才將 is_pinned 設為 1 否則為 0 等待 cronjob 處理
@@ -416,13 +413,16 @@ class DAL:
             news.visible_start_date = form_data.visible_start_date.data
         if form_data.visible_end_date.data:
             news.visible_end_date = form_data.visible_end_date.data
+
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
         for each_tag_name in tags:
             tag = DAL.get_or_create_tag(each_tag_name)
             news.tags.append(tag)
+
         DBSession.add(news)
         DBSession.flush()
+
         return news
 
     @staticmethod
@@ -467,3 +467,54 @@ class DAL:
             news: NewsModel
         """
         DBSession.delete(news)
+
+    @staticmethod
+    def update_news(news, form_data):
+        """使用 form 的資料更新指定的最新消息
+
+        Args:
+            news: NewsModel 物件
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已更新的最新消息物件
+        """
+        news.title = form_data.title.data
+        news.content = form_data.content.data
+        news.group_id = form_data.group_id.data
+        news.category_id = form_data.category_id.data
+
+        # 處理置頂的邏輯，如果勾選了置頂，先確認是否有指定起訖時間，再檢查後者要比前者晚，
+        # 若現在是置頂期間，才將 is_pinned 設為 1 否則為 0 等待 cronjob 處理
+        if form_data.is_pinned.data:
+            news.pinned_start_date = form_data.pinned_start_date.data
+            news.pinned_end_date = form_data.pinned_end_date.data
+            today = date.today()
+            if news.pinned_start_date <= today <= news.pinned_end_date:
+                news.is_pinned = 1
+            else:
+                news.is_pinned = 0
+
+        if form_data.visible_start_date.data:
+            news.visible_start_date = form_data.visible_start_date.data
+        if form_data.visible_end_date.data:
+            news.visible_end_date = form_data.visible_end_date.data
+
+        # 處理 tags
+        tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
+        for each_tag_name in tags:
+            tag = DAL.get_or_create_tag(each_tag_name)
+            news.tags.append(tag)
+
+        DBSession.add(news)
+
+        return news
+
+    @staticmethod
+    def delete_news_attachment(news_attachment):
+        """刪除指定的 NewsAttachment
+
+        Args:
+            news_attachment: NewsAttachment 物件
+        """
+        DBSession.delete(news_attachment)
