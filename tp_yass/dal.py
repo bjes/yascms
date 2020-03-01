@@ -6,6 +6,7 @@ import math
 from datetime import datetime, date
 
 from sqlalchemy import or_, func
+from sqlalchemy.exc import IntegrityError
 from pyramid_sqlalchemy import Session as DBSession
 
 from tp_yass.models.user import UserModel, GroupModel
@@ -518,3 +519,59 @@ class DAL:
             news_attachment: NewsAttachment 物件
         """
         DBSession.delete(news_attachment)
+
+    @staticmethod
+    def create_news_category(form_data):
+        """建立最新消息的分類
+
+        Args:
+            form_data: wtforms.forms.Form
+
+        Returns:
+            回傳建立的 news category
+        """
+        news_category = NewsCategoryModel()
+        form_data.populate_obj(news_category)
+        DBSession.add(news_category)
+
+    @staticmethod
+    def get_page_quantity_of_total_news_categories(quantity_per_page):
+        """回傳最新消息分頁總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息分類
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(NewsCategoryModel.id))
+        return math.ceil(results.scalar() / quantity_per_page)
+
+    @staticmethod
+    def delete_news_category(news_category_id):
+        """刪除指定的最新消息分類
+
+        Args:
+            category_id: 最新消息分類的 primary key
+
+        Returns:
+            若回傳 False 代表該分類還有相依的最新消息
+        """
+        try:
+            DBSession.query(NewsCategoryModel).filter_by(id=news_category_id).delete()
+        except IntegrityError:
+            return False
+
+    @staticmethod
+    def update_news_category(news_category, form_data):
+        """使用 form 的資料更新指定的最新消息
+
+        Args:
+            news_category: NewsCategoryModel 物件
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已更新的最新消息分類物件
+        """
+        form_data.populate_obj(news_category)
+        DBSession.add(news_category)

@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
-from tp_yass.forms.backend.news import NewsForm, NewsEditForm
+from tp_yass.forms.backend.news import NewsForm, NewsEditForm, NewsCategoryForm
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
 from tp_yass.views.backend.helper import upload_attachment, delete_attachment
@@ -164,3 +164,98 @@ class NewsEditView:
             else:
                 self.request.flash('news 物件不存在', 'fail')
         return {'form': form}
+
+
+@view_defaults(route_name='backend_news_category_create', renderer='tp_yass:themes/default/backend/news_category_create.jinja2', permission='edit')
+class NewsCategoryCreateView:
+    """建立最新消息分類的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        """產生建立最新消息分類表單"""
+        form = NewsCategoryForm()
+        return {'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        """處理建立最新消息分類的表單"""
+        form = NewsCategoryForm(self.request.POST)
+        if form.validate():
+            DAL.create_news_category(form)
+            return HTTPFound(self.request.route_url('backend_news_category_list'))
+        return {'form': form}
+
+
+@view_defaults(route_name='backend_news_category_list', renderer='tp_yass:themes/default/backend/news_category_list.jinja2', permission='edit')
+class NewsCategoryListView:
+    """顯示最新消息列表"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        """顯示最新消息列表"""
+        quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
+        page_number = sanitize_input(self.request.GET.get('p', 1), int, 1)
+        return {'news_category_list': DAL.get_news_category_list(),
+                'page_quantity_of_total_news_categories': DAL.get_page_quantity_of_total_news_categories(quantity_per_page),
+                'page_number': page_number,
+                'quantity_per_page': quantity_per_page}
+
+
+@view_defaults(route_name='backend_news_category_delete',
+               permission='edit')
+class NewsCategoryDeleteView:
+    """刪除最新消息分類，只有管理者可刪"""
+
+    def __init__(self, request):
+        """
+        Args:
+            request: pyramid.request.Request
+        """
+        self.request = request
+
+    @view_config()
+    def delete_view(self):
+        """刪除指定的最新消息分類"""
+        news_category_id = int(self.request.matchdict['news_category_id'])
+        if not DAL.delete_news_category(news_category_id):
+            self.request.session.flash('刪除分類失敗，請確認是否還有相依的最新消息。', 'fail')
+        return HTTPFound(self.request.route_url('backend_news_category_list'))
+
+@view_defaults(route_name='backend_news_category_edit', renderer='tp_yass:themes/default/backend/news_category_edit.jinja2', permission='edit')
+class NewsCategoryEditView:
+    """編輯最新消息分類的 view"""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        """產生建立最新消息分類表單"""
+        news_category = DAL.get_news_category(int(self.request.matchdict['news_category_id']))
+        if news_category:
+            form = NewsCategoryForm(obj=news_category)
+            return {'form': form}
+        else:
+            return HTTPNotFound()
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        """編輯最新消息分類的表單"""
+        news_category = DAL.get_news_category(int(self.request.matchdict['news_category_id']))
+        if news_category:
+            form = NewsCategoryForm(self.request.POST)
+            if form.validate():
+                DAL.update_news_category(news_category, form)
+                return HTTPFound(self.request.route_url('backend_news_category_list'))
+            else:
+                return {'form': form}
+        else:
+            return HTTPNotFound()
+

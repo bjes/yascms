@@ -42,7 +42,8 @@
           <li><a class="dropdown-item" href="{{ request.route_url('backend_news_create') }}">發佈文章</a></li>
           <li><a class="dropdown-item" href="{{ request.route_url('backend_news_list') }}">文章列表</a></li>
           {% if request.session['is_admin'] %}
-            <li><a class="dropdown-item" href="#">分類管理</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_create') }}">建立分類</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_list') }}">分類管理</a></li>
           {% endif %}
         </ul>
       </li>
@@ -59,8 +60,17 @@
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="fas fa-phone"></i> 常用分機</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-link"></i> 好站連結</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarLinkDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-link"></i> 好站連結
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
+          <li><a class="dropdown-item" href="#">建立連結</a></li>
+          <li><a class="dropdown-item" href="#">連結管理</a></li>
+          <li><a class="dropdown-item" href="#">建立分類</a></li>
+          <li><a class="dropdown-item" href="#">分類管理</a></li>
+        </ul>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarTagsDropdown" role="button" data-toggle="dropdown"

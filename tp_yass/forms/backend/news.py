@@ -67,3 +67,17 @@ class NewsEditForm(NewsForm):
 
     class Meta:
         locales = ['zh_TW', 'tw']
+
+
+class NewsCategoryForm(Form):
+    """最新消息分類表單"""
+
+    name = StringField('名稱*', [InputRequired('名稱必填')])
+
+    # TODO: 要動態產生，目前先寫死 20 組
+    order = SelectField('排序*', [InputRequired('排序必填')],
+                        choices=[(i, str(i)) for i in range(21)],
+                        coerce=int)
+
+    class Meta:
+        locales = ['zh_TW', 'tw']

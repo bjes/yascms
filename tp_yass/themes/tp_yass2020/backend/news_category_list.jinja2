@@ -1,0 +1,46 @@
+{% extends "layouts/master.jinja2" %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    {% if request.session.peek_flash('fail') %}
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          {% for msg in request.session.pop_flash('fail') %}
+            {{ msg }}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    <div class="col-12"><h1>最新消息分類列表</h1></div>
+    <div class="col-12">
+      <div class="card border-primary mb-3">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped text-center mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="d-none d-md-table-cell">編號</th>
+                <th scope="col" class="d-none d-md-table-cell">名稱</th>
+                <th scope="col" class="d-none d-sm-table-cell">動作</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for each_news_category in news_category_list %}
+              <tr>
+                <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
+                <td>{{ each_news_category.name }}</td>
+                <td>
+                  <a class="btn btn-primary" href="{{ request.route_url('backend_news_category_edit', news_category_id=each_news_category.id) }}">編輯</a>
+                  <a class="btn btn-danger" href="{{ request.route_url('backend_news_category_delete', news_category_id=each_news_category.id) }}">刪除</a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{ paginate(request, "最新消息分類列表分頁", "backend_news_category_list", page_quantity_of_total_news_categories, page_number, quantity_per_page) }}
+    </div>
+  </div>
+</div>
+{% endblock content %}
