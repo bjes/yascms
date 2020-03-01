@@ -446,3 +446,24 @@ class DAL:
             page: 最新消息物件
         """
         DBSession.add(news)
+
+    @staticmethod
+    def get_news(news_id):
+        """取得 NewsModel 物件
+
+        Args:
+            news_id: news 的 primary key
+
+        Returns:
+            回傳 NewsModel
+        """
+        return DBSession.query(NewsModel).get(news_id)
+
+    @staticmethod
+    def delete_news(news):
+        """刪除最新消息
+
+        Args:
+            news: NewsModel
+        """
+        DBSession.delete(news)

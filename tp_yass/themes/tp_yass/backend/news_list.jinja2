@@ -35,14 +35,12 @@
                 <td>
                   {% if request.session['is_admin'] %}
                     <a class="btn btn-primary" href="#">編輯</a>
-                    <a class="btn btn-danger" href="#">刪除</a>
+                    <a class="btn btn-danger" href="{{ request.route_url('backend_news_delete', news_id=each_news.id) }}">刪除</a>
                   {% else %}
-                    {% for each_news in each_news.groups %}
-                      {% if each_news.id in request.session['group_id_list'] %}
-                        <a class="btn btn-primary" href="#">編輯</a>
-                        {% break %}
-                      {% endif %}
-                    {% endfor %}
+                    {% if each_news.group.id in request.session['main_group_id_list'] %}
+                      <a class="btn btn-primary" href="{{ request.route_url('backend_news_delete', news_id=each_news.id) }}">編輯</a>
+                      <a class="btn btn-danger" href="{{ request.route_url('backend_news_delete', news_id=each_news.id) }}">刪除</a>
+                    {% endif %}
                   {% endif %}
                 </td>
               </tr>

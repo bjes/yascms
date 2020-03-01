@@ -1,6 +1,8 @@
 from .resources import (auth_user_factory,
                         admin_factory,
-                        page_edit_factory)
+                        page_edit_factory,
+                        staff_group_factory,
+                        news_edit_factory)
 
 def includeme(config):
     config.add_static_view('static', 'tp_yass:themes/default/static', cache_max_age=3600)
@@ -26,5 +28,6 @@ def includeme(config):
     config.add_route('backend_page_delete', '/backend/page/delete/{page_id:\d+}', factory=admin_factory)
     config.add_route('backend_page_edit', '/backend/page/edit/{page_id:\d+}', factory=page_edit_factory)
 
-    config.add_route('backend_news_create', '/backend/news/create', factory=auth_user_factory)
+    config.add_route('backend_news_create', '/backend/news/create', factory=staff_group_factory)
     config.add_route('backend_news_list', '/backend/news/list', factory=auth_user_factory)
+    config.add_route('backend_news_delete', '/backend/news/delete/{news_id:\d+}', factory=news_edit_factory)

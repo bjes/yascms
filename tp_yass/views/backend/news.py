@@ -6,7 +6,7 @@ from pyramid.httpexceptions import HTTPFound
 from tp_yass.forms.backend.news import NewsForm
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
-from tp_yass.views.backend.helper import upload_attachment
+from tp_yass.views.backend.helper import upload_attachment, delete_attachment
 
 
 @view_defaults(route_name='backend_news_create', renderer='tp_yass:themes/default/backend/news_create.jinja2', permission='edit')
@@ -68,3 +68,27 @@ class NewsListView:
                 'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
                 'page_number': page_number,
                 'quantity_per_page': quantity_per_page}
+
+
+@view_defaults(route_name='backend_news_delete',
+               permission='edit')
+class NewsDeleteView:
+    """刪除最新消息，只有管理者與最新消息所屬群組可刪"""
+
+    def __init__(self, request):
+        """
+        Args:
+            request: pyramid.request.Request
+        """
+        self.request = request
+
+    @view_config()
+    def delete_view(self):
+        """刪除指定的最新消息"""
+        news_id = int(self.request.matchdict['news_id'])
+        news = DAL.get_news(news_id)
+        if news:
+            for each_attachment in news.attachments:
+                delete_attachment(each_attachment, news.publication_date.strftime('news/%Y/%m'))
+            DAL.delete_news(news)
+        return HTTPFound(self.request.route_url('backend_news_list'))

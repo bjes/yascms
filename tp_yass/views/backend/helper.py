@@ -26,11 +26,12 @@ def upload_attachment(cgi_field_storage, upload_sub_dir, prefix):
         return str(Path(destination_file.name).name)
 
 
-def delete_attachment(page_attachment):
+def delete_attachment(page_attachment, upload_sub_dir):
     """移除指定的上傳附件實體檔案
 
     Args:
+        upload_sub_dir:
         page_attachment: PageAttachment 物件
     """
-    attachment_abspath = get_static_abspath() / 'uploads' / 'pages' / page_attachment.real_name
+    attachment_abspath = get_static_abspath() / 'uploads' / Path(upload_sub_dir) / page_attachment.real_name
     attachment_abspath.unlink()

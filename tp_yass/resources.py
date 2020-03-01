@@ -61,3 +61,38 @@ def page_edit_factory(request):
         logger.error('找不到 page id 為 %s 的單一頁面，群組權限比對異常', page_id)
         acl.__acl__ = []
     return page or acl
+
+
+def staff_group_factory(request):
+    """只有管理者或使用者擁有行政群組才有權限"""
+    acl = ACL()
+    if 'groups' in request.session:
+        for each_group in request.session['groups']:
+            if each_group['type'] in (0, 1):
+                acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+                break
+    else:
+        acl.__acl__ = []
+    return acl
+
+
+def news_edit_factory(request):
+    """最新消息只有建立的群組與管理者可以刪除或修改"""
+    acl = ACL()
+    news_id = int(request.matchdict['news_id'])
+    logger.debug('news_id 為 %s', news_id)
+    news = DAL.get_news(news_id)
+    if news:
+        # 若為管理者，權限全開
+        if 'is_admin' in request.session and request.session['is_admin']:
+            logger.debug('比對群組權限接受，權限為管理者')
+            news.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+        # 否則只有 news 的群組有 edit 權限
+        else:
+            logger.debug('比對群組權限接受，權限為對應最新消息的群組')
+            logger.debug('群組 %s 可編輯最新消息', news.group.name)
+            news.__acl__ = [(Allow, news.group.id, 'edit')]
+    else:
+        logger.error('找不到 news id 為 %s 的最新消息，群組權限比對異常', news_id)
+        acl.__acl__ = []
+    return news or acl
