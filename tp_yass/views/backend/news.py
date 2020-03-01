@@ -89,7 +89,7 @@ class NewsDeleteView:
         news = DAL.get_news(news_id)
         if news:
             for each_attachment in news.attachments:
-                delete_attachment(each_attachment, news.publication_date.strftime('news/%Y/%m'))
+                delete_attachment(each_attachment.real_name, news.publication_date.strftime('news/%Y/%m'))
             DAL.delete_news(news)
         return HTTPFound(self.request.route_url('backend_news_list'))
 
@@ -149,7 +149,7 @@ class NewsEditView:
                 for each_uploaded_attachment in news.attachments:
                     if each_uploaded_attachment.id not in selected_attachment_ids:
                         DAL.delete_news_attachment(each_uploaded_attachment)
-                        delete_attachment(each_uploaded_attachment, news.publication_date.strftime('news/%Y/%m'))
+                        delete_attachment(each_uploaded_attachment.real_name, news.publication_date.strftime('news/%Y/%m'))
 
                 # 上傳新增的附件
                 if form.attachments.data:

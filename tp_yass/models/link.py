@@ -42,7 +42,7 @@ class LinkModel(BaseObject):
     category_id = Column(Integer, ForeignKey('link_categories.id'))
 
 
-class LinCategoryModel(BaseObject):
+class LinkCategoryModel(BaseObject):
     """好站連結分類"""
 
     __tablename__ = 'link_categories'

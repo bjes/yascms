@@ -96,3 +96,25 @@ def news_edit_factory(request):
         logger.error('找不到 news id 為 %s 的最新消息，群組權限比對異常', news_id)
         acl.__acl__ = []
     return news or acl
+
+
+def link_edit_factory(request):
+    """好站連結只有建立的群組與管理者可以刪除或修改"""
+    acl = ACL()
+    link_id = int(request.matchdict['link_id'])
+    logger.debug('link_id 為 %s', link_id)
+    link = DAL.get_link(link_id)
+    if link:
+        # 若為管理者，權限全開
+        if 'is_admin' in request.session and request.session['is_admin']:
+            logger.debug('比對群組權限接受，權限為管理者')
+            link.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+        # 否則只有 link 的群組有 edit 權限
+        else:
+            logger.debug('比對群組權限接受，權限為對應最新消息的群組')
+            logger.debug('群組 %s 可編輯最新消息', link.group.name)
+            link.__acl__ = [(Allow, link.group.id, 'edit')]
+    else:
+        logger.error('找不到 link id 為 %s 的最新消息，群組權限比對異常', link_id)
+        acl.__acl__ = []
+    return link or acl

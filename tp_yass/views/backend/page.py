@@ -87,7 +87,7 @@ class PageDeleteView:
         page = DAL.get_page(page_id)
         if page:
             for each_attachment in page.attachments:
-                delete_attachment(each_attachment, 'pages')
+                delete_attachment(each_attachment.real_name, 'pages')
             DAL.delete_page(page)
         return HTTPFound(self.request.route_url('backend_page_list'))
 
@@ -135,7 +135,7 @@ class PageEditView:
                 for each_uploaded_attachment in page.attachments:
                     if each_uploaded_attachment.id not in selected_attachment_ids:
                         DAL.delete_page_attachment(each_uploaded_attachment)
-                        delete_attachment(each_uploaded_attachment, 'pages')
+                        delete_attachment(each_uploaded_attachment.real_name, 'pages')
 
                 # 上傳新增的附件
                 if form.attachments.data:

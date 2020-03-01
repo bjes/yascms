@@ -15,6 +15,7 @@ from tp_yass.models.navbar import NavbarModel
 from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
+from tp_yass.models.link import LinkModel, LinkCategoryModel
 
 
 class DAL:
@@ -114,7 +115,7 @@ class DAL:
         """
         return (DBSession.query(GroupModel)
                          .join(UserModel, GroupModel.users)
-                         .filter(UserModel.id==user_id, GroupModel.type==1))
+                         .filter(UserModel.id==user_id, GroupModel.type.in_((0, 1))))
 
     @staticmethod
     def get_group_by_name(name):
@@ -552,13 +553,14 @@ class DAL:
         """刪除指定的最新消息分類
 
         Args:
-            category_id: 最新消息分類的 primary key
+            news_category_id: 最新消息分類的 primary key
 
         Returns:
             若回傳 False 代表該分類還有相依的最新消息
         """
         try:
             DBSession.query(NewsCategoryModel).filter_by(id=news_category_id).delete()
+            return True
         except IntegrityError:
             return False
 
@@ -575,3 +577,205 @@ class DAL:
         """
         form_data.populate_obj(news_category)
         DBSession.add(news_category)
+
+    @staticmethod
+    def get_link(link_id):
+        """取得 LinkModel 物件
+
+        Args:
+            link_id: LinkModel 的 primary key
+
+        Returns:
+            回傳 LinkModel 物件
+        """
+        return DBSession.query(LinkModel).get(link_id)
+
+    @staticmethod
+    def get_link_category_list():
+        """回傳好站連結分類列表"""
+        return DBSession.query(LinkCategoryModel).order_by(LinkCategoryModel.order)
+
+    @staticmethod
+    def create_link(form_data):
+        """建立好站連結
+
+        Args:
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已建立的好站連結物件
+        """
+        link = LinkModel(title=form_data.title.data,
+                         url=form_data.url.data,
+                         icon='',
+                         group_id=form_data.group_id.data,
+                         category_id=form_data.category_id.data)
+
+        link.is_pinned = True if form_data.is_pinned.data else False
+        DBSession.add(link)
+        DBSession.flush()
+        return link
+
+    @staticmethod
+    def save_link(link):
+        """儲存 link model
+
+        Args:
+            link: LinkModel 物件
+        """
+        DBSession.add(link)
+
+    @staticmethod
+    def get_link_list(page_number=1, quantity_per_page=20, category_id=None):
+        """傳回好站連結列表
+
+        Args:
+            page_number: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            category_id: 指定要撈取的好站連結分類，None 代表不指定
+
+        Returns:
+            回傳好站連結列表
+        """
+        results = DBSession.query(LinkModel)
+        if category_id:
+            results = results.filter_by(category_id=category_id)
+        return (results.order_by(LinkModel.is_pinned.desc(), LinkModel.id.desc())
+                    [(page_number - 1) * quantity_per_page: (page_number - 1) * quantity_per_page + quantity_per_page])
+
+    @staticmethod
+    def get_page_quantity_of_total_link(quantity_per_page, category_id=None):
+        """回傳好站連結總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息
+            category_id: 若有指定，則只會傳回符合此分類的好站連結頁數
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(LinkModel.id))
+        if category_id:
+            results = results.filter_by(category_id=category_id)
+        return math.ceil(results.scalar() / quantity_per_page)
+
+    @staticmethod
+    def delete_link(link):
+        """刪除好站連結
+
+        Args:
+            link: LinkModel
+        """
+        DBSession.delete(link)
+
+    @staticmethod
+    def update_link(link, form_data):
+        """使用 form 的資料更新指定的好站連結
+
+        Args:
+            link: LinkModel 物件
+            form_data: wtforms.forms.Form 物件
+        """
+        link.title = form_data.title.data
+        link.url = form_data.url.data
+        link.is_pinned = 1 if form_data.is_pinned.data else 0
+        return link
+
+    @staticmethod
+    def save_link(link):
+        """將好站連結物件存入 db session 中
+
+        Args:
+            link: 好站連結物件
+        """
+        DBSession.add(link)
+
+    @staticmethod
+    def create_link_category(form_data):
+        """建立好站連結的分類
+
+        Args:
+            form_data: wtforms.forms.Form
+
+        Returns:
+            回傳建立的 link category
+        """
+        link_category = LinkCategoryModel()
+        form_data.populate_obj(link_category)
+        DBSession.add(link_category)
+
+    @staticmethod
+    def get_page_quantity_of_total_link_categories(quantity_per_page):
+        """回傳好站連結分頁總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆好站連結分類
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(LinkCategoryModel.id))
+        return math.ceil(results.scalar() / quantity_per_page)
+
+    @staticmethod
+    def delete_link_category(link_category_id):
+        """刪除指定的好站連結分類
+
+        Args:
+            link_category_id: 好站連結分類的 primary key
+
+        Returns:
+            若回傳 False 代表該分類還有相依的好站連結
+        """
+        try:
+            DBSession.query(LinkCategoryModel).filter_by(id=link_category_id).delete()
+            return True
+        except IntegrityError:
+            return False
+
+    @staticmethod
+    def get_link_category_list():
+        """回傳好站連結分類列表"""
+        return DBSession.query(LinkCategoryModel).order_by(LinkCategoryModel.order)
+
+    @staticmethod
+    def update_link_category(link_category, form_data):
+        """使用 form 的資料更新指定的好站連結
+
+        Args:
+            link_category: LinkCategoryModel 物件
+            form_data: wtforms.forms.Form 物件
+
+        Returns:
+            回傳已更新的好站連結分類物件
+        """
+        form_data.populate_obj(link_category)
+        DBSession.add(link_category)
+
+    @staticmethod
+    def get_link_category(category_id):
+        """取得指定的 link category 物件
+
+        Args:
+            category_id: link category 的 id
+
+        Returns:
+            回傳 LinkCategory 物件
+        """
+        return DBSession.query(LinkCategoryModel).get(category_id)
+
+    @staticmethod
+    def get_page_quantity_of_total_links(quantity_per_page, category_id=None):
+        """回傳好站連結總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆好站連結
+            category_id: 若有指定，則只會傳回符合此分類的好站連結頁數
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(LinkModel.id))
+        if category_id:
+            results = results.filter_by(category_id=category_id)
+        return math.ceil(results.scalar() / quantity_per_page)

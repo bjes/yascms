@@ -31,7 +31,7 @@ def get_static_abspath() -> Path:
         object: Path
         pathlib.Path 物件
     """
-    return get_project_abspath() / 'themes' / 'default' / 'static'
+    return get_project_abspath() / 'static'
 
 
 def get_project_abspath() -> Path:

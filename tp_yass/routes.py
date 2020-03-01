@@ -2,7 +2,8 @@ from .resources import (auth_user_factory,
                         admin_factory,
                         page_edit_factory,
                         staff_group_factory,
-                        news_edit_factory)
+                        news_edit_factory,
+                        link_edit_factory)
 
 def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
@@ -37,3 +38,17 @@ def includeme(config):
     config.add_route('backend_news_category_list', '/backend/news/category/list', factory=admin_factory)
     config.add_route('backend_news_category_delete', '/backend/news/category/delete/{news_category_id:\d+}', factory=admin_factory)
     config.add_route('backend_news_category_edit', '/backend/news/category/edit/{news_category_id:\d+}', factory=admin_factory)
+
+    config.add_route('backend_link_create', '/backend/link/create', factory=staff_group_factory)
+    config.add_route('backend_link_list', '/backend/link/list', factory=staff_group_factory)
+    config.add_route('backend_link_delete', '/backend/link/delete/{link_id:\d+}',
+                     factory=link_edit_factory)
+    config.add_route('backend_link_edit', '/backend/link/edit/{link_id:\d+}',
+                     factory=link_edit_factory)
+
+    config.add_route('backend_link_category_create', '/backend/link/category/create', factory=admin_factory)
+    config.add_route('backend_link_category_list', '/backend/link/category/list', factory=admin_factory)
+    config.add_route('backend_link_category_delete', '/backend/link/category/delete/{link_category_id:\d+}',
+                     factory=admin_factory)
+    config.add_route('backend_link_category_edit', '/backend/link/category/edit/{link_category_id:\d+}',
+                     factory=admin_factory)
