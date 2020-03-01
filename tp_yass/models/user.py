@@ -93,3 +93,6 @@ class GroupModel(BaseObject):
 
     # 這個群組有編輯權限的單一頁面
     pages = relationship('models.page.PageModel', secondary=groups_pages_association, back_populates='groups')
+
+    # 這個群組上傳的好站連結
+    links = relationship('models.link.LinkModel', backref='group')

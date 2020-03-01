@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 0a7b7931c162
+Revision ID: 1b1c09cb7fdf
 Revises: 
-Create Date: 2020-03-01 12:40:46.170787
+Create Date: 2020-03-01 14:37:34.220915
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0a7b7931c162'
+revision = '1b1c09cb7fdf'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,6 +24,13 @@ def upgrade():
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('ancestor_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['ancestor_id'], ['groups.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
+    )
+    op.create_table('link_categories',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
+    sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -86,6 +93,21 @@ def upgrade():
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
     sa.ForeignKeyConstraint(['page_id'], ['pages.id'], )
     )
+    op.create_table('links',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=100), nullable=False),
+    sa.Column('url', sa.Text(), nullable=False),
+    sa.Column('icon', sa.String(length=100), nullable=False),
+    sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('publication_date', sa.DateTime(), nullable=False),
+    sa.Column('last_updated_date', sa.DateTime(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.Column('category_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['category_id'], ['link_categories.id'], ),
+    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_links_title'), 'links', ['title'], unique=False)
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
@@ -149,6 +171,8 @@ def downgrade():
     op.drop_table('page_attachments')
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
+    op.drop_index(op.f('ix_links_title'), table_name='links')
+    op.drop_table('links')
     op.drop_table('groups_pages_association')
     op.drop_table('users')
     op.drop_table('tags')
@@ -156,5 +180,6 @@ def downgrade():
     op.drop_table('pages')
     op.drop_table('news_categories')
     op.drop_table('navbar')
+    op.drop_table('link_categories')
     op.drop_table('groups')
     # ### end Alembic commands ###
