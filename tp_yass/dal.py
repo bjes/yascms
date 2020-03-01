@@ -16,6 +16,7 @@ from tp_yass.models.sys_config import SysConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
+from tp_yass.models.telext import TelExtModel
 
 
 class DAL:
@@ -779,3 +780,52 @@ class DAL:
         if category_id:
             results = results.filter_by(category_id=category_id)
         return math.ceil(results.scalar() / quantity_per_page)
+
+    @staticmethod
+    def create_telext(form_data):
+        """建立分機表
+
+        Args:
+            form_data: wtforms.forms.Form
+        """
+        telext = TelExtModel()
+        form_data.populate_obj(telext)
+        telext.is_pinned = 1 if form_data.is_pinned.data else 0
+        DBSession.add(telext)
+
+    @staticmethod
+    def get_telext_list():
+        """回傳分機表列表"""
+        return DBSession.query(TelExtModel).order_by(TelExtModel.order)
+
+    @staticmethod
+    def delete_telext(telext_id):
+        """刪除分機
+
+        Args:
+            telext_id: TelExtModel 的 primary key
+        """
+        DBSession.query(TelExtModel).filter_by(id=telext_id).delete()
+
+    @staticmethod
+    def update_telext(telext_id, form_data):
+        """更新分機表
+
+        Args:
+            telext_id: 分機表 TelExtModel 的 primary key
+            form_data: wtforms.forms.Form
+        """
+        telext = DBSession.query(TelExtModel).get(telext_id)
+        form_data.populate_obj(telext)
+        telext.is_pinned = 1 if form_data.is_pinned.data else 0
+        DBSession.add(telext)
+        return True
+
+    @staticmethod
+    def get_telext(telext_id):
+        """取得分機
+
+        Args:
+            telext_id: 分機表 TelExtModel 的 primary key
+        """
+        return DBSession.query(TelExtModel).get(telext_id)

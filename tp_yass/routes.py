@@ -52,3 +52,8 @@ def includeme(config):
                      factory=admin_factory)
     config.add_route('backend_link_category_edit', '/backend/link/category/edit/{link_category_id:\d+}',
                      factory=admin_factory)
+
+    config.add_route('backend_telext_create', '/backend/telext/create', factory=admin_factory)
+    config.add_route('backend_telext_list', '/backend/telext/list', factory=admin_factory)
+    config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory)
+    config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)

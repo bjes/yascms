@@ -4,8 +4,9 @@ from sqlalchemy import (Column,
                         Text,
                         ForeignKey)
 from sqlalchemy.orm import relationship
-
 from pyramid_sqlalchemy import BaseObject
+
+from tp_yass.models.page import PageModel
 
 
 class NavbarModel(BaseObject):
@@ -22,8 +23,12 @@ class NavbarModel(BaseObject):
     # 無障礙用的名稱，只能是英文。只要不是 leaf node 都要設定此值
     aria_name = Column(String(50), nullable=True)
 
-    # 連結的 url
-    url = Column(Text, nullable=False, default='#', server_default='#')
+    # 連結的 url，若這個 navbar 是連結了單一頁面，則 url 就會是 null，跟上面的 url 互斥
+    url = Column(Text)
+
+    # 連結的單一頁面，若是連結 url 則 page_id 就會是 null，跟上面的 url 互斥
+    page_id = Column(Integer, ForeignKey('pages.id'))
+    page = relationship(PageModel, back_populates='navbar')
 
     # 是否為外部連結，若是，點選連結時另開分頁
     is_external = Column(Integer, nullable=False, default=0, server_default='0')
@@ -31,9 +36,9 @@ class NavbarModel(BaseObject):
     # 使用的 fontawesome icon
     icon = Column(String(50), nullable=False, default='', server_default='')
 
-    # 選單類型， 1 為選單 （代表其下還有子選單， tree node），2 為連結 （leaf node），3 為分隔線 （dropdown divider)
+    # 選單類型， 1 為選單 （代表其下還有子選單， tree node），2 為連結 （leaf node，一種是直接輸入 url，一種是連結單一頁面），3 為分隔線 （dropdown divider)
     # 4 是代表為 builtin news 模組（所以有子選單）， 5 代表 news 模組下的各分類的選單（無子選單），6 代表顯示全部 news 的連結，
-    # 7 代表行事曆， 8 代表分機表，9 代表班級網頁，10 代表好站連結
+    # 7 代表行事曆， 8 代表分機表，9 代表好站連結
     # 其中 5 和 6 會在 news helper 產生在 4 的下面，資料庫裡面不會有
     type = Column(Integer, nullable=False)
 

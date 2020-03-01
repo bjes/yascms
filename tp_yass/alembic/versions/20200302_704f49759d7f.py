@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 1b1c09cb7fdf
+Revision ID: 704f49759d7f
 Revises: 
-Create Date: 2020-03-01 14:37:34.220915
+Create Date: 2020-03-02 08:43:01.630886
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1b1c09cb7fdf'
+revision = '704f49759d7f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,21 +33,6 @@ def upgrade():
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
-    )
-    op.create_table('navbar',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=50), server_default='', nullable=False),
-    sa.Column('aria_name', sa.String(length=50), nullable=True),
-    sa.Column('url', sa.Text(), server_default='#', nullable=False),
-    sa.Column('is_external', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('icon', sa.String(length=50), server_default='', nullable=False),
-    sa.Column('type', sa.Integer(), nullable=False),
-    sa.Column('module_name', sa.String(length=50), nullable=True),
-    sa.Column('order', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('is_visible', sa.Integer(), server_default='1', nullable=False),
-    sa.Column('ancestor_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['ancestor_id'], ['navbar.id'], ),
-    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('news_categories',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -76,6 +61,17 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+    op.create_table('telext',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(length=50), nullable=False),
+    sa.Column('ext', sa.String(length=50), nullable=False),
+    sa.Column('order', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('publication_date', sa.DateTime(), nullable=False),
+    sa.Column('last_updated_date', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_telext_title'), 'telext', ['title'], unique=False)
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=20), nullable=False),
@@ -108,6 +104,23 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_links_title'), 'links', ['title'], unique=False)
+    op.create_table('navbar',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=50), server_default='', nullable=False),
+    sa.Column('aria_name', sa.String(length=50), nullable=True),
+    sa.Column('url', sa.Text(), server_default='#', nullable=False),
+    sa.Column('is_external', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('icon', sa.String(length=50), server_default='', nullable=False),
+    sa.Column('type', sa.Integer(), nullable=False),
+    sa.Column('module_name', sa.String(length=50), nullable=True),
+    sa.Column('order', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('is_visible', sa.Integer(), server_default='1', nullable=False),
+    sa.Column('ancestor_id', sa.Integer(), nullable=True),
+    sa.Column('page_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['ancestor_id'], ['navbar.id'], ),
+    sa.ForeignKeyConstraint(['page_id'], ['pages.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
@@ -171,15 +184,17 @@ def downgrade():
     op.drop_table('page_attachments')
     op.drop_index(op.f('ix_news_title'), table_name='news')
     op.drop_table('news')
+    op.drop_table('navbar')
     op.drop_index(op.f('ix_links_title'), table_name='links')
     op.drop_table('links')
     op.drop_table('groups_pages_association')
     op.drop_table('users')
+    op.drop_index(op.f('ix_telext_title'), table_name='telext')
+    op.drop_table('telext')
     op.drop_table('tags')
     op.drop_table('sys_config')
     op.drop_table('pages')
     op.drop_table('news_categories')
-    op.drop_table('navbar')
     op.drop_table('link_categories')
     op.drop_table('groups')
     # ### end Alembic commands ###

@@ -13,7 +13,7 @@ from pyramid_wtforms.validators import (InputRequired,
 class LinkForm(Form):
     """好站連結的建立表單"""
 
-    title = StringField('標題*', [InputRequired('標題欄位必填'), Length(max=50, message='最長只接受 100 個字元')])
+    title = StringField('標題*', [InputRequired('標題欄位必填'), Length(max=50, message='最長只接受 50 個字元')])
 
     url = TextAreaField('網址*', [InputRequired('網址欄位必填')])
 
@@ -37,7 +37,7 @@ class LinkCategoryForm(Form):
     name = StringField('名稱*', [InputRequired('名稱必填')])
 
     # TODO: 要動態產生，目前先寫死 20 組
-    order = SelectField('排序*', [InputRequired('排序必填')],
+    order = SelectField('排序', [InputRequired('排序必填')],
                         choices=[(i, str(i)) for i in range(21)],
                         coerce=int)
 

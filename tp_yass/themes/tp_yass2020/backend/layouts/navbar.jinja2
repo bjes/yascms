@@ -57,9 +57,18 @@
           <li><a class="dropdown-item" href="{{ request.route_url('backend_page_list') }}">頁面列表</a></li>
         </ul>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-phone"></i> 常用分機</a>
+      {% if request.session['is_admin'] %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarTelExtDropdown" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-phone"></i> 分機表
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarTelExtDropdown">
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_telext_create') }}">建立分機</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_telext_list') }}">分機管理</a></li>
+        </ul>
       </li>
+      {% endif %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarLinkDropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">

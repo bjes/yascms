@@ -53,3 +53,5 @@ class PageModel(BaseObject):
 
     # 擁有這個頁面編輯權限的群組
     groups = relationship('models.user.GroupModel', secondary=models.user.groups_pages_association, back_populates='pages')
+
+    navbar = relationship('models.navbar.NavbarModel', uselist=False, back_populates='page')
