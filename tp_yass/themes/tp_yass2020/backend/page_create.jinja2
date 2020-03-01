@@ -1,6 +1,6 @@
 {% extends "layouts/master.jinja2" %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -47,8 +47,8 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-  <script src="{{ 'tp_yass:themes/default/static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
-  <script src="{{ 'tp_yass:themes/default/static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
   <script>
     $(function (){
       $('#content').summernote({

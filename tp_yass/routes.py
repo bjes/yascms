@@ -5,7 +5,7 @@ from .resources import (auth_user_factory,
                         news_edit_factory)
 
 def includeme(config):
-    config.add_static_view('static', 'tp_yass:themes/default/static', cache_max_age=3600)
+    config.add_static_view('static', 'static', cache_max_age=3600)
 
     # frontend
     config.add_route('homepage', '/')
