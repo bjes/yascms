@@ -9,4 +9,4 @@ from tp_yass.views.helper.navbar import generate_navbar_trees
              permission='view')
 def backend_navbar_list_view(request):
     """後台顯示 navbar 樹狀結構"""
-    return {'navbar_trees': generate_navbar_trees(DAL.get_navbar_list())}
+    return {'navbar_trees': generate_navbar_trees()}
