@@ -20,7 +20,7 @@
             <tbody>
             {% for each_page in page_list %}
               <tr>
-                <th scope="row">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
+                <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
                 <td><a href="#">{{ each_page.title }}</a></td>
                 <td>
                 {% for each_group in each_page.groups %}

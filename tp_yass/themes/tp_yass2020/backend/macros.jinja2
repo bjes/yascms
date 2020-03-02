@@ -1,0 +1,35 @@
+{% macro generate_navbar_trees(name, navbar_trees) %}
+  {% for navbar in navbar_trees recursive %}
+    {% if loop.first %}
+      {% if not navbar.ancestor %}
+        <ul class="list-group" id="root-navbar" data-name="{{ name }}">
+      {% else %}
+        <ul class="list-group">
+      {% endif %}
+    {% endif %}
+  {# 這是分隔線，只有分隔線的樣式要特別處理 #}
+  {% if navbar.type == 3 %}
+    {% if navbar.id == -1 %}
+      {# 最新消息的分隔線不需超連結 #}
+      <li class="my-1">{{ navbar.name }}
+    {% else %}
+      <li class="my-1"><a href="#">{{ navbar.name }}</a>
+    {% endif %}
+  {% else %}
+    {% if navbar.type == 5 %}
+      <li class="list-group-item">{{ navbar.name }}
+    {% elif navbar.type == 6 %}
+      <li class="list-group-item">顯示全部
+    {% else %}
+      <li class="list-group-item" data-value="{{ navbar.id }}"><a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
+    {% endif %}
+  {% endif %}
+  {% if navbar.descendants %}
+    {{ loop(navbar.descendants) }}
+  {% endif %}
+  </li>
+  {% if loop.last %}
+    </ul>
+  {% endif %}
+  {% endfor %}
+{% endmacro %}

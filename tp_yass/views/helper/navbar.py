@@ -28,10 +28,17 @@ def _recursive_append(navbar_node, navbar):
             _recursive_append(descendant_navbar, navbar)
 
 
-def generate_navbar_trees():
-    """將傳入的 navbar list orms 轉成單純的 巢狀陣列，避免相依後端的 orm"""
+def generate_navbar_trees(type='all'):
+    """將傳入的 navbar list orms 轉成單純的 巢狀陣列，避免相依後端的 orm
+
+    Args:
+        type: 傳入 DAL.get_navbar_list 用
+
+    Returns:
+        回傳 navbar 樹狀結構
+    """
     navbar_trees = []
-    for navbar in DAL.get_navbar_list():
+    for navbar in DAL.get_navbar_list(type):
         if not navbar.ancestor_id:
             # 代表是最上層導覽列
             sub_navbar = {'id': navbar.id,

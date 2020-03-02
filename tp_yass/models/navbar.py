@@ -20,11 +20,8 @@ class NavbarModel(BaseObject):
     # 選單名稱
     name = Column(String(50), nullable=False, server_default='')
 
-    # 無障礙用的名稱，只能是英文。只要不是 leaf node 都要設定此值
-    aria_name = Column(String(50), nullable=True)
-
     # 連結的 url，若這個 navbar 是連結了單一頁面，則 url 就會是 null，跟上面的 url 互斥
-    url = Column(Text)
+    url = Column(Text, nullable=True)
 
     # 連結的單一頁面，若是連結 url 則 page_id 就會是 null，跟上面的 url 互斥
     page_id = Column(Integer, ForeignKey('pages.id'))

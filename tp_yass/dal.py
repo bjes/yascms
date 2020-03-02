@@ -4,6 +4,7 @@
 """
 import math
 from datetime import datetime, date
+import logging
 
 from sqlalchemy import or_, func
 from sqlalchemy.exc import IntegrityError
@@ -17,6 +18,9 @@ from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
+
+
+logger = logging.getLogger(__name__)
 
 
 class DAL:
@@ -180,12 +184,83 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_navbar_list():
+    def get_navbar_list(type='all'):
         """傳回導覽列列表
 
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
+
+        Args:
+            type: 產生的 navbar list 類型，若為 intermediate 則只傳回可接受子選單的選單物件，若為 all 則回傳全部
         """
-        return DBSession.query(NavbarModel).order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
+        results = DBSession.query(NavbarModel)
+        if type == 'intermediate':
+            results = results.filter_by(type=1)
+        return results.order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
+
+    @staticmethod
+    def create_navbar(form_data):
+        """建立 navbar 物件
+
+        Args:
+            form_data: wtforms.forms.Form
+        """
+        navbar = NavbarModel()
+        if form_data.type.data == 1:
+            # intermediate node
+            navbar.type = 1
+            navbar.name = form_data.name.data
+            if form_data.icon.data:
+                navbar.icon = form_data.icon.data
+        elif form_data.type.data == 2:
+            # leaf node
+            navbar.type = 2
+            navbar.name = form_data.name.data
+            if form_data.leaf_type.data == 1:
+                if form_data.page_id.data:
+                    page = DAL.get_page(int(form_data.page_id.data))
+                    if page:
+                        navbar.page = page
+                    else:
+                        logger.error('找不到 page id 為 %s 的物件', form_data.page_id.data)
+                        return False
+                else:
+                    logger.error('沒有指定連結的 page id')
+                    return False
+            elif form_data.leaf_type.data == 2:
+                if form_data.url.data:
+                    navbar.url = form_data.url.data
+                else:
+                    logger.error('沒有指定連結的網址')
+                    return False
+                navbar.is_external = 1 if form_data.is_external.data else 0
+            if form_data.icon.data:
+                navbar.icon = form_data.icon.data
+        elif form_data.type.data == 3:
+            # divider
+            navbar.type = 3
+            navbar.name = '分隔線'
+        navbar.is_visible = 1 if form_data.is_visible.data else 0
+        navbar.order = form_data.order.data
+        ancestor_navbar = DAL.get_navbar(int(form_data.ancestor_id.data))
+        if ancestor_navbar:
+            navbar.ancestor = ancestor_navbar
+        else:
+            logger.error('找不到上層選單物件 %s', form_data.ancestor_id.data)
+            return False
+        DBSession.add(navbar)
+        return True
+
+    @staticmethod
+    def get_navbar(navbar_id):
+        """取得導覽列物件
+
+        Args:
+            navbar_id: NavbarModel 的 primary key
+
+        Returns:
+            回傳導覽列物件
+        """
+        return DBSession.query(NavbarModel).get(navbar_id)
 
     @staticmethod
     def get_sys_config_list():

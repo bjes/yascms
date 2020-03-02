@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 704f49759d7f
+Revision ID: 86463f4bb0fd
 Revises: 
-Create Date: 2020-03-02 08:43:01.630886
+Create Date: 2020-03-03 03:36:12.623128
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '704f49759d7f'
+revision = '86463f4bb0fd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -107,8 +107,8 @@ def upgrade():
     op.create_table('navbar',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), server_default='', nullable=False),
-    sa.Column('aria_name', sa.String(length=50), nullable=True),
-    sa.Column('url', sa.Text(), server_default='#', nullable=False),
+    sa.Column('url', sa.Text(), nullable=True),
+    sa.Column('page_id', sa.Integer(), nullable=True),
     sa.Column('is_external', sa.Integer(), server_default='0', nullable=False),
     sa.Column('icon', sa.String(length=50), server_default='', nullable=False),
     sa.Column('type', sa.Integer(), nullable=False),
@@ -116,7 +116,6 @@ def upgrade():
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('is_visible', sa.Integer(), server_default='1', nullable=False),
     sa.Column('ancestor_id', sa.Integer(), nullable=True),
-    sa.Column('page_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['ancestor_id'], ['navbar.id'], ),
     sa.ForeignKeyConstraint(['page_id'], ['pages.id'], ),
     sa.PrimaryKeyConstraint('id')

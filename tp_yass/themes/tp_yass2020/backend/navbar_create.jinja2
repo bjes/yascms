@@ -1,0 +1,155 @@
+{% extends "layouts/master.jinja2" %}
+{% from 'macros.jinja2' import generate_navbar_trees %}
+{% block page_css %}
+<link href="{{ 'tp_yass:static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>導覽列 - 建立</h1></div>
+    <div class="col-12">
+      {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+              <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+      <form action="" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="form-group">
+          {{ form.type.label() }}
+          {{ form.type(class_='form-control') }}
+        </div>
+        <div class="form-group" id="name_group">
+          {{ form.name.label() }}
+          {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
+        </div>
+        <div class="form-group" id="leaf_type_group">
+          {{ form.leaf_type.label() }}
+          {{ form.leaf_type(class_='form-control') }}
+        </div>
+        <div class="form-group" id="url_group">
+          {{ form.url.label() }}
+          {{ form.url(class_='form-control', placeholder='請輸入連結網址') }}
+        </div>
+        <div class="form-group" id="page_group">
+          {{ form.page_id.label() }}
+          {{ form.page_id(class_='form-control', placeholder='請輸入連結單一網頁') }}
+        </div>
+        <div class="form-group" id="navbar_group">
+          {{ form.ancestor_id.label() }}
+          {{ generate_navbar_trees('ancestor_id', navbar_trees) }}
+        </div>
+        <div class="form-group" id="icon_group">
+          {{ form.icon.label() }}
+          {{ form.icon(class_='form-control') }}
+        </div>
+        <div class="form-group form-check" id="is_external_group">
+          {{ form.is_external(class_='form-check-input') }}
+          {{ form.is_external.label(class_="form-check-label") }}
+        </div>
+        <div class="form-group">
+          {{ form.order.label() }}
+          {{ form.order(class_='form-control') }}
+        </div>
+        <div class="form-group form-check">
+          {{ form.is_visible(class_='form-check-input') }}
+          {{ form.is_visible.label(class_="form-check-label") }}
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ 'tp_yass:static/js/jquery.qubit-2.0.9.js'|static_path }}"></script>
+<script src="{{ 'tp_yass:static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script>
+  $(function() {
+    let type_value = parseInt($('#type').val());
+    if (type_value === 1) {
+      $('#leaf_type_group, #is_external_group').hide();
+    } else if (type_value === 2) {
+      $('#leaf_type_group, #is_external_group').show();
+      switch (parseInt($('#leaf_type').val())) {
+        case 1:
+          $('#url_group').hide();
+          $('#page_group').show();
+          break;
+        case 2:
+          $('#page_group').hide();
+          $('#url_group').show();
+          break;
+      }
+    } else if (type_value === 3) {
+      $('#name_group, #leaf_type_group, #icon_group, #is_external_group').hide();
+      $('#name').val('分隔線');
+    }
+    $('#type').change(function() {
+      switch (parseInt($(this).val())) {
+        case 1:
+          $('#leaf_type_group, #is_external_group').hide();
+          break;
+        case 2:
+          $('#leaf_type_group, #is_external_group').show();
+          switch (parseInt($('#leaf_type').val())) {
+            case 1:
+              $('#url_group').hide();
+              $('#page_group').show();
+              break;
+            case 2:
+              $('#page_group').hide();
+              $('#url_group').show();
+              break;
+          }
+          break;
+        case 3:
+          $('#name_group, #leaf_type_group, #icon_group, #is_external_group').hide();
+          $('#name').val('分隔線');
+          break;
+      }
+    });
+
+    if ($('#leaf_type').is(':visible')) {
+      switch (parseInt($('#leaf_type').val())) {
+        case 1:
+          $('#url_group').hide();
+          $('#page_group').show();
+          break;
+        case 2:
+          $('#page_group').hide();
+          $('#url_group').show();
+          break;
+      }
+    } else {
+      $('#url_group, #page_group').hide();
+    }
+    $('#leaf_type').change(function() {
+      switch (parseInt($(this).val())) {
+        case 1:
+          $('#url_group').hide();
+          $('#page_group').show();
+          break;
+        case 2:
+          $('#page_group').hide();
+          $('#url_group').show();
+          break;
+      }
+    });
+
+    $('#root-navbar').bonsai({
+      expandAll: false,
+      createInputs: 'radio'
+    });
+
+    let selected_ancestor_id = '{{ form.ancestor_id.data }}';
+  });
+</script>
+{% endblock page_js %}

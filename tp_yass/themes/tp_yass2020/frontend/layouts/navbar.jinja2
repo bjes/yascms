@@ -9,16 +9,20 @@
       {% for navbar in navbar_trees recursive %}
         {# 有子選單的類型 #}
         {% if navbar.type == 1 or navbar.type == 4 %}
-          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbar{{ navbar.aria_name }}Dropdown" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
-            {% if navbar.icon -%}
-              <i class="fas {{ navbar.icon }}"></i> {{ navbar.name }}
-            {% else %}
-              {{ navbar.name }}
-            {%- endif %}
-          </a>
-            <ul class="dropdown-menu" aria-labelledby="navbar{{ navbar.aria_name }}Dropdown">
+          {% if loop.depth == 1 %}
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
+          {% else %}
+            <li class="dropdown">
+            <a class="dropdown-item dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
+          {% endif %}
+          {% if navbar.icon -%}
+            <i class="fas {{ navbar.icon }}"></i> {{ navbar.name }}
+          {% else %}
+            {{ navbar.name }}
+          {%- endif %}
+            </a>
+            <ul class="dropdown-menu">
               {% if navbar.type == 1 %}
                 {{ loop(navbar.descendants) }}
               {% elif navbar.type == 4 %}
@@ -36,11 +40,18 @@
             </ul>
           </li>
         {% elif navbar.type in (2, 7, 8, 9, 10) %}
-          <li>
-            <a class="dropdown-item" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
-              {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}
-            </a>
-          </li>
+          {% if loop.depth == 1 %}
+            <li class="nav-item">
+              <a class="nav-link" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
+                {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}
+              </a>
+          {% else %}
+            <li>
+              <a class="dropdown-item" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
+                {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}
+              </a>
+          {% endif %}
+            </li>
         {% elif navbar.type == 3 %}
           <li class="dropdown-divider"></li>
         {% endif %}

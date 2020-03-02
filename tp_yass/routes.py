@@ -19,6 +19,7 @@ def includeme(config):
 
     config.add_route('backend_sys_config_edit', '/backend/sys/config/edit', factory=admin_factory)
 
+    config.add_route('backend_navbar_create', '/backend/navbar/create', factory=admin_factory)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory)
 
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
