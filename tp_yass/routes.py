@@ -21,6 +21,8 @@ def includeme(config):
 
     config.add_route('backend_navbar_create', '/backend/navbar/create', factory=admin_factory)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory)
+    config.add_route('backend_navbar_delete', '/backend/navbar/delete/{navbar_id:\d+}', factory=admin_factory)
+    config.add_route('backend_navbar_edit', '/backend/navbar/edit/{navbar_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)

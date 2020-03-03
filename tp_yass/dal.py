@@ -205,6 +205,10 @@ class DAL:
             form_data: wtforms.forms.Form
         """
         navbar = NavbarModel()
+        return DAL.sync_navbar(form_data, navbar)
+
+    @staticmethod
+    def sync_navbar(form_data, navbar):
         if form_data.type.data == 1:
             # intermediate node
             navbar.type = 1
@@ -266,6 +270,15 @@ class DAL:
             回傳導覽列物件
         """
         return DBSession.query(NavbarModel).get(navbar_id)
+
+    @staticmethod
+    def delete_navbar(navbar):
+        """刪除指定的 navbar 物件
+
+        Args:
+            navbar: NavbarModel 物件
+        """
+        DBSession.delete(navbar)
 
     @staticmethod
     def get_sys_config_list():
