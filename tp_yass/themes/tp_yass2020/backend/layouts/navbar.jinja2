@@ -7,11 +7,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarSysConfigDropdown" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarSysConfigDropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-cogs"></i> 系統設定
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+          <ul class="dropdown-menu" aria-labelledby="navbarSysConfigDropdown">
             {% if request.session['is_admin'] %}
             <li><a class="dropdown-item" href="{{ request.route_url('backend_sys_config_edit') }}">一般設定</a></li>
             {% endif %}
@@ -20,8 +19,7 @@
         </li>
       {% if request.session['is_admin'] %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-users-cog"></i> 使用者管理
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
@@ -34,8 +32,7 @@
         </li>
       {% endif %}
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarNewsDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarNewsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bullhorn"></i> 最新消息
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
@@ -48,19 +45,17 @@
         </ul>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarPageDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarPageDropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-newspaper"></i> 單一頁面
         </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
+        <ul class="dropdown-menu" aria-labelledby="navbarPageDropdown">
           <li><a class="dropdown-item" href="{{ request.route_url('backend_page_create') }}">建立頁面</a></li>
           <li><a class="dropdown-item" href="{{ request.route_url('backend_page_list') }}">頁面列表</a></li>
         </ul>
       </li>
       {% if request.session['is_admin'] %}
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarTelExtDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarTelExtDropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-phone"></i> 分機表
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarTelExtDropdown">
@@ -70,11 +65,10 @@
       </li>
       {% endif %}
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarLinkDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarLinkDropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-link"></i> 好站連結
         </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
+        <ul class="dropdown-menu" aria-labelledby="navbarLinkDropdown">
           <li><a class="dropdown-item" href="#">建立連結</a></li>
           <li><a class="dropdown-item" href="#">連結管理</a></li>
           <li><a class="dropdown-item" href="#">建立分類</a></li>
@@ -82,8 +76,7 @@
         </ul>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarTagsDropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarTagsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-tags"></i> 標籤管理
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarTagsDropdown">
@@ -94,8 +87,7 @@
         </ul>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
           {{ request.session['first_name']}}{{ request.session['last_name']}}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarAccountDropdown">
