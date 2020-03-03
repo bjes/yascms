@@ -11,7 +11,7 @@
         {% if navbar.type == 1 or navbar.type == 4 %}
           {% if loop.depth == 1 %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="navbar_{{ navbar.aria_name }}_dropdown" aria-haspopup="true" aria-expanded="false">
           {% else %}
             <li class="dropdown">
               <a class="dropdown-item dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
@@ -22,7 +22,7 @@
                 {{ navbar.name }}
           {%- endif %}
               </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" aria-labelledby="navbar_{{ navbar.aria_name }}_dropdown">
               {% if navbar.type == 1 %}
                 {{ loop(navbar.descendants) }}
               {% elif navbar.type == 4 %}

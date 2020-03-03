@@ -211,6 +211,11 @@ class DAL:
             navbar.name = form_data.name.data
             if form_data.icon.data:
                 navbar.icon = form_data.icon.data
+            if form_data.aria_name.data:
+                navbar.aria_name = form_data.aria_name.data
+            else:
+                logger.error('intermediate node 應該設定無障礙英文名稱')
+                return False
         elif form_data.type.data == 2:
             # leaf node
             navbar.type = 2

@@ -20,6 +20,9 @@ class NavbarModel(BaseObject):
     # 選單名稱
     name = Column(String(50), nullable=False, server_default='')
 
+    # 無障礙導覽列英文名稱，若是 intermediate node 就要設定； leaf node 就不用
+    aria_name = Column(String(50), nullable=True)
+
     # 連結的 url，若這個 navbar 是連結了單一頁面，則 url 就會是 null，跟上面的 url 互斥
     url = Column(Text, nullable=True)
 

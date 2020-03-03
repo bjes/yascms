@@ -18,6 +18,13 @@ class NavbarForm(Form):
                                 (3, '分隔線')],
                        coerce=int)
 
+    aria_name = StringField('無障礙導覽列英文名稱')
+
+    def validate_aria_name(form, field):
+        if field.data:
+            if len(field.data) > 50:
+                raise ValidationError('無障礙導覽列英文名稱長度不能超過 50 個字元')
+
     leaf_type = SelectField('導覽列連結類型',
                             [InputRequired('導覽列連結類型必填')],
                             choices=[(1, '連結單一頁面'),

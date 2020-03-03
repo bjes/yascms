@@ -11,6 +11,7 @@ def _recursive_append(navbar_node, navbar):
     elif navbar.ancestor_id == navbar_node['id']:
         sub_navbar = {'id': navbar.id,
                       'name': navbar.name,
+                      'aria_name': navbar.aria_name,
                       'url': navbar.url,
                       'is_external': navbar.is_external,
                       'icon': navbar.icon,
@@ -43,6 +44,7 @@ def generate_navbar_trees(type='all'):
             # 代表是最上層導覽列
             sub_navbar = {'id': navbar.id,
                           'name': navbar.name,
+                          'aria_name': navbar.aria_name,
                           'url': navbar.url,
                           'is_external': navbar.is_external,
                           'icon': navbar.icon,

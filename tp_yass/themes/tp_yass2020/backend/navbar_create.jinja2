@@ -29,6 +29,10 @@
           {{ form.name.label() }}
           {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
         </div>
+        <div class="form-group" id="aria_name_group">
+          {{ form.aria_name.label() }}
+          {{ form.aria_name(class_='form-control', placeholder='請輸入英文名稱') }}
+        </div>
         <div class="form-group" id="leaf_type_group">
           {{ form.leaf_type.label() }}
           {{ form.leaf_type(class_='form-control') }}
@@ -76,8 +80,10 @@
     let type_value = parseInt($('#type').val());
     if (type_value === 1) {
       $('#leaf_type_group, #is_external_group').hide();
+      $('#aria_name_group').show();
     } else if (type_value === 2) {
       $('#leaf_type_group, #is_external_group').show();
+      $('#aria_name_group').hide();
       switch (parseInt($('#leaf_type').val())) {
         case 1:
           $('#url_group').hide();
@@ -89,16 +95,18 @@
           break;
       }
     } else if (type_value === 3) {
-      $('#name_group, #leaf_type_group, #icon_group, #is_external_group').hide();
+      $('#name_group, #aria_name_group, #leaf_type_group, #page_group, #url_group, #icon_group, #is_external_group').hide();
       $('#name').val('分隔線');
     }
     $('#type').change(function() {
       switch (parseInt($(this).val())) {
         case 1:
           $('#leaf_type_group, #is_external_group').hide();
+          $('#aria_name_group').show();
           break;
         case 2:
           $('#leaf_type_group, #is_external_group').show();
+          $('#aria_name_group').hide();
           switch (parseInt($('#leaf_type').val())) {
             case 1:
               $('#url_group').hide();
@@ -111,7 +119,7 @@
           }
           break;
         case 3:
-          $('#name_group, #leaf_type_group, #icon_group, #is_external_group').hide();
+          $('#name_group, #aria_name_group, #leaf_type_group, #page_group, #url_group, #icon_group, #is_external_group').hide();
           $('#name').val('分隔線');
           break;
       }
