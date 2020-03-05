@@ -184,17 +184,21 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_navbar_list(type='all'):
+    def get_navbar_list(type='all', visible_only=False):
         """傳回導覽列列表
 
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
 
         Args:
             type: 產生的 navbar list 類型，若為 intermediate 則只傳回可接受子選單的選單物件，若為 all 則回傳全部
+            visible_only: 是否只擷取 is_visible 為 True 的導覽列，預設行為是全部擷取
         """
         results = DBSession.query(NavbarModel)
         if type == 'intermediate':
             results = results.filter_by(type=1)
+        if visible_only is True:
+            results = results.filter_by(is_visible=1)
+
         return results.order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
 
     @staticmethod
