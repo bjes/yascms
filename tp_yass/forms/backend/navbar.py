@@ -2,7 +2,9 @@ from pyramid_wtforms import (Form,
                              StringField,
                              SelectField,
                              IntegerField,
+                             HiddenField,
                              BooleanField)
+from pyramid_wtforms.widgets import HiddenInput
 from pyramid_wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -51,3 +53,9 @@ class NavbarForm(Form):
 
     class Meta:
         locales = ['zh_TW', 'tw']
+
+
+class NavbarEditForm(NavbarForm):
+    """編輯導覽列的選單不需要讓使用者更改 type，這個欄位在編輯時不給改"""
+
+    type = IntegerField('導覽列類型', [InputRequired('導覽列類型欄位必填')], widget=HiddenInput())

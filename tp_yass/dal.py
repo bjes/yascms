@@ -278,7 +278,11 @@ class DAL:
         Args:
             navbar: NavbarModel 物件
         """
-        DBSession.delete(navbar)
+        if navbar.type in (1, 2, 3):
+            DBSession.delete(navbar)
+            return True
+        else:
+            return False
 
     @staticmethod
     def get_sys_config_list():

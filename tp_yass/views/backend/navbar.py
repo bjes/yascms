@@ -1,9 +1,14 @@
+import logging
+
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.views.helper.navbar import generate_navbar_trees
-from tp_yass.forms.backend.navbar import NavbarForm
+from tp_yass.forms.backend.navbar import NavbarForm, NavbarEditForm
 from tp_yass.dal import DAL
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_navbar_list',
@@ -54,9 +59,11 @@ class NavbarDeleteView:
         """遞迴刪除整串導覽列"""
         if navbar.descendants:
             for each_sub_navbar in navbar.descendants:
-                self._recursive_delete(each_sub_navbar)
+                result = self._recursive_delete(each_sub_navbar)
+                if not result:
+                    return False
         else:
-            DAL.delete_navbar(navbar)
+            return DAL.delete_navbar(navbar)
 
     @view_config()
     def delete_view(self):
@@ -65,8 +72,10 @@ class NavbarDeleteView:
         navbar_id = int(self.request.matchdict['navbar_id'])
         navbar = DAL.get_navbar(navbar_id)
         if navbar:
-            self._recursive_delete(navbar)
+            if not self._recursive_delete(navbar):
+                self.request.session.flash('刪除導覽列失敗，請確認導覽列類型是否正確', 'fail')
         return HTTPFound(self.request.route_url('backend_navbar_list'))
+
 
 
 @view_defaults(route_name='backend_navbar_edit',
@@ -82,12 +91,12 @@ class NavbarEditView:
         navbar_id = int(self.request.matchdict['navbar_id'])
         navbar = DAL.get_navbar(navbar_id)
 
-        form = NavbarForm(name=navbar.name,
-                          type=navbar.type,
-                          aria_name=navbar.aria_name,
-                          url=navbar.url,
-                          icon=navbar.icon,
-                          order=navbar.order)
+        form = NavbarEditForm(name=navbar.name,
+                              type=navbar.type,
+                              aria_name=navbar.aria_name,
+                              url=navbar.url,
+                              icon=navbar.icon,
+                              order=navbar.order)
         if navbar.page:
             form.leaf_type.default = 1
             form.page_id.data = navbar.page.id
@@ -103,7 +112,7 @@ class NavbarEditView:
     def post_view(self):
         navbar = DAL.get_navbar(int(self.request.matchdict['navbar_id']))
         if navbar:
-            form = NavbarForm(self.request.POST)
+            form = NavbarEditForm(self.request.POST)
             if form.validate():
                 if DAL.sync_navbar(form, navbar):
                     return HTTPFound(self.request.route_url('backend_navbar_list'))

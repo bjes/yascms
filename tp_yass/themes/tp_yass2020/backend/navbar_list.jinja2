@@ -5,6 +5,13 @@
 {% block content %}
 <div class="container">
   <div class="row">
+    {% if request.session.peek_flash('fail') %}
+    <div class="col-12">
+        {% for error_msg in request.session.pop_flash('fail') %}
+          <div class="alert alert-danger" role="alert">{{ error_msg }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="col-12"><h1>導覽列列表</h1></div>
     <div class="col-12">
       {% for navbar in navbar_trees recursive %}
@@ -21,7 +28,7 @@
             {# 最新消息的分隔線不需超連結 #}
             <li class="my-1">{{ navbar.name }}
           {% else %}
-            <li class="my-1"><a href="#">{{ navbar.name }}</a>
+            <li class="my-1"><a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}">{{ navbar.name }}</a>
           {% endif %}
         {% else %}
           {% if navbar.type == 5 %}
@@ -29,7 +36,7 @@
           {% elif navbar.type == 6 %}
             <li class="list-group-item">顯示全部
           {% else %}
-            <li class="list-group-item"><a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
+            <li class="list-group-item"><a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
           {% endif %}
         {% endif %}
             {% if navbar.descendants %}
