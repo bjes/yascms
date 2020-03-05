@@ -39,7 +39,7 @@
 {% endmacro %}
 
 
-{% macro generate_user_group_trees(name, group_trees) %}
+{% macro generate_user_group_trees(name, group_trees, use_link=True) %}
   {% for group in group_trees recursive %}
     {% if loop.first %}
       {% if not group.ancestor %}
@@ -48,7 +48,12 @@
         <ul class="list-group">
       {% endif %}
     {% endif %}
-    <li class="list-group-item" data-value="{{ group.id }}"><a href="#">{{ group.name }}</a>
+    <li class="list-group-item" data-value="{{ group.id }}">
+      {% if use_link %}
+        <a href="#">{{ group.name }}</a>
+      {% else %}
+        {{ group.name }}
+      {% endif %}
       {% if group.descendants %}
         {{ loop(group.descendants) }}
       {% endif %}

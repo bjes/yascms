@@ -35,7 +35,7 @@
         </div>
         <div class="form-group">
           {{ form.ancestor_id.label() }}
-          {{ generate_user_group_trees('ancestor_id', group_trees) }}
+          {{ generate_user_group_trees('ancestor_id', group_trees, use_link=False) }}
         </div>
         <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
       </form>
