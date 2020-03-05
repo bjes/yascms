@@ -30,6 +30,13 @@ class LinkModel(BaseObject):
     # 是否顯示在釘選在首頁
     is_pinned = Column(Integer, nullable=False, default=0, server_default='0')
 
+    # 顯示在首頁上的順序
+    pinned_order = Column(Integer, nullable=False, default=0, server_default='0')
+
+    # 在分類顯示中的順序
+    categorized_order = Column(Integer, nullable=False, default=0, server_default='0')
+
+
     # 發佈時間，建立這篇好站連結當下的時間
     publication_date = Column(DateTime, nullable=False, default=datetime.now)
 

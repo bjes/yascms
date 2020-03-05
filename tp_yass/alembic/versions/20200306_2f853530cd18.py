@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 3df2fd05727f
+Revision ID: 2f853530cd18
 Revises: 
-Create Date: 2020-03-03 10:32:13.901295
+Create Date: 2020-03-06 04:07:02.291114
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3df2fd05727f'
+revision = '2f853530cd18'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -66,6 +66,7 @@ def upgrade():
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('ext', sa.String(length=50), nullable=False),
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('pinned_order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
     sa.Column('publication_date', sa.DateTime(), nullable=False),
     sa.Column('last_updated_date', sa.DateTime(), nullable=False),
@@ -95,6 +96,8 @@ def upgrade():
     sa.Column('url', sa.Text(), nullable=False),
     sa.Column('icon', sa.String(length=100), nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('pinned_order', sa.Integer(), server_default='0', nullable=False),
+    sa.Column('categorized_order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('publication_date', sa.DateTime(), nullable=False),
     sa.Column('last_updated_date', sa.DateTime(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=True),
