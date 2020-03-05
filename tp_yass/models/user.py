@@ -74,7 +74,7 @@ class GroupModel(BaseObject):
     # 群組名稱
     name = Column(String(100), unique=True, nullable=False)
 
-    # 類別， 0 為管理者可無視權限設定， 1 為行政人員（可張貼最新消息）， 2 為普通註冊人員（比方教師）
+    # 類別， 0 為管理者可無視權限設定， 1 為行政群組（可張貼最新消息）， 2 為普通群組（比方教師）
     type = Column('type', Integer, nullable=False, default=1, server_default='1')
 
     # 排序的依據，數字愈小排越前面

@@ -25,7 +25,11 @@ def includeme(config):
     config.add_route('backend_navbar_edit', '/backend/navbar/edit/{navbar_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
+
+    config.add_route('backend_user_group_create', '/backend/user/group/create', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
+    # config.add_route('backend_user_group_delete', '/backend/user/group/delete/{group_id:\d+}', factory=admin_factory)
+    # config.add_route('backend_user_group_edit', '/backend/user/group/edit/{group_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)
@@ -60,3 +64,4 @@ def includeme(config):
     config.add_route('backend_telext_list', '/backend/telext/list', factory=admin_factory)
     config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory)
     config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)
+

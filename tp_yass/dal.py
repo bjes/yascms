@@ -150,6 +150,14 @@ class DAL:
         return group
 
     @staticmethod
+    def create_group():
+        return GroupModel()
+
+    @staticmethod
+    def save_group(group):
+        DBSession.add(group)
+
+    @staticmethod
     def get_user_list(page=1, quantity_per_page=20, group_id=None):
         """傳回使用者列表
 

@@ -1,4 +1,5 @@
 {% extends "layouts/master.jinja2" %}
+{% from 'macros.jinja2' import generate_user_group_trees %}
 {% block page_css %}
 <link href="{{ 'tp_yass:static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
 {% endblock page_css %}
@@ -7,23 +8,7 @@
   <div class="row">
     <div class="col-12"><h1>群組列表</h1></div>
     <div class="col-12">
-      {% for group in group_trees recursive %}
-        {% if loop.first %}
-          {% if not group.ancestor %}
-            <ul class="list-group" id="root-group">
-          {% else %}
-            <ul class="list-group">
-          {% endif %}
-        {% endif %}
-          <li class="list-group-item"><a href="#">{{ group.name }}</a>
-            {% if group.descendants %}
-              {{ loop(group.descendants) }}
-            {% endif %}
-          </li>
-        {% if loop.last %}
-        </ul>
-        {% endif %}
-      {% endfor %}
+      {{ generate_user_group_trees('group_trees', group_trees) }}
     </div>
   </div>
 </div>

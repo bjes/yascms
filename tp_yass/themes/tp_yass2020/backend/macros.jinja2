@@ -37,3 +37,24 @@
   {% endif %}
   {% endfor %}
 {% endmacro %}
+
+
+{% macro generate_user_group_trees(name, group_trees) %}
+  {% for group in group_trees recursive %}
+    {% if loop.first %}
+      {% if not group.ancestor %}
+        <ul class="list-group" id="root-group" data-name="{{ name }}">
+      {% else %}
+        <ul class="list-group">
+      {% endif %}
+    {% endif %}
+    <li class="list-group-item" data-value="{{ group.id }}"><a href="#">{{ group.name }}</a>
+      {% if group.descendants %}
+        {{ loop(group.descendants) }}
+      {% endif %}
+    </li>
+    {% if loop.last %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}

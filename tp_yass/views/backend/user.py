@@ -1,7 +1,9 @@
-from pyramid.view import view_config
+from pyramid.view import view_config, view_defaults
+from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
+from tp_yass.forms.backend.user import UserGroupForm
 
 
 def _recursive_append(group_node, group):
@@ -13,10 +15,7 @@ def _recursive_append(group_node, group):
             _recursive_append(descendant_group, group)
 
 
-@view_config(route_name='backend_user_group_list',
-             renderer='themes/default/backend/user_group_list.jinja2',
-             permission='view')
-def backend_user_group_list_view(request):
+def _generate_group_trees():
     all_groups = DAL.get_user_group_list()
     group_trees = []
     for group in all_groups:
@@ -28,7 +27,38 @@ def backend_user_group_list_view(request):
             for root_node in group_trees:
                 if _recursive_append(root_node, group):
                     break
-    return {'group_trees': group_trees}
+    return group_trees
+
+
+@view_config(route_name='backend_user_group_list',
+             renderer='themes/default/backend/user_group_list.jinja2',
+             permission='view')
+def backend_user_group_list_view(request):
+    return {'group_trees': _generate_group_trees()}
+
+
+@view_defaults(route_name='backend_user_group_create',
+               renderer='themes/default/backend/user_group_create.jinja2',
+               permission='edit')
+class UserGroupCreateView:
+    """建立使用者群組的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        form = UserGroupForm()
+        return {'form': form,
+                'group_trees': _generate_group_trees()}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = UserGroupForm(self.request.POST)
+        group = DAL.create_group()
+        form.populate_obj(group)
+        DAL.save_group(group)
+        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
 
 @view_config(route_name='backend_user_list',
