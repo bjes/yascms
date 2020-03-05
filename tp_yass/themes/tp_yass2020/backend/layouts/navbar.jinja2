@@ -75,10 +75,10 @@
           <i class="fas fa-link"></i> 好站連結
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarLinkDropdown">
-          <li><a class="dropdown-item" href="#">建立連結</a></li>
-          <li><a class="dropdown-item" href="#">連結管理</a></li>
-          <li><a class="dropdown-item" href="#">建立分類</a></li>
-          <li><a class="dropdown-item" href="#">分類管理</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_create') }}">建立連結</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_list') }}">連結管理</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_create') }}">建立分類</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_list') }}">分類管理</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown">

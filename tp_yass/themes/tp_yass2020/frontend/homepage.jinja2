@@ -71,25 +71,13 @@
 
 <div class="container">
   <div class="row">
+    {% for each_telext in telext_list %}
     <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">學生請假專線</a>
+      <a href="tel:{{ request.sys_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">學務處</a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">教務處</a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">警衛室</a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">幼兒園請假專線</a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:+886-2-85021571" class="btn btn-outline-success btn-lg btn-block">數學輔導團</a>
-    </div>
+    {% endfor %}
   </div>
+  <div class="col-12 text-center mt-2"><button type="button" class="btn btn-lg text-white" style="background-color: #2ecc71;">觀看完整分機表</button></div>
 </div>
 
 <div class="jumbotron jumbotron-fluid my-3 p-2 d-none d-sm-block" style="background-color: #e67e22;">
@@ -100,43 +88,12 @@
 
 <div class="container d-none d-sm-block">
   <div class="row text-center align-items-center">
+    {% for each_link in link_list %}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=1" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
+      <a href="{{ each_link.url }}" target="_blank"><img src="{{ request.static_url('tp_yass:static/uploads/links/' + each_link.icon) }}" class="img-fluid img-thumbnail align-middle" alt="{{ each_link.title }}"></a>
     </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/140/60/?random=2" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=3" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/150/60/?random=4" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=5" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/100/60/?random=6" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=7" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/50/?random=8" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=9" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/70/?random=10" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/40/?random=11" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
-      <img src="https://picsum.photos/120/60/?random=12" class="img-fluid img-thumbnail align-middle" alt="Responsive image">
-    </div>
+    {% endfor %}
   </div>
-  <div class="col-12 text-center mt-2"><button type="button" class="btn btn-lg text-white" style="background-color: #1abc9c;">觀看更多好站連結</button></div>
+  <div class="col-12 text-center mt-2"><button type="button" class="btn btn-lg text-white" style="background-color: #e67e22;">觀看完整好站連結</button></div>
 </div>
 {% endblock content %}

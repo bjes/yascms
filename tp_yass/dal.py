@@ -196,7 +196,7 @@ class DAL:
         results = DBSession.query(NavbarModel)
         if type == 'intermediate':
             results = results.filter_by(type=1)
-        if visible_only is True:
+        if visible_only:
             results = results.filter_by(is_visible=1)
 
         return results.order_by(NavbarModel.ancestor_id, NavbarModel.order).all()
@@ -746,6 +746,11 @@ class DAL:
                     [(page_number - 1) * quantity_per_page: (page_number - 1) * quantity_per_page + quantity_per_page])
 
     @staticmethod
+    def get_pinned_link_list():
+        """取得需要顯示在首頁上的好站連結"""
+        return DBSession.query(LinkModel).filter_by(is_pinned=1)
+
+    @staticmethod
     def get_page_quantity_of_total_link(quantity_per_page, category_id=None):
         """回傳好站連結總共有幾頁
 
@@ -898,6 +903,13 @@ class DAL:
     def get_telext_list():
         """回傳分機表列表"""
         return DBSession.query(TelExtModel).order_by(TelExtModel.order)
+
+    @staticmethod
+    def get_pinned_telext_list():
+        """回傳根據 pinned_order 排序的首頁分機表"""
+        return (DBSession.query(TelExtModel)
+                .filter_by(is_pinned=1)
+                .order_by(TelExtModel.pinned_order))
 
     @staticmethod
     def delete_telext(telext_id):
