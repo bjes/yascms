@@ -65,6 +65,7 @@
           {{ form.is_visible.label(class_="form-check-label") }}
         </div>
         <button type="submit" class="btn btn-primary mb-3">更改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+        {% if form.type.data in (1, 2, 3) %}<a class="btn btn-danger mb-3" href="{{ request.route_url('backend_navbar_delete', navbar_id=request.matchdict['navbar_id']) }}">刪除</a>{% endif %}
       </form>
     </div>
 
