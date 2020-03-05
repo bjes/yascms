@@ -70,7 +70,6 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=2, ancestor=school_garden))
     dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=2, ancestor=school_garden, is_external=True))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_garden))
-    dbsession.add(models.navbar.NavbarModel(name='班級網頁', order=5, type=9, icon='fa-chalkboard-teacher', module_name='class_sites', ancestor=school_garden))
     # 外站連結
     outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=1, icon='fa-globe-asia')
     dbsession.add(outside_link)
