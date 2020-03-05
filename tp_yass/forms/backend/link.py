@@ -10,6 +10,7 @@ from pyramid_wtforms.validators import (InputRequired,
                                         FileAllowed)
 
 
+# TODO: 要加上可以選擇分類選單排序的欄位
 class LinkForm(Form):
     """好站連結的建立表單"""
 
