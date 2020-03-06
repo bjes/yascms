@@ -1,6 +1,11 @@
 {% extends "tp_yass:themes/default/layouts/master.jinja2" %}
 {% block layout_css %}
   <link rel="stylesheet" href="{{ 'tp_yass:static/css/frontend.css'|static_path }}">
+  <style>
+    .jumbotron-bg {
+      background-image: url("/static/banner01.jpg");
+    }
+  </style>
 {% endblock layout_css %}
 {% block navbar %}{% include "navbar.jinja2" %}{% endblock navbar %}
 {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}

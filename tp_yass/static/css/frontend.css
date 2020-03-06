@@ -7,7 +7,6 @@ body {
 }
 
 .jumbotron-bg {
-  background-image: url("https://picsum.photos/2000/400/?random");
   background-size: cover;
   background-position: center center;
 }
