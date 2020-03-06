@@ -1,7 +1,7 @@
 from tp_yass.dal import DAL
 
 
-def _recursive_append(navbar_node, navbar):
+def _recursive_append(request, navbar_node, navbar):
     """遞迴的產生 sub navbar"""
 
     # 代表這是不可變動的選單，其 id 才會是 -1
@@ -26,13 +26,14 @@ def _recursive_append(navbar_node, navbar):
     # 繼續往下一層對應
     else:
         for descendant_navbar in navbar_node['descendants']:
-            _recursive_append(descendant_navbar, navbar)
+            _recursive_append(request, descendant_navbar, navbar)
 
 
-def generate_navbar_trees(type='all', visible_only=False):
+def generate_navbar_trees(request, type='all', visible_only=False):
     """將傳入的 navbar list orms 轉成單純的 巢狀陣列，避免相依後端的 orm
 
     Args:
+        request: pyramid.request.Request
         type: 傳入 DAL.get_navbar_list 用
         visible_only: 傳入 DAL.get_navbar_list 用
 
@@ -59,7 +60,7 @@ def generate_navbar_trees(type='all', visible_only=False):
         else:
             # 代表是第二層以下的群組
             for root_node in navbar_trees:
-                if _recursive_append(root_node, navbar):
+                if _recursive_append(request, root_node, navbar):
                     break
     return navbar_trees
 
