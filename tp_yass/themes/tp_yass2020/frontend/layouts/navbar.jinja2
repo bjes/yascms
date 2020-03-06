@@ -42,12 +42,12 @@
         {% elif navbar.type in (2, 7, 8, 9, 10) %}
           {% if loop.depth == 1 %}
             <li class="nav-item">
-              <a class="nav-link" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
+              <a class="nav-link" href="{{ navbar.url }}"{% if navbar.is_external %} target="_blank"{% endif %}>
                 {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}
               </a>
           {% else %}
             <li>
-              <a class="dropdown-item" href="#"{% if navbar.is_external %} target="_blank"{% endif %}>
+              <a class="dropdown-item" href="{{ navbar.url }}"{% if navbar.is_external %} target="_blank"{% endif %}>
                 {% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}
               </a>
           {% endif %}

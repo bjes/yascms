@@ -9,10 +9,15 @@ def _recursive_append(request, navbar_node, navbar):
         return True
     # leaf node
     elif navbar.ancestor_id == navbar_node['id']:
+        # TODO: 這邊的連結要換成 frontend 的 page 連結
+        if navbar.page:
+            url = request.route_path('backend_page_edit', page_id=navbar.page.id)
+        else:
+            url = navbar.url
         sub_navbar = {'id': navbar.id,
                       'name': navbar.name,
                       'aria_name': navbar.aria_name,
-                      'url': navbar.url,
+                      'url': url,
                       'is_external': navbar.is_external,
                       'icon': navbar.icon,
                       'type': navbar.type,
@@ -44,10 +49,15 @@ def generate_navbar_trees(request, type='all', visible_only=False):
     for navbar in DAL.get_navbar_list(type, visible_only):
         if not navbar.ancestor_id:
             # 代表是最上層導覽列
+            # TODO: 這邊的連結要換成 frontend 的 page 連結
+            if navbar.page:
+                url = request.route_path('backend_page_edit', page_id=navbar.page.id)
+            else:
+                url = navbar.url
             sub_navbar = {'id': navbar.id,
                           'name': navbar.name,
                           'aria_name': navbar.aria_name,
-                          'url': navbar.url,
+                          'url': url,
                           'is_external': navbar.is_external,
                           'icon': navbar.icon,
                           'type': navbar.type,
