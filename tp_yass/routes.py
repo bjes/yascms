@@ -6,7 +6,6 @@ from .resources import (auth_user_factory,
                         link_edit_factory)
 
 def includeme(config):
-    config.add_static_view('static', 'static', cache_max_age=3600)
 
     # frontend
     config.add_route('homepage', '/')
@@ -65,3 +64,4 @@ def includeme(config):
     config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory)
     config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)
 
+    config.add_static_view('', 'static', cache_max_age=3600)
