@@ -15,6 +15,4 @@ __pycache__
 data
 !*/data
 tp_yass/static/uploads/**
-tp_yass/static/*.png
-tp_yass/static/*.ico
-tp_yass/static/*.jpg
+tp_yass/static/themes/**
