@@ -97,8 +97,10 @@ class DAL:
 
     @staticmethod
     def get_sys_config_list():
-        """傳回系統設定檔"""
-        return DBSession.query(SysConfigModel).all()
+        """傳回系統設定檔，其中因為 maintenance mode 不是給使用者操作的，所以過濾掉"""
+        return (DBSession.query(SysConfigModel)
+                         .filter(SysConfigModel.name != 'site_maintenance_mode')
+                         .all())
 
     @staticmethod
     def get_user_group_list():
@@ -295,16 +297,6 @@ class DAL:
             return True
         else:
             return False
-
-    @staticmethod
-    def get_sys_config_list():
-        """回傳系統設定列表
-
-        其中 maintenance_mode 是用來升即時全站唯讀用，所以不給設定
-        """
-        return (DBSession.query(SysConfigModel)
-                         .filter(SysConfigModel.name != 'maintenance_mode')
-                         .order_by(SysConfigModel.id))
 
     @staticmethod
     def update_sys_config_list(updated_config_list):

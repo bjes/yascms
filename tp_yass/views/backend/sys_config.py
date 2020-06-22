@@ -24,7 +24,6 @@ class SysConfigView:
     def list_view(self):
         """列出 tp_yass:themes 目錄下扣掉 default 後有哪些樣板"""
 
-        # TODO: 不要顯示 maintenance mode
         config_list = DAL.get_sys_config_list()
         available_themes_list = self._get_themes_list()
         return {'config_list': config_list,
@@ -52,7 +51,7 @@ class SysConfigView:
         Returns:
             回傳需要更新的 list
         """
-        db_sys_config_list = DAL.get_sys_config_list().all()
+        db_sys_config_list = DAL.get_sys_config_list()
         updated_config_list = []
         for key, value in post_data.items():
             if key.startswith('site_'):
@@ -76,7 +75,6 @@ class SysConfigView:
     def post_view(self):
         """更新系統設定，並且更換 default symlink 的樣板"""
 
-        # TODO: 不要處理 maintenance mode
         updated_config_list = self._validate(self.request.POST)
         for config in updated_config_list:
             if config['name'] == 'site_theme':
