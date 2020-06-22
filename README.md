@@ -8,7 +8,7 @@
 export GIT_BASE_DIR=~/git
 mkdir -p $GIT_BASE_DIR
 cd $GIT_BASE_DIR
-git clone https://code.fossn.io/fossn/tp_yass.git
+git clone https://webcode.tp.edu.tw/tcenc/tp_yass.git
 ```
 
 ### 建立開發環境
@@ -36,6 +36,7 @@ ansible-playbook develop.yml
 
 ```shell
 cd tp_yass
+# 在 Debian 上需要安裝 python3-venv 套件
 python3 -m venv .venv
 ```
 
