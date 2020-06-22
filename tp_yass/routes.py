@@ -65,3 +65,4 @@ def includeme(config):
     config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)
 
     config.add_static_view('', 'static', cache_max_age=3600)
+    config.add_static_view('uploads', 'uploads', cache_max_age=3600)
