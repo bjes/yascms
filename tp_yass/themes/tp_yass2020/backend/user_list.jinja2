@@ -1,7 +1,7 @@
 {% extends "layouts/master.jinja2" %}
 {% from "tp_yass:themes/default/macros.jinja2" import paginate %}
 {% block page_css %}
-<link href="{{ 'tp_yass:static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+<link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -44,7 +44,7 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-<script src="{{ 'tp_yass:static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
 <script>
   $(function() {
     $('#root-group').bonsai({
