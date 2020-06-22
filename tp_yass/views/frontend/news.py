@@ -9,10 +9,10 @@ from tp_yass.dal import DAL
 def news_list_view(request):
     quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
     category_id = sanitize_input(request.GET.get('c'), int, None)
-    page_id = sanitize_input(request.GET.get('p', 1), int, 1)
-    news_list = DAL.get_news_list(page=page_id, category_id=category_id, quantity_per_page=quantity_per_page)
+    page_number = sanitize_input(request.GET.get('p', 1), int, 1)
+    news_list = DAL.get_news_list(page_number=page_number, category_id=category_id, quantity_per_page=quantity_per_page)
     return {'news_list': news_list,
             'navbar_trees': generate_navbar_trees(request),
             'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
-            'page_id': page_id,
+            'page_number': page_number,
             'quantity_per_page': quantity_per_page}

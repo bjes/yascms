@@ -25,10 +25,10 @@
             <tbody>
               {% for each_news in news_list %}
                 <tr>
-                  {% if page_id > 1 %}
-                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_id * quantity_per_page }}</th>
+                  {% if page_number > 1 %}
+                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_number * quantity_per_page }}</th>
                   {% else %}
-                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_id }}</th>
+                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_number }}</th>
                   {% endif %}
                   <td class="d-none d-md-table-cell">{{ each_news.publication_date }}</td>
                   <td class="d-none d-sm-table-cell">{{ each_news.group.name }}</td>
@@ -40,7 +40,7 @@
           </table>
         </div>
       </div>
-    {{ paginate(request, "最新消息列表分頁", "news_list", page_quantity_of_total_news, page_id, quantity_per_page) }}
+    {{ paginate(request, "最新消息列表分頁", "news_list", page_quantity_of_total_news, page_number, quantity_per_page) }}
     </div>
   </div>
 </div>
