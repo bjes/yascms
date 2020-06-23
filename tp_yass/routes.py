@@ -64,8 +64,9 @@ def includeme(config):
     config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory)
     config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)
 
+    # 開發用，上線環境會讓前端的 web server 處理這部份
     config.add_static_view('css', 'themes/default/static/css', cache_max_age=3600)
     config.add_static_view('js', 'themes/default/static/js', cache_max_age=3600)
     config.add_static_view('img', 'themes/default/static/img', cache_max_age=3600)
     config.add_static_view('uploads', 'uploads', cache_max_age=3600)
-    config.add_static_view('', 'static', cache_max_age=3600)
+    config.add_static_view('', 'icons', cache_max_age=3600)
