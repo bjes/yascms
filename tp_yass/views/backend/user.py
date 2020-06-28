@@ -86,6 +86,23 @@ class UserGroupEditView:
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
 
+@view_defaults(route_name='backend_user_group_delete', permission='edit')
+class UserGroupDeleteView:
+    """刪除使用者群組的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        group = DAL.get_group(self.request.matchdict['group_id'])
+        for each_child in group.descendants:
+            each_child.ancestor = group.ancestor
+            DAL.save_group(each_child)
+        DAL.delete_group(group)
+        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+
+
 @view_config(route_name='backend_user_list',
              renderer='themes/default/backend/user_list.jinja2',
              permission='view')

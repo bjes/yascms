@@ -54,7 +54,7 @@
           <a href="#">{{ group.name }}</a>
           <span>
             <a href="{{ request.route_url('backend_user_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a>
-            <a href="#" class="btn btn-sm btn-danger">刪除</a>
+            <a href="{{ request.route_url('backend_user_group_delete', group_id=group.id) }}" class="btn btn-sm btn-danger">刪除</a>
           </span>
         </div>
       {% else %}

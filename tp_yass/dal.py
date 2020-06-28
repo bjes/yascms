@@ -172,6 +172,15 @@ class DAL:
         DBSession.add(group)
 
     @staticmethod
+    def delete_group(group):
+        """刪除指定的 group
+
+        Args:
+            group: group 物件
+        """
+        DBSession.delete(group)
+
+    @staticmethod
     def get_user_list(page=1, quantity_per_page=20, group_id=None):
         """傳回使用者列表
 
