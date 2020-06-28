@@ -125,6 +125,18 @@ class DAL:
                          .filter(UserModel.id==user_id, GroupModel.type.in_((0, 1))))
 
     @staticmethod
+    def get_group(group_id):
+        """根據傳入的 group_id 回傳"群組物件
+
+        Args:
+            group_id: 群組的 pk
+
+        Returns:
+            回傳群組物件
+        """
+        return DBSession.query(GroupModel).get(group_id)
+
+    @staticmethod
     def get_group_by_name(name):
         """根據傳入的群組名稱回傳對應的群組物件
 

@@ -61,6 +61,31 @@ class UserGroupCreateView:
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
 
+@view_defaults(route_name='backend_user_group_edit',
+               renderer='themes/default/backend/user_group_edit.jinja2',
+               permission='edit')
+class UserGroupEditView:
+    """編輯使用者群組的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        group = DAL.get_group(self.request.matchdict['group_id'])
+        form = UserGroupForm(obj=group)
+        return {'form': form,
+                'group_trees': _generate_group_trees()}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = UserGroupForm(self.request.POST)
+        group = DAL.get_group(self.request.matchdict['group_id'])
+        form.populate_obj(group)
+        DAL.save_group(group)
+        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+
+
 @view_config(route_name='backend_user_list',
              renderer='themes/default/backend/user_list.jinja2',
              permission='view')

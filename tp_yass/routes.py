@@ -28,7 +28,7 @@ def includeme(config):
     config.add_route('backend_user_group_create', '/backend/user/group/create', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
     # config.add_route('backend_user_group_delete', '/backend/user/group/delete/{group_id:\d+}', factory=admin_factory)
-    # config.add_route('backend_user_group_edit', '/backend/user/group/edit/{group_id:\d+}', factory=admin_factory)
+    config.add_route('backend_user_group_edit', '/backend/user/group/edit/{group_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)

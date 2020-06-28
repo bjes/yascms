@@ -39,7 +39,7 @@
 {% endmacro %}
 
 
-{% macro generate_user_group_trees(name, group_trees, use_link=True) %}
+{% macro generate_user_group_trees(request, name, group_trees, use_link=True) %}
   {% for group in group_trees recursive %}
     {% if loop.first %}
       {% if not group.ancestor %}
@@ -50,7 +50,13 @@
     {% endif %}
     <li class="list-group-item" data-value="{{ group.id }}">
       {% if use_link %}
-        <a href="#">{{ group.name }}</a>
+        <div class="d-flex justify-content-between align-content-center">
+          <a href="#">{{ group.name }}</a>
+          <span>
+            <a href="{{ request.route_url('backend_user_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a>
+            <a href="#" class="btn btn-sm btn-danger">刪除</a>
+          </span>
+        </div>
       {% else %}
         {{ group.name }}
       {% endif %}
