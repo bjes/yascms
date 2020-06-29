@@ -30,11 +30,18 @@ def _generate_group_trees():
     return group_trees
 
 
-@view_config(route_name='backend_user_group_list',
-             renderer='themes/default/backend/user_group_list.jinja2',
-             permission='view')
-def backend_user_group_list_view(request):
-    return {'group_trees': _generate_group_trees()}
+@view_defaults(route_name='backend_user_group_list',
+               renderer='themes/default/backend/user_group_list.jinja2',
+               permission='view')
+class UserGroupListView:
+    """列表使用者群組的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config()
+    def get_view(self):
+        return {'group_trees': _generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_create',
@@ -103,17 +110,24 @@ class UserGroupDeleteView:
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
 
-@view_config(route_name='backend_user_list',
-             renderer='themes/default/backend/user_list.jinja2',
-             permission='view')
-def backend_user_list_view(request):
-    # 每頁顯示的筆數
-    quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
-    group_id = sanitize_input(request.GET.get('g'), int, None)
-    page_id = sanitize_input(request.GET.get('p', 1), int, 1)
-    user_list = DAL.get_user_list(page=page_id, group_id=group_id, quantity_per_page=quantity_per_page)
-    return {'user_list': user_list,
-            'page_quantity_of_total_users': DAL.get_page_quantity_of_total_users(quantity_per_page, group_id),
-            'page_id': page_id,
-            'quantity_per_page': quantity_per_page}
+@view_defaults(route_name='backend_user_list',
+               renderer='themes/default/backend/user_list.jinja2',
+               permission='view')
+class UserListView:
+    """列表使用者的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config()
+    def get_view(self):
+        # 每頁顯示的筆數
+        quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
+        group_id = sanitize_input(self.request.GET.get('g'), int, None)
+        page_id = sanitize_input(self.request.GET.get('p', 1), int, 1)
+        user_list = DAL.get_user_list(page=page_id, group_id=group_id, quantity_per_page=quantity_per_page)
+        return {'user_list': user_list,
+                'page_quantity_of_total_users': DAL.get_page_quantity_of_total_users(quantity_per_page, group_id),
+                'page_id': page_id,
+                'quantity_per_page': quantity_per_page}
 
