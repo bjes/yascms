@@ -20,6 +20,7 @@ passlib = "*"
 pyramid_exclog = "*"
 requests = "*"
 pyramid_wtforms = "*"
+wtforms = {extras = ["email"], version = "^2.3.1"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
