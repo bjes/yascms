@@ -23,7 +23,10 @@ def includeme(config):
     config.add_route('backend_navbar_delete', '/backend/navbar/delete/{navbar_id:\d+}', factory=admin_factory)
     config.add_route('backend_navbar_edit', '/backend/navbar/edit/{navbar_id:\d+}', factory=admin_factory)
 
+    config.add_route('backend_user_create', '/backend/user/create', factory=admin_factory)
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory)
+    config.add_route('backend_user_delete', '/backend/user/delete/{user_id:\d+}', factory=admin_factory)
+    config.add_route('backend_user_edit', '/backend/user/edit/{user_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_user_group_create', '/backend/user/group/create', factory=admin_factory)
     config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
