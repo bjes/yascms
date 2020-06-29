@@ -1,0 +1,69 @@
+{% extends "layouts/master.jinja2" %}
+{% from 'macros.jinja2' import generate_user_group_trees %}
+{% block page_css %}
+<link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>使用者 - 建立</h1></div>
+    <div class="col-12">
+      {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+              <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+      <form action="" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="form-group">
+          {{ form.last_name.label() }}
+          {{ form.last_name(class_='form-control', placeholder='姓') }}
+        </div>
+        <div class="form-group">
+          {{ form.first_name.label() }}
+          {{ form.first_name(class_='form-control', placeholder='名') }}
+        </div>
+        <div class="form-group">
+          {{ form.email.label() }}
+          {{ form.email(class_='form-control', placeholder='user@example.org') }}
+        </div>
+        <div class="form-group">
+          {{ form.account.label() }}
+          {{ form.account(class_='form-control', placeholder='帳號') }}
+        </div>
+        <div class="form-group">
+          {{ form.password.label() }}
+          {{ form.password(class_='form-control', placeholder='密碼') }}
+        </div>
+        <div class="form-group">
+          {{ form.password_confirm.label() }}
+          {{ form.password_confirm(class_='form-control', placeholder='再次輸入密碼') }}
+        </div>
+        <div class="form-group">
+          {{ form.groups.label() }}
+          {{ generate_user_group_trees(request, 'groups', group_trees, use_link=False) }}
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.qubit-2.0.9.js'|static_path }}"></script>
+<script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+<script>
+  $(function() {
+    $('#root-group').bonsai({
+      expandAll: true,
+      createInputs: 'checkbox'
+    });
+  });
+</script>
+{% endblock page_js %}

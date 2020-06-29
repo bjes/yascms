@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
-from tp_yass.forms.backend.user import UserGroupForm
+from tp_yass.forms.backend.user import UserGroupForm, UserCreateForm
 
 
 def _recursive_append(group_node, group):
@@ -130,4 +130,20 @@ class UserListView:
                 'page_quantity_of_total_users': DAL.get_page_quantity_of_total_users(quantity_per_page, group_id),
                 'page_id': page_id,
                 'quantity_per_page': quantity_per_page}
+
+
+@view_defaults(route_name='backend_user_create',
+               renderer='themes/default/backend/user_create.jinja2',
+               permission='edit')
+class UserCreateView:
+    """新增使用者的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        form = UserCreateForm()
+        return {'form': form,
+                'group_trees': _generate_group_trees()}
 

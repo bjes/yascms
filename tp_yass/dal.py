@@ -126,7 +126,7 @@ class DAL:
 
     @staticmethod
     def get_group(group_id):
-        """根據傳入的 group_id 回傳"群組物件
+        """根據傳入的 group_id 回傳群組物件
 
         Args:
             group_id: 群組的 pk
