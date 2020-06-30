@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class DAL:
 
     @staticmethod
-    def get_user(account, password):
+    def auth_user(account, password):
         """根據傳入的帳號密碼找到對應的紀錄並回傳
 
         Args:

@@ -26,8 +26,8 @@ class LoginView:
     def post(self):
         login_form = LoginForm(self.request.POST)
         if login_form.validate():
-            user = DAL.get_user(login_form.account.data,
-                                login_form.password.data)
+            user = DAL.auth_user(login_form.account.data,
+                                 login_form.password.data)
             if user:
                 self.request.session['user_id'] = user.id
                 self.request.session['first_name'] = user.first_name
