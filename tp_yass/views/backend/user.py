@@ -62,10 +62,13 @@ class UserGroupCreateView:
     @view_config(request_method='POST')
     def post_view(self):
         form = UserGroupForm(self.request.POST)
-        group = DAL.create_group()
-        form.populate_obj(group)
-        DAL.save_group(group)
-        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        if form.validate():
+            group = DAL.create_group()
+            form.populate_obj(group)
+            DAL.save_group(group)
+            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        return {'form': form,
+                'group_trees': _generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_edit',
@@ -87,10 +90,14 @@ class UserGroupEditView:
     @view_config(request_method='POST')
     def post_view(self):
         form = UserGroupForm(self.request.POST)
-        group = DAL.get_group(self.request.matchdict['group_id'])
-        form.populate_obj(group)
-        DAL.save_group(group)
-        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        if form.validate():
+            group = DAL.get_group(self.request.matchdict['group_id'])
+            if group:
+                form.populate_obj(group)
+                DAL.save_group(group)
+            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        return {'form': form,
+                'group_trees': _generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_delete', permission='edit')
