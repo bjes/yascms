@@ -112,6 +112,18 @@ class DAL:
         return UserModel()
 
     @staticmethod
+    def get_user(user_id):
+        """取得使用者物件並回傳
+
+        Args:
+            user_id: UserModel.id
+
+        Returns:
+            回傳使用者物件
+        """
+        return DBSession.query(UserModel).get(user_id)
+
+    @staticmethod
     def save_user(user):
         """將 UserModel 物件存至 DB
 

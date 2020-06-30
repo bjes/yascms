@@ -37,6 +37,15 @@ class UserForm(Form):
     group_ids = MultiCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
 
+class UserEditForm(UserForm):
+    """編輯使用者的表單，密碼欄位因為允許不更改，所以移除 validator"""
+
+    password = PasswordField('密碼*', [Length(max=50)])
+
+    password_confirm = PasswordField('再次輸入密碼*', [Length(max=50),
+                                                     EqualTo('password', message='兩次密碼輸入需相符')])
+
+
 class UserGroupForm(Form):
     """使用者群組的表單"""
 
