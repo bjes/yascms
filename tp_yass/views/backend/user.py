@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
-from tp_yass.forms.backend.user import UserGroupForm, UserCreateForm
+from tp_yass.forms.backend.user import UserGroupForm, UserForm
 
 
 def _recursive_append(group_node, group):
@@ -150,7 +150,20 @@ class UserCreateView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        form = UserCreateForm()
+        form = UserForm()
         return {'form': form,
                 'group_trees': _generate_group_trees()}
 
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = UserForm()
+        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
+        form.process(self.request.POST)
+        if form.validate():
+            user = DAL.create_user()
+            form.populate_obj(user)
+            user.groups = DAL.get_groups(form.group_ids.data)
+            DAL.save_user(user)
+            return HTTPFound(location=self.request.route_url('backend_user_list'))
+        return {'form': form,
+                'group_trees': _generate_group_trees()}

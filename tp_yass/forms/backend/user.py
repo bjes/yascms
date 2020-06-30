@@ -16,8 +16,8 @@ class MultiCheckboxField(SelectMultipleField):
     option_widget = widgets.CheckboxInput()
 
 
-class UserFormBase(Form):
-    """使用者表單 Base"""
+class UserForm(Form):
+    """建立使用者的表單"""
 
     first_name = StringField('名*', [InputRequired('名為必填'), Length(max=20)])
 
@@ -29,16 +29,12 @@ class UserFormBase(Form):
 
     password = PasswordField('密碼*', [InputRequired('密碼為必填'), Length(max=50)])
 
-    # 只是用來驗證，前端會靠 jquery bonsai 產生巢狀多選選單，不會依靠這個 field 產生
-    groups = MultiCheckboxField('群組*', [InputRequired('至少要選一個群組')])
-
-
-class UserCreateForm(UserFormBase):
-    """建立使用者的表單"""
-
     password_confirm = PasswordField('再次輸入密碼*', [InputRequired('需再次輸入密碼'),
-                                                     Length(max=50),
-                                                     EqualTo('password', message='兩次密碼輸入需相符')])
+                                                      Length(max=50),
+                                                      EqualTo('password', message='兩次密碼輸入需相符')])
+
+    # 只是用來驗證，前端會靠 jquery bonsai 產生巢狀多選選單，不會依靠這個 field 產生
+    group_ids = MultiCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
 
 class UserGroupForm(Form):

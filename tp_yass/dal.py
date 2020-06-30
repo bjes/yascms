@@ -103,6 +103,27 @@ class DAL:
                          .all())
 
     @staticmethod
+    def create_user():
+        """建立使用者物件並回傳
+
+        Returns:
+            回傳使用者物件
+        """
+        return UserModel()
+
+    @staticmethod
+    def save_user(user):
+        """將 UserModel 物件存至 DB
+
+        Args:
+            user: UserModel 實體
+
+        Returns:
+            None
+        """
+        DBSession.add(user)
+
+    @staticmethod
     def get_user_group_list():
         """傳回使用者的群組列表
 
@@ -125,6 +146,19 @@ class DAL:
                          .filter(UserModel.id==user_id, GroupModel.type.in_((0, 1))))
 
     @staticmethod
+    def get_groups(group_id_list):
+        """根據傳入的 group id 列表回傳多個群組物件
+
+        Args:
+            group_id_list: 包含 GroupModel.id 的 list
+
+        Returns:
+            回傳符合的群組物件列表
+        """
+
+        return DBSession.query(GroupModel).filter(GroupModel.id.in_(group_id_list)).all()
+
+    @staticmethod
     def get_group(group_id):
         """根據傳入的 group_id 回傳群組物件
 
@@ -132,7 +166,7 @@ class DAL:
             group_id: 群組的 pk
 
         Returns:
-            回傳群組物件
+            回傳群組物件或 None
         """
         return DBSession.query(GroupModel).get(group_id)
 
@@ -165,10 +199,23 @@ class DAL:
 
     @staticmethod
     def create_group():
+        """建立 GroupModel 實體
+
+        Returns:
+            GroupModel 實體
+        """
         return GroupModel()
 
     @staticmethod
     def save_group(group):
+        """將 UserModel 物件存至 DB
+
+        Args:
+            user: GroupModel 實體
+
+        Returns:
+            None
+        """
         DBSession.add(group)
 
     @staticmethod
