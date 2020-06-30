@@ -9,9 +9,8 @@ def _recursive_append(request, navbar_node, navbar):
         return True
     # leaf node
     elif navbar.ancestor_id == navbar_node['id']:
-        # TODO: 這邊的連結要換成 frontend 的 page 連結
         if navbar.page:
-            url = request.route_path('backend_page_edit', page_id=navbar.page.id)
+            url = request.route_path('page_get', page_id=navbar.page.id)
         else:
             url = navbar.url
         sub_navbar = {'id': navbar.id,

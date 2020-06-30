@@ -1,0 +1,16 @@
+{% extends "layouts/master.jinja2" %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
+  <div class="container">
+    <p class="h1 display-5 text-center text-white">{{ page.title }}</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+{% endblock content %}
