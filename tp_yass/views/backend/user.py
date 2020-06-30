@@ -213,3 +213,18 @@ class UserEditView:
                     'group_ids': form.group_ids.data,
                     'group_trees': _generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_user_list'))
+
+
+@view_defaults(route_name='backend_user_delete', permission='edit')
+class UserDeleteView:
+    """刪除使用者的 view"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        user = DAL.get_user(self.request.matchdict['user_id'])
+        if user:
+            DAL.delete_user(user)
+        return HTTPFound(location=self.request.route_url('backend_user_list'))

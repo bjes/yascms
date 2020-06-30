@@ -136,6 +136,18 @@ class DAL:
         DBSession.add(user)
 
     @staticmethod
+    def delete_user(user):
+        """將 UserModel 物件刪除
+
+        Args:
+            user: UserModel 實體
+
+        Returns:
+            None
+        """
+        DBSession.delete(user)
+
+    @staticmethod
     def get_user_group_list():
         """傳回使用者的群組列表
 
