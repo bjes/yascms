@@ -25,7 +25,7 @@
             {% for user in user_list %}
               <tr>
                 <th scope="row">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
-                <td><a href="#">{{ user.first_name }}{{ user.last_name }}</a></td>
+                <td><a href="#">{{ user.last_name }}{{ user.first_name }}</a></td>
                 <td>{{ user.account }}</td>
                 <td>{{ user.email }}</td>
                 <td>

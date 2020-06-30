@@ -43,11 +43,11 @@ def import_test_db_data(ini_file_path):
     group5 = GroupModel(id=6, name='資訊組', type=1, ancestor_id=3)
     group6 = GroupModel(id=7, name='系管師', type=1, ancestor_id=3)
     # 建帳號。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始
-    user1 = UserModel(id=2, first_name='陳', last_name='小明', email='user1@xxx.tp.edu.tw',
+    user1 = UserModel(id=2, first_name='小明', last_name='陳', email='user1@xxx.tp.edu.tw',
                       account='user1', password='user1', status=1)
     # user1 群組為資訊組、藝文領域科任
     user1.groups = [group5, group4]
-    user2 = UserModel(id=3, first_name='王', last_name='大寶', email='user2@xxx.tp.edu.tw',
+    user2 = UserModel(id=3, first_name='大寶', last_name='王', email='user2@xxx.tp.edu.tw',
                       account='user2', password='user2', status=1)
     # user2 群組為系管師、自然領域科認
     user2.groups = [group6, group3]
