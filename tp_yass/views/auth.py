@@ -19,7 +19,10 @@ class LoginView:
 
     @view_config(request_method='GET')
     def get(self):
-        return {'login_form': LoginForm()}
+        if self.request.session.get('account'):
+            return HTTPFound(location=self.request.route_url('backend_homepage'))
+        else:
+            return {'login_form': LoginForm()}
 
 
     @view_config(request_method='POST')
