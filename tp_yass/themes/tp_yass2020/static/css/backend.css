@@ -1,25 +1,3 @@
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Microsoft JhengHei", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-@media (min-width: 992px) {
-  .navbar-toggler {
-    display: none;
-  }
-  .navbar-expand-lg {
-    flex-flow: column nowrap;
-    height: 100%;
-  }
-  .navbar-collapse {
-    flex-flow: column nowrap;
-  }
-}
-
-.sidebar {
-  flex-grow: 0;
-}
-
 .navbar-brand {
   text-align: center;
 }
