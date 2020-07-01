@@ -9,6 +9,16 @@
   </style>
 {% endblock layout_css %}
 {% block navbar %}{% include "navbar.jinja2" %}{% endblock navbar %}
+{% block banner %}
+<div class="jumbotron jumbotron-fluid jumbotron-bg my-0">
+  <div class="container">
+    <div class="bg-trans p-2 text-white">
+      <h1 class="display-4 d-md-block d-sm-none d-none">{{ request.sys_config['site_name'] }}</h1>
+      <p class="lead">{{ request.sys_config['site_slogan'] }}</p>
+    </div>
+  </div>
+</div>
+{% endblock banner %}
 {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
 {% block layout_js %}
   <script src="{{ 'tp_yass:themes/default/static/js/fontawesome-all-5.11.2.min.js'|static_path }}"></script>

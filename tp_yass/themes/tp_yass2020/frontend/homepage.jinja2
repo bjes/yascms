@@ -1,14 +1,5 @@
 {% extends "layouts/master.jinja2" %}
 {% block content %}
-<div class="jumbotron jumbotron-fluid jumbotron-bg my-0">
-  <div class="container">
-    <div class="bg-trans p-2 text-white">
-      <h1 class="display-4 d-md-block d-sm-none d-none">{{ request.sys_config['site_name'] }}</h1>
-      <p class="lead">{{ request.sys_config['site_slogan'] }}</p>
-    </div>
-  </div>
-</div>
-
 <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#3498db;">
   <div class="container">
     <p class="h1 display-5 text-center text-white"><i class="fas fa-bullhorn"></i> 最新消息</p>
