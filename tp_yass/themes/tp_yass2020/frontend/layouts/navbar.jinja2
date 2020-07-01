@@ -62,9 +62,9 @@
             {{ request.session['first_name']}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarAccountDropdown">
-            <li><a class="dropdown-item" href="{{ request.route_url('backend_homepage') }}">後台管理</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_homepage') }}"><i class="fas fa-cogs"></i> 後台管理</a></li>
             <li class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ 'logout'|route_path }}">登出</a></li>
+            <li><a class="dropdown-item" href="{{ 'logout'|route_path }}"><i class="fas fa-sign-out-alt"></i> 登出</a></li>
           </ul>
         </li>
       {% else %}
