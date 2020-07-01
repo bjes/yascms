@@ -1,19 +1,14 @@
-from pyramid_wtforms import (widgets,
-                             Form,
+from pyramid_wtforms import (Form,
                              IntegerField,
                              StringField,
                              SelectField,
-                             PasswordField,
-                             SelectMultipleField)
+                             PasswordField)
 from pyramid_wtforms.validators import (InputRequired,
                                         Length,
                                         Email,
                                         EqualTo)
 
-
-class MultiCheckboxField(SelectMultipleField):
-    widget = widgets.ListWidget()
-    option_widget = widgets.CheckboxInput()
+from .fields import MultiCheckboxField
 
 
 class UserForm(Form):
