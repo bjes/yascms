@@ -5,6 +5,7 @@ from tp_yass.forms.backend.page import PageForm, PageEditForm
 from tp_yass.helper import sanitize_input
 from tp_yass.views.backend.helper import upload_attachment, delete_attachment
 from tp_yass.dal import DAL
+from tp_yass.views.backend.helper import generate_group_trees
 
 
 @view_defaults(route_name='backend_page_create',
@@ -24,12 +25,14 @@ class PageCreateView:
     def get_view(self):
         """顯示新增單一頁面的網頁"""
         form = PageForm()
-        return {'form': form}
+        return {'form': form,
+                'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
         """新增單一頁面"""
         form = PageForm(self.request.POST)
+        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
         if form.validate():
             created_page = DAL.create_page(form)
             if form.attachments.data:
@@ -111,18 +114,22 @@ class PageEditView:
         form = PageEditForm()
         form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in self.context.attachments]
         form.uploaded_attachments.default = [each_attachment.id for each_attachment in self.context.attachments]
+        group_ids = [each_group.id for each_group in self.context.groups]
         form.process(None, None,
                      title=self.context.title,
                      content=self.context.content,
-                     groups=', '.join([each_group.name for each_group in self.context.groups]),
+                     group_ids=group_ids,
                      tags=', '.join([each_tag.name for each_tag in self.context.tags]))
-        return {'form': form}
+        return {'form': form,
+                'group_ids': group_ids,
+                'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
         form = PageEditForm()
         form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in
                                              self.context.attachments]
+        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
         form.process(self.request.POST)
         if form.validate():
             page_id = int(self.request.matchdict['page_id'])
@@ -148,4 +155,6 @@ class PageEditView:
                 return HTTPFound(self.request.route_url('backend_page_list'))
             else:
                 self.request.flash('page 物件不存在', 'fail')
-        return {'form': form}
+        return {'form': form,
+                'group_ids': form.group_ids.data,
+                'group_trees': generate_group_trees()}

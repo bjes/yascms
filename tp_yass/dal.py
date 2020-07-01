@@ -453,10 +453,8 @@ class DAL:
             tag = DAL.get_or_create_tag(each_tag_name)
             page.tags.append(tag)
         # 處理 groups
-        groups = {each_group.strip() for each_group in form_data.groups.data.split(',')}
-        for each_group_name in groups:
-            group = DAL.get_or_create_group(each_group_name)
-            page.groups.append(group)
+        group_ids = form_data.group_ids.data
+        page.groups = DAL.get_groups(group_ids)
         DBSession.add(page)
         DBSession.flush()
         return page
@@ -481,11 +479,8 @@ class DAL:
             tag = DAL.get_or_create_tag(each_tag_name)
             page.tags.append(tag)
         # 處理群組
-        page.groups = []
-        groups = {each_group.strip() for each_group in form_data.groups.data.split(',')}
-        for each_group_name in groups:
-            group = DAL.get_or_create_group(each_group_name)
-            page.groups.append(group)
+        group_ids = form_data.group_ids.data
+        page.groups = DAL.get_groups(group_ids)
         return page
 
     @staticmethod

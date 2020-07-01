@@ -1,6 +1,8 @@
 {% extends "layouts/master.jinja2" %}
+{% from 'macros.jinja2' import generate_user_group_trees %}
 {% block page_css %}
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/summernote-bs4-0.8.16.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -29,8 +31,8 @@
           {{ form.content(class_='form-control', placeholder='請輸入內容') }}
         </div>
         <div class="form-group">
-          {{ form.groups.label() }}
-          {{ form.groups(class_='form-control', placeholder='請輸入負責管理的群組名稱（使用逗號分隔）') }}
+          {{ form.group_ids.label() }}
+          {{ generate_user_group_trees(request, 'group_ids', group_trees, use_link=False) }}
         </div>
         <div class="form-group">
           {{ form.attachments.label() }}
@@ -49,11 +51,17 @@
 {% block page_js %}
   <script src="{{ 'tp_yass:themes/default/static/js/summernote-bs4-0.8.16.min.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/summernote-zh-TW-0.8.16.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.qubit-2.0.9.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
   <script>
     $(function (){
       $('#content').summernote({
         lang: 'zh-TW',
         height: 300
+      });
+      $('#root-group').bonsai({
+        expandAll: true,
+        createInputs: 'checkbox'
       });
     });
   </script>
