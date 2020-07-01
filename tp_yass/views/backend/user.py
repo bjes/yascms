@@ -4,30 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from tp_yass.dal import DAL
 from tp_yass.helper import sanitize_input
 from tp_yass.forms.backend.user import UserGroupForm, UserForm, UserEditForm
-
-
-def _recursive_append(group_node, group):
-    if group.ancestor_id == group_node['id']:
-        group_node['descendants'].append({'id': group.id, 'name': group.name, 'descendants': []})
-        return True
-    else:
-        for descendant_group in group_node['descendants']:
-            _recursive_append(descendant_group, group)
-
-
-def _generate_group_trees():
-    all_groups = DAL.get_user_group_list()
-    group_trees = []
-    for group in all_groups:
-        if not group.ancestor_id:
-            # 代表是最上層群組
-            group_trees.append({'id': group.id, 'name': group.name, 'descendants': []})
-        else:
-            # 代表是第二層以下的群組
-            for root_node in group_trees:
-                if _recursive_append(root_node, group):
-                    break
-    return group_trees
+from tp_yass.views.backend.helper import generate_group_trees
 
 
 @view_defaults(route_name='backend_user_group_list',
@@ -41,7 +18,7 @@ class UserGroupListView:
 
     @view_config()
     def get_view(self):
-        return {'group_trees': _generate_group_trees()}
+        return {'group_trees': generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_create',
@@ -57,7 +34,7 @@ class UserGroupCreateView:
     def get_view(self):
         form = UserGroupForm()
         return {'form': form,
-                'group_trees': _generate_group_trees()}
+                'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -68,7 +45,7 @@ class UserGroupCreateView:
             DAL.save_group(group)
             return HTTPFound(location=self.request.route_url('backend_user_group_list'))
         return {'form': form,
-                'group_trees': _generate_group_trees()}
+                'group_trees': generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_edit',
@@ -86,7 +63,7 @@ class UserGroupEditView:
         if group:
             form = UserGroupForm(obj=group)
             return {'form': form,
-                    'group_trees': _generate_group_trees()}
+                    'group_trees': generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
     @view_config(request_method='POST')
@@ -99,7 +76,7 @@ class UserGroupEditView:
                 DAL.save_group(group)
             return HTTPFound(location=self.request.route_url('backend_user_group_list'))
         return {'form': form,
-                'group_trees': _generate_group_trees()}
+                'group_trees': generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_group_delete', permission='edit')
@@ -154,7 +131,7 @@ class UserCreateView:
     def get_view(self):
         form = UserForm()
         return {'form': form,
-                'group_trees': _generate_group_trees()}
+                'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -168,7 +145,7 @@ class UserCreateView:
             DAL.save_user(user)
             return HTTPFound(location=self.request.route_url('backend_user_list'))
         return {'form': form,
-                'group_trees': _generate_group_trees()}
+                'group_trees': generate_group_trees()}
 
 
 @view_defaults(route_name='backend_user_edit',
@@ -188,7 +165,7 @@ class UserEditView:
             group_ids = [each_group.id for each_group in user.groups]
             return {'form': form,
                     'group_ids': group_ids,
-                    'group_trees': _generate_group_trees()}
+                    'group_trees': generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_user_list'))
 
     @view_config(request_method='POST')
@@ -211,7 +188,7 @@ class UserEditView:
         else:
             return {'form': form,
                     'group_ids': form.group_ids.data,
-                    'group_trees': _generate_group_trees()}
+                    'group_trees': generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_user_list'))
 
 

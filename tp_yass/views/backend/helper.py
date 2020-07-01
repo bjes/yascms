@@ -1,6 +1,7 @@
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+from tp_yass.dal import DAL
 from tp_yass.views.helper.file import get_project_abspath, save_file
 
 
@@ -35,3 +36,27 @@ def delete_attachment(file_name, upload_sub_dir):
     """
     attachment_abspath = get_project_abspath() / 'uploads' / Path(upload_sub_dir) / file_name
     attachment_abspath.unlink()
+
+
+def _recursive_append(group_node, group):
+    if group.ancestor_id == group_node['id']:
+        group_node['descendants'].append({'id': group.id, 'name': group.name, 'descendants': []})
+        return True
+    else:
+        for descendant_group in group_node['descendants']:
+            _recursive_append(descendant_group, group)
+
+
+def generate_group_trees():
+    all_groups = DAL.get_user_group_list()
+    group_trees = []
+    for group in all_groups:
+        if not group.ancestor_id:
+            # 代表是最上層群組
+            group_trees.append({'id': group.id, 'name': group.name, 'descendants': []})
+        else:
+            # 代表是第二層以下的群組
+            for root_node in group_trees:
+                if _recursive_append(root_node, group):
+                    break
+    return group_trees
