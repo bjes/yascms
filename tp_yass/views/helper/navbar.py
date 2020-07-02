@@ -34,7 +34,7 @@ def _recursive_append(request, navbar_node, navbar):
 
 
 def generate_navbar_trees(request, type='all', visible_only=False):
-    """將傳入的 navbar list orms 轉成單純的 巢狀陣列，避免相依後端的 orm
+    """將傳 navbar list orm 轉成單純的巢狀陣列，避免相依後端的 orm
 
     Args:
         request: pyramid.request.Request
@@ -48,9 +48,8 @@ def generate_navbar_trees(request, type='all', visible_only=False):
     for navbar in DAL.get_navbar_list(type, visible_only):
         if not navbar.ancestor_id:
             # 代表是最上層導覽列
-            # TODO: 這邊的連結要換成 frontend 的 page 連結
             if navbar.page:
-                url = request.route_path('backend_page_edit', page_id=navbar.page.id)
+                url = request.route_path('page_get', page_id=navbar.page.id)
             else:
                 url = navbar.url
             sub_navbar = {'id': navbar.id,
