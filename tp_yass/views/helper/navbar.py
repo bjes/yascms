@@ -33,7 +33,7 @@ def _recursive_append(request, navbar_node, navbar):
             _recursive_append(request, descendant_navbar, navbar)
 
 
-def generate_navbar_trees(request, type='all', visible_only=False):
+def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=None):
     """將傳 navbar list orm 轉成單純的巢狀陣列，避免相依後端的 orm
 
     Args:
@@ -45,7 +45,7 @@ def generate_navbar_trees(request, type='all', visible_only=False):
         回傳 navbar 樹狀結構
     """
     navbar_trees = []
-    for navbar in DAL.get_navbar_list(type, visible_only):
+    for navbar in DAL.get_navbar_list(type, visible_only, excluded_id):
         if not navbar.ancestor_id:
             # 代表是最上層導覽列
             if navbar.page:

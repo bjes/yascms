@@ -1,5 +1,6 @@
-{% macro generate_navbar_trees(name, navbar_trees, use_link=True) %}
+{% macro generate_navbar_trees(name, navbar_trees, use_link=True, show_root=False) %}
   {% for navbar in navbar_trees recursive %}
+    {# 每進一個遞迴就會讓 loop.first 為 True #}
     {% if loop.first %}
       {% if not navbar.ancestor %}
         <ul class="list-group" id="root-navbar" data-name="{{ name }}">

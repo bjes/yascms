@@ -106,7 +106,9 @@ class NavbarEditView:
         form.is_visible.data = True if navbar.is_visible else False
         if navbar.ancestor:
             form.ancestor_id.data = navbar.ancestor.id
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request, type='intermediate')}
+        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request,
+                                                                    type='intermediate',
+                                                                    excluded_id=navbar_id)}
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -117,4 +119,6 @@ class NavbarEditView:
                 if DAL.sync_navbar(form, navbar):
                     return HTTPFound(self.request.route_url('backend_navbar_list'))
         self.request.session.flash('navbar id 不存在', 'fail')
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request, type='intermediate')}
+        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request,
+                                                                    type='intermediate',
+                                                                    excluded_id=navbar_id)}

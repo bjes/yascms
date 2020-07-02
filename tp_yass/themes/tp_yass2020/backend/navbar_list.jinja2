@@ -16,7 +16,7 @@
     <div class="col-12">
       {% for navbar in navbar_trees recursive %}
         {% if loop.first %}
-          {% if not navbar.ancestor %}
+          {% if navbar.module_name == 'root' %}
             <ul class="list-group" id="root-navbar">
           {% else %}
             <ul class="list-group">
@@ -39,10 +39,12 @@
             <li class="list-group-item">
               <div class="d-flex justify-content-between align-content-center">
                 <a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
-                <span>
-                  <a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}" class="btn btn-sm btn-primary">編輯</a>
-                  <a href="{{ request.route_url('backend_navbar_delete', navbar_id=navbar.id) }}" class="btn btn-sm btn-danger">刪除</a>
-                </span>
+                {% if navbar.module_name != 'root' %}
+                  <span>
+                    <a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}" class="btn btn-sm btn-primary">編輯</a>
+                    <a href="{{ request.route_url('backend_navbar_delete', navbar_id=navbar.id) }}" class="btn btn-sm btn-danger">刪除</a>
+                  </span>
+                {% endif %}
               </div>
           {% endif %}
         {% endif %}
