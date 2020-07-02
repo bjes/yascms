@@ -48,7 +48,7 @@ class NavbarModel(BaseObject):
     # 排序
     order = Column(Integer, nullable=False, default=0, server_default='0')
 
-    # 是否顯示，有時候只是想暫時隱藏
+    # 是否顯示，有時候只是想暫時隱藏。 0 代表隱藏， 1 代表顯示
     is_visible = Column(Integer, nullable=False, default=1, server_default='1')
 
     # self-referential relationship

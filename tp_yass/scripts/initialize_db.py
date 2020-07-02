@@ -43,10 +43,13 @@ def setup_models(dbsession):
     dbsession.add(models.sys_config.SysConfigModel(name='site_homepage_news_quantity', value='20', type='int', description='設定首頁顯示幾筆最新消息'))
 
     # 建立導覽列的預設順序
+    # 最上層，前台不該顯示，但後台在調整 navbar 階層位置時需要顯示
+    root = models.navbar.NavbarModel(name='最上層', aria_name='root', order=1, type=1, module_name='root')
+    dbsession.add(root)
     # 最新消息
-    dbsession.add(models.navbar.NavbarModel(name='最新消息', aria_name='news', order=1, type=4, module_name='news', icon='fa-bullhorn'))
+    dbsession.add(models.navbar.NavbarModel(name='最新消息', aria_name='news', order=2, type=4, module_name='news', icon='fa-bullhorn', ancestor=root))
     # 學校簡介
-    school_intro = models.navbar.NavbarModel(name='學校簡介', aria_name='introduction', order=2, type=1, icon='fa-school')
+    school_intro = models.navbar.NavbarModel(name='學校簡介', aria_name='introduction', order=3, type=1, icon='fa-school', ancestor=root)
     dbsession.add(school_intro)
     dbsession.add(models.navbar.NavbarModel(name='學校歷史', order=1, type=2, ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='特色課程', order=2, type=2, ancestor=school_intro))
@@ -55,7 +58,7 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=7, icon='fa-calendar-alt', module_name='calendar', ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=8, icon='fa-phone', module_name='telext', ancestor=school_intro))
     # 校園單位
-    school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=3, type=1, icon='fa-building')
+    school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=4, type=1, icon='fa-building', ancestor=root)
     dbsession.add(school_org)
     dbsession.add(models.navbar.NavbarModel(name='校長室', order=1, type=2, ancestor=school_org))
     dbsession.add(models.navbar.NavbarModel(name='教務處', order=2, type=2, ancestor=school_org))
@@ -64,14 +67,14 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='總務處', order=5, type=2, ancestor=school_org))
     dbsession.add(models.navbar.NavbarModel(name='幼兒園', order=6, type=2, ancestor=school_org))
     # 師生園地
-    school_garden = models.navbar.NavbarModel(name='師生園地', aria_name='garden', order=4, type=1, icon='fa-sun')
+    school_garden = models.navbar.NavbarModel(name='師生園地', aria_name='garden', order=5, type=1, icon='fa-sun', ancestor=root)
     dbsession.add(school_garden)
     dbsession.add(models.navbar.NavbarModel(name='資訊中心', order=1, type=2, ancestor=school_garden))
     dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=2, ancestor=school_garden))
     dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=2, ancestor=school_garden, is_external=True))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_garden))
     # 外站連結
-    outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=1, icon='fa-globe-asia')
+    outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=6, type=1, icon='fa-globe-asia', ancestor=root)
     dbsession.add(outside_link)
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府教育局', order=1, type=2, icon='fa-university', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=2, icon='fa-globe-asia', ancestor=outside_link))
