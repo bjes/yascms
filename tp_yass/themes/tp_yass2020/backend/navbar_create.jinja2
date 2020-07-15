@@ -79,10 +79,10 @@
   $(function() {
     let type_value = parseInt($('#type').val());
     if (type_value === 1) {
-      $('#leaf_type_group, #is_external_group').hide();
-      $('#aria_name_group').show();
+      $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+      $('#aria_name_group, #name_group').show();
     } else if (type_value === 2) {
-      $('#leaf_type_group, #is_external_group').show();
+      $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
       $('#aria_name_group').hide();
       switch (parseInt($('#leaf_type').val())) {
         case 1:
@@ -101,11 +101,11 @@
     $('#type').change(function() {
       switch (parseInt($(this).val())) {
         case 1:
-          $('#leaf_type_group, #is_external_group').hide();
-          $('#aria_name_group').show();
+          $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+          $('#aria_name_group, #name_group').show();
           break;
         case 2:
-          $('#leaf_type_group, #is_external_group').show();
+          $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
           $('#aria_name_group').hide();
           switch (parseInt($('#leaf_type').val())) {
             case 1:

@@ -79,10 +79,12 @@
   $(function() {
     let type_value = parseInt($('#type').val());
     if (type_value === 1) {
-      $('#leaf_type_group, #is_external_group').hide();
-      $('#aria_name_group').show();
+      // 可新增子選單
+      $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+      $('#aria_name_group, #name_group').show();
     } else if (type_value === 2) {
-      $('#leaf_type_group, #is_external_group').show();
+      // 不可新增子選單
+      $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
       $('#aria_name_group').hide();
       switch (parseInt($('#leaf_type').val())) {
         case 1:
@@ -95,20 +97,18 @@
           break;
       }
     } else if (type_value === 3) {
+      // 分隔線
       $('#name_group, #aria_name_group, #leaf_type_group, #page_group, #url_group, #icon_group, #is_external_group').hide();
       $('#name').val('分隔線');
-    } else {
-      // 如果不是普通的導覽列，不能改的欄位全隱藏
-      $('#name_group, #aria_name_group, #leaf_type_group, #url_group, #page_group, #icon_group, #is_external_group').hide();
     }
     $('#type').change(function() {
       switch (parseInt($(this).val())) {
         case 1:
-          $('#leaf_type_group, #is_external_group').hide();
-          $('#aria_name_group').show();
+          $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+          $('#aria_name_group, #name_group').show();
           break;
         case 2:
-          $('#leaf_type_group, #is_external_group').show();
+          $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
           $('#aria_name_group').hide();
           switch (parseInt($('#leaf_type').val())) {
             case 1:
