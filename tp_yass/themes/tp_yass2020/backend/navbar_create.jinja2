@@ -31,19 +31,18 @@
         </div>
         <div class="form-group" id="aria_name_group">
           {{ form.aria_name.label() }}
-          {{ form.aria_name(class_='form-control', placeholder='請輸入英文名稱') }}
+          {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
         </div>
-        <div class="form-group" id="leaf_type_group">
-          {{ form.leaf_type.label() }}
-          {{ form.leaf_type(class_='form-control') }}
-        </div>
-        <div class="form-group" id="url_group">
-          {{ form.url.label() }}
-          {{ form.url(class_='form-control', placeholder='請輸入連結網址') }}
-        </div>
-        <div class="form-group" id="page_group">
-          {{ form.page_id.label() }}
-          {{ form.page_id(class_='form-control', placeholder='請輸入連結單一網頁') }}
+        <input type="hidden" name="leaf_type" id="leaf_type">
+        <div class="card mb-3" id="link-card">
+          <div class="card-header">選擇連結目的</div>
+          <div class="card-body">
+            <p class="card-text">
+              <div>類型：<span id="link_type">未指定</span></div>
+              <div>目的：<span id="link_target"></span></div>
+            </p>
+            <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址">手動輸入網址</a>
+          </div>
         </div>
         <div class="form-group" id="navbar_group">
           {{ form.ancestor_id.label() }}
@@ -66,9 +65,30 @@
           {{ form.is_visible.label(class_="form-check-label") }}
         </div>
         <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+        <div class="modal" id="pageModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="spinner-border text-primary" role="status" id="modal-loading-icon">
+                  <span class="sr-only">讀取中...</span>
+                </div>
+                <div class="d-none form-check" id="modal-content"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" class="btn btn-primary" id="btn_modal_confirm">確認</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
-
   </div>
 </div>
 {% endblock content %}
@@ -79,75 +99,72 @@
   $(function() {
     let type_value = parseInt($('#type').val());
     if (type_value === 1) {
-      $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+      // 可新增子選單
+      $('#is_external_group, #link-card').hide();
       $('#aria_name_group, #name_group').show();
     } else if (type_value === 2) {
-      $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
+      // 不可新增子選單
+      $('#is_external_group, #name_group, #link-card').show();
       $('#aria_name_group').hide();
-      switch (parseInt($('#leaf_type').val())) {
-        case 1:
-          $('#url_group').hide();
-          $('#page_group').show();
-          break;
-        case 2:
-          $('#page_group').hide();
-          $('#url_group').show();
-          break;
-      }
     } else if (type_value === 3) {
-      $('#name_group, #aria_name_group, #leaf_type_group, #page_group, #url_group, #icon_group, #is_external_group').hide();
+      // 分隔線
+      $('#name_group, #aria_name_group, #icon_group, #is_external_group, #link-card').hide();
       $('#name').val('分隔線');
     }
     $('#type').change(function() {
       switch (parseInt($(this).val())) {
         case 1:
-          $('#leaf_type_group, #page_group, #url_group, #is_external_group').hide();
+          $('#is_external_group, #link-card').hide();
           $('#aria_name_group, #name_group').show();
           break;
         case 2:
-          $('#leaf_type_group, #page_group, #url_group, #is_external_group, #name_group').show();
+          $('#is_external_group, #name_group, #link-card').show();
           $('#aria_name_group').hide();
-          switch (parseInt($('#leaf_type').val())) {
-            case 1:
-              $('#url_group').hide();
-              $('#page_group').show();
-              break;
-            case 2:
-              $('#page_group').hide();
-              $('#url_group').show();
-              break;
-          }
           break;
         case 3:
-          $('#name_group, #aria_name_group, #leaf_type_group, #page_group, #url_group, #icon_group, #is_external_group').hide();
+          $('#name_group, #aria_name_group, #icon_group, #is_external_group, #link-card').hide();
           $('#name').val('分隔線');
           break;
       }
     });
 
-    if ($('#leaf_type').is(':visible')) {
+    $('#pageModal').on('shown.bs.modal', function (event){
+      let button = $(event.relatedTarget);
+      $('#modal-title').text(button.data('title'));
+      let button_id = button.prop('id');
+      if (button_id === 'btn-choose-page') {
+        $('#modal-loading-icon').show();
+        $.getJSON('{{ request.route_url('backend_api_page_list') }}', function (data) {
+          let page_html_list = [];
+          $.each(data, function (key, val) {
+            page_html_list.push('<input class="form-check-input" type="radio" name="page_id" id="pageId' + val['id'] + '" value="' + val['id'] + '">' +
+                                '<label class="form-check-label" for="pageId' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label>');
+          });
+          $('#modal-content').html(page_html_list.join(''));
+          $('#modal-content').removeClass('d-none')
+          $('#modal-loading-icon').hide();
+          $('#leaf_type').val(1);
+        });
+      } else if (button_id === 'btn-choose-url') {
+        $('#modal-loading-icon').hide();
+        $('#modal-content').html('<input type="text" class="form-control" name="url" id="url">');
+        $('#modal-content').removeClass('d-none');
+        $('#leaf_type').val(2);
+      }
+    });
+
+    $('#btn_modal_confirm').click(function () {
       switch (parseInt($('#leaf_type').val())) {
         case 1:
-          $('#url_group').hide();
-          $('#page_group').show();
+          $('#link_type').text('單一頁面');
+          $('#link_target').html($('input[name=page_id]:checked+label>a'));
+          $('#pageModal').modal('hide');
           break;
         case 2:
-          $('#page_group').hide();
-          $('#url_group').show();
-          break;
-      }
-    } else {
-      $('#url_group, #page_group').hide();
-    }
-    $('#leaf_type').change(function() {
-      switch (parseInt($(this).val())) {
-        case 1:
-          $('#url_group').hide();
-          $('#page_group').show();
-          break;
-        case 2:
-          $('#page_group').hide();
-          $('#url_group').show();
+          $('#link_type').text('自訂網址');
+          let custom_url = $('#url').val();
+          $('#link_target').html('<a href="' + custom_url + '" target="_blank">' + custom_url + '</a>');
+          $('#pageModal').modal('hide');
           break;
       }
     });

@@ -10,4 +10,4 @@ def backend_api_page_list(request):
         page_list.append({'id': each_page.id,
                           'title': each_page.title,
                           'url': request.route_url('page_get', page_id=each_page.id)})
-    return {'page_list': page_list}
+    return page_list

@@ -27,6 +27,7 @@ class NavbarForm(Form):
             if len(field.data) > 50:
                 raise ValidationError('無障礙導覽列英文名稱長度不能超過 50 個字元')
 
+    # 前端會處理顯示的部份，這邊只負責驗證
     leaf_type = SelectField('導覽列連結類型',
                             [InputRequired('導覽列連結類型必填')],
                             choices=[(1, '連結單一頁面'),
