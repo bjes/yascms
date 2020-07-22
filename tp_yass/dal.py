@@ -336,7 +336,7 @@ class DAL:
             # leaf node
             navbar.type = 2
             navbar.name = form_data.name.data
-            if form_data.leaf_type.data == 1:
+            if int(form_data.leaf_type.data) == 1:
                 if form_data.page_id.data:
                     page = DAL.get_page(int(form_data.page_id.data))
                     if page:
@@ -347,7 +347,7 @@ class DAL:
                 else:
                     logger.error('沒有指定連結的 page id')
                     return False
-            elif form_data.leaf_type.data == 2:
+            elif int(form_data.leaf_type.data) == 2:
                 if form_data.url.data:
                     navbar.url = form_data.url.data
                 else:
