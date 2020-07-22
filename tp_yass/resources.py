@@ -47,7 +47,7 @@ def page_edit_factory(request):
     page = DAL.get_page(page_id)
     if page:
         # 若為管理者，權限全開
-        if 'is_admin' in request.session and request.session['is_admin']:
+        if request.session.get('is_admin'):
             logger.debug('比對群組權限接受，權限為管理者')
             page.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
         # 否則只有 page 的群組有 edit 權限
