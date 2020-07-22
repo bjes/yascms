@@ -551,22 +551,26 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_page_list(page_number=1, quantity_per_page=20, group_id=None):
+    def get_page_list(page_number=1, quantity_per_page=20, group_id=None, pagination=True):
         """傳回使用者列表
 
         Args:
             page_number: 指定頁數，若沒指定則回傳第一頁
             quantity_per_page: 指定每頁的筆數，預設為 20 筆
             group_id: 指定要撈取的使用者群組，None 代表不指定
+            pagination: 代表是否要分頁，預設為要分頁，若為 False 代表不分頁傳回全部的單一頁面
 
         Returns:
             回傳使用者列表
         """
         results = DBSession.query(PageModel)
         if group_id:
-            results = results.filter(GroupModel.id==group_id)
-        return (results.order_by(PageModel.id.desc())
-                    [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+            results = results.filter(GroupModel.id == group_id)
+        if pagination:
+            return (results.order_by(PageModel.id.desc())
+                        [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+        else:
+            return results.all()
 
     @staticmethod
     def get_news_category(category_id):
