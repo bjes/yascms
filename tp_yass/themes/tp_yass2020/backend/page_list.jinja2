@@ -21,7 +21,7 @@
             {% for each_page in page_list %}
               <tr>
                 <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
-                <td><a href="#">{{ each_page.title }}</a></td>
+                <td><a href="{{ request.route_url('page_get', page_id=each_page.id) }}">{{ each_page.title }}</a></td>
                 <td>
                 {% for each_group in each_page.groups %}
                   {{ each_group.name }}{% if not loop.last %}, {% endif %}
