@@ -79,7 +79,7 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府教育局', order=1, type=2, icon='fa-university', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=2, icon='fa-globe-asia', ancestor=outside_link))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=outside_link))
-    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=10, icon='fa-link', module_name='links', ancestor=outside_link))
+    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=9, icon='fa-link', module_name='links', ancestor=outside_link))
 
     # 建立預設的最新消息分類群組
     dbsession.add(models.news.NewsCategoryModel(name='行政公告'))

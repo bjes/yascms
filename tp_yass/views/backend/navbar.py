@@ -98,10 +98,10 @@ class NavbarEditView:
                               icon=navbar.icon,
                               order=navbar.order)
         if navbar.page:
-            form.leaf_type.default = 1
+            form.leaf_type.data = 1
             form.page_id.data = navbar.page.id
         else:
-            form.leaf_type.default = 2
+            form.leaf_type.data = 2
         form.is_external.data = True if navbar.is_external else False
         form.is_visible.data = True if navbar.is_visible else False
         if navbar.ancestor:

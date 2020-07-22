@@ -33,7 +33,7 @@
           {{ form.aria_name.label() }}
           {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
         </div>
-        <input type="hidden" name="leaf_type" id="leaf_type">
+        {{ form.leaf_type() }}
         <div class="card mb-3" id="link-card">
           <div class="card-header">選擇連結目的</div>
           <div class="card-body">

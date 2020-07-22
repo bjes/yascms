@@ -341,6 +341,7 @@ class DAL:
                     page = DAL.get_page(int(form_data.page_id.data))
                     if page:
                         navbar.page = page
+                        navbar.url = None
                     else:
                         logger.error('找不到 page id 為 %s 的物件', form_data.page_id.data)
                         return False
@@ -350,6 +351,7 @@ class DAL:
             elif int(form_data.leaf_type.data) == 2:
                 if form_data.url.data:
                     navbar.url = form_data.url.data
+                    navbar.page = None
                 else:
                     logger.error('沒有指定連結的網址')
                     return False
