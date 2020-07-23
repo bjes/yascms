@@ -10,6 +10,9 @@ def includeme(config):
     # frontend
     config.add_route('homepage', '/')
     config.add_route('news_list', '/news/list')
+    config.add_route('calendar', '/calendar')
+    #config.add_route('telext_list', '/telext/list')
+    #config.add_route('link_list', '/link/list')
     config.add_route('page_get', '/page/get/{page_id:\d+}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')

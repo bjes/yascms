@@ -1,0 +1,16 @@
+{% extends "layouts/master.jinja2" %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
+  <div class="container">
+    <p class="h1 display-5 text-center text-white">行事曆</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <iframe src="{{ request.sys_config['site_google_calendar_embedded_url'] }}" style="border: 0" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+    </div>
+  </div>
+</div>
+{% endblock content %}
