@@ -112,7 +112,8 @@ class NavbarEditView:
 
     @view_config(request_method='POST')
     def post_view(self):
-        navbar = DAL.get_navbar(int(self.request.matchdict['navbar_id']))
+        navbar_id = int(self.request.matchdict['navbar_id'])
+        navbar = DAL.get_navbar(navbar_id)
         if navbar:
             form = NavbarEditForm(self.request.POST)
             if form.validate():

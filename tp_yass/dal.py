@@ -321,6 +321,19 @@ class DAL:
 
     @staticmethod
     def sync_navbar(form_data, navbar):
+        # 如果是內建模組，只處理幾個可以更動的設定，其他的不給變動
+        if navbar.type and navbar.type in (4, 7, 8, 9):
+            navbar.is_visible = 1 if form_data.is_visible.data else 0
+            navbar.order = form_data.order.data
+            ancestor_navbar = DAL.get_navbar(int(form_data.ancestor_id.data))
+            if ancestor_navbar:
+                navbar.ancestor = ancestor_navbar
+            else:
+                logger.error('找不到上層選單物件 %s', form_data.ancestor_id.data)
+                return False
+            DBSession.add(navbar)
+            return True
+        # 一般化的 navbar
         if form_data.type.data == 1:
             # intermediate node
             navbar.type = 1

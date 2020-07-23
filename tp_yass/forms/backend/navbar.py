@@ -27,15 +27,14 @@ class NavbarForm(Form):
             if len(field.data) > 50:
                 raise ValidationError('無障礙導覽列英文名稱長度不能超過 50 個字元')
 
-    # 前端會處理顯示的部份，這邊只負責驗證，允許的值為 1 (代表連結單一頁面) 與 2 (代表自訂網址)
+    # 前端會處理顯示的部份，這邊只負責驗證，允許的值為 1 (代表連結單一頁面) 與 2 (代表自訂網址)。
+    # 但要注意，如果是內建模組（像是最新消息等），我們只允許讓這些模組移動在導覽列的位置，此時這個值會忽略不處理
     leaf_type = HiddenField('導覽列連結類型', [InputRequired('導覽列連結類型必填')])
 
     def validate_leaf_type(form, field):
-        try:
-            if int(field.data) not in (1, 2):
+        if field.data:
+            if not (field.data.isdigit() and int(field.data) in (1, 2)):
                 raise ValidationError('此欄位合法值為 1 與 2')
-        except:
-            raise ValidationError('只允許連結單一頁面或自訂網址')
 
     url = StringField('連結網址', [Length(max=500)])
 

@@ -32,17 +32,19 @@
           {{ form.aria_name.label() }}
           {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
         </div>
-        {{ form.leaf_type() }}
-        <div class="card mb-3" id="link-card">
-          <div class="card-header">選擇連結目的</div>
-          <div class="card-body">
-            <p class="card-text">
-              <div>類型：<span id="link_type">未指定</span></div>
-              <div>目的：<span id="link_target"></span></div>
-            </p>
-            <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址">手動輸入網址</a>
+        {% if not form.type.data in (4, 7, 8, 9) %}
+          {{ form.leaf_type() }}
+          <div class="card mb-3" id="link-card">
+            <div class="card-header">選擇連結目的</div>
+            <div class="card-body">
+              <p class="card-text">
+                <div>類型：<span id="link_type">未指定</span></div>
+                <div>目的：<span id="link_target"></span></div>
+              </p>
+              <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址">手動輸入網址</a>
+            </div>
           </div>
-        </div>
+        {% endif %}
         <div class="form-group" id="navbar_group">
           {{ form.ancestor_id.label() }}
           {{ generate_navbar_trees('ancestor_id', navbar_trees, False, True) }}
@@ -65,28 +67,30 @@
         </div>
         <button type="submit" class="btn btn-primary mb-3">更改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
         {% if form.type.data in (1, 2, 3) %}<a class="btn btn-danger mb-3" href="{{ request.route_url('backend_navbar_delete', navbar_id=request.matchdict['navbar_id']) }}">刪除</a>{% endif %}
-        <div class="modal" id="pageModal" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="spinner-border text-primary" role="status" id="modal-loading-icon">
-                  <span class="sr-only">讀取中...</span>
+        {% if not form.type.data in (4, 7, 8, 9) %}
+          <div class="modal" id="pageModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modal-title"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-                <div class="d-none form-check" id="modal-content"></div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                <button type="button" class="btn btn-primary" id="btn_modal_confirm">確認</button>
+                <div class="modal-body">
+                  <div class="spinner-border text-primary" role="status" id="modal-loading-icon">
+                    <span class="sr-only">讀取中...</span>
+                  </div>
+                  <div class="d-none form-check" id="modal-content"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                  <button type="button" class="btn btn-primary" id="btn_modal_confirm">確認</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        {% endif %}
       </form>
     </div>
 
