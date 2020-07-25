@@ -14,9 +14,12 @@ body {
   .navbar-collapse {
     flex-flow: column nowrap;
   }
+  .sidebar {
+    flex-grow: 0;
+    min-height: 100vh;
+  }
 }
 
 .sidebar {
   flex-grow: 0;
-  min-height: 100vh;
 }
