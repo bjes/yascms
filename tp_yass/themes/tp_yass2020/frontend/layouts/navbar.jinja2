@@ -8,7 +8,7 @@
     <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
       {% for navbar in navbar_trees recursive %}
         {# 有子選單的類型 #}
-        {% if navbar.type == 1 or navbar.type == 4 %}
+        {% if navbar.type == NavbarType.TREE_NODE or navbar.type == NavbarType.BUILTIN_NEWS %}
           {% if loop.depth == 1 %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbar_{{ navbar.aria_name }}_dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,12 +23,12 @@
           {%- endif %}
               </a>
             <ul class="dropdown-menu" aria-labelledby="navbar_{{ navbar.aria_name }}_dropdown">
-              {% if navbar.type == 1 %}
+              {% if navbar.type == NavbarType.TREE_NODE %}
                 {{ loop(navbar.descendants) }}
-              {% elif navbar.type == 4 %}
+              {% elif navbar.type == NavbarType.BUILTIN_NEWS %}
                 {% for each_news_submenu in navbar.descendants %}
                   {# 最新消息底下的每個分類連結 #}
-                  {% if each_news_submenu.type == 5 %}
+                  {% if each_news_submenu.type == NavbarType.BUILTIN_NEWS_SUBTYPE %}
                     <li><a class="dropdown-item" href="{{ request.route_url('news_list', _query={'c': each_news_submenu.category_id}) }}">{{ each_news_submenu.name }}</a></li>
                   {% elif each_news_submenu.type == 3 %}
                     <li class="dropdown-divider"></li>
@@ -39,7 +39,7 @@
               {% endif %}
             </ul>
           </li>
-        {% elif navbar.type in (2, 7, 8, 9) %}
+        {% elif navbar.type in (NavbarType.LEAF_NODE, NavbarType.BUILTIN_CALENDAR, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
           {% if loop.depth == 1 %}
             <li class="nav-item">
               <a class="nav-link" href="{{ navbar.url }}"{% if navbar.is_external %} target="_blank"{% endif %}>
@@ -52,7 +52,7 @@
               </a>
           {% endif %}
             </li>
-        {% elif navbar.type == 3 %}
+        {% elif navbar.type == NavbarType.DROPDOWN_DIVIDER %}
           <li class="dropdown-divider"></li>
         {% endif %}
       {% endfor %}

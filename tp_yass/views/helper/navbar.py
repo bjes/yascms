@@ -1,3 +1,4 @@
+from tp_yass.enum import NavbarType
 from tp_yass.dal import DAL
 
 
@@ -19,11 +20,11 @@ def _recursive_append(request, navbar_node, navbar):
                       'url': url,
                       'is_external': navbar.is_external,
                       'icon': navbar.icon,
-                      'type': navbar.type,
+                      'type': NavbarType(navbar.type),
                       'module_name': navbar.module_name,
                       'order': navbar.order,
                       'descendants': []}
-        if navbar.type == 4 and navbar.module_name == 'news':
+        if navbar.type == NavbarType.BUILTIN_NEWS and navbar.module_name == 'news':
             sub_navbar['descendants'] = news_factory()
         navbar_node['descendants'].append(sub_navbar)
         return True
@@ -58,11 +59,11 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
                           'url': url,
                           'is_external': navbar.is_external,
                           'icon': navbar.icon,
-                          'type': navbar.type,
+                          'type': NavbarType(navbar.type),
                           'module_name': navbar.module_name,
                           'order': navbar.order,
                           'descendants': []}
-            if navbar.type == 4 and navbar.module_name == 'news':
+            if navbar.type == NavbarType.BUILTIN_NEWS and navbar.module_name == 'news':
                 sub_navbar['descendants'] = news_factory()
             navbar_trees.append(sub_navbar)
         else:
@@ -78,15 +79,15 @@ def news_factory():
     for each_category in DAL.get_news_category_list():
         # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 代表是 builtin
         sub_navbars.append({'id': -1,
-                            'type': 5,
+                            'type': NavbarType.BUILTIN_NEWS_SUBTYPE,
                             'category_id': each_category.id,  # 這個欄位是額外加上去的，因為要產生連結的 url 需要 category id
                             'name': each_category.name,
                             'url': '#'})
     # 分隔線，這個是寫死在 news 子選單裡面，沒有要給使用者異動位置，所以 id 也是 -1
     sub_navbars.append({'id': -1,
-                        'type': 3,
+                        'type': NavbarType.DROPDOWN_DIVIDER,
                         'name': '分隔線'})
     # 顯示全部最新消息的連結
     sub_navbars.append({'id': -1,
-                        'type': 6})
+                        'type': NavbarType.BUILTIN_NEWS_ALL})
     return sub_navbars
