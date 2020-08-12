@@ -32,7 +32,7 @@
           {{ form.aria_name.label() }}
           {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
         </div>
-        {% if not form.type.data in (4, 7, 8, 9) %}
+        {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_CALENDAR, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
           {{ form.leaf_type() }}
           <div class="card mb-3" id="link-card">
             <div class="card-header">選擇連結目的</div>
@@ -66,8 +66,8 @@
           {{ form.is_visible.label(class_="form-check-label") }}
         </div>
         <button type="submit" class="btn btn-primary mb-3">更改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
-        {% if form.type.data in (1, 2, 3) %}<a class="btn btn-danger mb-3" href="{{ request.route_url('backend_navbar_delete', navbar_id=request.matchdict['navbar_id']) }}">刪除</a>{% endif %}
-        {% if not form.type.data in (4, 7, 8, 9) %}
+        {% if form.type.data in (NavbarType.TREE_NODE, NavbarType.LEAF_NODE, NavbarType.DROPDOWN_DIVIDER) %}<a class="btn btn-danger mb-3" href="{{ request.route_url('backend_navbar_delete', navbar_id=request.matchdict['navbar_id']) }}">刪除</a>{% endif %}
+        {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_CALENDAR, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
           <div class="modal" id="pageModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -103,15 +103,15 @@
 <script>
   $(function() {
     let type_value = parseInt($('#type').val());
-    if (type_value === 1) {
+    if (type_value === {{ NavbarType.TREE_NODE }}) {
       // 可新增子選單
       $('#is_external_group, #link-card').hide();
       $('#aria_name_group, #name_group').show();
-    } else if (type_value === 2) {
+    } else if (type_value === {{ NavbarType.LEAF_NODE }}) {
       // 不可新增子選單
       $('#is_external_group, #name_group, #link-card').show();
       $('#aria_name_group').hide();
-    } else if (type_value === 3) {
+    } else if (type_value === {{ NavbarType.DROPDOWN_DIVIDER }}) {
       // 分隔線
       $('#name_group, #aria_name_group, #icon_group, #is_external_group, #link-card').hide();
       $('#name').val('分隔線');

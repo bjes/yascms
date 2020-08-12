@@ -3,6 +3,7 @@ import logging
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
+from tp_yass.enum import NavbarType
 from tp_yass.views.helper.navbar import generate_navbar_trees
 from tp_yass.forms.backend.navbar import NavbarForm, NavbarEditForm
 from tp_yass.dal import DAL
@@ -45,7 +46,9 @@ class NavbarCreateView:
         if form.validate():
             if DAL.create_navbar(form):
                 return HTTPFound(self.request.route_url('backend_navbar_list'))
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request, type='intermediate')}
+        return {'form': form,
+                'navbar_trees': generate_navbar_trees(self.request, type='intermediate'),
+                'NavbarType': NavbarType}
 
 
 @view_defaults(route_name='backend_navbar_delete', permission='edit')
@@ -106,9 +109,9 @@ class NavbarEditView:
         form.is_visible.data = True if navbar.is_visible else False
         if navbar.ancestor:
             form.ancestor_id.data = navbar.ancestor.id
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request,
-                                                                    type='intermediate',
-                                                                    excluded_id=navbar_id)}
+        return {'form': form,
+                'navbar_trees': generate_navbar_trees(self.request, type='intermediate', excluded_id=navbar_id),
+                'NavbarType': NavbarType}
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -120,6 +123,6 @@ class NavbarEditView:
                 if DAL.sync_navbar(form, navbar):
                     return HTTPFound(self.request.route_url('backend_navbar_list'))
         self.request.session.flash('navbar id 不存在', 'fail')
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request,
-                                                                    type='intermediate',
-                                                                    excluded_id=navbar_id)}
+        return {'form': form,
+                'navbar_trees': generate_navbar_trees(self.request, type='intermediate', excluded_id=navbar_id),
+                'NavbarType': NavbarType}
