@@ -1033,7 +1033,8 @@ class DAL:
         """回傳根據 pinned_order 排序的首頁分機表"""
         return (DBSession.query(TelExtModel)
                 .filter_by(is_pinned=1)
-                .order_by(TelExtModel.pinned_order))
+                .order_by(TelExtModel.pinned_order)
+                .order_by(TelExtModel.order))
 
     @staticmethod
     def delete_telext(telext_id):
