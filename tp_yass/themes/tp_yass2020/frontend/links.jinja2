@@ -1,0 +1,29 @@
+{% extends "layouts/master.jinja2" %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color: #e67e22;">
+  <div class="container">
+    <p class="h1 display-5 text-center text-white"><i class="fas fa-link"></i> 好站連結</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row text-center align-items-center">
+    {% for each_category in link_category_list %}
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            {{ each_category.name }}
+          </div>
+          <div class="card-body d-flex">
+            {% for each_link in each_category.links %}
+              <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="{{ each_link.url }}" target="_blank"><img src="{{ request.static_url('tp_yass:uploads/links/' + each_link.icon) }}" class="img-fluid img-thumbnail align-middle" alt="{{ each_link.title }}"></a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

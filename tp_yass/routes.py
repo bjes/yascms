@@ -13,7 +13,7 @@ def includeme(config):
     config.add_route('news_get', r'/news/get/{news_id:\d+}')
     config.add_route('calendar', '/calendar')
     config.add_route('telext', '/telext')
-    #config.add_route('link_list', '/link/list')
+    config.add_route('links', '/links')
     config.add_route('page_get', '/page/get/{page_id:\d+}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
