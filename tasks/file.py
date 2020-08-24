@@ -1,4 +1,6 @@
+from glob import glob
 from pathlib import Path
+import subprocess
 
 from invoke import Collection, task
 
@@ -14,9 +16,7 @@ def file_delete(c, ini_file=None):
     if ini_file is None:
         ini_file = find_ini_file()
 
-    page_upload_dir = Path(tp_yass.__file__).parent / 'themes' / 'default' / 'static' / 'uploads' / 'pages'
-    for each_file in page_upload_dir.glob('*'):
-        if each_file.name == '.gitkeep':
-            continue
-        else:
-            each_file.unlink()
+    page_upload_dir = Path(tp_yass.__file__).parent / 'uploads'
+    for each_subdir in ['links', 'news', 'pages']:
+        dest_dir = page_upload_dir / each_subdir / '*'
+        subprocess.run(f'rm -rf {dest_dir}', shell=True)
