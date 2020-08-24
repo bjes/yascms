@@ -49,7 +49,7 @@
 <div class="container d-none d-sm-block">
   <div class="row">
     <div class="col">
-      <iframe src="{{ request.sys_config['site_google_calendar_embedded_url'] }}" style="border: 0" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+      <iframe src="{{ request.site_config['site_google_calendar_embedded_url'] }}" style="border: 0" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
     </div>
   </div>
 </div>
@@ -64,7 +64,7 @@
   <div class="row">
     {% for each_telext in telext_list %}
     <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-      <a href="tel:{{ request.sys_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
+      <a href="tel:{{ request.site_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
     </div>
     {% endfor %}
   </div>

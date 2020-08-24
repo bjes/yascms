@@ -12,10 +12,10 @@ from tp_yass.views.helper.file import get_project_abspath
 logger = logging.getLogger(__name__)
 
 
-@view_defaults(route_name='backend_sys_config_edit',
-               renderer='tp_yass:themes/default/backend/sys_config_edit.jinja2',
+@view_defaults(route_name='backend_site_config_edit',
+               renderer='tp_yass:themes/default/backend/site_config_edit.jinja2',
                permission='edit')
-class SysConfigView:
+class SiteConfigView:
 
     def __init__(self, request):
         self.request = request
@@ -24,7 +24,7 @@ class SysConfigView:
     def list_view(self):
         """列出 tp_yass:themes 目錄下扣掉 default 後有哪些樣板"""
 
-        config_list = DAL.get_sys_config_list()
+        config_list = DAL.get_site_config_list()
         available_themes_list = self._get_themes_list()
         return {'config_list': config_list,
                 'available_themes_list': available_themes_list}
@@ -51,11 +51,11 @@ class SysConfigView:
         Returns:
             回傳需要更新的 list
         """
-        db_sys_config_list = DAL.get_sys_config_list()
+        db_site_config_list = DAL.get_site_config_list()
         updated_config_list = []
         for key, value in post_data.items():
             if key.startswith('site_'):
-                for each_config in db_sys_config_list:
+                for each_config in db_site_config_list:
                     if key == each_config.name:
                         if not value:
                             logger.error('系統設定 %s 其值為空', key)
@@ -82,7 +82,7 @@ class SysConfigView:
                 logger.info('系統樣板變更為 %s', config['value'])
                 break
         if updated_config_list:
-            DAL.update_sys_config_list(updated_config_list)
+            DAL.update_site_config_list(updated_config_list)
             self.request.session.flash('更新設定成功', 'success')
             return HTTPFound(location=self.request.current_route_url())
         else:

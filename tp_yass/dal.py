@@ -13,7 +13,7 @@ from pyramid_sqlalchemy import Session as DBSession
 from tp_yass.models.user import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel, NewsAttachmentModel
 from tp_yass.models.navbar import NavbarModel
-from tp_yass.models.sys_config import SysConfigModel
+from tp_yass.models.site_config import SiteConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
@@ -96,10 +96,10 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_sys_config_list():
+    def get_site_config_list():
         """傳回系統設定檔，其中因為 maintenance mode 不是給使用者操作的，所以過濾掉"""
-        return (DBSession.query(SysConfigModel)
-                         .filter(SysConfigModel.name != 'maintenance_mode')
+        return (DBSession.query(SiteConfigModel)
+                         .filter(SiteConfigModel.name != 'maintenance_mode')
                          .all())
 
     @staticmethod
@@ -424,10 +424,10 @@ class DAL:
             return False
 
     @staticmethod
-    def update_sys_config_list(updated_config_list):
-        """更新 sys config"""
+    def update_site_config_list(updated_config_list):
+        """更新 site config"""
         for each_config in updated_config_list:
-            DBSession.query(SysConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
+            DBSession.query(SiteConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
         return True
 
     @staticmethod

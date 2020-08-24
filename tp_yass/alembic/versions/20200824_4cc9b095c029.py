@@ -1,8 +1,8 @@
 """initial generate
 
-Revision ID: 2f853530cd18
+Revision ID: 4cc9b095c029
 Revises: 
-Create Date: 2020-03-06 04:07:02.291114
+Create Date: 2020-08-24 20:56:57.096624
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2f853530cd18'
+revision = '4cc9b095c029'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,7 +47,7 @@ def upgrade():
     sa.Column('content', sa.Text(), server_default='', nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('sys_config',
+    op.create_table('site_config',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('value', sa.Text(), nullable=False),
@@ -195,7 +195,7 @@ def downgrade():
     op.drop_index(op.f('ix_telext_title'), table_name='telext')
     op.drop_table('telext')
     op.drop_table('tags')
-    op.drop_table('sys_config')
+    op.drop_table('site_config')
     op.drop_table('pages')
     op.drop_table('news_categories')
     op.drop_table('link_categories')

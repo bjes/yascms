@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/common.css'|static_path  }}">
   {% block layout_css %}{% endblock layout_css %}
   {% block page_css %}{% endblock page_css %}
-  <title>{{ request.sys_config['site_name'] }}</title>
+  <title>{{ request.site_config['site_name'] }}</title>
 </head>
 <body>
   {% block body %}{% endblock body %}
