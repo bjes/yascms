@@ -112,6 +112,18 @@ class DAL:
         return UserModel()
 
     @staticmethod
+    def get_user_account(account):
+        """根據傳入的使用者帳號找到該物件並回傳
+
+        Args:
+            account: 使用者帳號名稱
+
+        Returns:
+            回傳使用者物件
+        """
+        return DBSession.query(UserModel).filter_by(account=account)
+
+    @staticmethod
     def get_user(user_id):
         """取得使用者物件並回傳
 

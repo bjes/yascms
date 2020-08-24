@@ -193,6 +193,12 @@ class UserEditView:
             user_id = int(self.request.matchdict['user_id'])
             user = DAL.get_user(user_id)
             if user:
+                existed_account = DAL.get_user_account(form.account.data)
+                if existed_account:
+                    self.request.session.flash('帳號名稱已存在，請改用其他名稱', 'fail')
+                    return {'form': form,
+                            'group_ids': form.group_ids.data,
+                            'group_trees': generate_group_trees()}
                 # 如果密碼欄位不為空，視做要改密碼，否則密碼不變動
                 if form.password.data:
                     form.populate_obj(user)
