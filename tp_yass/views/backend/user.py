@@ -194,7 +194,7 @@ class UserEditView:
             user = DAL.get_user(user_id)
             if user:
                 existed_account = DAL.get_user_account(form.account.data)
-                if existed_account:
+                if existed_account and (existed_account.id != user_id):
                     self.request.session.flash('帳號名稱已存在，請改用其他名稱', 'fail')
                     return {'form': form,
                             'group_ids': form.group_ids.data,

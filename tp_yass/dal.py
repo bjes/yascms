@@ -121,7 +121,7 @@ class DAL:
         Returns:
             回傳使用者物件
         """
-        return DBSession.query(UserModel).filter_by(account=account)
+        return DBSession.query(UserModel).filter_by(account=account).one_or_none()
 
     @staticmethod
     def get_user(user_id):
