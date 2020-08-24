@@ -19,7 +19,7 @@ class LinkForm(Form):
     url = TextAreaField('網址*', [InputRequired('網址欄位必填')])
 
     # TODO: 要讓系統可以設定上傳的檔案大小限制，目前寫死必須小於 10 MB
-    icon = FileField('圖檔', [FileSize(max=10, base='mb', message='檔案必須小於 10 mb'),
+    icon = FileField('圖檔 (150x60)', [FileSize(max=10, base='mb', message='檔案必須小於 10 mb'),
                              FileAllowed(['jpg', 'png'], message='只接受 jpg / png 格式')])
 
     is_pinned = BooleanField('是否於首頁顯示')

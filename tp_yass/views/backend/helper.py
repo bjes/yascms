@@ -35,7 +35,8 @@ def delete_attachment(file_name, upload_sub_dir):
         upload_sub_dir: 相對於 uploads/ 下的子目錄，檔案會儲存至該處
     """
     attachment_abspath = get_project_abspath() / 'uploads' / Path(upload_sub_dir) / file_name
-    attachment_abspath.unlink()
+    if attachment_abspath.is_file():
+        attachment_abspath.unlink()
 
 
 def _recursive_append(group_node, group):
