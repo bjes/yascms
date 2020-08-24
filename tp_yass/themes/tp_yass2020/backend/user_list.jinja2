@@ -33,7 +33,13 @@
                   <a href="#">{{ group.name }}</a>{% if not loop.last %}, {% endif %}
                 {% endfor %}
                 </td>
-                <td><a href="{{ request.route_url('backend_user_edit', user_id=user.id) }}" class="btn btn-primary">編輯</a> <a href="{{ request.route_url('backend_user_delete', user_id=user.id) }}" class="btn btn-danger">刪除</a></td>
+                <td>
+                  <a href="{{ request.route_url('backend_user_edit', user_id=user.id) }}" class="btn btn-primary">編輯</a>
+                  {% if user.id != 1 %}
+                    {# 管理者帳號不該顯示刪除按鈕 #}
+                    <a href="{{ request.route_url('backend_user_delete', user_id=user.id) }}" class="btn btn-danger">刪除</a>
+                  {% endif %}
+                </td>
               </tr>
             {% endfor %}
             </tbody>

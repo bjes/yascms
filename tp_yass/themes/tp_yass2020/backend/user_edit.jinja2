@@ -64,9 +64,15 @@
         expandAll: true,
         createInputs: 'checkbox'
       });
+
       {% for i in group_ids %}
         $('#root-group>li[data-value="{{ i }}"]>input[type="checkbox"]').prop('checked', true);
       {% endfor %}
+
+      {# 若是管理者帳號，則不給修改所屬群組 #}
+      {% if request.matchdict['user_id'] == '1' %}
+        $('div.form-group:last').hide();
+      {% endif %}
     });
   </script>
 {% endblock page_js %}

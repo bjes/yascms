@@ -54,8 +54,11 @@
         <div class="d-flex justify-content-between align-content-center">
           <a href="#">{{ group.name }}</a>
           <span>
-            <a href="{{ request.route_url('backend_user_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a>
-            <a href="{{ request.route_url('backend_user_group_delete', group_id=group.id) }}" class="btn btn-sm btn-danger">刪除</a>
+            {% if group.id != 1 %}
+              {# 如果是管理者群組，則不該顯示編輯與刪除按鈕 #}
+              <a href="{{ request.route_url('backend_user_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a>
+              <a href="{{ request.route_url('backend_user_group_delete', group_id=group.id) }}" class="btn btn-sm btn-danger">刪除</a>
+            {% endif %}
           </span>
         </div>
       {% else %}

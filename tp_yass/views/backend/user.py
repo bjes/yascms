@@ -59,7 +59,12 @@ class UserGroupEditView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        group = DAL.get_group(self.request.matchdict['group_id'])
+        group_id = int(self.request.matchdict['group_id'])
+        if group_id == 1:
+            # 管理者群組不能編輯
+            self.request.session.flash('管理者群組不能編輯', 'fail')
+            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        group = DAL.get_group(group_id)
         if group:
             form = UserGroupForm(obj=group)
             return {'form': form,
@@ -70,7 +75,12 @@ class UserGroupEditView:
     def post_view(self):
         form = UserGroupForm(self.request.POST)
         if form.validate():
-            group = DAL.get_group(self.request.matchdict['group_id'])
+            group_id = int(self.request.matchdict['group_id'])
+            if group_id == 1:
+                # 管理者群組不能編輯
+                self.request.session.flash('管理者群組不能編輯', 'fail')
+                return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+            group = DAL.get_group(group_id)
             if group:
                 form.populate_obj(group)
                 DAL.save_group(group)
@@ -88,7 +98,12 @@ class UserGroupDeleteView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        group = DAL.get_group(self.request.matchdict['group_id'])
+        group_id = int(self.request.matchdict['group_id'])
+        if group_id == 1:
+            # 管理者群組不能砍
+            self.request.session.flash('管理者群組不能刪除', 'fail')
+            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        group = DAL.get_group(group_id)
         for each_child in group.descendants:
             each_child.ancestor = group.ancestor
             DAL.save_group(each_child)
@@ -159,7 +174,8 @@ class UserEditView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        user = DAL.get_user(self.request.matchdict['user_id'])
+        user_id = int(self.request.matchdict['user_id'])
+        user = DAL.get_user(user_id)
         if user:
             form = UserEditForm(obj=user)
             group_ids = [each_group.id for each_group in user.groups]
@@ -174,7 +190,8 @@ class UserEditView:
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
         form.process(self.request.POST)
         if form.validate():
-            user = DAL.get_user(self.request.matchdict['user_id'])
+            user_id = int(self.request.matchdict['user_id'])
+            user = DAL.get_user(user_id)
             if user:
                 # 如果密碼欄位不為空，視做要改密碼，否則密碼不變動
                 if form.password.data:
@@ -183,7 +200,9 @@ class UserEditView:
                     ori_password = user._password
                     form.populate_obj(user)
                     user._password = ori_password
-                user.groups = DAL.get_groups(form.group_ids.data)
+                # 管理者的帳號其群組不能變動
+                if user_id != 1:
+                    user.groups = DAL.get_groups(form.group_ids.data)
                 DAL.save_user(user)
         else:
             return {'form': form,
@@ -201,7 +220,12 @@ class UserDeleteView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        user = DAL.get_user(self.request.matchdict['user_id'])
+        user_id = int(self.request.matchdict['user_id'])
+        if user_id == 1:
+            # 管理者不能刪除
+            self.request.session.flash('管理者不能刪除', 'fail')
+            return HTTPFound(location=self.request.route_url('backend_user_list'))
+        user = DAL.get_user(user_id)
         if user:
             DAL.delete_user(user)
         return HTTPFound(location=self.request.route_url('backend_user_list'))

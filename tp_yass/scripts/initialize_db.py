@@ -16,9 +16,9 @@ def setup_models(dbsession):
     """
 
     # 建立管理者帳號
-    group = models.user.GroupModel(name='管理者', type=0)
+    group = models.user.GroupModel(name='最高管理者群組', type=0)
     user = models.user.UserModel(first_name='管理者',
-                                 last_name='管理者',
+                                 last_name='最高',
                                  email='webmaster@example.org',
                                  account='admin',
                                  password='admin',
