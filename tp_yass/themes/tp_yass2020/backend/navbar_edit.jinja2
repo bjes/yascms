@@ -103,15 +103,15 @@
 <script>
   $(function() {
     let type_value = parseInt($('#type').val());
-    if (type_value === {{ NavbarType.TREE_NODE }}) {
+    if (type_value === {{ NavbarType.TREE_NODE.value }}) {
       // 可新增子選單
       $('#is_external_group, #link-card').hide();
       $('#aria_name_group, #name_group').show();
-    } else if (type_value === {{ NavbarType.LEAF_NODE }}) {
+    } else if (type_value === {{ NavbarType.LEAF_NODE.value }}) {
       // 不可新增子選單
       $('#is_external_group, #name_group, #link-card').show();
       $('#aria_name_group').hide();
-    } else if (type_value === {{ NavbarType.DROPDOWN_DIVIDER }}) {
+    } else if (type_value === {{ NavbarType.DROPDOWN_DIVIDER.value }}) {
       // 分隔線
       $('#name_group, #aria_name_group, #icon_group, #is_external_group, #link-card').hide();
       $('#name').val('分隔線');
@@ -142,10 +142,12 @@
         $.getJSON('{{ request.route_url('backend_api_page_list') }}', function (data) {
           let page_html_list = [];
           $.each(data, function (key, val) {
-            page_html_list.push('<input class="form-check-input" type="radio" name="page_id" id="pageId' + val['id'] + '" value="' + val['id'] + '">' +
-                                '<label class="form-check-label" for="pageId' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label>');
+            page_html_list.push('<div class="form-group form-check">'
+                                + '<input class="form-check-input" type="radio" name="page_id" id="pageId' + val['id'] + '" value="' + val['id'] + '">'
+                                + '<label class="form-check-label" for="pageId' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label></div>');
           });
           $('#modal-content').html(page_html_list.join(''));
+          $('#modal-content input[type="radio"][value="{{ form.page_id.data }}"]').prop('checked', true)
           $('#modal-content').removeClass('d-none')
           $('#modal-loading-icon').hide();
           $('#leaf_type').val(1);

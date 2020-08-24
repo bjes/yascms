@@ -38,7 +38,9 @@ class NavbarCreateView:
     @view_config(request_method='GET')
     def get_view(self):
         form = NavbarForm()
-        return {'form': form, 'navbar_trees': generate_navbar_trees(self.request, type='intermediate')}
+        return {'form': form,
+                'navbar_trees': generate_navbar_trees(self.request, type='intermediate'),
+                'NavbarType': NavbarType}
 
     @view_config(request_method='POST')
     def post_view(self):
