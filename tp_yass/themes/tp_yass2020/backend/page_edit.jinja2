@@ -30,7 +30,7 @@
           {{ form.content.label() }}
           {{ form.content(class_='form-control', placeholder='請輸入內容') }}
         </div>
-        <div class="form-group">
+        <div class="form-group" id="group_trees">
           {{ form.group_ids.label() }}
           {{ generate_user_group_trees(request, 'group_ids', group_trees, use_link=False) }}
         </div>
@@ -72,6 +72,9 @@
       {% for i in group_ids %}
         $('#root-group>li[data-value="{{ i }}"]>input[type="checkbox"]').prop('checked', true);
       {% endfor %}
+      {% if not request.session['is_admin'] %}
+        $('#group_trees').hide();
+      {% endif %}
     });
   </script>
 {% endblock %}

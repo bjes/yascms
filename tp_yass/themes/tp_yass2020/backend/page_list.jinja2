@@ -39,7 +39,7 @@
                   {% else %}
                     {% for each_group in each_page.groups %}
                       {% if each_group.id in request.session['group_id_list'] %}
-                        <a class="btn btn-primary" href="#">編輯</a>
+                        <a class="btn btn-primary" href="{{ request.route_url('backend_page_edit', page_id=each_page.id) }}">編輯</a>
                         {% break %}
                       {% endif %}
                     {% endfor %}

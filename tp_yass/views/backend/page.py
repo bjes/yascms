@@ -135,7 +135,7 @@ class PageEditView:
             page_id = int(self.request.matchdict['page_id'])
             page = DAL.get_page(page_id)
             if page:
-                page = DAL.update_page(page, form)
+                page = DAL.update_page(page, form, self.request.session['is_admin'])
 
                 # 若發現使用者取消勾選已上傳的附件則刪除之
                 selected_attachment_ids = form.uploaded_attachments.data

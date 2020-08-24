@@ -493,12 +493,13 @@ class DAL:
         return page
 
     @staticmethod
-    def update_page(page, form_data):
+    def update_page(page, form_data, is_admin):
         """使用 form 的資料更新指定的單一頁面
 
         Args:
             page: PageModel 物件
             form_data: wtforms.forms.Form 物件
+            is_admin: boolean 值，用來確認執行的身份是否為管理權限，若不是，則不更動單一頁面的管理群組設定
 
         Returns:
             回傳已更新的單一頁面物件
@@ -511,9 +512,10 @@ class DAL:
         for each_tag_name in tags:
             tag = DAL.get_or_create_tag(each_tag_name)
             page.tags.append(tag)
-        # 處理群組
-        group_ids = form_data.group_ids.data
-        page.groups = DAL.get_groups(group_ids)
+        # 若是管理權限，則處理單一頁面的群組
+        if is_admin:
+            group_ids = form_data.group_ids.data
+            page.groups = DAL.get_groups(group_ids)
         return page
 
     @staticmethod
