@@ -1,0 +1,36 @@
+{% extends "layouts/master.jinja2" %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ request.route_url('homepage') }}">首頁</a></li>
+    <li class="breadcrumb-item"><a href="{{ request.route_url('news_list') }}">最新消息</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ news.title }}</li>
+  </ol>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card border-info">
+        <div class="card-header">
+          <h5 class="mb-0">{{ news.title }}</h5>
+        </div>
+        <div class="card-body">
+          <h5>{{ news.content|safe }}</h5>
+        </div>
+        <div class="card-footer text-muted">
+          {% if news.attachments %}
+            <ul class="mb-0">
+              {% for each_attachment in news.attachments %}
+                <li><a href="{{ request.static_url('tp_yass:uploads/news/'
+                                                   + news.publication_date.strftime('%Y/%m/'))
+                                                   + each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
