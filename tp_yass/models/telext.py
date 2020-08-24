@@ -23,9 +23,6 @@ class TelExtModel(BaseObject):
     # 排序
     order = Column(Integer, nullable=False, default=0, server_default='0')
 
-    # 在首頁的排序
-    pinned_order = Column(Integer, nullable=False, default=0, server_default='0')
-
     # 是否顯示在釘選在首頁
     is_pinned = Column(Integer, nullable=False, default=0, server_default='0')
 

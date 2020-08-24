@@ -1030,10 +1030,9 @@ class DAL:
 
     @staticmethod
     def get_pinned_telext_list():
-        """回傳根據 pinned_order 排序的首頁分機表"""
+        """回傳根據 order 排序指定顯示在首頁的分機表"""
         return (DBSession.query(TelExtModel)
                 .filter_by(is_pinned=1)
-                .order_by(TelExtModel.pinned_order)
                 .order_by(TelExtModel.order))
 
     @staticmethod
