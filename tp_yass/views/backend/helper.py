@@ -2,10 +2,10 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 from tp_yass.dal import DAL
-from tp_yass.views.helper.file import get_project_abspath, save_file
+from tp_yass.views.helper.file import get_project_abspath, save_file, convert_image_file
 
 
-def upload_attachment(cgi_field_storage, upload_sub_dir, prefix):
+def upload_attachment(cgi_field_storage, upload_sub_dir, prefix, need_resize=False):
     """將上傳的檔案重新亂數命名後存檔
 
     Args:
@@ -19,12 +19,23 @@ def upload_attachment(cgi_field_storage, upload_sub_dir, prefix):
     upload_file_name = Path(cgi_field_storage.filename)
     destination_dir = get_project_abspath() / 'uploads' / Path(upload_sub_dir)
     destination_dir.mkdir(parents=True, exist_ok=True)  # 若目錄不存在則建立
-    with NamedTemporaryFile(dir=str(destination_dir),
-                            prefix=prefix,
-                            suffix=upload_file_name.suffix,
-                            delete=False) as destination_file:
-        save_file(cgi_field_storage, destination_file)
-        return str(Path(destination_file.name).name)
+    if need_resize:
+        # 代表這是好站連結的圖片，要轉檔成小尺寸 jpg
+        with NamedTemporaryFile(prefix=prefix,
+                                suffix=upload_file_name.suffix,
+                                delete=False) as tmp_file:
+            save_file(cgi_field_storage, tmp_file)
+            tmp_file.flush()
+            destination_path = destination_dir / f'{tmp_file.name.split("/")[-1].split(".")[0]}.jpg'
+            return convert_image_file(tmp_file.name, str(destination_path))
+    else:
+        # 代表這是一般的附件，不用動內容只有改檔名
+        with NamedTemporaryFile(dir=str(destination_dir),
+                                prefix=prefix,
+                                suffix=upload_file_name.suffix,
+                                delete=False) as destination_file:
+            save_file(cgi_field_storage, destination_file)
+            return str(Path(destination_file.name).name)
 
 
 def delete_attachment(file_name, upload_sub_dir):

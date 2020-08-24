@@ -37,7 +37,7 @@ class LinkCreateView:
             created_link = DAL.create_link(form)
             # 上傳圖檔並將相關資料寫入資料庫
             if form.icon.data:
-                created_link.icon = upload_attachment(form.icon.data, 'links', f'{created_link.id}_')
+                created_link.icon = upload_attachment(form.icon.data, 'links', f'{created_link.id}_', need_resize=True)
             DAL.save_link(created_link)
             return HTTPFound(self.request.route_url('backend_link_list'))
         return {'form': form}

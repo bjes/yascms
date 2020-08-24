@@ -1,7 +1,26 @@
 from pathlib import Path
 
+from PIL import Image
+
 import tp_yass
 
+
+def convert_image_file(file_path, destination_path) -> bool:
+    """將檔案轉檔縮小尺寸後存到指定路徑
+
+    Args:
+        file_path: 原始圖檔的路徑
+        destination: 存放目的路徑含檔名
+
+    Returns:
+        轉檔成功回傳檔名
+    """
+    im = Image.open(file_path)
+    if im.mode in ('RGBA', 'P'):
+        im = im.convert('RGB')
+    new_im = im.resize((120, 60), Image.ANTIALIAS)
+    new_im.save(destination_path, quality=100)
+    return destination_path.split('/')[-1]
 
 def save_file(cgi_field_storage, file_obj, bulk_size=5120000) -> bool:
     """將檔案儲存到指定路徑
