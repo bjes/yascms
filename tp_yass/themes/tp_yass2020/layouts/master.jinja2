@@ -7,6 +7,8 @@
       </div>
       <div class="col-lg main-content px-3 px-lg-0">
         {% block banner %}{% endblock banner %}
+        {% block successful_flash %}{% endblock successful_flash %}
+        {% block failed_flash %}{% endblock failed_flash %}
         {% block content %}{% endblock content %}
         {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
       </div>

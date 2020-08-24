@@ -3,15 +3,6 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    {% if request.session.peek_flash('fail') %}
-      <div class="col-12">
-        <div class="alert alert-danger" role="alert">
-          {% for msg in request.session.pop_flash('fail') %}
-            {{ msg }}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
     <div class="col-12"><h1>最新消息分類列表</h1></div>
     <div class="col-12">
       <div class="card border-primary mb-3">

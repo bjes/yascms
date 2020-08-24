@@ -2,24 +2,6 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    {% if request.session.peek_flash('success') %}
-      <div class="col-12">
-        <div class="alert alert-success" role="alert">
-          {% for msg in request.session.pop_flash('success') %}
-            {{ msg }}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
-    {% if request.session.peek_flash('fail') %}
-      <div class="col-12">
-        <div class="alert alert-danger" role="alert">
-          {% for msg in request.session.pop_flash('fail') %}
-            {{ msg }}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
     <div class="col-12"><h1>系統設定 - 一般設定</h1></div>
     <div class="col-12">
       <form action="" method="POST">
