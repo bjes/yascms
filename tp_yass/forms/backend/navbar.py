@@ -31,7 +31,7 @@ class NavbarForm(Form):
 
     # 前端會處理顯示的部份，這邊只負責驗證，允許的值為 1 (代表連結單一頁面) 與 2 (代表自訂網址)。
     # 但要注意，如果是內建模組（像是最新消息等），我們只允許讓這些模組移動在導覽列的位置，此時這個值會忽略不處理
-    leaf_type = HiddenField('導覽列連結類型', [InputRequired('導覽列連結類型必填')])
+    leaf_type = HiddenField('導覽列連結類型')
 
     def validate_leaf_type(form, field):
         if field.data:

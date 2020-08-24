@@ -124,7 +124,8 @@ class NavbarEditView:
             if form.validate():
                 if DAL.sync_navbar(form, navbar):
                     return HTTPFound(self.request.route_url('backend_navbar_list'))
-        self.request.session.flash('navbar id 不存在', 'fail')
+        else:
+            self.request.session.flash('navbar id 不存在', 'fail')
         return {'form': form,
                 'navbar_trees': generate_navbar_trees(self.request, type='intermediate', excluded_id=navbar_id),
                 'NavbarType': NavbarType}
