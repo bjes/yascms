@@ -1,5 +1,6 @@
 from pyramid.view import view_config
 
+from tp_yass.enum import NavbarType
 from tp_yass.helper import sanitize_input
 from tp_yass.views.helper.navbar import generate_navbar_trees
 from tp_yass.views.frontend.helper import remove_navbar_root
@@ -16,4 +17,5 @@ def news_list_view(request):
             'navbar_trees': remove_navbar_root(generate_navbar_trees(request, visible_only=True)),
             'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
             'page_number': page_number,
-            'quantity_per_page': quantity_per_page}
+            'quantity_per_page': quantity_per_page,
+            'NavbarType': NavbarType}
