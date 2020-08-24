@@ -24,8 +24,10 @@ def _recursive_append(request, navbar_node, navbar):
                       'module_name': navbar.module_name,
                       'order': navbar.order,
                       'descendants': []}
-        if navbar.type == NavbarType.BUILTIN_NEWS and navbar.module_name == 'news':
+        if navbar.type == NavbarType.BUILTIN_NEWS:
             sub_navbar['descendants'] = news_factory()
+        elif navbar.type == NavbarType.BUILTIN_CALENDAR:
+            sub_navbar['url'] = request.route_path('calendar')
         navbar_node['descendants'].append(sub_navbar)
         return True
     # 繼續往下一層對應
@@ -63,7 +65,7 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
                           'module_name': navbar.module_name,
                           'order': navbar.order,
                           'descendants': []}
-            if navbar.type == NavbarType.BUILTIN_NEWS and navbar.module_name == 'news':
+            if navbar.type == NavbarType.BUILTIN_NEWS:
                 sub_navbar['descendants'] = news_factory()
             navbar_trees.append(sub_navbar)
         else:
