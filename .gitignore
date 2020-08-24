@@ -15,4 +15,4 @@ __pycache__
 data
 !*/data
 tp_yass/uploads/**
-tp_yass/icons/**
+tp_yass/icons/*
