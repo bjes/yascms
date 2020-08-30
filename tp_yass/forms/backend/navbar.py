@@ -13,16 +13,16 @@ from tp_yass.enum import NavbarType
 class NavbarForm(Form):
     """新增 navbar 的表單"""
 
-    name = StringField('名稱', [InputRequired('名稱欄位為必填'), Length(min=1, max=50)])
+    name = StringField('名稱*', [InputRequired('名稱欄位為必填'), Length(min=1, max=50)])
 
-    type = SelectField('導覽列類型',
+    type = SelectField('導覽列類型*',
                        [InputRequired('導覽列類型欄位必填')],
                        choices=[(NavbarType.TREE_NODE.value, '導覽列選單（可新增子選單）'),
                                 (NavbarType.LEAF_NODE.value, '導覽列連結（無法新增子選單）'),
                                 (NavbarType.DROPDOWN_DIVIDER.value, '分隔線')],
                        coerce=int)
 
-    aria_name = StringField('無障礙導覽列英文名稱')
+    aria_name = StringField('無障礙導覽列英文名稱 (導覽列選單必須設定)')
 
     def validate_aria_name(form, field):
         if field.data:

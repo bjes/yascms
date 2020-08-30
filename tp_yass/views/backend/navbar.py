@@ -48,6 +48,8 @@ class NavbarCreateView:
         if form.validate():
             if DAL.create_navbar(form):
                 return HTTPFound(self.request.route_url('backend_navbar_list'))
+        else:
+            self.request.session.flash('建立導覽列失敗', 'fail')
         return {'form': form,
                 'navbar_trees': generate_navbar_trees(self.request, type='intermediate'),
                 'NavbarType': NavbarType}
