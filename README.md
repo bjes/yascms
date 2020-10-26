@@ -1,6 +1,35 @@
 # 臺北市國中小集中化網站系統
 
+## DEMO 站台
+
+http://demo.bjes.tp.edu.tw
+
+最高管理者帳號密碼為 admin / admin
+
+一般使用者有兩組帳號，一組是 user1 / user1 ，另一組是 user2 / user2 。
+
+## 如何申請
+
+目前的網站還有細節要調整，約莫 2020/11 月中會將學校必要的幾個細節都修正完成。
+
+若貴校想要參與第一批次的移轉，可填寫申請表單：
+
+https://forms.gle/kG1uoH7mK9TEdYHa6
+
+有任何問題，可聯繫本專案的窗口：
+
+- 益教網 莊維誠 <rsi0430@gmail.com>
+- 濱江國小 吳佳寰 <william@pylabs.org>
+
 ## 如何開發
+
+若對參與開發有興趣，歡迎來信：
+
+- 益教網 莊維誠 <rsi0430@gmail.com>
+- 濱江國小 吳佳寰 <william@pylabs.org>
+
+我們會建立相關的帳號權限給您。若您想將程式碼抓下來跑在自己的機器上，可參考以下步驟：
+
 
 ### 將原始碼 clone 至本機
 
@@ -75,3 +104,8 @@ cp development.ini.sample development.ini
 ```shell
 .venv/bin/pserve development.ini --reload
 ```
+
+## 相關投影片
+
+- 2020/10/16 [臺北市集中化網站功能介紹與佈署申請](https://docs.google.com/presentation/d/18YZlmiMYo8hlSvAEi_SQQMwZuMp0ma3O_DngXFF33m4/edit?usp=sharing)
+
