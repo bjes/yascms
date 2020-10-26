@@ -20,9 +20,9 @@ passlib = "*"
 pyramid_exclog = "*"
 requests = "*"
 pyramid_wtforms = "*"
-wtforms = {extras = ["email"], version = "^2.3.1"}
-email_validator = "^1.1.1"
-pillow = "^7.2.0"
+wtforms = {extras = ["email"], version = "*"}
+email_validator = "*"
+pillow = "*"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
@@ -38,6 +38,7 @@ tox = "*"
 WebTest = "*"
 waitress = "*"
 mycli = "*"
+Sphinx = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
