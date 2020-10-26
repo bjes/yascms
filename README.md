@@ -2,7 +2,7 @@
 
 ## DEMO 站台
 
-http://demo.bjes.tp.edu.tw
+<http://demo.bjes.tp.edu.tw>
 
 最高管理者帳號密碼為 admin / admin
 
@@ -14,12 +14,16 @@ http://demo.bjes.tp.edu.tw
 
 若貴校想要參與第一批次的移轉，可填寫申請表單：
 
-https://forms.gle/kG1uoH7mK9TEdYHa6
+h<ttps://forms.gle/kG1uoH7mK9TEdYHa6>
 
 有任何問題，可聯繫本專案的窗口：
 
 - 益教網 莊維誠 <rsi0430@gmail.com>
 - 濱江國小 吳佳寰 <william@pylabs.org>
+
+## 如何回報問題
+
+若您對網站的功能有各種功能上的建議，或是發現 bugs，都歡迎回報讓我們知道！ 回報的網址在 <https://github.com/tcenc/tp_yass/issues> ，您需要先申請 [GitHub](https://github.com) 的帳號才能上去建立 issue 回報。
 
 ## 如何開發
 
