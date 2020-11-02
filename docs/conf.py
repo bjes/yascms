@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../tp_yass'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -20,6 +20,15 @@ sys.path.insert(0, os.path.abspath('../tp_yass'))
 project = 'tp_yass'
 copyright = '2020, William Wu'
 author = 'William Wu'
+autoclass_content = 'both'
+autodoc_member_order = 'bysource'
+autodoc_default_options = {
+    'members': True,
+    'private-members': True,
+    'show-inheritance': True
+}
+napoleon_numpy_docstring = False
+napoleon_use_rtype = False
 
 
 # -- General configuration ---------------------------------------------------
@@ -28,7 +37,8 @@ author = 'William Wu'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
