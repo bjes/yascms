@@ -5,7 +5,7 @@ from invoke.exceptions import ParseError
 
 from tp_yass.tests.helper import get_ini_settings, import_test_db_data
 
-from . import db, test, file
+from . import db, test, file, doc
 from .helper import find_ini_file
 
 
@@ -23,5 +23,5 @@ def deploy(c, ini_file=None):
     c.run('systemctl start uwsgi')
 
 
-namespace = Collection(deploy, db, test, file)
+namespace = Collection(deploy, db, test, file, doc)
 

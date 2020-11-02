@@ -2,7 +2,7 @@ from glob import glob
 from pathlib import Path
 import subprocess
 
-from invoke import Collection, task
+from invoke import task
 
 import tp_yass
 from tp_yass.tests.helper import get_ini_settings
