@@ -1,0 +1,99 @@
+如何開發
+========
+
+本專案目前非常需要第一線的資訊老師加入討論與開發，若您對加入本專案開發團隊有興趣，請不吝聯繫。
+以下說明建立開發環境的步驟。下面的步驟皆在 Debian 10 Buster 上驗證過可正常執行，若您的環境不一樣，
+需依照不同的作業系統環境微調指令。
+
+
+將原始碼 clone 至本機
+---------------------
+
+.. code-block:: bash
+   :linenos:
+
+   export GIT_BASE_DIR=~/git
+   mkdir -p $GIT_BASE_DIR
+   cd $GIT_BASE_DIR
+   git clone https://webcode.tp.edu.tw/tcenc/tp_yass.git
+
+建立開發環境
+------------
+
+可以選擇使用 ansible playbook 建置，或是手動建置，以下說明此兩種作法，請擇一使用。
+
+使用 ansible playbook 建置
+++++++++++++++++++++++++++
+
+使用 pip3 安裝 ansible
+
+.. code-block:: bash
+   :linenos:
+
+   # 在 Debian 下要先安裝 python3-pip 套件 才有 pip3 指令
+   pip3 install ansible --user
+
+使用 ansible playbook 建置開發環境，注意執行此指令的帳號需有 sudo root 的權限
+
+.. code-block:: bash
+   :linenos:
+
+   ansible-playbook develop.yml
+
+
+手動建置
+++++++++
+
+建立專案運行的 venv 環境
+
+.. code-block:: bash
+   :linenos:
+
+   cd tp_yass
+   # 在 Debian 上需要安裝 python3-venv 套件
+   python3 -m venv .venv
+
+更新套件管理工具
+
+.. code-block:: bash
+   :linenos:
+
+   .venv/bin/pip install --upgrade pip setuptools poetry
+
+同步開發專案需要安裝的套件
+
+.. code-block:: bash
+   :linenos:
+
+   poetry install
+
+
+建立開發用的測試資料庫，並將資料庫 migrate 到最新版
+
+.. code-block:: bash
+   :linenos:
+
+   cp development.ini.sample development.ini
+   # 至少要修改 development.ini 的 sqlalchemy.url 設定，
+   # 以對應實際的資料庫設定。請參考檔案內相關註解。
+   # 修改完成後再執行以下指令
+   .venv/bin/inv db.init-test file.delete
+
+
+於本機開發環境啟動專案
+
+.. code-block:: bash
+   :linenos:
+
+   .venv/bin/pserve development.ini --reload
+
+
+執行測試
+--------
+
+.. code-block:: bash
+   :linenos:
+
+   .venv/bin/inv test.all
+
+
