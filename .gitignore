@@ -14,6 +14,7 @@ __pycache__
 .idea/dataSources.local.xml
 data
 !*/data
-tp_yass/icons/*
-tp_yass/uploads/*
-docs/_build/*
+tp_yass/icons/
+tp_yass/uploads/
+docs/_build/
+docs/tp_yass/
