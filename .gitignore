@@ -18,3 +18,5 @@ tp_yass/icons/
 tp_yass/uploads/
 docs/_build/
 docs/tp_yass/
+docs/images/
+*.dot

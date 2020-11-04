@@ -19,4 +19,9 @@ def generate(c):
         subprocess.run(f'rm -rf {each_entry}', shell=True)
 
     subprocess.run(f'sphinx-apidoc -f -o {doc_root_dir}/tp_yass {proj_root_dir}/tp_yass', shell=True)
+    subprocess.run(f'pyreverse -p tp_yass {proj_root_dir}/tp_yass', shell=True)
+    subprocess.run(f'dot {proj_root_dir}/classes_tp_yass.dot -T png -o {doc_root_dir}/images/uml_class_diagram.png', shell=True)
+    subprocess.run(f'dot {proj_root_dir}/packages_tp_yass.dot -T png -o {doc_root_dir}/images/uml_package_diagram.png', shell=True)
+    subprocess.run(f'rm {proj_root_dir}/classes_tp_yass.dot', shell=True)
+    subprocess.run(f'rm {proj_root_dir}/packages_tp_yass.dot', shell=True)
     subprocess.run(f'cd {doc_root_dir} && make html', shell=True)
