@@ -15,6 +15,7 @@ API References
 .. toctree::
    :maxdepth: 3
 
+   architecture_diagrams
    tp_yass/modules
 
 
