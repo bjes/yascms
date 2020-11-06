@@ -5,6 +5,43 @@
 以下說明建立開發環境的步驟。下面的步驟皆在 Debian 10 Buster 上驗證過可正常執行，若您的環境不一樣，
 需依照不同的作業系統環境微調指令。
 
+相依的系統套件
+--------------
+
+本專案需要在系統先行安裝一些套件或元件，才能讓專案正常的運作。以下範例皆是使用 Debian Buster 10 的環境，
+若您使用的是別套 distribution，請依照環境調整以下操作。
+
+內建的系統套件
+++++++++++++++
+
+有些套件 Debian 官方有提供，我們可以直接安裝官方提供的版本：
+
+.. code-block:: bash
+   :linenos:
+
+   sudo apt install build-essential python3-dev python3-venv -y
+
+
+外部的套件
+++++++++++
+
+這個專案會用到 MySQL 5.7.6 或更新的版本才支援的繁體中文全文檢索的功能。但這個功能，Debian Buster 官方提供的
+MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Server`_ 。
+
+目前最新版的 `Percona Server`_ 為 8.0 版，官方文件關於如何在 Debian 上安裝 apt source 的步驟在
+`這裡 <https://www.percona.com/doc/percona-server/LATEST/installation/apt_repo.html>`_ ，以下是執行的指令步驟：
+
+.. code-block:: bash
+   :linenos:
+
+   sudo apt-get install gnupg2 -y
+   wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+   sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
+   sudo percona-release setup ps80
+   sudo apt-get install percona-server-server -y
+
+.. _Percona Server: https://www.percona.com/software/mysql-database/percona-server
+
 
 將原始碼 clone 至本機
 ---------------------
@@ -50,7 +87,6 @@
    :linenos:
 
    cd tp_yass
-   # 在 Debian 上需要安裝 python3-venv 套件
    python3 -m venv .venv
 
 更新套件管理工具
