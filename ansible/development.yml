@@ -1,15 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  vars_prompt:
-    - name: db_name
-      prompt: "請輸入資料庫名稱"
-      private: no
-    - name: db_user
-      prompt: "請輸入資料庫帳號"
-      private: no
-    - name: db_pass
-      prompt: "請輸入資料庫密碼"
+  gather_facts: no
   tasks:
     - name: 建立專案 .venv 目錄
       command: python3 -m venv .venv

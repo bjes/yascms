@@ -72,7 +72,7 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
    :linenos:
 
    cd tp_yass
-   ansible-playbook ansible/develop.yml
+   ~/.local/bin/ansible-playbook ansible/development.yml --extra-vars "db_name=資料庫名稱 db_user=資料庫帳號 db_pass=資料庫密碼"
 
 
 手動建置
