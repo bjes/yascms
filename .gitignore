@@ -21,3 +21,4 @@ docs/tp_yass/
 docs/images/
 *.dot
 ansible/ansible.log
+ansible/roles/*
