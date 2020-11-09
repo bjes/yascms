@@ -19,7 +19,7 @@
 .. code-block:: bash
    :linenos:
 
-   sudo apt install build-essential python3-dev python3-venv -y
+   sudo apt install build-essential python3-dev python3-venv python3-pip -y
 
 
 外部的套件
@@ -49,9 +49,6 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   export GIT_BASE_DIR=~/git
-   mkdir -p $GIT_BASE_DIR
-   cd $GIT_BASE_DIR
    git clone https://webcode.tp.edu.tw/tcenc/tp_yass.git
 
 建立開發環境
@@ -67,7 +64,6 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   # 在 Debian 下要先安裝 python3-pip 套件 才有 pip3 指令
    pip3 install ansible --user
 
 使用 ansible playbook 建置開發環境，注意執行此指令的帳號需有 sudo root 的權限
@@ -75,7 +71,8 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   ansible-playbook develop.yml
+   cd tp_yass
+   ansible-playbook ansible/develop.yml
 
 
 手動建置

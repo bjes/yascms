@@ -18,7 +18,9 @@
     - name: 使用 poetry 安裝專案相依套件
       command: .venv/bin/poetry install
     - name: 建立 development.ini ，若檔案已存在則不覆蓋
-      command: cp -u development.ini.sample development.ini
+      command:
+        cmd: cp development.ini.sample development.ini
+        creates: development.ini
     - name: 設定資料庫連線
       lineinfile:
         path: development.ini
