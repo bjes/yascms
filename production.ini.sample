@@ -26,13 +26,20 @@ jinja2.trim_blocks = true
 # secret key for pyramid security framework
 auth.secret = CHANGE_ME
 
-# pyramid_beaker settings
-session.type = file
-session.data_dir = %(here)s/data/sessions/data
-session.lock_dir = %(here)s/data/sessions/lock
-session.key = tp_yass
-session.secret = CHANGE_ME
-session.cookie_on_exception = true
+# pyramid_session_redis settings
+redis.sessions.secret = COOKIE_SIGNING_SECRET
+redis.sessions.timeout = 86400
+redis.sessions.cookie_name = tp_yass
+redis.sessions.cookie_max_age = 86400
+redis.sessions.cookie_path = /
+redis.sessions.cookie_domain =
+redis.sessions.cookie_secure = True
+redis.sessions.cookie_httponly = True
+redis.sessions.cookie_on_exception = True
+redis.sessions.host = localhost
+redis.sessions.port = 6379
+redis.sessions.db = 0
+redis.sessions.password = None
 
 #sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo?charset=utf8mb4
 sqlalchemy.url =

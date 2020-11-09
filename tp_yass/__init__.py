@@ -9,7 +9,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     with Configurator(settings=settings) as config:
-        config.include('pyramid_beaker')
+        config.include('pyramid_session_redis')
         config.include('pyramid_jinja2')
         config.add_jinja2_extension('jinja2.ext.loopcontrols')
         config.include('pyramid_tm')
