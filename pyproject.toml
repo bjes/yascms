@@ -48,3 +48,6 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry.plugins."paste.app_factory"]
 main = "tp_yass:main"
+
+[tool.poetry.plugins."console_scripts"]
+initialize_tp_yass_db = "tp_yass.scripts.initialize_db:main"
