@@ -1,6 +1,5 @@
 development.ini
 production.ini
-wsgi.py
 __pycache__
 *.egg-info
 *.swp
@@ -22,3 +21,4 @@ docs/images/
 *.dot
 ansible/ansible.log
 ansible/roles/*
+ansible/deploy.conf

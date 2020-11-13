@@ -1,0 +1,85 @@
+---
+# 管理帳號，這個帳號可以從外部用 ssh 連入，並有 sudo 權限
+sysbase_manager_account:
+
+# 管理帳號群組
+sysbase_manager_group:
+
+# 管理帳號密碼
+sysbase_manager_password:
+
+# 系統的 dns server
+sysbase_dns_servers:
+  - "8.8.8.8"
+  - "8.8.4.4"
+  - "168.95.1.1"
+
+# 佈署這個專案的所在位置路徑
+project_base_dir:
+
+# 這個專案要服務的網域
+project_domain_name:
+
+# 要跑自動 letsencrypt 認証的網域
+letsencrypt_auth_domain_names:
+  - "{{ project_domain_name }}"
+
+# 設定 pyramid auth framework 的 secret key
+auth_secret: CHANGE_ME
+
+# session 的 secret key
+session_secret: CHANGE_ME
+
+# session timeout 的時間（秒）
+session_timeout: 86400
+
+# cookie 名稱
+cookie_name: CHANGE_ME
+
+# cookie 最大存活時間
+cookie_max_age: 86400
+
+# redis server 的 host
+redis_host: localhost
+
+# redis server 的 port
+redis_port: 6379
+
+# redis server 的連線密碼，若留空代表不用密碼
+redis_password:
+
+# 資料庫的 host
+db_host:
+
+# 資料庫名稱
+db_name:
+
+# 資料庫帳號
+db_user:
+
+# 資料庫密碼
+db_pass: 
+
+# 是否啟用 log 打到 mattermost 的功能，預設不啟用
+mattermost_logging_enabled: false
+
+# mattermost 的頻道名稱
+mattermost_channel_name:
+
+# mattermost 的 incoming hook 的網址
+mattermost_channel_url:
+
+# uwsgi 的版本
+uwsgi_version: "2.0.19.1"
+
+# uwsgi 的 socket host
+uwsgi_socket_host: locahost
+
+# uwsgi 的 socket port
+uwsgi_socket_port: 13601
+
+# uwsgi 要啟動幾個 worker
+uwsgi_processes: 2
+
+# uwsgi 每個 worker 要啟動幾個執行緒
+uwsgi_threads: 2

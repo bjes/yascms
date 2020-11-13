@@ -24,25 +24,24 @@ jinja2.lstrip_blocks = true
 jinja2.trim_blocks = true
 
 # secret key for pyramid security framework
-auth.secret = CHANGE_ME
+auth.secret = {{ auth_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
 
 # pyramid_session_redis settings
-redis.sessions.secret = COOKIE_SIGNING_SECRET
-redis.sessions.timeout = 86400
-redis.sessions.cookie_name = tp_yass
-redis.sessions.cookie_max_age = 86400
+redis.sessions.secret = {{ session_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
+redis.sessions.timeout = {{ session_timeout|default("86400", true) }}
+redis.sessions.cookie_name = {{ cookie_name }}
+redis.sessions.cookie_max_age = {{ cookie_max_age|default("86400", true) }}
 redis.sessions.cookie_path = /
 redis.sessions.cookie_domain =
 redis.sessions.cookie_secure = True
 redis.sessions.cookie_httponly = True
 redis.sessions.cookie_on_exception = True
-redis.sessions.host = localhost
-redis.sessions.port = 6379
+redis.sessions.host = {{ redis_host|default("localhost", true) }}
+redis.sessions.port = {{ redis_port|default("6379", true) }}
 redis.sessions.db = 0
-redis.sessions.password = None
+redis.sessions.password = {{ redis_password }}
 
-#sqlalchemy.url = mysql+pymysql://user:pass@localhost/foo?charset=utf8mb4
-sqlalchemy.url =
+sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@{{ db_host }}/{{ db_name }}?charset=utf8mb4
 sqlalchemy.pool_recycle = 3600
 
 retry.attempts = 3
@@ -70,49 +69,66 @@ listen = *:6543
 keys = root, tp_yass, sqlalchemy, alembic, exc_logger
 
 [handlers]
-keys = file, exc_handler
+{%if mattermost_logging_enabled %}
+keys = rotating_file, exc_handler, mattermost
+{% else %}
+keys = rotating_file, exc_handler
+{% endif %}
 
 [formatters]
 keys = generic, exc_formatter
 
 [logger_root]
 level = WARN
-handlers = file
+handlers = rotating_file
 
 [logger_tp_yass]
 level = WARN
-handlers = file
+{%if mattermost_logging_enabled %}
+handlers = rotating_file, mattermost
+{% else %}
+handlers = rotating_file
+{% endif %}
 qualname = tp_yass
 
 [logger_sqlalchemy]
 level = WARN
-handlers = file
+handlers = rotating_file
 qualname = sqlalchemy.engine
-# "level = INFO" logs SQL queries.
-# "level = DEBUG" logs SQL queries and results.
-# "level = WARN" logs neither.  (Recommended for production systems.)
 
 [logger_alembic]
 level = WARN
-handlers = file
+handlers = rotating_file
 qualname = alembic
 
 [logger_exc_logger]
 level = ERROR
+{%if mattermost_logging_enabled %}
+handlers = exc_handler, mattermost
+{% else %}
 handlers = exc_handler
+{% endif %}
 qualname = exc_logger
 
-[handler_file]
-class = FileHandler
-args = ('%(here)s/logs/log.log',)
+[handler_rotating_file]
+class = handlers.RotatingFileHandler
+args = ('%(here)s/logs/logs.log', 'a', 102400, 5)
 level = NOTSET
 formatter = generic
 
 [handler_exc_handler]
-class = FileHandler
-args = ('%(here)s/logs/exceptions.log',)
+class = handlers.RotatingFileHandler
+args = ('%(here)s/logs/exceptions.log', 'a', 102400, 5)
 level = ERROR
 formatter = exc_formatter
+
+{% if mattermost_logging_enabled %}
+[handler_mattermost]
+class = tp_yass.logging.MattermostHandler
+args = ("{{ mattermost_channel_name }}", "{{ mattermost_channel_url }}")
+level = NOTSET
+formatter = generic
+{% endif %}
 
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
