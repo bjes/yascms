@@ -31,15 +31,15 @@
             chdir: "{{ project_base_dir }}"
             creates: ".venv"
         - name: 更新專案 .venv 套件
-          command: ./.venv/bin/pip install --upgrade pip setuptools poetry
+          command: .venv/bin/pip install --upgrade pip setuptools poetry
           args:
             chdir: "{{ project_base_dir }}"
         - name: 使用 poetry 安裝專案相依套件
-          command: ./.venv/bin/poetry install
+          command: .venv/bin/poetry install
           args:
             chdir: "{{ project_base_dir }}"
         - name: 執行資料庫初始化
-          command: ./.venv/bin/poetry run .venv/bin/inv db.init
+          command: .venv/bin/poetry run .venv/bin/inv db.init
           args:
             chdir: "{{ project_base_dir }}"
         - name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
