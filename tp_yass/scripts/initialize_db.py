@@ -123,13 +123,10 @@ def main(argv=sys.argv):
         setup_models(dbsession)
     except OperationalError:
         print('''
-Pyramid is having a problem using your SQL database.  The problem
-might be caused by one of the following things:
+初始化資料庫資料失敗，可能有以下原因：
 
-1.  You may need to initialize your database tables with `alembic`.
-    Check your README.txt for description and try to run it.
+1. 還沒建立資料庫，通常你不應該直接執行 initialize_tp_yass_db 指令，
+   取而代之的應該是執行 inv db.init 才是完整初始化的步驟。
 
-2.  Your database server may not be running.  Check that the
-    database server referred to by the "sqlalchemy.url" setting in
-    your "development.ini" file is running.
-            ''')
+2. 尚未啟動資料庫，請先啟動資料庫後再執行資料庫初始化的指令 inv db.init 。
+''')
