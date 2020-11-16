@@ -73,7 +73,7 @@ mattermost_channel_url:
 uwsgi_version: "2.0.19.1"
 
 # uwsgi 的 socket host
-uwsgi_socket_host: locahost
+uwsgi_socket_host: localhost
 
 # uwsgi 的 socket port
 uwsgi_socket_port: 13601
