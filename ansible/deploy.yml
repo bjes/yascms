@@ -32,6 +32,12 @@
           command: .venv/bin/poetry run .venv/bin/inv db.init
           args:
             chdir: "{{ project_base_dir }}"
+        - name: 設定 log 目錄權限
+          file:
+            path: "{{ project_base_dir  }}/logs"
+            owner: "www-data"
+            group: "www-data"
+            recurse: yes
         - name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
           template:
             src: "uwsgi.ini.j2"
