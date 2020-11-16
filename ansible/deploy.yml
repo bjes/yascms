@@ -2,21 +2,11 @@
 - hosts: localhost
   connection: local
   roles:
+    - pylabs.redis
     - pylabs.uwsgi
     - pylabs.letsencrypt_auth
     - pylabs.percona # for ngram support. MariaDB 目前還不支援
   tasks:
-    - name: 安裝 redis-server
-      apt:
-        name: "redis-server"
-        state: present
-    - name: 設定 redis-server 連線密碼
-      lineinfile:
-        path: "/etc/redis/redis.conf"
-        regexp: "^# requirepass "
-        line: "requirepass {{ redis_password }}"
-      when: redis_password
-      notify: restart redis-server
     - block:
         - name: 佈署 production 環境的設定檔
           template:

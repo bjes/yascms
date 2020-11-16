@@ -1,3 +1,4 @@
+- src: pylabs.redis
 - src: pylabs.uwsgi
 - src: pylabs.letsencrypt_auth
 - src: pylabs.percona # for ngram support. MariaDB 目前還不支援
