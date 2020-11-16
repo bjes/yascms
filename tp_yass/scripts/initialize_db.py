@@ -21,7 +21,7 @@ def setup_models(dbsession):
                                  last_name='最高',
                                  email='webmaster@example.org',
                                  account='admin',
-                                 password='admin',
+                                 password='admin4tp_yass',
                                  groups=[group])
     dbsession.add(group)
     dbsession.add(user)
