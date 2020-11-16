@@ -44,7 +44,7 @@ class NewsModel(BaseObject):
     title = Column(String(100), nullable=False, index=True)
 
     # 內容
-    content = Column(Text, nullable=False, default='', server_default='')
+    content = Column(Text, nullable=False, default='')
 
     # 上傳附件
     attachments = relationship('NewsAttachmentModel', backref='news', cascade='all, delete-orphan')

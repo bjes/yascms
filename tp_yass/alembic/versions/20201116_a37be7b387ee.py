@@ -1,8 +1,8 @@
 """initial import
 
-Revision ID: 4c8074fc5569
+Revision ID: a37be7b387ee
 Revises: 
-Create Date: 2020-11-16 10:23:45.139801
+Create Date: 2020-11-16 13:45:12.298989
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4c8074fc5569'
+revision = 'a37be7b387ee'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -126,7 +126,7 @@ def upgrade():
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
-    sa.Column('content', sa.Text(), server_default='', nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
     sa.Column('pinned_start_date', sa.Date(), nullable=True),
     sa.Column('pinned_end_date', sa.Date(), nullable=True),
