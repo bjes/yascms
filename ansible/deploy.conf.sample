@@ -46,7 +46,7 @@ redis_host: localhost
 redis_port: 6379
 
 # redis server 的連線密碼，若留空代表不用密碼
-redis_password:
+redis_pass:
 
 # 資料庫的 host
 db_host:

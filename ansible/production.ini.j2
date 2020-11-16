@@ -39,7 +39,7 @@ redis.sessions.cookie_on_exception = True
 redis.sessions.host = {{ redis_host|default("localhost", true) }}
 redis.sessions.port = {{ redis_port|default("6379", true) }}
 redis.sessions.db = 0
-redis.sessions.password = {{ redis_password }}
+redis.sessions.password = {{ redis_pass }}
 
 sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@{{ db_host }}/{{ db_name }}?charset=utf8mb4
 sqlalchemy.pool_recycle = 3600
