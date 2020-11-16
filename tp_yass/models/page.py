@@ -43,7 +43,7 @@ class PageModel(BaseObject):
     title = Column(String(100), nullable=False)
 
     # 內容
-    content = Column(Text, nullable=False, default='', server_default='')
+    content = Column(Text, nullable=False, default='')
 
     # 上傳附件
     attachments = relationship('PageAttachmentModel', backref='page', cascade='all, delete-orphan')
