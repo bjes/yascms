@@ -12,7 +12,6 @@ pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
 pyramid.includes =
-    pyramid_exclog
 
 # activate some useful filters of jinja2
 jinja2.filters =
@@ -66,17 +65,17 @@ listen = *:6543
 ###
 
 [loggers]
-keys = root, tp_yass, sqlalchemy, alembic, exc_logger
+keys = root, tp_yass, sqlalchemy, alembic
 
 [handlers]
 {%if mattermost_logging_enabled %}
-keys = rotating_file, exc_handler, mattermost
+keys = rotating_file, mattermost
 {% else %}
-keys = rotating_file, exc_handler
+keys = rotating_file,
 {% endif %}
 
 [formatters]
-keys = generic, exc_formatter
+keys = generic
 
 [logger_root]
 level = WARN
@@ -101,26 +100,11 @@ level = WARN
 handlers = rotating_file
 qualname = alembic
 
-[logger_exc_logger]
-level = ERROR
-{%if mattermost_logging_enabled %}
-handlers = exc_handler, mattermost
-{% else %}
-handlers = exc_handler
-{% endif %}
-qualname = exc_logger
-
 [handler_rotating_file]
 class = handlers.RotatingFileHandler
-args = ('%(here)s/logs/logs.log', 'a', 102400, 5)
+args = ('%(here)s/tp_yass/logs/logs.log', 'a', 102400, 5)
 level = NOTSET
 formatter = generic
-
-[handler_exc_handler]
-class = handlers.RotatingFileHandler
-args = ('%(here)s/logs/exceptions.log', 'a', 102400, 5)
-level = ERROR
-formatter = exc_formatter
 
 {% if mattermost_logging_enabled %}
 [handler_mattermost]
@@ -133,5 +117,3 @@ formatter = generic
 [formatter_generic]
 format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
 
-[formatter_exc_formatter]
-format = %(asctime)s %(message)s

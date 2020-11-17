@@ -16,7 +16,6 @@ pyramid_retry = "*"
 pyramid_sqlalchemy = "*"
 pyramid_tm = "*"
 passlib = "*"
-pyramid_exclog = "*"
 requests = "*"
 pyramid_wtforms = "*"
 wtforms = {extras = ["email"], version = "*"}
