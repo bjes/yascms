@@ -11,10 +11,8 @@ __pycache__
 .idea/workspace.xml
 .idea/dataSources/
 .idea/dataSources.local.xml
-data
-!*/data
-tp_yass/icons/
 tp_yass/uploads/
+tp_yass/icons/
 docs/_build/
 docs/tp_yass/
 docs/images/
