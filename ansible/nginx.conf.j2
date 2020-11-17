@@ -53,12 +53,8 @@ server {
         alias {{ project_base_dir }}/tp_yass/uploads;
     }
     
-    location ~ ^/[a-zA-Z0-9-]+\.png {
-        alias {{ project_base_dir }}/tp_yass/icons;
-    }
-
-    location = /manifest.json {
-        root {{ project_base_dir }}/tp_yass/icons;
+    location ~ ^/[a-zA-Z0-9-_]+\.(png|jpg|ico|xml|json) {
+        alias {{ project_base_dir }}/tp_yass/uploads/webroot;
     }
 
     location /.well-known {

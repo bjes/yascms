@@ -80,4 +80,4 @@ def includeme(config):
     config.add_static_view('js', 'themes/default/static/js', cache_max_age=3600)
     config.add_static_view('img', 'themes/default/static/img', cache_max_age=3600)
     config.add_static_view('uploads', 'uploads', cache_max_age=3600)
-    config.add_static_view('', 'icons', cache_max_age=3600)
+    config.add_static_view('', 'webroot', cache_max_age=3600)
