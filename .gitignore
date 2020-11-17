@@ -12,7 +12,7 @@ __pycache__
 .idea/dataSources/
 .idea/dataSources.local.xml
 tp_yass/uploads/
-tp_yass/icons/
+tp_yass/logs/
 docs/_build/
 docs/tp_yass/
 docs/images/
