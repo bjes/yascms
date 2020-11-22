@@ -53,7 +53,7 @@ server {
         alias {{ project_base_dir }}/tp_yass/uploads;
     }
     
-    location ~ ^/[a-zA-Z0-9-_]+\.(png|jpg|ico|xml|json) {
+    location ~ ^/[a-zA-Z0-9-_]+\.(png|svg|ico|xml|webmanifest) {
         alias {{ project_base_dir }}/tp_yass/uploads/webroot;
     }
 
