@@ -32,6 +32,11 @@ server {
 
     server_name {{ project_domain_name }};
 
+    proxy_cache nginx_cache;
+    proxy_cache_valid 200 1s;
+    proxy_cache_lock on;
+    proxy_cache_use_stale updating;
+
     location / {
         uwsgi_pass {{ uwsgi_socket_host }}:{{ uwsgi_socket_port }};
         include uwsgi_params;
