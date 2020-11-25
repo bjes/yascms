@@ -15,7 +15,9 @@ tp_yass/uploads/
 tp_yass/logs/
 docs/_build/
 docs/tp_yass/
-docs/images/
+docs/images/uml_class_diagram.png
+docs/images/package_import_diagram.png
+
 *.dot
 ansible/ansible.log
 ansible/roles/*
