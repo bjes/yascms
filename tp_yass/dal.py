@@ -2,9 +2,10 @@
 
 為了避免 views 相依 orm 操作，所以抽象資料存取層
 """
+import json
 import math
-from datetime import datetime, date
 import logging
+from datetime import datetime, date
 
 from sqlalchemy import or_, func
 from sqlalchemy.exc import IntegrityError
@@ -18,6 +19,7 @@ from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
+from tp_yass.models.theme_config import ThemeConfigModel
 
 
 logger = logging.getLogger(__name__)
@@ -101,6 +103,34 @@ class DAL:
         return (DBSession.query(SiteConfigModel)
                          .filter(SiteConfigModel.name != 'maintenance_mode')
                          .all())
+
+
+    @staticmethod
+    def get_theme_config(theme_name):
+        """根據傳入的 theme_name 傳回佈景主題設定檔
+
+        Args:
+            theme_name: 佈景主題的名稱
+
+        Returns:
+            佈景主題設定資料結構，會將存在資料庫中的 json 格式轉成 python 的資料型別
+        """
+        return json.loads((DBSession.query(ThemeConfigModel)
+                                    .filter_by(name=theme_name)
+                                    .one()).value)
+
+    @staticmethod
+    def save_theme_config(config):
+        """將傳入的 config 資料結構直接存入 theme_config 資料表
+
+        Args:
+            config: 設定檔的資料結構，由樣板自帶的 config.json 藉由 json.loads 轉換而成
+
+        Returns:
+            None
+        """
+        theme_config = ThemeConfigModel(name=config['name'], value=json.dumps(config, ensure_ascii=False))
+        DBSession.add(theme_config)
 
     @staticmethod
     def create_user():

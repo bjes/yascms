@@ -1,26 +1,26 @@
 {
     "name": "tp_yass2020",
-    "version": "0.1.0",
+    "version": "0.0.1",
+    "compatible_version": "0.0.1",
     "author": "William Wu",
     "author_email": "william@pylabs.org",
-    "settings": [
-        {
-            "name": "banners",
+    "settings": {
+        "banners": {
             "description": "橫幅檔案名稱",
+            "visible": true,
             "defaults": [
                 "banner01.jpg",
                 "banner02.jpg",
                 "banner03.jpg",
-                "banner04.jpg",
+                "banner04.jpg"
             ],
             "mode": "random",
             "values": []
         },
-        {
-            "name": "custom_css",
+        "custom_css": {
             "description": "自訂 css",
-            "visible": false,
+            "visible": true,
             "value": ""
         }
-    ]
+    }
 }

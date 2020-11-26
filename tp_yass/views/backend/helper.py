@@ -1,5 +1,8 @@
+import json
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+
+import transaction
 
 from tp_yass.dal import DAL
 from tp_yass.views.helper.file import get_project_abspath, save_file, convert_image_file
@@ -72,3 +75,11 @@ def generate_group_trees():
                 if _recursive_append(root_node, group):
                     break
     return group_trees
+
+
+def import_theme_config(theme_name):
+    """匯入上傳上來的佈景主題設定"""
+    with transaction.manager, open(get_project_abspath() / 'themes' / theme_name / 'config.json') as f:
+        config = json.loads(f.read())
+        DAL.save_theme_config(config)
+

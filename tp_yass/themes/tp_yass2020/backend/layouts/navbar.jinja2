@@ -6,18 +6,16 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
+      {% if request.session['is_admin'] %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarSiteConfigDropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-cogs"></i> 系統設定
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarSiteConfigDropdown">
-            {% if request.session['is_admin'] %}
             <li><a class="dropdown-item" href="{{ request.route_url('backend_site_config_edit') }}">一般設定</a></li>
-            {% endif %}
-            <li><a class="dropdown-item" href="#">橫幅設定</a></li>
+            <li><a class="dropdown-item" href="#">自訂 CSS</a></li>
           </ul>
         </li>
-      {% if request.session['is_admin'] %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-users-cog"></i> 使用者管理
