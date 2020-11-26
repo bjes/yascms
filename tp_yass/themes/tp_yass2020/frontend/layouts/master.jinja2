@@ -4,7 +4,7 @@
   <style>
     .jumbotron-bg {
       {# TODO: banner 要隨機顯示 #}
-      background-image: url("{{ 'tp_yass:uploads/themes/tp_yass2020/banner01.jpg'|static_path }}");
+      background-image: url("{{ 'tp_yass:themes/default/static/img/banner01.jpg'|static_path }}");
     }
     {% if request.theme_config['settings']['custom_css']['visible'] %}
       {{ request.theme_config['settings']['custom_css']['value']|safe }}
