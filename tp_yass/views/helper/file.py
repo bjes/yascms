@@ -43,16 +43,6 @@ def save_file(cgi_field_storage, file_obj, bulk_size=5120000) -> bool:
     return True
 
 
-def get_static_abspath() -> Path:
-    """回傳 static 目錄的絕對路徑
-
-    Returns:
-        object: Path
-        pathlib.Path 物件
-    """
-    return get_project_abspath() / 'static'
-
-
 def get_project_abspath() -> Path:
     """回傳 tp_yass 專案的絕對路徑
 
