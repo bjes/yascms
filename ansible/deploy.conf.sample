@@ -20,7 +20,7 @@ project_base_dir:
 # 這個專案要服務的網域
 project_domain_name:
 
-# 要跑自動 letsencrypt 認証的網域
+# 要跑自動 letsencrypt 認証的網域，此設定值沒特別理由請不要更動
 letsencrypt_auth_domain_names:
   - "{{ project_domain_name }}"
 
