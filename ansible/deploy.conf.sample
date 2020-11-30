@@ -20,7 +20,19 @@ project_base_dir:
 # 這個專案要服務的網域
 project_domain_name:
 
-# 要跑自動 letsencrypt 認証的網域
+# 資料庫的 host
+db_host: localhost
+
+# 資料庫名稱
+db_name:
+
+# 資料庫帳號
+db_user:
+
+# 資料庫密碼
+db_pass: 
+
+# 要跑自動 letsencrypt 認証的網域，這邊請不要更動設定值
 letsencrypt_auth_domain_names:
   - "{{ project_domain_name }}"
 
@@ -47,18 +59,6 @@ redis_port: 6379
 
 # redis server 的連線密碼，若留空代表不用密碼
 redis_pass:
-
-# 資料庫的 host
-db_host:
-
-# 資料庫名稱
-db_name:
-
-# 資料庫帳號
-db_user:
-
-# 資料庫密碼
-db_pass: 
 
 # 是否啟用 log 打到 mattermost 的功能，預設不啟用
 mattermost_logging_enabled: false
@@ -89,3 +89,6 @@ mail_server_host: "localhost"
 
 # 設定寄送信件的 smtp server 埠號
 mail_server_port: 25
+
+# 是否啟用 nginx microcache for uwsgi
+nginx_uwsgi_cache_enabled: true
