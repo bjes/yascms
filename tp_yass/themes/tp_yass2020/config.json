@@ -1,0 +1,25 @@
+{
+    "name": "tp_yass2020",
+    "version": "0.0.1",
+    "compatible_version": "0.0.1",
+    "author": "William Wu",
+    "author_email": "william@pylabs.org",
+    "settings": {
+        "banner": {
+            "description": "橫幅檔案名稱",
+            "visible": true,
+            "mode": "random",
+            "value": [
+                "banner01.jpg",
+                "banner02.jpg",
+                "banner03.jpg",
+                "banner04.jpg"
+            ]
+        },
+        "custom_css": {
+            "description": "自訂 css",
+            "visible": true,
+            "value": ""
+        }
+    }
+}

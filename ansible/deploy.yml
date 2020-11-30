@@ -24,6 +24,14 @@
           command: .venv/bin/pip install --upgrade pip setuptools poetry
           args:
             chdir: "{{ project_base_dir }}"
+        - name: 下載益教網製作的圖示作為 favicon
+          unarchive:
+            src: "https://webcode.tp.edu.tw/tcenc/tp_yass_arts/raw/branch/master/webroot.tar.gz"
+            dest: "{{ project_base_dir }}/tp_yass/webroot/"
+            remote_src: yes
+        - name: 複製 tp_yass2020 樣板的橫幅檔案至 uploads
+          shell:
+            cmd: "cp {{ project_base_dir }}/tp_yass/themes/tp_yass2020/static/img/banner/* {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
         - name: 使用 poetry 安裝專案相依套件
           command: .venv/bin/poetry install
           args:

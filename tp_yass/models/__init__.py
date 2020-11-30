@@ -8,3 +8,4 @@ from .site_config import SiteConfigModel  # flake8: noqa
 from .navbar import NavbarModel  # flake8: noqa
 from .tag import TagModel  # flake8: noqa
 from .telext import TelExtModel  # flake8: noqa
+from .theme_config import ThemeConfigModel # flake8: noqa

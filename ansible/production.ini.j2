@@ -22,6 +22,10 @@ jinja2.filters =
 jinja2.lstrip_blocks = true
 jinja2.trim_blocks = true
 
+# pyramid_mailer settings
+mail.host = {{ mail_server_host }}
+mail.port = {{ mail_server_port }}
+
 # secret key for pyramid security framework
 auth.secret = {{ auth_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
 
