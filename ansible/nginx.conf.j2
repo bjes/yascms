@@ -32,7 +32,16 @@ server {
 
     server_name {{ project_domain_name }};
 
+    access_log /var/log/nginx/{{ project_domain_name }}-access.log;
+    error_log /var/log/nginx/{{ project_domain_name }}-error.log;
+
+    client_max_body_size 50m;
+
     location / {
+        uwsgi_cache uwsgi_cache;
+        uwsgi_cache_valid 200 1s;
+        uwsgi_cache_lock on;
+        uwsgi_cache_use_stale updating;
         uwsgi_pass {{ uwsgi_socket_host }}:{{ uwsgi_socket_port }};
         include uwsgi_params;
     }
@@ -53,8 +62,8 @@ server {
         alias {{ project_base_dir }}/tp_yass/uploads;
     }
     
-    location ~ ^/[a-zA-Z0-9-_]+\.(png|svg|ico|xml|json|webmanifest) {
-        root {{ project_base_dir }}/tp_yass/uploads/webroot;
+    location ~ ^/[a-zA-Z0-9-_]+\.[a-zA-Z0-9]+$ {
+        alias {{ project_base_dir }}/tp_yass/uploads/webroot;
     }
 
     location /.well-known {

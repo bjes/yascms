@@ -5,9 +5,10 @@
    :maxdepth: 2
    :caption: 目錄
 
-   introduction
+   intro
    enroll
-   development
+   deploy
+   develop
 
 API References
 ==============

@@ -35,7 +35,8 @@ patches welcome!
 相關投影片
 ----------
 
-* `臺北市集中化網站功能介紹與佈署申請 <https://docs.google.com/presentation/d/18YZlmiMYo8hlSvAEi_SQQMwZuMp0ma3O_DngXFF33m4/edit?usp=sharing>`_
+* `2020-10-16 臺北市集中化網站功能介紹與佈署申請1 <https://docs.google.com/presentation/d/18YZlmiMYo8hlSvAEi_SQQMwZuMp0ma3O_DngXFF33m4/edit?usp=sharing>`_
+* `2020-11-27 臺北市集中化網站功能介紹與佈署申請2 <https://docs.google.com/presentation/d/10PB6nMcagW4_4I8fDzSVvx9XfqyeHhbx6Kik6Uzewk8/edit?usp=sharing>`_
 
 網站功能
 --------
