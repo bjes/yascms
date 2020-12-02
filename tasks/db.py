@@ -15,8 +15,8 @@ def db_create(c, ini_file=None):
 
     # Find database name via ini file
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
-    db_name = re.findall(r'/(\w+)\?', sqlalchemy_url)[0]
-    db_user, db_pass = re.findall(r'//(\w+):(\w+)@', sqlalchemy_url)[0]
+    db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
+    db_user, db_pass = re.findall(r'//([^:]+):([^@]+)@', sqlalchemy_url)[0]
     c.run(f'sudo mysql -uroot -e "CREATE DATABASE IF NOT EXISTS {db_name} '
            'CHARSET utf8mb4"')
     c.run(f'sudo mysql -uroot -e "CREATE USER IF NOT EXISTS {db_user}@localhost '
