@@ -33,8 +33,8 @@ def db_delete(c, ini_file=None):
         ini_file = find_ini_file()
 
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
-    db_name = re.findall(r'/(\w+)\?', sqlalchemy_url)[0]
-    c.run(f'sudo mysql -uroot -e "DROP DATABASE IF EXISTS {db_name}"')
+    db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
+    c.run(f"sudo mysql -uroot -e 'DROP DATABASE IF EXISTS `{db_name}`'")
 
 
 @task(db_create, name='init', optional=['ini_file'])
