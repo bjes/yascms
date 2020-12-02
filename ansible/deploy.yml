@@ -56,6 +56,7 @@
             owner: "www-data"
             group: "adm"
             mode: "0640"
+            state: touch
           loop:
             - "/var/log/nginx/{{ project_domain_name }}-access.log"
             - "/var/log/nginx/{{ project_domain_name }}-error.log"
