@@ -45,10 +45,20 @@
             path: "{{ project_base_dir  }}/tp_yass/{{ item }}"
             owner: "www-data"
             group: "www-data"
+            mode: "o-rwx"
             recurse: yes
           loop:
             - logs
             - uploads
+        - name: 建立專案的 nginx log 檔並設定權限
+          file:
+            path: "{{ item }}"
+            owner: "www-data"
+            group: "adm"
+            mode: "0640"
+          loop:
+            - "/var/log/nginx/{{ project_domain_name }}-access.log"
+            - "/var/log/nginx/{{ project_domain_name }}-error.log"
         - name: 佈署 nginx 設定檔
           template:
             src: "nginx.conf.j2"
