@@ -17,12 +17,12 @@ def db_create(c, ini_file=None):
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
     db_user, db_pass = re.findall(r'//([^:]+):([^@]+)@', sqlalchemy_url)[0]
-    c.run(f'sudo mysql -uroot -e "CREATE DATABASE IF NOT EXISTS {db_name} '
-           'CHARSET utf8mb4"')
-    c.run(f'sudo mysql -uroot -e "CREATE USER IF NOT EXISTS {db_user}@localhost '
-          f'IDENTIFIED BY \'{db_pass}\'"')
-    c.run(f'sudo mysql -uroot -e "GRANT ALL ON {db_name}.* '
-          f'TO {db_user}@localhost"')
+    c.run(f"sudo mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS `{db_name}` "
+           "CHARSET utf8mb4'")
+    c.run(f"sudo mysql -uroot -e 'CREATE USER IF NOT EXISTS `{db_user}`@localhost "
+          f"IDENTIFIED BY \"{db_pass}\"'")
+    c.run(f"sudo mysql -uroot -e 'GRANT ALL ON `{db_name}`.* "
+          f"TO `{db_user}`@localhost'")
 
 
 @task(name='delete', optional=['ini_file'])
