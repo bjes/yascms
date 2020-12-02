@@ -49,6 +49,17 @@
           loop:
             - logs
             - uploads
+        - name: 佈署 nginx 設定檔
+          template:
+            src: "nginx.conf.j2"
+            dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
+          notify: reload nginx
+        - name: 啟用 nginx 設定檔
+          file:
+            src: "/etc/nginx/sites-available/{{ project_domain_name }}"
+            dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
+            state: link
+          notify: reload nginx
         - name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
           template:
             src: "uwsgi.ini.j2"
@@ -56,16 +67,6 @@
             owner: "www-data"
             group: "www-data"
             mode: "0600"
-        - name: 佈署 nginx 設定檔
-          template:
-            src: "nginx.conf.j2"
-            dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
-        - name: 啟用 nginx 設定檔
-          file:
-            src: "/etc/nginx/sites-available/{{ project_domain_name }}"
-            dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
-            state: link
-          notify: reload nginx
       tags:
         - deploy_project_only
   handlers:
