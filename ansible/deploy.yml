@@ -15,15 +15,6 @@
             owner: "www-data"
             group: "www-data"
             mode: "0600"
-        - name: 建立專案 .venv 目錄
-          command: "python3 -m venv .venv"
-          args:
-            chdir: "{{ project_base_dir }}"
-            creates: ".venv"
-        - name: 更新專案 .venv 套件
-          command: .venv/bin/pip install --upgrade pip setuptools poetry
-          args:
-            chdir: "{{ project_base_dir }}"
         - name: 下載益教網製作的圖示作為 favicon
           unarchive:
             src: "https://webcode.tp.edu.tw/tcenc/tp_yass_arts/raw/branch/master/webroot.tar.gz"

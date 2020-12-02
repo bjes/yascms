@@ -3,9 +3,11 @@ if [ $EUID -ne 0 ]; then
     echo "請使用 root 權限執行此 script"
     exit 1
 fi
-apt update
-apt install build-essential python3-dev python3-venv python3-pip -y
-pip3 install pip setuptools ansible --user --upgrade
-export PATH=~/.local/bin:$PATH
-cd ansible && ./download_all_roles.sh && cd -
-~/.local/bin/ansible-playbook ansible/deploy.yml --extra-vars="@ansible/deploy.conf"
+
+if [ "$1" != "project_only" ]; then
+    apt install build-essential python3-dev python3-venv -y
+fi
+python3 -m venv .venv
+.venv/bin/pip install 'pip==20.3' 'setuptools==50.3.2' 'ansible==2.10.4' 'poetry==1.1.4'
+.venv/bin/poetry run bash -c 'cd ansible && ./download_all_roles.sh'
+.venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars="@ansible/deploy.conf"
