@@ -26,7 +26,7 @@ def import_test_db_data(ini_file_path):
     session.query(SiteConfigModel).filter_by(name='site_slogan').update({'value': '快樂學習 - 教學相長'})
     session.query(SiteConfigModel).filter_by(name='site_theme').update({'value': 'tp_yass2020'})
     session.query(SiteConfigModel).filter_by(name='site_phone').update({'value': '02-85021571'})
-    session.query(SiteConfigModel).filter_by(name='site_fox').update({'value': '02-85011146'})
+    session.query(SiteConfigModel).filter_by(name='site_fax').update({'value': '02-85011146'})
     session.query(SiteConfigModel).filter_by(name='site_email').update({'value': 'public@bjes.tp.edu.tw'})
     session.query(SiteConfigModel).filter_by(name='site_zip').update({'value': '10462'})
     session.query(SiteConfigModel).filter_by(name='site_address').update({'value': '臺北市中山區樂群二路266巷99號'})

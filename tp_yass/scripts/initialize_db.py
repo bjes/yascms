@@ -32,7 +32,7 @@ def setup_models(dbsession):
     dbsession.add(models.site_config.SiteConfigModel(name='site_slogan', value='', type='str', description='設定標語'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_theme', value='tp_yass2020', type='str', description='設定樣板'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_phone', value='', type='str', description='設定電話'))
-    dbsession.add(models.site_config.SiteConfigModel(name='site_fox', value='', type='str', description='設定傳真電話'))
+    dbsession.add(models.site_config.SiteConfigModel(name='site_fax', value='', type='str', description='設定傳真電話'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_email', value='', type='str', description='設定聯絡 Email'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_zip', value='', type='int', description='設定郵遞區號'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_address', value='', type='str', description='設定地址'))
