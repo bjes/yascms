@@ -26,11 +26,12 @@ def main():
     if args.deploy_packages:
         subprocess.call("python3 -m venv .venv --system-site-packages", shell=True)
         subprocess.call(".venv/bin/pip install 'pip==20.2.4' 'wheel==0.36.0' 'setuptools==50.3.2' 'ansible==2.10.4' 'poetry==1.1.4'", shell=True)
+    if args.project_packages:
         subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_all_roles.sh'", shell=True)
-    if args.project_packages == "default":
-        subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf'", shell=True)
-    elif args.project_packages:
-        subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf' --tags deploy_project_only", shell=True)
+        if args.project_packages == "default":
+            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf'", shell=True)
+        else:
+            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf' --tags deploy_project_only", shell=True)
 
 
 if __name__ == '__main__':
