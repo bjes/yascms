@@ -31,7 +31,7 @@ def main():
         if args.project_packages == "default":
             subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf'", shell=True)
         else:
-            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf' --tags deploy_project_only", shell=True)
+            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf' --tags deploy_project", shell=True)
 
 
 if __name__ == '__main__':
