@@ -79,7 +79,7 @@
             group: "www-data"
             mode: "0600"
       tags:
-        - deploy_project_only
+        - deploy_project
   handlers:
     - name: restart redis-server
       systemd:
