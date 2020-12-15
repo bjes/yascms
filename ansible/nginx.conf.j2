@@ -32,6 +32,10 @@ server {
 
     server_name {{ project_domain_name }};
 
+    if ($host != '{{ project_domain_name }}') {
+        return 404;
+    }
+
     access_log /var/log/nginx/{{ project_domain_name }}-access.log;
     error_log /var/log/nginx/{{ project_domain_name }}-error.log;
 

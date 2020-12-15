@@ -50,27 +50,30 @@
           loop:
             - logs
             - uploads
-        - name: 建立專案的 nginx log 檔並設定權限
-          file:
-            path: "{{ item }}"
-            owner: "www-data"
-            group: "adm"
-            mode: "0640"
-            state: touch
-          loop:
-            - "/var/log/nginx/{{ project_domain_name }}-access.log"
-            - "/var/log/nginx/{{ project_domain_name }}-error.log"
-        - name: 佈署 nginx 設定檔
-          template:
-            src: "nginx.conf.j2"
-            dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
-          notify: reload nginx
-        - name: 啟用 nginx 設定檔
-          file:
-            src: "/etc/nginx/sites-available/{{ project_domain_name }}"
-            dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
-            state: link
-          notify: reload nginx
+        - block:
+            - name: 建立專案的 nginx log 檔並設定權限
+              file:
+                path: "{{ item }}"
+                owner: "www-data"
+                group: "adm"
+                mode: "0640"
+                state: touch
+              loop:
+                - "/var/log/nginx/{{ project_domain_name }}-access.log"
+                - "/var/log/nginx/{{ project_domain_name }}-error.log"
+            - name: 佈署 nginx 設定檔
+              template:
+                src: "nginx.conf.j2"
+                dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
+              notify: reload nginx
+            - name: 啟用 nginx 設定檔
+              file:
+                src: "/etc/nginx/sites-available/{{ project_domain_name }}"
+                dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
+                state: link
+              notify: reload nginx
+          tags:
+            - deploy_project_nginx_config
         - name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
           template:
             src: "uwsgi.ini.j2"
