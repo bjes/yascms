@@ -14,59 +14,59 @@
 -----------------------------------------------
 進入管理控制台。
 
-.. image:: images/設定Email群組01.png
+.. image:: images/設定webmaster群組/01.png
 
 進入群組設定。
 
-.. image:: images/設定Email群組02.png
+.. image:: images/設定webmaster群組/02.png
 
 建立群組。
 
-.. image:: images/設定Email群組03.png
+.. image:: images/設定webmaster群組/03.png
 
 下面截圖的範例是將資訊人員的群組設定為 it，然後於後面的步驟將 webmaster 等群組設為 it 群組的別名，可依各校需求調整。
 若沒特別想法就照這邊的範例設定吧。
 
-.. image:: images/設定Email群組04.png
+.. image:: images/設定webmaster群組/04.png
 
 在 G Suite 中，預設建立的群組權限只能收組織內部成員的信件。因此我們要額外開放權限，讓外部也可寄信至此 Email 群組中。
 以下是開放權限的範例截圖。
 
-.. image:: images/設定Email群組05.png
+.. image:: images/設定webmaster群組/05.png
 
 點進去剛建立好的群組做後續的設定。
 
-.. image:: images/設定Email群組06.png
+.. image:: images/設定webmaster群組/06.png
 
 設定額外的別名。
 
-.. image:: images/設定Email群組07.png
+.. image:: images/設定webmaster群組/07.png
 
 新增 webmaster 為此群組的別名。
 
-.. image:: images/設定Email群組08.png
+.. image:: images/設定webmaster群組/08.png
 
 完成別名設定。
 
-.. image:: images/設定Email群組09.png
+.. image:: images/設定webmaster群組/09.png
 
 回到上一頁。
 
-.. image:: images/設定Email群組10.png
+.. image:: images/設定webmaster群組/10.png
 
 新增成員（或是其他群組也可）至此群組中。
 
-.. image:: images/設定Email群組11.png
+.. image:: images/設定webmaster群組/11.png
 
 滑鼠移至下圖黃色圓形圖案，待圖案更換後，點選新增成員。
 
-.. image:: images/設定Email群組12.png
+.. image:: images/設定webmaster群組/12.png
 
 依序加入學校所有資訊人員的 Email 位址。這邊也可以加入其他的群組，讓群組成為樹狀的關係。
 
-.. image:: images/設定Email群組13.png
+.. image:: images/設定webmaster群組/13.png
 
 完成設定。
 
-.. image:: images/設定Email群組14.png
+.. image:: images/設定webmaster群組/14.png
 
