@@ -1,5 +1,6 @@
 [uwsgi]
 strict = true
+master = true
 chdir = {{ project_base_dir }}
 home = {{ project_base_dir }}/.venv
 wsgi-file = {{ project_base_dir }}/wsgi.py
@@ -8,7 +9,6 @@ processes = {{ uwsgi_processes }}
 enable-threads = true
 threads = {{ uwsgi_threads }}
 die-on-term = true
-master = false
 need-app = true
 disable-logging = true
 log-4xx = true
