@@ -7,7 +7,7 @@ authors = ["William Wu <william@pylabs.org>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 invoke = "*"
-pyramid = "^1"
+pyramid = "^1.10"
 pyramid_mailer = "*"
 pyramid_jinja2 = "*"
 PyMySQL = "*"
@@ -39,7 +39,7 @@ WebTest = "*"
 waitress = "*"
 mycli = "*"
 Sphinx = "*"
-pylint = "^2.6.0"
+pylint = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
