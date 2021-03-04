@@ -46,5 +46,5 @@ def init_ini_file():
     若否，用 soft link 建立測試用的檔案
     """
     if not INI_FILE.exists():
-        test_ini_file = pathlib.Path(__file__).resolve().parent / 'test_data/development.ini'
+        test_ini_file = pathlib.Path(__file__).resolve().parent / 'test_data/test_development.ini'
         INI_FILE.symlink_to(test_ini_file)
