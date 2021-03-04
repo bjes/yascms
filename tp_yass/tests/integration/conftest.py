@@ -38,3 +38,13 @@ def tp_yass_webtest():
 def init_test_db():
     """自動初始化測試用資料"""
     subprocess.run(['inv', 'db.init-test'])
+
+
+@pytest.fixture(autouse=True, scope='session')
+def init_ini_file():
+    """在每次跑 integration tests 前檢查 development.ini 是否存在，
+    若否，用 soft link 建立測試用的檔案
+    """
+    if not INI_FILE.exists():
+        test_ini_file = pathlib.Path(__file__).resolve().parent / 'test_data/development.ini'
+        INI_FILE.symlink_to(test_ini_file)
