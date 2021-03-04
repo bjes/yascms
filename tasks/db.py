@@ -49,12 +49,8 @@ def init_db(c, ini_file=None):
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
 
-    result = subprocess.run(['mysql', '-uroot', '-e', f'use { db_name }'], capture_output=True)
-    if result.returncode == 0:
-        print('資料庫已存在')
-    else:
-        c.run(f'alembic -c {ini_file} upgrade head')
-        c.run(f'initialize_tp_yass_db {ini_file}')
+    c.run(f'alembic -c {ini_file} upgrade head')
+    c.run(f'initialize_tp_yass_db {ini_file}')
 
 @task(db_delete, db_create, init_db, name='init-test', optional=['ini_file'])
 def init_test_db(c, ini_file=None):
