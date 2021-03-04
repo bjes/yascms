@@ -24,7 +24,6 @@ class LoginView:
         else:
             return {'login_form': LoginForm()}
 
-
     @view_config(request_method='POST')
     def post(self):
         login_form = LoginForm(self.request.POST)
@@ -88,3 +87,4 @@ class LogoutView:
         logger.info('帳號 "%s" 已登出', account)
         return HTTPFound(location=self.request.route_url('homepage'),
                          headers=headers)
+
