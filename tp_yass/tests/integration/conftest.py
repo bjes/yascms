@@ -40,11 +40,11 @@ def init_test_db():
     subprocess.run(['inv', 'db.init-test'])
 
 
-@pytest.fixture(autouse=True, scope='session')
-def init_ini_file():
+@pytest.fixture(autouse=True)
+def init_ini_file(shared_datadir):
     """在每次跑 integration tests 前檢查 development.ini 是否存在，
     若否，用 soft link 建立測試用的檔案
     """
     if not INI_FILE.exists():
-        test_ini_file = pathlib.Path(__file__).resolve().parent / 'test_data/test_development.ini'
+        test_ini_file = shared_datadir / 'test_development.ini'
         INI_FILE.symlink_to(test_ini_file)
