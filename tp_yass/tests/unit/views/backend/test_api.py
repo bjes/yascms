@@ -5,11 +5,11 @@ from tp_yass.models.page import PageModel
 
 
 def test_backend_api_page_list_view_should_return_page_list(pyramid_config, mocker):
-    mimic_page_list = [PageModel(id=1, title='foo'), PageModel(id=2, title='bar')]
-    mocker.patch.object(api.DAL, 'get_page_list', return_value=mimic_page_list)
+    fake_page_list = [PageModel(id=1, title='foo'), PageModel(id=2, title='bar')]
+    mocker.patch.object(api.DAL, 'get_page_list', return_value=fake_page_list)
 
     response = api.backend_api_page_list_view(DummyRequest())
-    assert len(response) == len(mimic_page_list)
+    assert len(response) == len(fake_page_list)
     valid_keys = ['id', 'title', 'url']
     for page in response:
         for key in valid_keys:
