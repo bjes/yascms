@@ -47,7 +47,7 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
         request: pyramid.request.Request
         type: 傳入 DAL.get_navbar_list 用
         visible_only: 傳入 DAL.get_navbar_list 用
-
+        excluded_id: 傳入 DAL.get_navbar_list 用
     Returns:
         回傳 navbar 樹狀結構
     """
@@ -80,7 +80,7 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
     return navbar_trees
 
 def news_factory():
-    """存在資料庫的 navbar 只有 news 一筆 record，在這邊要手動的把子選單加進去"""
+    """存在資料庫的 navbar 只有 news 一筆 record，在這邊要手動的把不存在在資料庫，但必須在前台顯示的子選單加進去"""
     sub_navbars = []
     for each_category in DAL.get_news_category_list():
         # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 代表是 builtin

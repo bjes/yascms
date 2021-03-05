@@ -1,12 +1,9 @@
 import pathlib
-import collections
 import subprocess
 
 import pytest
-from webtest import TestApp
 
 import tp_yass
-from tp_yass.tests.helper import get_ini_settings
 
 
 HERE = pathlib.Path(tp_yass.__file__).parent.parent
@@ -14,6 +11,7 @@ INI_FILE = HERE / 'development.ini'
 
 
 def get_global_config():
+    import collections
     """產生 tp_yass.main 所需的 global_config 資料結構"""
     global_config = collections.OrderedDict()
     global_config['here'] = str(HERE)
@@ -23,12 +21,14 @@ def get_global_config():
 
 def get_settings():
     """產生 tp_yass.main 所需的 settings 資料結構"""
+    from tp_yass.tests.helper import get_ini_settings
     return get_ini_settings(str(INI_FILE))
 
 
 @pytest.fixture(scope='session')
 def tp_yass_webtest():
     """產生 webtest 物件以用來跑測試"""
+    from webtest import TestApp
     from tp_yass import main
 
     return TestApp(main(get_global_config(), **get_settings()))
@@ -48,3 +48,13 @@ def init_ini_file(shared_datadir):
     if not INI_FILE.exists():
         test_ini_file = shared_datadir / 'test_development.ini'
         INI_FILE.symlink_to(test_ini_file)
+
+
+@pytest.fixture(autouse=True, scope='session')
+def init_sqlalchemy():
+    from sqlalchemy import create_engine
+    from pyramid_sqlalchemy import init_sqlalchemy
+
+    ini_settings = get_settings()
+    init_sqlalchemy(create_engine(ini_settings['sqlalchemy.url']))
+
