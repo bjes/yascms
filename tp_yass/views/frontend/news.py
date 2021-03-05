@@ -1,4 +1,5 @@
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPNotFound
 
 from tp_yass.enum import NavbarType
 from tp_yass.helper import sanitize_input
@@ -23,6 +24,7 @@ def news_list_view(request):
             'quantity_per_page': quantity_per_page,
             'NavbarType': NavbarType}
 
+
 @view_config(route_name='news_get', renderer='tp_yass:themes/default/frontend/news_get.jinja2')
 def news_get_view(request):
     """前台顯示單一最新消息"""
@@ -32,3 +34,5 @@ def news_get_view(request):
         return {'navbar_trees': remove_navbar_root(generate_navbar_trees(request, visible_only=True)),
                 'NavbarType': NavbarType,
                 'news': news}
+    else:
+        return HTTPNotFound()
