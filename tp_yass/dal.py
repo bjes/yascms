@@ -336,7 +336,7 @@ class DAL:
         Args:
             type: 產生的 navbar list 類型，若為 intermediate 則只傳回可接受子選單的選單物件，若為 all 則回傳全部
             visible_only: 是否只擷取 is_visible 為 True 的導覽列，預設行為是全部擷取
-            excluded_id: 用來排除指定的 navbar 物件，避免前端產生導覽列樹狀列表時發生自己的上層指給自己的遞迴問題
+            excluded_id: 用來排除指定的 navbar 物件，避免後台產生建立導覽列樹狀的顯示列表時讓 UI 產生自己的上層可以指給自己的錯誤
 
         Returns:
             回傳排序後的 navbar list
