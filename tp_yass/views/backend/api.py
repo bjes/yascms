@@ -3,7 +3,7 @@ from tp_yass.dal import DAL
 
 
 @view_config(route_name='backend_api_page_list', renderer='json', permission='view')
-def backend_api_page_list(request):
+def backend_api_page_list_view(request):
     """回傳單一頁面的列表 json"""
     page_list = []
     for each_page in DAL.get_page_list(pagination=False):
@@ -14,7 +14,7 @@ def backend_api_page_list(request):
 
 
 @view_config(route_name='backend_api_page_get', renderer='json', permission='view')
-def backend_api_page_get(request):
+def backend_api_page_get_view(request):
     """回傳單一頁面的 json"""
     page = DAL.get_page(int(request.matchdict['page_id']))
     if page:
