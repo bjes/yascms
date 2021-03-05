@@ -11,5 +11,5 @@ def sanitize_input(param, param_type, default_value):
     """
     try:
         return param_type(param)
-    except ValueError:
+    except TypeError:
         return default_value
