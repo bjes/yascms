@@ -26,7 +26,7 @@ def get_settings():
 
 
 @pytest.fixture
-def tp_yass_webtest():
+def webtest_testapp():
     """產生 webtest 物件以用來跑測試"""
     from webtest import TestApp
     from tp_yass import main
