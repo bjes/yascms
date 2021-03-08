@@ -4,8 +4,7 @@ from pyramid.testing import DummyRequest
 from tp_yass.views.helper.navbar import generate_navbar_trees, news_factory
 
 
-@pytest.mark.usefixtures('transaction')
-def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyramid_config):
+def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyramid_config, transaction):
     navbar_trees = generate_navbar_trees(DummyRequest())
     assert isinstance(navbar_trees, list)
     assert len(navbar_trees) == 1
@@ -16,8 +15,7 @@ def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyram
     assert True
 
 
-@pytest.mark.usefixtures('transaction')
-def test_news_factory_should_return_news_sub_navbars():
+def test_news_factory_should_return_news_sub_navbars(transaction):
     news_sub_navbars = news_factory()
     assert isinstance(news_sub_navbars, list)
     valid_keys = ['id', 'type', 'category_id', 'name', 'url']
