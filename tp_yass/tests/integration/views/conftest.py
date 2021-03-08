@@ -25,7 +25,7 @@ def get_settings():
     return get_ini_settings(str(INI_FILE))
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def tp_yass_webtest():
     """產生 webtest 物件以用來跑測試"""
     from webtest import TestApp
