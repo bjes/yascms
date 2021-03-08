@@ -15,6 +15,7 @@ def upload_attachment(cgi_field_storage, upload_sub_dir, prefix, need_resize=Fal
         cgi_field_storage: cgi.FieldStorage 物件
         upload_sub_dir: 存放到 uploads/ 目錄下的哪一個子目錄
         prefix: 字串，前綴用
+        need_resize: boolean，決定是否要做縮圖處理
 
     Returns:
         回傳儲存完畢的亂數檔名字串
@@ -82,4 +83,3 @@ def import_theme_config(theme_name):
     with transaction.manager, open(get_project_abspath() / 'themes' / theme_name / 'config.json') as f:
         config = json.loads(f.read())
         DAL.save_theme_config(config)
-
