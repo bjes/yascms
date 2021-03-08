@@ -84,7 +84,6 @@ class NavbarDeleteView:
         return HTTPFound(self.request.route_url('backend_navbar_list'))
 
 
-
 @view_defaults(route_name='backend_navbar_edit',
                renderer='themes/default/backend/navbar_edit.jinja2',
                permission='edit')

@@ -227,6 +227,7 @@ class NewsCategoryDeleteView:
             self.request.session.flash('刪除分類失敗，請確認是否還有相依的最新消息。', 'fail')
         return HTTPFound(self.request.route_url('backend_news_category_list'))
 
+
 @view_defaults(route_name='backend_news_category_edit', renderer='tp_yass:themes/default/backend/news_category_edit.jinja2', permission='edit')
 class NewsCategoryEditView:
     """編輯最新消息分類的 view"""
@@ -258,4 +259,3 @@ class NewsCategoryEditView:
                 return {'form': form}
         else:
             return HTTPNotFound()
-

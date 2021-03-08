@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
@@ -202,6 +200,7 @@ class LinkCategoryDeleteView:
             self.request.session.flash('刪除分類失敗，請確認是否還有相依的好站連結。', 'fail')
         return HTTPFound(self.request.route_url('backend_link_category_list'))
 
+
 @view_defaults(route_name='backend_link_category_edit', renderer='tp_yass:themes/default/backend/link_category_edit.jinja2', permission='edit')
 class LinkCategoryEditView:
     """編輯好站連結分類的 view"""
@@ -233,4 +232,3 @@ class LinkCategoryEditView:
                 return {'form': form}
         else:
             return HTTPNotFound()
-

@@ -1,10 +1,8 @@
 import logging
-from pathlib import Path
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
-import tp_yass
 from tp_yass.dal import DAL
 from tp_yass.views.helper.file import get_project_abspath
 
