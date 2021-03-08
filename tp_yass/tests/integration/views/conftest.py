@@ -26,12 +26,23 @@ def get_settings():
 
 
 @pytest.fixture
-def webtest_testapp():
+def webtest_testapp(pyramid_config):
     """產生 webtest 物件以用來跑測試"""
     from webtest import TestApp
     from tp_yass import main
 
     return TestApp(main(get_global_config(), **get_settings()))
+
+
+@pytest.fixture
+def webtest_admin_testapp(webtest_testapp):
+    """使用最高權限登入"""
+    response = webtest_testapp.get(request.route_path('login'))
+    form = response.form
+    form['account'] = 'admin'
+    form['password'] = 'admin4tp_yass'
+    form.submit()
+    return webtest_testapp
 
 
 @pytest.fixture(autouse=True)

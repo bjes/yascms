@@ -1,7 +1,7 @@
 from pyramid.testing import DummyRequest
 
 
-def test_login_logic(webtest_testapp, pyramid_config):
+def test_login_logic(webtest_testapp):
     request = DummyRequest()
     response = webtest_testapp.get(request.route_path('backend_homepage'), expect_errors=True)
     assert response.status_int == 403
