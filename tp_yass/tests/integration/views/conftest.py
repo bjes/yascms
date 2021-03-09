@@ -2,6 +2,7 @@ import pathlib
 import subprocess
 
 import pytest
+from pyramid.testing import DummyRequest
 
 import tp_yass
 
@@ -37,6 +38,7 @@ def webtest_testapp(pyramid_config):
 @pytest.fixture
 def webtest_admin_testapp(webtest_testapp):
     """使用最高權限登入"""
+    request = DummyRequest()
     response = webtest_testapp.get(request.route_path('login'))
     form = response.form
     form['account'] = 'admin'
