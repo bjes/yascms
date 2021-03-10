@@ -35,7 +35,7 @@
                   <td class="d-none d-md-table-cell">{{ each_news.publication_date }}</td>
                   <td class="d-none d-sm-table-cell">{{ each_news.group.name }}</td>
                   <td class="d-none d-sm-table-cell">{{ each_news.category.name }}</td>
-                  <td style="padding: 0px;"><a style="display: block; width: 100%; height: 100%; padding: .75rem;" href="{{ request.route_url('news_get', news_id=each_news.id) }}"><li class="d-flex justify-content-between align-items-center"><span>{% if each_news.is_pinned %}<i class="fas fa-thumbtack"></i> {% endif %}{{ each_news.title }}</span><span class="badge badge-pill badge-primary d-md-none">2019-02-26</span></li></a></td>
+                  <td style="padding: 0px;"><a style="display: block; width: 100%; height: 100%; padding: .75rem;" href="{{ request.route_url('news_get', news_id=each_news.id) }}"><li class="d-flex justify-content-between align-items-center"><span>{% if each_news.is_pinned %}<i class="fas fa-thumbtack"></i> {% endif %}{{ each_news.title }}</span><span class="badge badge-pill badge-primary d-md-none">{{ each_news.publication_date.strftime('%Y-%m-%d %H:%M') }}</span></li></a></td>
                 </tr>
               {% endfor %}
             </tbody>
