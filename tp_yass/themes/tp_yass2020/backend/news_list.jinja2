@@ -25,7 +25,7 @@
                 <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
                 <td>{{ each_news.publication_date }}</td>
                 <td>{{ each_news.category.name }}</td>
-                <td><a href="#">{% if each_news.is_pinned %}<i class="fas fa-thumbtack"></i> {% endif %}{{ each_news.title }}</a></td>
+                <td><a href="#">{% if each_news.is_pinned %}<i class="bi bi-pin"></i> {% endif %}{{ each_news.title }}</a></td>
                 <td><a href="#">{{ each_news.group.name }}</a></td>
                 <td>
                 {% for each_tag in each_news.tags %}

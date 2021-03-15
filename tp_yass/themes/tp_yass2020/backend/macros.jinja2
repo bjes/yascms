@@ -23,7 +23,7 @@
       <li class="list-group-item">顯示全部
     {% else %}
       {% if use_link %}
-        <li class="list-group-item" data-value="{{ navbar.id }}"><a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
+        <li class="list-group-item" data-value="{{ navbar.id }}"><a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="bi {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="bi bi-box-arrow-up-right"></i>{% endif %}</a>
       {% else %}
         <li class="list-group-item" data-value="{{ navbar.id }}">{{ navbar.name }}
       {% endif %}

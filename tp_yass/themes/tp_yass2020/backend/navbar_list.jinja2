@@ -31,7 +31,7 @@
           {% else %}
             <li class="list-group-item">
               <div class="d-flex justify-content-between align-content-center">
-                <a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="fas {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="fas fa-external-link-alt"></i>{% endif %}</a>
+                <a href="#"{% if navbar.is_external %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="bi {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_external %} <i class="bi bi-box-arrow-up-right"></i>{% endif %}</a>
                 {% if navbar.module_name != 'root' %}
                   <span>
                     <a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}" class="btn btn-sm btn-primary">編輯</a>

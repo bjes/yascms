@@ -1,5 +1,6 @@
 {% extends "tp_yass:themes/default/layouts/master.jinja2" %}
 {% block layout_css %}
+  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/bootstrap-icons/bootstrap-icons.css'|static_path }}">
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/frontend.css'|static_path }}">
   <style>
     .jumbotron-bg {
@@ -24,7 +25,6 @@
 {% endblock banner %}
 {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
 {% block layout_js %}
-  <script src="{{ 'tp_yass:themes/default/static/js/fontawesome-all-5.11.2.min.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.min-1.1.0.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js'|static_path }}"></script>
 {% endblock layout_js %}

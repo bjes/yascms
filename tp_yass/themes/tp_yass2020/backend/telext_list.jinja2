@@ -19,7 +19,7 @@
             {% for each_telext in telext_list %}
               <tr>
                 <th scope="row">{{ loop.index }}</th>
-                <td><a href="#">{% if each_telext.is_pinned %}<i class="fas fa-thumbtack"></i> {% endif %}{{ each_telext.title }}</a></td>
+                <td><a href="#">{% if each_telext.is_pinned %}<i class="bi bi-pin"></i> {% endif %}{{ each_telext.title }}</a></td>
                 <td><a href="#">{{ each_telext.ext }}</a></td>
                 <td>
                   <a class="btn btn-primary" href="{{ request.route_url('backend_telext_edit', telext_id=each_telext.id) }}">編輯</a>
