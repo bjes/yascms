@@ -1,8 +1,8 @@
 """initial import
 
-Revision ID: a37be7b387ee
+Revision ID: a2a44fcb4d23
 Revises: 
-Create Date: 2020-11-16 13:45:12.298989
+Create Date: 2021-03-16 10:44:46.767237
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a37be7b387ee'
+revision = 'a2a44fcb4d23'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,8 +24,7 @@ def upgrade():
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('ancestor_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['ancestor_id'], ['groups.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('link_categories',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -72,6 +71,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_telext_title'), 'telext', ['title'], unique=False)
+    op.create_table('theme_config',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
+    sa.Column('value', sa.Text(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
+    )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=20), nullable=False),
@@ -191,6 +197,7 @@ def downgrade():
     op.drop_table('links')
     op.drop_table('groups_pages_association')
     op.drop_table('users')
+    op.drop_table('theme_config')
     op.drop_index(op.f('ix_telext_title'), table_name='telext')
     op.drop_table('telext')
     op.drop_table('tags')

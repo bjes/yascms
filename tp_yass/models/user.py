@@ -72,7 +72,7 @@ class GroupModel(BaseObject):
     id = Column(Integer, primary_key=True)
 
     # 群組名稱
-    name = Column(String(100), unique=True, nullable=False)
+    name = Column(String(100), nullable=False)
 
     # 類別， 0 為管理者可無視權限設定， 1 為行政群組（可張貼最新消息）， 2 為普通群組（比方教師）
     type = Column('type', Integer, nullable=False, default=1, server_default='1')
