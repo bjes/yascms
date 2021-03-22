@@ -4,7 +4,6 @@ from pyramid.httpexceptions import HTTPNotFound
 from tp_yass.enum import NavbarType
 from tp_yass.helper import sanitize_input
 from tp_yass.views.helper.navbar import generate_navbar_trees
-from tp_yass.views.frontend.helper import remove_navbar_root
 from tp_yass.dal import DAL
 
 
@@ -18,7 +17,7 @@ def news_list_view(request):
     news_list = DAL.get_news_list(page_number=page_number, category_id=category_id, quantity_per_page=quantity_per_page)
     return {'news_list': news_list,
             'news_category': DAL.get_news_category(category_id),
-            'navbar_trees': remove_navbar_root(generate_navbar_trees(request, visible_only=True)),
+            'navbar_trees': generate_navbar_trees(request, visible_only=True),
             'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
             'page_number': page_number,
             'quantity_per_page': quantity_per_page,
@@ -31,7 +30,7 @@ def news_get_view(request):
     news_id = int(request.matchdict['news_id'])
     news = DAL.get_news(news_id)
     if news:
-        return {'navbar_trees': remove_navbar_root(generate_navbar_trees(request, visible_only=True)),
+        return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
                 'NavbarType': NavbarType,
                 'news': news}
     else:

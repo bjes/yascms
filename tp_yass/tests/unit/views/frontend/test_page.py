@@ -7,7 +7,6 @@ from tp_yass.views.frontend import page
 def test_page_get_view_should_return_dict(mocker):
     mocker.patch.object(page.DAL, 'get_page')
     mocker.patch.object(page, 'generate_navbar_trees')
-    mocker.patch.object(page, 'remove_navbar_root')
     request = DummyRequest()
     request.matchdict['page_id'] = '999'
 

@@ -3,7 +3,6 @@ from pyramid.httpexceptions import HTTPNotFound
 
 from tp_yass.enum import NavbarType
 from tp_yass.views.helper.navbar import generate_navbar_trees
-from tp_yass.views.frontend.helper import remove_navbar_root
 from tp_yass.dal import DAL
 
 
@@ -11,7 +10,7 @@ from tp_yass.dal import DAL
 def page_get_view(request):
     page = DAL.get_page(request.matchdict['page_id'])
     if page:
-        return {'navbar_trees': remove_navbar_root(generate_navbar_trees(request, visible_only=True)),
+        return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
                 'page': page,
                 'NavbarType': NavbarType}
     else:
