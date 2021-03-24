@@ -1,12 +1,10 @@
 {% macro generate_navbar_trees(name, navbar_trees, use_link=True, show_root=False) %}
-  {% for navbar in navbar_trees recursive %}
+  <ul class="list-group" id="root-navbar" data-name="{{ name }}">
+  <li class="list-group-item" data-value="{{ navbar_trees.id }}">{{ navbar_trees.name }}
+  {% for navbar in navbar_trees.descendants recursive %}
     {# 每進一個遞迴就會讓 loop.first 為 True #}
     {% if loop.first %}
-      {% if not navbar.ancestor %}
-        <ul class="list-group" id="root-navbar" data-name="{{ name }}">
-      {% else %}
-        <ul class="list-group">
-      {% endif %}
+      <ul class="list-group">
     {% endif %}
   {# 這是分隔線，只有分隔線的樣式要特別處理 #}
   {% if navbar.type == 3 %}
@@ -37,6 +35,8 @@
     </ul>
   {% endif %}
   {% endfor %}
+  </li>
+  </ul>
 {% endmacro %}
 
 

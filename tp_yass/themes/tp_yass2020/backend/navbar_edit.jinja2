@@ -143,8 +143,8 @@
           let page_html_list = [];
           $.each(data, function (key, val) {
             page_html_list.push('<div class="form-group form-check">'
-                                + '<input class="form-check-input" type="radio" name="page_id" id="pageId' + val['id'] + '" value="' + val['id'] + '">'
-                                + '<label class="form-check-label" for="pageId' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label></div>');
+                                + '<input class="form-check-input" type="radio" name="page_id" id="page_id_' + val['id'] + '" value="' + val['id'] + '">'
+                                + '<label class="form-check-label" for="page_id_' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label></div>');
           });
           $('#modal-content').html(page_html_list.join(''));
           $('#modal-content input[type="radio"][value="{{ form.page_id.data }}"]').prop('checked', true)
@@ -179,6 +179,7 @@
     switch (parseInt($('#leaf_type').val())) {
       case 1:
         $('#link_type').text('單一頁面');
+        $('#modal-content').html('<input type="hidden" name="page_id" value="{{ form.page_id.data }}">');
         $.getJSON('{{ request.route_url('backend_api_page_get', page_id=form.page_id.data) }}', function (data) {
           $('#link_target').html('<a href="' + data['url'] + '" target="_blank">' + data['title'] + '</a>');
         })
@@ -187,7 +188,6 @@
         $('#link_type').text('自訂網址');
         {% if form.url.data %}
           let custom_url = '{{ form.url.data }}';
-          $('#modal-content').html('<input type="text" class="form-control" name="url" id="url" value="' + custom_url + '">');
           $('#link_target').html('<a href="' + custom_url + '" target="_blank">' + custom_url + '</a>');
         {% else %}
           $('#link_target').text();

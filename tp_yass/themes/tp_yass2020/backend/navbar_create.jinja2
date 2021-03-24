@@ -138,8 +138,8 @@
           let page_html_list = [];
           $.each(data, function (key, val) {
             page_html_list.push('<div class="form-group form-check">'
-                                + '<input class="form-check-input" type="radio" name="page_id" id="pageId' + val['id'] + '" value="' + val['id'] + '">'
-                                + '<label class="form-check-label" for="pageId' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label></div>');
+                                + '<input class="form-check-input" type="radio" name="page_id" id="page_id_' + val['id'] + '" value="' + val['id'] + '">'
+                                + '<label class="form-check-label" for="page_id_' + val['id'] + '"><a href="' + val['url'] + '" target="_blank">' + val['title'] + '</a></label></div>');
           });
           $('#modal-content').html(page_html_list.join(''));
           $('#modal-content').removeClass('d-none')
