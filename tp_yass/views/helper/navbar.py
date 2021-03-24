@@ -51,32 +51,19 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
     Returns:
         回傳 navbar 樹狀結構
     """
-    navbar_trees = []
+    navbar_trees = {}
     for navbar in DAL.get_navbar_list(type, visible_only, excluded_id):
         if not navbar.ancestor_id:
-            # 代表是最上層導覽列
-            if navbar.page:
-                url = request.route_path('page_get', page_id=navbar.page.id)
-            else:
-                url = navbar.url
-            sub_navbar = {'id': navbar.id,
-                          'name': navbar.name,
-                          'aria_name': navbar.aria_name,
-                          'url': url,
-                          'is_external': navbar.is_external,
-                          'icon': navbar.icon,
-                          'type': NavbarType(navbar.type),
-                          'module_name': navbar.module_name,
-                          'order': navbar.order,
-                          'descendants': []}
-            if navbar.type == NavbarType.BUILTIN_NEWS:
-                sub_navbar['descendants'] = news_factory()
-            navbar_trees.append(sub_navbar)
+            # 代表是最上層導覽列，也就是 root
+            navbar_trees = {'id': 1,
+                            'name': navbar.name,
+                            'aria_name': navbar.aria_name,
+                            'type': NavbarType(navbar.type),
+                            'module_name': navbar.module_name,
+                            'descendants': []}
         else:
-            # 代表是第二層以下的群組
-            for root_node in navbar_trees:
-                if _recursive_append(request, root_node, navbar):
-                    break
+            # 代表是第二層以下的導覽列
+            _recursive_append(request, navbar_trees, navbar)
     return navbar_trees
 
 def news_factory():
