@@ -54,7 +54,7 @@ class NavbarForm(Form):
                         choices=[(i, str(i)) for i in range(21)],
                         coerce=int)
 
-    ancestor_id = IntegerField('上層選單')
+    ancestor_id = IntegerField('上層導覽列')
 
     class Meta:
         locales = ['zh_TW', 'tw']
