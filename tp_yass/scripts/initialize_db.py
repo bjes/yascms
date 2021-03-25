@@ -66,7 +66,7 @@ def setup_models(dbsession):
 
     # 建立導覽列的預設順序
     # 最上層，前台不該顯示，但後台在調整 navbar 階層位置時需要顯示
-    root = models.navbar.NavbarModel(name='根選單', aria_name='root', type=1, module_name='root')
+    root = models.navbar.NavbarModel(name='根導覽列', aria_name='root', type=1, module_name='root')
     dbsession.add(root)
     # 最新消息
     dbsession.add(models.navbar.NavbarModel(name='最新消息', aria_name='news', order=1, type=4, module_name='news', icon='bi-megaphone', ancestor=root))

@@ -57,9 +57,6 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
             # 代表是最上層導覽列，也就是 root
             navbar_trees = {'id': 1,
                             'name': navbar.name,
-                            'aria_name': navbar.aria_name,
-                            'type': NavbarType(navbar.type),
-                            'module_name': navbar.module_name,
                             'descendants': []}
         else:
             # 代表是第二層以下的導覽列
