@@ -65,16 +65,14 @@ def _recursive_append(group_node, group):
 
 def generate_group_trees():
     all_groups = DAL.get_user_group_list()
-    group_trees = []
+    group_trees = {}
     for group in all_groups:
         if not group.ancestor_id:
             # 代表是最上層群組
-            group_trees.append({'id': group.id, 'name': group.name, 'descendants': []})
+            group_trees = {'id': group.id, 'name': group.name, 'descendants': []}
         else:
             # 代表是第二層以下的群組
-            for root_node in group_trees:
-                if _recursive_append(root_node, group):
-                    break
+            _recursive_append(group_trees, group)
     return group_trees
 
 
