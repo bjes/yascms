@@ -99,14 +99,12 @@ class UserGroupDeleteView:
     @view_config(request_method='GET')
     def get_view(self):
         group_id = int(self.request.matchdict['group_id'])
-        if group_id == 1:
-            # 管理者群組不能砍
+        if group_id <= 2:
+            # 內建的根群組與最高管理者群組不能砍
             self.request.session.flash('管理者群組不能刪除', 'fail')
             return HTTPFound(location=self.request.route_url('backend_user_group_list'))
         group = DAL.get_group(group_id)
-        for each_child in group.descendants:
-            each_child.ancestor = group.ancestor
-            DAL.save_group(each_child)
+        DAL.change_group_ancestor_id(group.id, group.ancestor_id)
         DAL.delete_group(group)
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
