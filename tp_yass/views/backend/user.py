@@ -104,8 +104,11 @@ class UserGroupDeleteView:
             self.request.session.flash('管理者群組不能刪除', 'fail')
             return HTTPFound(location=self.request.route_url('backend_user_group_list'))
         group = DAL.get_group(group_id)
-        DAL.change_group_ancestor_id(group.id, group.ancestor_id)
-        DAL.delete_group(group)
+        if group:
+            DAL.change_group_ancestor_id(group_id, group.ancestor_id)
+            DAL.delete_group(group)
+        else:
+            self.request.session.flash('找不到指定群組', 'fail')
         return HTTPFound(location=self.request.route_url('backend_user_group_list'))
 
 

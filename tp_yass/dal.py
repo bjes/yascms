@@ -456,6 +456,21 @@ class DAL:
         return DBSession.query(NavbarModel).get(navbar_id)
 
     @staticmethod
+    def change_navbar_ancestor_id(old_ancestor_id, new_ancestor_id):
+        """將原本 ancestor_id 為 old_ancestor_id 的 records 改成新的 new_ancestor_id
+
+        Args:
+            old_ancestor_id: 作為篩選條件，找出 ancestor_id 為此值的 records
+            new_ancestor_id: 將找到的 records 其 ancestor_id 改成此值
+
+        Returns:
+            None
+        """
+        (DBSession.query(NavbarModel)
+         .filter_by(ancestor_id=old_ancestor_id)
+         .update({NavbarModel.ancestor_id: new_ancestor_id}))
+
+    @staticmethod
     def delete_navbar(navbar):
         """刪除指定的 navbar 物件
 

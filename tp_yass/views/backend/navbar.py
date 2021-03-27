@@ -62,25 +62,21 @@ class NavbarDeleteView:
     def __init__(self, request):
         self.request = request
 
-    def _recursive_delete(self, navbar):
-        """遞迴刪除整串導覽列"""
-        if navbar.descendants:
-            for each_sub_navbar in navbar.descendants:
-                result = self._recursive_delete(each_sub_navbar)
-                if not result:
-                    return False
-        else:
-            return DAL.delete_navbar(navbar)
-
     @view_config()
     def delete_view(self):
         """將整串導覽列刪除"""
         # TODO: 要做成讓使用者決定要整串刪掉還是孤兒的節點都搬移至未指定
         navbar_id = int(self.request.matchdict['navbar_id'])
+        if navbar_id == 1:
+            # 內建的根導覽列不能刪
+            self.request.session.flash('根導覽列不能刪除', 'fail')
+            return HTTPFound(location=self.request.route_url('backend_navbar_list'))
         navbar = DAL.get_navbar(navbar_id)
         if navbar:
-            if not self._recursive_delete(navbar):
-                self.request.session.flash('刪除導覽列失敗，請確認導覽列類型是否正確', 'fail')
+            DAL.change_navbar_ancestor_id(navbar_id, navbar.ancestor_id)
+            DAL.delete_navbar(navbar)
+        else:
+            self.request.session.flash('找不到指定導覽列', 'fail')
         return HTTPFound(self.request.route_url('backend_navbar_list'))
 
 
