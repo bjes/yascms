@@ -76,8 +76,8 @@ def generate_group_trees():
     return group_trees
 
 
-def import_theme_config(theme_name):
-    """匯入上傳上來的佈景主題設定"""
+def import_theme(theme_name):
+    """匯入上傳上來的佈景主題設定值與 banner 等檔案"""
     with transaction.manager, open(get_project_abspath() / 'themes' / theme_name / 'config.json') as f:
         config = json.loads(f.read())
         DAL.save_theme_config(config)

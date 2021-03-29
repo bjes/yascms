@@ -68,5 +68,5 @@ def test_generate_group_trees_should_return_group_trees(mocker):
 
 def test_import_theme_config_should_call_dal_save_theme_config_once(mocker):
     mocker.patch.object(helper.DAL, 'save_theme_config')
-    helper.import_theme_config('tp_yass2020') # 專案預設的佈景主題就是 tp_yass2020 一定存在
+    helper.import_theme('tp_yass2020') # 專案預設的佈景主題就是 tp_yass2020 一定存在
     helper.DAL.save_theme_config.assert_called_once()
