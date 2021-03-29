@@ -8,6 +8,7 @@ from tp_yass.dal import DAL
 def load_config(event):
     """為避免不必要的權限檢查造成過多的資料庫存取，
     採用 event 在每次 request 時將 site_config 與 theme_config 存入 request 下
+    TODO: 引入 cache 機制，將資料讀進去 redis
     """
     site_config = {config.name: config.value for config in DAL.get_site_config_list()}
     event.request.site_config = site_config
