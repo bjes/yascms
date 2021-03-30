@@ -8,18 +8,7 @@ from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
 from tp_yass import models
-
-
-users_groups_association = Table('users_groups_association',
-                                 BaseObject.metadata,
-                                 Column('user_id', Integer, ForeignKey('users.id')),
-                                 Column('group_id', Integer, ForeignKey('groups.id')))
-
-
-groups_pages_association = Table('groups_pages_association',
-                                 BaseObject.metadata,
-                                 Column('group_id', Integer, ForeignKey('groups.id')),
-                                 Column('page_id', Integer, ForeignKey('pages.id')))
+from tp_yass.models.associations import users_groups_association, groups_pages_association
 
 
 class UserModel(BaseObject):

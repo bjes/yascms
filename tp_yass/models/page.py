@@ -8,12 +8,7 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 
 from tp_yass import models
-
-
-pages_tags_association = Table('pages_tags_association',
-                               BaseObject.metadata,
-                               Column('page_id', Integer, ForeignKey('pages.id')),
-                               Column('tag_id', Integer, ForeignKey('tags.id')))
+from tp_yass.models.associations import pages_tags_association, groups_pages_association
 
 
 class PageAttachmentModel(BaseObject):
@@ -52,6 +47,6 @@ class PageModel(BaseObject):
     tags = relationship('models.tag.TagModel', secondary=pages_tags_association, back_populates='pages')
 
     # 擁有這個頁面編輯權限的群組
-    groups = relationship('models.user.GroupModel', secondary=models.user.groups_pages_association, back_populates='pages')
+    groups = relationship('models.user.GroupModel', secondary=groups_pages_association, back_populates='pages')
 
     navbar = relationship('models.navbar.NavbarModel', uselist=False, back_populates='page')

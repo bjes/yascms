@@ -11,11 +11,7 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
-
-news_tags_association = Table('news_tags_association',
-                              BaseObject.metadata,
-                              Column('news_id', Integer, ForeignKey('news.id')),
-                              Column('tag_id', Integer, ForeignKey('tags.id')))
+from tp_yass.models.associations import news_tags_association
 
 
 class NewsAttachmentModel(BaseObject):

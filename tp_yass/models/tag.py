@@ -5,6 +5,7 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 
 from tp_yass import models
+from tp_yass.models.associations import news_tags_association, pages_tags_association
 
 
 class TagModel(BaseObject):
@@ -16,5 +17,5 @@ class TagModel(BaseObject):
 
     name = Column(String(50), unique=True, nullable=False)
 
-    news = relationship('models.news.NewsModel', secondary=models.news.news_tags_association, back_populates='tags')
-    pages = relationship('models.page.PageModel', secondary=models.page.pages_tags_association, back_populates='tags')
+    news = relationship('models.news.NewsModel', secondary=news_tags_association, back_populates='tags')
+    pages = relationship('models.page.PageModel', secondary=pages_tags_association, back_populates='tags')
