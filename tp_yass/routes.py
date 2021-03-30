@@ -33,10 +33,10 @@ def includeme(config):
     config.add_route('backend_user_delete', '/backend/user/delete/{user_id:\d+}', factory=admin_factory)
     config.add_route('backend_user_edit', '/backend/user/edit/{user_id:\d+}', factory=admin_factory)
 
-    config.add_route('backend_user_group_create', '/backend/user/group/create', factory=admin_factory)
-    config.add_route('backend_user_group_list', '/backend/user/group/list', factory=admin_factory)
-    config.add_route('backend_user_group_delete', '/backend/user/group/delete/{group_id:\d+}', factory=admin_factory)
-    config.add_route('backend_user_group_edit', '/backend/user/group/edit/{group_id:\d+}', factory=admin_factory)
+    config.add_route('backend_group_create', '/backend/group/create', factory=admin_factory)
+    config.add_route('backend_group_list', '/backend/group/list', factory=admin_factory)
+    config.add_route('backend_group_delete', '/backend/group/delete/{group_id:\d+}', factory=admin_factory)
+    config.add_route('backend_group_edit', '/backend/group/edit/{group_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory)

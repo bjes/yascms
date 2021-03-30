@@ -18,17 +18,17 @@ def test_user_group_create_view_and_list_view_should_create_and_show_group(webte
     ancestor_group_id = '2' # 上層單位設定成測試學校
 
     # 測試可以建立本來不存在的群組
-    response = webtest_admin_testapp.get(request.route_path('backend_user_group_create'))
+    response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
     assert group_name not in response.body.decode('utf8')
     form = fill_form(response.form, group_name, ancestor_group_id)
     form.submit()
-    response = webtest_admin_testapp.get(request.route_path('backend_user_group_create'))
+    response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
     assert group_name in response.body.decode('utf8')
 
     # 可以建立同名的群組
-    response = webtest_admin_testapp.get(request.route_path('backend_user_group_create'))
+    response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
     form = fill_form(response.form, group_name, ancestor_group_id)
     response = form.submit()
     assert response.status_int == 302
-    response = webtest_admin_testapp.get(request.route_path('backend_user_group_create'))
+    response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
     assert response.body.decode('utf8').count(group_name) == 2

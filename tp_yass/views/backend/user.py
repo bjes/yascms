@@ -7,7 +7,7 @@ from tp_yass.forms.backend.user import UserGroupForm, UserForm, UserEditForm
 from tp_yass.views.backend.helper import generate_group_trees
 
 
-@view_defaults(route_name='backend_user_group_list',
+@view_defaults(route_name='backend_group_list',
                renderer='themes/default/backend/user_group_list.jinja2',
                permission='view')
 class UserGroupListView:
@@ -21,7 +21,7 @@ class UserGroupListView:
         return {'group_trees': generate_group_trees()}
 
 
-@view_defaults(route_name='backend_user_group_create',
+@view_defaults(route_name='backend_group_create',
                renderer='themes/default/backend/user_group_create.jinja2',
                permission='edit')
 class UserGroupCreateView:
@@ -43,12 +43,12 @@ class UserGroupCreateView:
             group = DAL.create_group()
             form.populate_obj(group)
             DAL.save_group(group)
-            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+            return HTTPFound(location=self.request.route_url('backend_group_list'))
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
 
-@view_defaults(route_name='backend_user_group_edit',
+@view_defaults(route_name='backend_group_edit',
                renderer='themes/default/backend/user_group_edit.jinja2',
                permission='edit')
 class UserGroupEditView:
@@ -63,13 +63,13 @@ class UserGroupEditView:
         if group_id == 1:
             # 管理者群組不能編輯
             self.request.session.flash('管理者群組不能編輯', 'fail')
-            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+            return HTTPFound(location=self.request.route_url('backend_group_list'))
         group = DAL.get_group(group_id)
         if group:
             form = UserGroupForm(obj=group)
             return {'form': form,
                     'group_trees': generate_group_trees()}
-        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        return HTTPFound(location=self.request.route_url('backend_group_list'))
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -79,17 +79,17 @@ class UserGroupEditView:
             if group_id == 1:
                 # 管理者群組不能編輯
                 self.request.session.flash('管理者群組不能編輯', 'fail')
-                return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+                return HTTPFound(location=self.request.route_url('backend_group_list'))
             group = DAL.get_group(group_id)
             if group:
                 form.populate_obj(group)
                 DAL.save_group(group)
-            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+            return HTTPFound(location=self.request.route_url('backend_group_list'))
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
 
-@view_defaults(route_name='backend_user_group_delete', permission='edit')
+@view_defaults(route_name='backend_group_delete', permission='edit')
 class UserGroupDeleteView:
     """刪除使用者群組的 view"""
 
@@ -102,14 +102,14 @@ class UserGroupDeleteView:
         if group_id <= 2:
             # 內建的根群組與最高管理者群組不能砍
             self.request.session.flash('管理者群組不能刪除', 'fail')
-            return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+            return HTTPFound(location=self.request.route_url('backend_group_list'))
         group = DAL.get_group(group_id)
         if group:
             DAL.change_group_ancestor_id(group_id, group.ancestor_id)
             DAL.delete_group(group)
         else:
             self.request.session.flash('找不到指定群組', 'fail')
-        return HTTPFound(location=self.request.route_url('backend_user_group_list'))
+        return HTTPFound(location=self.request.route_url('backend_group_list'))
 
 
 @view_defaults(route_name='backend_user_list',
