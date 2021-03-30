@@ -11,7 +11,7 @@ def get_ini_settings(ini_file_path):
 
 def import_test_db_data(ini_file_path):
     """Import test data to test database"""
-    from tp_yass.models.user import GroupModel, UserModel
+    from tp_yass.models.account import GroupModel, UserModel
     from tp_yass.models.news import NewsModel, NewsCategoryModel
     from tp_yass.models.site_config import SiteConfigModel
 

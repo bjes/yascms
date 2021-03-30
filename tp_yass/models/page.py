@@ -47,6 +47,6 @@ class PageModel(BaseObject):
     tags = relationship('models.tag.TagModel', secondary=pages_tags_association, back_populates='pages')
 
     # 擁有這個頁面編輯權限的群組
-    groups = relationship('models.user.GroupModel', secondary=groups_pages_association, back_populates='pages')
+    groups = relationship('models.account.GroupModel', secondary=groups_pages_association, back_populates='pages')
 
     navbar = relationship('models.navbar.NavbarModel', uselist=False, back_populates='page')

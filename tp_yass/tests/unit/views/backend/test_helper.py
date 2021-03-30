@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from tp_yass.views.backend import helper
-from tp_yass.models.user import GroupModel
+from tp_yass.models.account import GroupModel
 
 
 def mock_get_project_abspath(mocker, datadir):

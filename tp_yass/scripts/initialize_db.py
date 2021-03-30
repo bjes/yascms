@@ -17,12 +17,12 @@ def setup_models(dbsession):
     """
 
     # 建立根群組
-    root_group = models.user.GroupModel(name='根群組', type=2)
+    root_group = models.account.GroupModel(name='根群組', type=2)
     dbsession.add(root_group)
 
     # 建立管理者帳號
-    group = models.user.GroupModel(name='最高管理者群組', type=0, ancestor=root_group)
-    user = models.user.UserModel(first_name='管理者',
+    group = models.account.GroupModel(name='最高管理者群組', type=0, ancestor=root_group)
+    user = models.account.UserModel(first_name='管理者',
                                  last_name='最高',
                                  email='webmaster@example.org',
                                  account='admin',

@@ -11,7 +11,7 @@ from sqlalchemy import or_, func
 from sqlalchemy.exc import IntegrityError
 from pyramid_sqlalchemy import Session as DBSession
 
-from tp_yass.models.user import UserModel, GroupModel
+from tp_yass.models.account import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel, NewsAttachmentModel
 from tp_yass.models.navbar import NavbarModel
 from tp_yass.models.site_config import SiteConfigModel
