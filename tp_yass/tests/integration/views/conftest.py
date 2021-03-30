@@ -36,7 +36,7 @@ def ini_settings():
     return get_ini_settings(str(INI_FILE))
 
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 def webtest_testapp(pyramid_config, ini_settings):
     """產生 webtest 物件以用來跑測試"""
     from webtest import TestApp
@@ -57,15 +57,8 @@ def webtest_admin_testapp(webtest_testapp):
     return webtest_testapp
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope='function')
 def init_test_db():
     """自動初始化測試用資料"""
     subprocess.run(['inv', 'db.init-test'])
 
-
-@pytest.fixture(autouse=True, scope='session')
-def init_sqlalchemy(ini_settings):
-    from sqlalchemy import create_engine
-    from pyramid_sqlalchemy import init_sqlalchemy
-
-    init_sqlalchemy(create_engine(ini_settings['sqlalchemy.url']))
