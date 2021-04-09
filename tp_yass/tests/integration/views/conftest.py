@@ -36,8 +36,8 @@ def ini_settings():
     return get_ini_settings(str(INI_FILE))
 
 
-@pytest.fixture(scope='function')
-def webtest_testapp(pyramid_config, ini_settings):
+@pytest.fixture(scope='session')
+def webtest_testapp(session_pyramid_config, ini_settings):
     """產生 webtest 物件以用來跑測試"""
     from webtest import TestApp
     from tp_yass import main
@@ -45,7 +45,7 @@ def webtest_testapp(pyramid_config, ini_settings):
     return TestApp(main(get_global_config(), **ini_settings))
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def webtest_admin_testapp(webtest_testapp):
     """使用最高權限登入"""
     request = DummyRequest()
@@ -61,4 +61,3 @@ def webtest_admin_testapp(webtest_testapp):
 def init_test_db():
     """自動初始化測試用資料"""
     subprocess.run(['inv', 'db.init-test'])
-
