@@ -1,5 +1,5 @@
 {% extends "layouts/master.jinja2" %}
-{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate with context %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -49,7 +49,7 @@
           </table>
         </div>
       </div>
-    {{ paginate(request, "最新消息列表分頁", "backend_news_list", page_quantity_of_total_news, page_number, quantity_per_page) }}
+    {{ paginate("最新消息列表分頁", "backend_news_list", page_quantity_of_total_news, page_number, quantity_per_page) }}
     </div>
   </div>
 </div>

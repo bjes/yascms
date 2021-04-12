@@ -1,5 +1,5 @@
 {% extends "layouts/master.jinja2" %}
-{% from "tp_yass:themes/default/macros.jinja2" import paginate %}
+{% from "tp_yass:themes/default/macros.jinja2" import paginate with context %}
 {% block page_css %}
 <link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
 {% endblock page_css %}
@@ -46,7 +46,7 @@
           </table>
         </div>
       </div>
-    {{ paginate(request, "使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
+    {{ paginate("使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-{% macro paginate(request, title, route_name, quantity_of_pages, current_page_number, quantity_per_page) %}
+{% macro paginate(title, route_name, quantity_of_pages, current_page_number, quantity_per_page) %}
   {% if quantity_of_pages > 1 %}
     <nav aria-label="{{ title }}">
       <ul class="pagination justify-content-center">

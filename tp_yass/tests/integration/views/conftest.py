@@ -50,10 +50,12 @@ def webtest_admin_testapp(webtest_testapp):
     """使用最高權限登入"""
     request = DummyRequest()
     response = webtest_testapp.get(request.route_path('login'))
-    form = response.form
-    form['account'] = 'admin'
-    form['password'] = 'admin4tp_yass'
-    form.submit()
+    # 若已經登入成功，不會顯示登入表單，而會 redirect 到 backend
+    if response.status_int != 302:
+        form = response.form
+        form['account'] = 'admin'
+        form['password'] = 'admin4tp_yass'
+        form.submit()
     return webtest_testapp
 
 
