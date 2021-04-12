@@ -1,5 +1,5 @@
 {% extends "layouts/master.jinja2" %}
-{% from 'macros.jinja2' import generate_user_group_trees with context %}
+{% from 'macros.jinja2' import generate_group_trees with context %}
 {% block page_css %}
 <link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
 {% endblock page_css %}
@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-12"><h1>群組列表</h1></div>
     <div class="col-12">
-      {{ generate_user_group_trees('group_trees', group_trees) }}
+      {{ generate_group_trees('group_trees', group_trees) }}
     </div>
   </div>
 </div>

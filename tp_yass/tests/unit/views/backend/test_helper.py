@@ -59,11 +59,11 @@ def test_generate_group_trees_should_return_group_trees(mocker):
     information_management_section_group = GroupModel(id=4, name='資訊組', ancestor_id=2)
     student_activities_section_group = GroupModel(id=5, name='訓育組', ancestor_id=3)
 
-    # 同父群組的要排在一起，這是 DAL.get_user_group_list() 的行為
+    # 同父群組的要排在一起，這是 DAL.get_group_list() 的行為
     fake_group_list = [root_group, academic_affairs_office_group, student_affairs_office_group,
                        information_management_section_group, student_activities_section_group]
 
-    mocker.patch.object(helper.DAL, 'get_user_group_list', return_value=fake_group_list)
+    mocker.patch.object(helper.DAL, 'get_group_list', return_value=fake_group_list)
 
 
 def test_import_theme_should_call_dal_save_theme_config_once(mocker):

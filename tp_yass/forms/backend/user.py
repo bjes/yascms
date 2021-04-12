@@ -41,7 +41,7 @@ class UserEditForm(UserForm):
                                                      EqualTo('password', message='兩次密碼輸入需相符')])
 
 
-class UserGroupForm(Form):
+class GroupForm(Form):
     """使用者群組的表單"""
 
     name = StringField('群組名稱*', [InputRequired('群組名稱為必填'), Length(max=100)])

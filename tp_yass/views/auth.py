@@ -37,7 +37,7 @@ class LoginView:
                 self.request.session['account'] = user.account
                 self.request.session['is_admin'] = False
                 self.request.session['main_group_id_list'] = [each_group.id for each_group in user.groups]
-                user_groups = []
+                groups = []
                 for each_group in user.groups:
                     group_tree = []
                     current_group = each_group
@@ -53,12 +53,12 @@ class LoginView:
                         else:
                             # 代表已經到了最上層群組
                             group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
-                            user_groups.append(group_tree)
+                            groups.append(group_tree)
                             break
-                self.request.session['groups'] = user_groups
-                self.request.session['group_id_list'] = list({i['id'] for each_group_list in user_groups for i in each_group_list})
+                self.request.session['groups'] = groups
+                self.request.session['group_id_list'] = list({i['id'] for each_group_list in groups for i in each_group_list})
                 logger.info('帳號 "%s" 已登入', user.account)
-                logger.debug('帳號 "%s" 存在 session 的 groups 為 %s', user.account, user_groups)
+                logger.debug('帳號 "%s" 存在 session 的 groups 為 %s', user.account, groups)
                 logger.debug('帳號 "%s" 存在 session 的 group_id_list 為 %s', user.account, self.request.session['group_id_list'])
                 if self.request.session['is_admin']:
                     logger.debug('帳號 "%s" 有管理者權限', user.account)

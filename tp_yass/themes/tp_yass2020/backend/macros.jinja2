@@ -40,7 +40,7 @@
 {% endmacro %}
 
 
-{% macro generate_user_group_trees(name, group_trees, use_link=True) %}
+{% macro generate_group_trees(name, group_trees, use_link=True) %}
   <ul class="list-group" id="root-group" data-name="{{ name }}">
   <li class="list-group-item" data-value="{{ group_trees.id }}">{{ group_trees.name }}
   {% for group in group_trees.descendants recursive %}

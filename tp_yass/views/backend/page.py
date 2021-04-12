@@ -32,7 +32,7 @@ class PageCreateView:
     def post_view(self):
         """新增單一頁面"""
         form = PageForm(self.request.POST)
-        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
+        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         if form.validate():
             created_page = DAL.create_page(form)
             if form.attachments.data:
@@ -129,7 +129,7 @@ class PageEditView:
         form = PageEditForm()
         form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in
                                              self.context.attachments]
-        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_user_group_list()]
+        form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
         if form.validate():
             page_id = int(self.request.matchdict['page_id'])

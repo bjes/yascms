@@ -1,12 +1,12 @@
 {% extends "layouts/master.jinja2" %}
-{% from 'macros.jinja2' import generate_user_group_trees with context %}
+{% from 'macros.jinja2' import generate_group_trees with context %}
 {% block page_css %}
 <link href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}" rel="stylesheet">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>使用者群組 - 建立</h1></div>
+    <div class="col-12"><h1>使用者群組 - 編輯</h1></div>
     <div class="col-12">
       {% if form.errors %}
         <div class="alert alert-danger" role="alert">
@@ -35,9 +35,9 @@
         </div>
         <div class="form-group">
           {{ form.ancestor_id.label() }}
-          {{ generate_user_group_trees('ancestor_id', group_trees, use_link=False) }}
+          {{ generate_group_trees('ancestor_id', group_trees, use_link=False) }}
         </div>
-        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+        <button type="submit" class="btn btn-primary mb-3">修改</button>
       </form>
     </div>
   </div>
@@ -52,6 +52,10 @@
       expandAll: true,
       createInputs: 'radio'
     });
+    // 樹狀選單產生後，自己不該出現在可選清單中。但為了避免跑版，改用 disable 取代 hide
+    $('#root-group li[data-value="{{ request.matchdict['group_id']  }}"] input[type="radio"]').prop('disabled', true);
+    // 勾選上上層的 radio button
+    $('#root-group li[data-value="{{ request.matchdict['group_id'] }}"]').parent().parent().find('>input[type="radio"]').prop('checked', true);
   });
 </script>
 {% endblock page_js %}

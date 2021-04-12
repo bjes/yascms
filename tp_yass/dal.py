@@ -190,7 +190,7 @@ class DAL:
         DBSession.delete(user)
 
     @staticmethod
-    def get_user_group_list():
+    def get_group_list():
         """傳回使用者的群組列表
 
         排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序

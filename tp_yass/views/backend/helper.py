@@ -65,7 +65,7 @@ def _recursive_append(group_node, group):
 
 
 def generate_group_trees():
-    all_groups = DAL.get_user_group_list()
+    all_groups = DAL.get_group_list()
     group_trees = {}
     for group in all_groups:
         if not group.ancestor_id:

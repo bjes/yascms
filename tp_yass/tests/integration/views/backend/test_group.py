@@ -12,7 +12,7 @@ def fill_form(form, name, ancestor_id):
     return form
 
 
-def test_user_group_create_view_and_list_view_should_create_and_show_group(webtest_admin_testapp):
+def test_group_create_view_and_list_view_should_create_and_show_group(webtest_admin_testapp):
     request = DummyRequest()
     group_name = '測試處室'
     ancestor_group_id = '2' # 上層單位設定成測試學校
