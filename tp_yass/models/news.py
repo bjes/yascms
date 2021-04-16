@@ -6,8 +6,7 @@ from sqlalchemy import (Column,
                         DateTime,
                         Date,
                         Text,
-                        ForeignKey,
-                        Table)
+                        ForeignKey)
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 

@@ -3,8 +3,7 @@ from sqlalchemy import (Column,
                         String,
                         Integer,
                         Text,
-                        ForeignKey,
-                        Table)
+                        ForeignKey)
 from sqlalchemy.orm import relationship
 
 from tp_yass import models

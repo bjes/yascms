@@ -1,6 +1,5 @@
 from passlib.hash import sha256_crypt
-from sqlalchemy import (Table,
-                        Column,
+from sqlalchemy import (Column,
                         Integer,
                         String,
                         ForeignKey)
