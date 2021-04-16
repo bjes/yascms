@@ -8,6 +8,7 @@ from sqlalchemy.exc import OperationalError
 
 from .. import models
 from ..views.backend.helper import import_theme
+from ..enum import NavbarType
 
 
 def setup_models(dbsession):
@@ -66,42 +67,42 @@ def setup_models(dbsession):
 
     # 建立導覽列的預設順序
     # 最上層，前台不該顯示，但後台在調整 navbar 階層位置時需要顯示
-    root = models.navbar.NavbarModel(name='根導覽列', aria_name='root', type=1, module_name='root')
+    root = models.navbar.NavbarModel(name='根導覽列', aria_name='root', type=int(NavbarType.TREE_NODE), module_name='root')
     dbsession.add(root)
     # 最新消息
-    dbsession.add(models.navbar.NavbarModel(name='最新消息', aria_name='news', order=1, type=4, module_name='news', icon='bi-megaphone', ancestor=root))
+    dbsession.add(models.navbar.NavbarModel(name='最新消息', aria_name='news', order=1, type=int(NavbarType.BUILTIN_NEWS), module_name='news', icon='bi-megaphone', ancestor=root))
     # 學校簡介
-    school_intro = models.navbar.NavbarModel(name='學校簡介', aria_name='introduction', order=2, type=1, icon='bi-house', ancestor=root)
+    school_intro = models.navbar.NavbarModel(name='學校簡介', aria_name='introduction', order=2, type=int(NavbarType.TREE_NODE), icon='bi-house', ancestor=root)
     dbsession.add(school_intro)
-    dbsession.add(models.navbar.NavbarModel(name='學校歷史', order=1, type=2, page_id=1, ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='特色課程', order=2, type=2, page_id=2, ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='班群教室', order=3, type=2, page_id=3, ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=7, icon='bi-calendar-date', module_name='calendar', ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=8, icon='bi-telephone', module_name='telext', ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='學校歷史', order=1, type=int(NavbarType.LEAF_NODE), page_id=1, ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='特色課程', order=2, type=int(NavbarType.LEAF_NODE), page_id=2, ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='班群教室', order=3, type=int(NavbarType.LEAF_NODE), page_id=3, ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=int(NavbarType.DROPDOWN_DIVIDER), ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=int(NavbarType.BUILTIN_CALENDAR), icon='bi-calendar-date', module_name='calendar', ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=int(NavbarType.BUILTIN_TELEXT), icon='bi-telephone', module_name='telext', ancestor=school_intro))
     # 校園單位
-    school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=3, type=1, icon='bi-building', ancestor=root)
+    school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=3, type=int(NavbarType.TREE_NODE), icon='bi-building', ancestor=root)
     dbsession.add(school_org)
-    dbsession.add(models.navbar.NavbarModel(name='校長室', order=1, type=2, page_id=4, ancestor=school_org))
-    dbsession.add(models.navbar.NavbarModel(name='教務處', order=2, type=2, page_id=5, ancestor=school_org))
-    dbsession.add(models.navbar.NavbarModel(name='學務處', order=3, type=2, page_id=6, ancestor=school_org))
-    dbsession.add(models.navbar.NavbarModel(name='輔導室', order=4, type=2, page_id=7, ancestor=school_org))
-    dbsession.add(models.navbar.NavbarModel(name='總務處', order=5, type=2, page_id=8, ancestor=school_org))
-    dbsession.add(models.navbar.NavbarModel(name='幼兒園', order=6, type=2, page_id=9, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='校長室', order=1, type=int(NavbarType.LEAF_NODE), page_id=4, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='教務處', order=2, type=int(NavbarType.LEAF_NODE), page_id=5, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='學務處', order=3, type=int(NavbarType.LEAF_NODE), page_id=6, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='輔導室', order=4, type=int(NavbarType.LEAF_NODE), page_id=7, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='總務處', order=5, type=int(NavbarType.LEAF_NODE), page_id=8, ancestor=school_org))
+    dbsession.add(models.navbar.NavbarModel(name='幼兒園', order=6, type=int(NavbarType.LEAF_NODE), page_id=9, ancestor=school_org))
     # 師生園地
-    school_garden = models.navbar.NavbarModel(name='師生園地', aria_name='garden', order=4, type=1, icon='bi-sun', ancestor=root)
+    school_garden = models.navbar.NavbarModel(name='師生園地', aria_name='garden', order=4, type=int(NavbarType.TREE_NODE), icon='bi-sun', ancestor=root)
     dbsession.add(school_garden)
-    dbsession.add(models.navbar.NavbarModel(name='資訊中心', order=1, type=2, page_id=10, ancestor=school_garden))
-    dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=2, page_id=11, ancestor=school_garden))
-    dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=2, page_id=12, ancestor=school_garden, is_external=True))
-    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=school_garden))
+    dbsession.add(models.navbar.NavbarModel(name='資訊中心', order=1, type=int(NavbarType.LEAF_NODE), page_id=10, ancestor=school_garden))
+    dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=int(NavbarType.LEAF_NODE), page_id=11, ancestor=school_garden))
+    dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=int(NavbarType.LEAF_NODE), page_id=12, ancestor=school_garden, is_external=True))
+    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=int(NavbarType.DROPDOWN_DIVIDER), ancestor=school_garden))
     # 外站連結
-    outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=1, icon='bi-link-45deg', ancestor=root)
+    outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=int(NavbarType.TREE_NODE), icon='bi-link-45deg', ancestor=root)
     dbsession.add(outside_link)
-    dbsession.add(models.navbar.NavbarModel(name='臺北市政府教育局', order=1, type=2, icon='bi-bookmark', ancestor=outside_link, url='https://www.doe.gov.taipei/'))
-    dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=2, icon='bi-bookmark', ancestor=outside_link, url='https://www.gov.taipei'))
-    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=3, ancestor=outside_link))
-    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=9, icon='bi-link', module_name='links', ancestor=outside_link))
+    dbsession.add(models.navbar.NavbarModel(name='臺北市政府教育局', order=1, type=int(NavbarType.LEAF_NODE), icon='bi-bookmark', ancestor=outside_link, url='https://www.doe.gov.taipei/'))
+    dbsession.add(models.navbar.NavbarModel(name='臺北市政府', order=2, type=int(NavbarType.LEAF_NODE), icon='bi-bookmark', ancestor=outside_link, url='https://www.gov.taipei'))
+    dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=int(NavbarType.DROPDOWN_DIVIDER), ancestor=outside_link))
+    dbsession.add(models.navbar.NavbarModel(name='好站連結', order=5, type=int(NavbarType.BUILTIN_LINKS), icon='bi-link', module_name='links', ancestor=outside_link))
 
     # 建立預設的最新消息分類群組
     dbsession.add(models.news.NewsCategoryModel(name='行政公告'))

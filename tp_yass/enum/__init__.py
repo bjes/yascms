@@ -16,10 +16,10 @@ class NavbarType(IntEnum):
     # 4 是代表為 builtin news 模組（所以有子選單）
     BUILTIN_NEWS = 4
 
-    # 5 代表 news 模組下的各分類的選單（無子選單）
+    # 5 代表 news 模組下的各分類的選單（無子選單），此類別會在 news_factory() 產生在 4 的下面，資料庫裡面不會有
     BUILTIN_NEWS_SUBTYPE = 5
 
-    # 6 代表顯示全部 news 的連結，
+    # 6 代表顯示全部 news 的連結，此類別會在 news_factory() 產生在 4 的下面，資料庫裡面不會有
     BUILTIN_NEWS_ALL = 6
 
     # 7 代表行事曆
@@ -30,5 +30,3 @@ class NavbarType(IntEnum):
 
     # 9 代表好站連結
     BUILTIN_LINKS = 9
-
-
