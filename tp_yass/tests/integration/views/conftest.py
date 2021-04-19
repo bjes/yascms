@@ -42,7 +42,7 @@ def webtest_testapp(session_pyramid_config, ini_settings):
     from webtest import TestApp
     from tp_yass import main
 
-    return TestApp(main(get_global_config(), **ini_settings))
+    return TestApp(main(get_global_config(), **ini_settings), extra_environ={'REMOTE_ADDR': '127.0.0.1'})
 
 
 @pytest.fixture(scope='session')

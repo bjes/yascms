@@ -32,10 +32,13 @@ class UserModel(BaseObject):
                           secondary=users_groups_association,
                           back_populates='users')
 
+    # 關聯的 auth logs
+    auth_logs = relationship('models.log.AuthLogModel', backref='user')
+
     # 密碼 hash
     _password = Column('password', String(77), nullable=False, default='*', server_default='*')
 
-    # 0 還沒改密碼， 1 正常狀態， 2 被鎖定
+    # 0 還沒改密碼， 1 正常狀態， 2 被停用
     status = Column(Integer, nullable=False, default=0, server_default='0')
 
     @property

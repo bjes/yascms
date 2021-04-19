@@ -5,6 +5,7 @@ from pyramid.security import remember, forget
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.forms.auth import LoginForm
+from tp_yass.enum import AuthLogType
 from tp_yass.dal import DAL
 
 
@@ -57,16 +58,16 @@ class LoginView:
                             break
                 self.request.session['groups'] = groups
                 self.request.session['group_id_list'] = list({i['id'] for each_group_list in groups for i in each_group_list})
-                logger.info('帳號 "%s" 已登入', user.account)
-                logger.debug('帳號 "%s" 存在 session 的 groups 為 %s', user.account, groups)
-                logger.debug('帳號 "%s" 存在 session 的 group_id_list 為 %s', user.account, self.request.session['group_id_list'])
-                if self.request.session['is_admin']:
-                    logger.debug('帳號 "%s" 有管理者權限', user.account)
+                DAL.log_auth(AuthLogType.LOGIN, user.id, self.request.client_addr)
                 headers = remember(self.request, user.account)
                 return HTTPFound(location=self.request.route_url('backend_homepage'),
                                  headers=headers)
             else:
-                logger.warning('帳號 "%s" 登入失敗', login_form.account.data)
+                user = DAL.get_user_account(login_form.account.data)
+                if user:
+                    DAL.log_auth(AuthLogType.WRONG_PASSWORD, user.id, self.request.client_addr)
+                else:
+                    logger.warning('帳號 "%s" 不存在', login_form.account.data)
                 self.request.session.flash('登入失敗，請檢查帳號密碼是否有誤', 'fail')
         else:
             logger.error('表單驗證失敗，可能有人入侵：account 欄位為 "%s"，password 欄位為 "%s"',
@@ -81,10 +82,8 @@ class LogoutView:
 
     @view_config(route_name='logout')
     def logout(self):
+        DAL.log_auth(AuthLogType.LOGOUT, self.request.session['user_id'], self.request.client_addr)
         headers = forget(self.request)
-        account = self.request.session['account']
         self.request.session.clear()
-        logger.info('帳號 "%s" 已登出', account)
         return HTTPFound(location=self.request.route_url('homepage'),
                          headers=headers)
-

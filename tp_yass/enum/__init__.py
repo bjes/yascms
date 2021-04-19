@@ -30,3 +30,16 @@ class NavbarType(IntEnum):
 
     # 9 代表好站連結
     BUILTIN_LINKS = 9
+
+
+class AuthLogType(IntEnum):
+    """用來表示 auth log 的類型"""
+
+    # 1 代表登入
+    LOGIN = 1
+
+    # 2 代表登出
+    LOGOUT = 2
+
+    # 代表密碼輸入錯誤
+    WRONG_PASSWORD = 3

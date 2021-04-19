@@ -20,6 +20,7 @@ from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
+from tp_yass.models.log import AuthLogModel
 
 
 logger = logging.getLogger(__name__)
@@ -1128,3 +1129,15 @@ class DAL:
             telext_id: 分機表 TelExtModel 的 primary key
         """
         return DBSession.query(TelExtModel).get(telext_id)
+
+    @staticmethod
+    def log_auth(auth_log_type, user_id, client_addr):
+        """紀錄使用者的認証
+
+        Args:
+            auth_log_type: enum.AuthLogType
+            user_id: 使用者的 id
+            client_addr: 來源端的 ip 位址
+        """
+        auth_log = AuthLogModel(type=int(auth_log_type), user_id=user_id, client_addr=client_addr)
+        DBSession.add(auth_log)
