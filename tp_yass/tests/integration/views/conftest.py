@@ -1,24 +1,17 @@
 import pathlib
+import collections
 import subprocess
 
 import pytest
 from pyramid.testing import DummyRequest
+from webtest import TestApp
 
 import tp_yass
+from tp_yass import main
 
 
 HERE = pathlib.Path(tp_yass.__file__).parent.parent
 INI_FILE = HERE / 'development.ini'
-
-
-def get_global_config():
-    """產生 tp_yass.main 所需的 global_config 資料結構"""
-    import collections
-
-    global_config = collections.OrderedDict()
-    global_config['here'] = str(HERE)
-    global_config['__file__'] = str(INI_FILE)
-    return global_config
 
 
 @pytest.fixture(scope='session')
@@ -39,10 +32,12 @@ def ini_settings():
 @pytest.fixture(scope='session')
 def webtest_testapp(session_pyramid_config, ini_settings):
     """產生 webtest 物件以用來跑測試"""
-    from webtest import TestApp
-    from tp_yass import main
 
-    return TestApp(main(get_global_config(), **ini_settings), extra_environ={'REMOTE_ADDR': '127.0.0.1'})
+    global_config = collections.OrderedDict()
+    global_config['here'] = str(HERE)
+    global_config['__file__'] = str(INI_FILE)
+
+    return TestApp(main(get_global_config, **ini_settings), extra_environ={'REMOTE_ADDR': '127.0.0.1'})
 
 
 @pytest.fixture(scope='session')
