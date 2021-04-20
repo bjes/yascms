@@ -1,5 +1,6 @@
 from pyramid.testing import DummyRequest
 
+
 def add_link_category(response, name):
     """新增指定的連結分類
     

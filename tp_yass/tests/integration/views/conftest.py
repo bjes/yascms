@@ -1,9 +1,13 @@
+import os
 import pathlib
 import collections
 import subprocess
 
 import pytest
 from pyramid.testing import DummyRequest
+from sqlalchemy import create_engine
+from pyramid_sqlalchemy import init_sqlalchemy
+from pyramid_sqlalchemy import Session as DBSession
 from webtest import TestApp
 
 import tp_yass
@@ -29,18 +33,32 @@ def ini_settings():
     return get_ini_settings(str(INI_FILE))
 
 
-@pytest.fixture(scope='session')
-def webtest_testapp(session_pyramid_config, ini_settings):
+@pytest.fixture
+def init_db_session(ini_settings):
+    """建立 sqlalchemy connection 以利測試可正常使用 orm，最後的 remove() 一定要呼叫
+    不然會遇到重建資料庫時卡住的狀況"""
+    engine = create_engine(ini_settings['sqlalchemy.url'])
+    init_sqlalchemy(engine)
+    yield
+    DBSession.remove()
+
+
+@pytest.fixture
+def webtest_testapp(pyramid_config, ini_settings):
     """產生 webtest 物件以用來跑測試"""
+
+    init_test_db()
 
     global_config = collections.OrderedDict()
     global_config['here'] = str(HERE)
     global_config['__file__'] = str(INI_FILE)
 
-    return TestApp(main(get_global_config, **ini_settings), extra_environ={'REMOTE_ADDR': '127.0.0.1'})
+    yield TestApp(main(global_config, **ini_settings), extra_environ={'REMOTE_ADDR': '127.0.0.1'})
+
+    DBSession.remove()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def webtest_admin_testapp(webtest_testapp):
     """使用最高權限登入"""
     request = DummyRequest()
@@ -51,10 +69,12 @@ def webtest_admin_testapp(webtest_testapp):
         form['account'] = 'admin'
         form['password'] = 'admin4tp_yass'
         form.submit()
-    return webtest_testapp
+    yield webtest_testapp
 
 
-@pytest.fixture(autouse=True, scope='function')
 def init_test_db():
     """自動初始化測試用資料"""
+    cwd = os.getcwd()
+    os.chdir(HERE)
     subprocess.run(['inv', 'db.init-test'])
+    os.chdir(cwd)
