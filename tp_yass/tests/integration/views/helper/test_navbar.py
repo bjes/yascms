@@ -4,7 +4,7 @@ from pyramid.testing import DummyRequest
 from tp_yass.views.helper.navbar import generate_navbar_trees, news_factory
 
 
-def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyramid_config, transaction):
+def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyramid_config, init_db_session):
     navbar_trees = generate_navbar_trees(DummyRequest())
     assert isinstance(navbar_trees, dict)
     # 檢驗 root 選單
@@ -19,7 +19,7 @@ def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyram
             assert key in valid_keys
 
 
-def test_news_factory_should_return_news_sub_navbars(transaction):
+def test_news_factory_should_return_news_sub_navbars(init_db_session):
     news_sub_navbars = news_factory()
     assert isinstance(news_sub_navbars, list)
     valid_keys = ['id', 'type', 'category_id', 'name', 'url']
