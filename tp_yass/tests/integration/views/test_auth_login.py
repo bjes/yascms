@@ -63,10 +63,10 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
 
     assert login_view.request.session['is_admin']
     # 在測試資料中，最高管理者群組其 id 為 2
-    assert login_view.request.session['main_group_id_list'] == [2]
+    assert login_view.request.session['main_group_id_list'] == {2}
     assert login_view.request.session['groups'] == [[{'name': '最高管理者群組', 'id': 2, 'type': 0},
                                                      {'name': '根群組', 'id': 1, 'type': 2}]]
-    assert login_view.request.session['group_id_list'] == [1, 2]
+    assert login_view.request.session['group_id_list'] == {1, 2}
     assert isinstance(response, HTTPFound)
 
     # 驗證一般使用者的帳號登入行為
@@ -80,7 +80,7 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
     response = login_view.post()
 
     assert login_view.request.session['is_admin'] == False
-    assert login_view.request.session['main_group_id_list'] == [7, 6]
+    assert login_view.request.session['main_group_id_list'] == {6, 7}
     assert login_view.request.session['groups'] == [[{'name': '資訊組', 'id': 7, 'type': 1},
                                                      {'name': '教務處', 'id': 4, 'type': 1},
                                                      {'name': '測試國小', 'id': 3, 'type': 2},
@@ -88,6 +88,6 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
                                                     [{'name': '藝文領域科任', 'id': 6, 'type': 2},
                                                      {'name': '測試國小', 'id': 3, 'type': 2},
                                                      {'name': '根群組', 'id': 1, 'type': 2}]]
-    assert login_view.request.session['group_id_list'] == [1, 3, 4, 6, 7]
+    assert login_view.request.session['group_id_list'] == {1, 3, 4, 6, 7}
     assert isinstance(response, HTTPFound)
 
