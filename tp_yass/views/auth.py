@@ -37,6 +37,7 @@ class LoginView:
                 self.request.session['last_name'] = user.last_name
                 self.request.session['account'] = user.account
                 self.request.session['is_admin'] = False
+                # 一個帳號可以隸屬多個群組，這邊紀錄隸屬群組的 id 列表
                 self.request.session['main_group_id_list'] = [each_group.id for each_group in user.groups]
                 groups = []
                 for each_group in user.groups:
@@ -56,7 +57,9 @@ class LoginView:
                             group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
                             groups.append(group_tree)
                             break
+                # 隸屬群組以及其上的樹狀的群組資料
                 self.request.session['groups'] = groups
+                # 紀錄所屬群組以及其以上各樹狀的所有 group id，方便前端網頁處理，才不用埋太多邏輯
                 self.request.session['group_id_list'] = list({i['id'] for each_group_list in groups for i in each_group_list})
                 DAL.log_auth(AuthLogType.LOGIN, user.id, self.request.client_addr)
                 headers = remember(self.request, user.account)
