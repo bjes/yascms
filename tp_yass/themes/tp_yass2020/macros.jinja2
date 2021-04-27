@@ -3,20 +3,20 @@
     <nav aria-label="{{ title }}">
       <ul class="pagination justify-content-center">
         <li class="page-item">
-          <a class="page-link" href="{{ request.route_url(route_name, _query={'p': 1, 'q': quantity_per_page}) }}">第一頁</a>
+          <a class="page-link" href="{% block first_page_url scoped %}{{ request.route_url(route_name, _query={'p': 1, 'q': quantity_per_page}) }}{% endblock %}">第一頁</a>
         </li>
         {% if current_page_number > 1 %}
           <li class="page-item">
-            <a class="page-link" href="{{ request.route_url(route_name, _query={'p': current_page_number-1, 'q': quantity_per_page}) }}">上一頁</a>
+            <a class="page-link" href="{% block prev_page_url scoped %}{{ request.route_url(route_name, _query={'p': current_page_number-1, 'q': quantity_per_page}) }}{% endblock %}">上一頁</a>
           </li>
         {% endif %}
         {% if current_page_number < quantity_of_pages %}
           <li class="page-item">
-            <a class="page-link" href="{{ request.route_url(route_name, _query={'p': current_page_number+1, 'q': quantity_per_page}) }}">下一頁</a>
+            <a class="page-link" href="{% block next_page_url scoped %}{{ request.route_url(route_name, _query={'p': current_page_number+1, 'q': quantity_per_page}) }}{% endblock %}">下一頁</a>
           </li>
         {% endif %}
         <li class="page-item">
-          <a class="page-link" href="{{ request.route_url(route_name, _query={'p': quantity_of_pages, 'q': quantity_per_page}) }}">最後頁</a>
+          <a class="page-link" href="{% block last_page_url scoped %}{{ request.route_url(route_name, _query={'p': quantity_of_pages, 'q': quantity_per_page}) }}{% endblock %}">最後頁</a>
         </li>
       </ul>
     </nav>
