@@ -20,7 +20,7 @@ from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
-from tp_yass.models.log import AuthLogModel
+from tp_yass.models.auth_log import AuthLogModel
 
 
 logger = logging.getLogger(__name__)
@@ -1141,3 +1141,37 @@ class DAL:
         """
         auth_log = AuthLogModel(type=int(auth_log_type), user_id=user_id, client_addr=client_addr)
         DBSession.add(auth_log)
+
+    @staticmethod
+    def get_auth_log_list(page_number=1, quantity_per_page=20, user_id=None):
+        """傳回 auth log 紀錄列表
+
+        Args:
+            page_number: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            user_id: 指定要撈取的使用者 auth log，None 代表全部撈出
+
+        Returns:
+            回傳 auth log 列表
+        """
+        results = DBSession.query(AuthLogModel)
+        if user_id:
+            results = results.filter_by(user_id=user_id)
+        return (results.order_by(AuthLogModel.id.desc())
+                   [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+
+    @staticmethod
+    def get_page_quantity_of_total_auth_logs(quantity_per_page, user_id=None):
+        """回傳 auth logs 總共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息
+            user_id: 若有指定，則只會根據指定 user id 的 auth logs 去計算頁數
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(AuthLogModel.id))
+        if user_id:
+            results = results.filter_by(user_id=user_id)
+        return math.ceil(results.scalar()/quantity_per_page)

@@ -33,7 +33,7 @@ class UserModel(BaseObject):
                           back_populates='users')
 
     # 關聯的 auth logs
-    auth_logs = relationship('models.log.AuthLogModel', backref='user')
+    auth_logs = relationship('models.auth_log.AuthLogModel', backref='user')
 
     # 密碼 hash
     _password = Column('password', String(77), nullable=False, default='*', server_default='*')

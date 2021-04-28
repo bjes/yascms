@@ -102,6 +102,17 @@
         </ul>
       </li>
       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarAuthLogsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-camera-video"></i> 登出入紀錄
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarTagsDropdown">
+          {% if request.session['is_admin'] %}
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_auth_log_list') }}">所有帳號</a></li>
+          {% endif %}
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_auth_log_list', _query={'u': request.session['user_id']}) }}">{{ request.session['account'] }}</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarAccountDropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person"></i>
           {{ request.session['first_name']}}
         </a>

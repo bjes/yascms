@@ -1,0 +1,42 @@
+{% extends "layouts/master.jinja2" %}
+{% from "auth_log_list_macros.jinja2" import paginate with context %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>登出入紀錄</h1></div>
+    <div class="col-12">
+      <div class="card border-primary mb-3">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped text-center mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="d-none d-md-table-cell">編號</th>
+                <th scope="col" class="d-none d-sm-table-cell">時間</th>
+                <th scope="col" class="d-none d-md-table-cell">帳號</th>
+                <th scope="col" class="d-none d-md-table-cell">類型</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for each_auth_log in auth_log_list %}
+              <tr>
+                <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
+                <td>{{ each_auth_log.datetime }}</td>
+                <td>{{ each_auth_log.user.account }}</td>
+                {% if each_auth_log.type == AuthLogType.LOGIN %}
+                  <td>登入</td>
+                {% elif each_auth_log.type == AuthLogType.LOGOUT %}
+                  <td>登出</td>
+                {% elif each_auth_log.type == AuthLogType.WRONG_PASSWORD %}
+                  <td>密碼錯誤</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {{ paginate("登出入紀錄列表分頁", "backend_auth_log_list", page_quantity_of_total_auth_logs, page_number, quantity_per_page) }}
+    </div>
+  </div>
+</div>
+{% endblock content %}

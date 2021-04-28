@@ -72,6 +72,8 @@ def includeme(config):
     config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory)
     config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory)
 
+    config.add_route('backend_auth_log_list', '/backend/auth_log/list', factory=auth_user_factory)
+
     config.add_route('backend_api_page_list', '/backend/api/page/list', factory=admin_factory)
     config.add_route('backend_api_page_get', '/backend/api/page/get/{page_id:\d+}', factory=admin_factory)
 
