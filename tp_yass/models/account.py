@@ -8,6 +8,7 @@ from pyramid_sqlalchemy import BaseObject
 
 from tp_yass import models
 from tp_yass.models.associations import users_groups_association, groups_pages_association
+from tp_yass.enum import GroupType
 
 
 class UserModel(BaseObject):
@@ -30,6 +31,7 @@ class UserModel(BaseObject):
 
     groups = relationship('GroupModel',
                           secondary=users_groups_association,
+                          order_by='GroupModel.id',
                           back_populates='users')
 
     # 關聯的 auth logs
@@ -65,8 +67,9 @@ class GroupModel(BaseObject):
     # 群組名稱
     name = Column(String(100), nullable=False)
 
-    # 類別， 0 為管理者可無視權限設定， 1 為行政群組（可張貼最新消息）， 2 為普通群組（比方教師）
-    type = Column('type', Integer, nullable=False, default=1, server_default='1')
+    # 類別，定義請參照 tp_yass.enum.GroupType
+    type = Column('type', Integer, nullable=False, default=GroupType.STAFF.value,
+                  server_default=str(GroupType.STAFF.value))
 
     # 排序的依據，數字愈小排越前面
     order = Column(Integer, nullable=False, default=0, server_default='0')

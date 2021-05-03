@@ -8,6 +8,7 @@ from pyramid_wtforms.validators import (InputRequired,
                                         Email,
                                         EqualTo)
 
+from tp_yass.enum import GroupType
 from .fields import MultiCheckboxField
 
 
@@ -48,7 +49,9 @@ class GroupForm(Form):
 
     type = SelectField('類別*',
                        [InputRequired('群組類別為必填')],
-                       choices=[(1, '行政群組'), (2, '普通群組'), (0, '管理者')],
+                       choices=[(GroupType.STAFF.value, '行政群組'),
+                                (GroupType.NORMAL.value, '普通群組'),
+                                (GroupType.ADMIN.value, '管理者')],
                        coerce=int)
 
     # TODO: 要動態產生，目前先寫死 20 組

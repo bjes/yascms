@@ -21,6 +21,7 @@ from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
+from tp_yass.enum import GroupType
 
 
 logger = logging.getLogger(__name__)
@@ -200,7 +201,7 @@ class DAL:
 
     @staticmethod
     def get_staff_group_list(user_id):
-        """取得指定 user id 的所屬行政群組 (group type 為 1)
+        """取得指定 user id 的所屬行政群組 (group type 為 tp_yass.enum.GroupType.STAFF)。最高管理者也視做是行政群組
 
         Args:
             user_id: UserModel 的 primary key
@@ -210,7 +211,7 @@ class DAL:
         """
         return (DBSession.query(GroupModel)
                          .join(UserModel, GroupModel.users)
-                         .filter(UserModel.id==user_id, GroupModel.type.in_((0, 1))))
+                         .filter(UserModel.id==user_id, GroupModel.type.in_((GroupType.ADMIN.value, GroupType.STAFF.value))))
 
     @staticmethod
     def get_groups(group_id_list):

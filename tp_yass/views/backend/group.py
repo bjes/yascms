@@ -59,9 +59,9 @@ class GroupEditView:
     @view_config(request_method='GET')
     def get_view(self):
         group_id = int(self.request.matchdict['group_id'])
-        if group_id == 1:
-            # 管理者群組不能編輯
-            self.request.session.flash('管理者群組不能編輯', 'fail')
+        if group_id <= 2:
+            # 內建根群組與管理者群組不能編輯
+            self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         group = DAL.get_group(group_id)
         if group:
@@ -75,9 +75,9 @@ class GroupEditView:
         form = GroupForm(self.request.POST)
         if form.validate():
             group_id = int(self.request.matchdict['group_id'])
-            if group_id == 1:
-                # 管理者群組不能編輯
-                self.request.session.flash('管理者群組不能編輯', 'fail')
+            if group_id <= 2:
+                # 內建根群組與管理者群組不能編輯
+                self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
                 return HTTPFound(location=self.request.route_url('backend_group_list'))
             group = DAL.get_group(group_id)
             if group:
@@ -109,4 +109,3 @@ class GroupDeleteView:
         else:
             self.request.session.flash('找不到指定群組', 'fail')
         return HTTPFound(location=self.request.route_url('backend_group_list'))
-

@@ -4,8 +4,8 @@ from pyramid.security import (Allow,
                               Everyone,
                               ALL_PERMISSIONS)
 
-from tp_yass.helper import sanitize_input
 from tp_yass.dal import DAL
+from tp_yass.enum import GroupType
 
 
 logger = logging.getLogger(__name__)
@@ -16,10 +16,7 @@ class ACL:
 
 
 def admin_factory(request):
-    """Admin 的群組 type 為 0，所以給 group type 為 0 的群組權限全開
-
-    只要有一個群組為 admin，則 acl 就設定對於該 group id 權限全開
-    """
+    """管理者權限全開"""
     acl = ACL()
     if 'is_admin' in request.session and request.session['is_admin']:
         acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
@@ -70,7 +67,7 @@ def staff_group_factory(request):
     if 'groups' in request.session:
         for each_sub_group in request.session['groups']:
             for each_group in each_sub_group:
-                if each_group['type'] in (0, 1):
+                if each_group['type'] in (GroupType.ADMIN, GroupType.STAFF):
                     acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
                     return acl
     return acl

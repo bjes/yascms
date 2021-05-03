@@ -5,7 +5,7 @@ from pyramid.security import remember, forget
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.forms.auth import LoginForm
-from tp_yass.enum import AuthLogType
+from tp_yass.enum import AuthLogType, GroupType
 from tp_yass.dal import DAL
 
 
@@ -46,7 +46,7 @@ class LoginView:
                     while True:
                         # 只要有任一個群組（含上層）為管理者權限，則 is_admin 就為 True
                         if not self.request.session['is_admin']:
-                            if current_group.type == 0:
+                            if current_group.type == GroupType.ADMIN:
                                 self.request.session['is_admin'] = True
                         if current_group.ancestor:
                             # 代表還有上層群組

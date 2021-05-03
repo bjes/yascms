@@ -43,3 +43,16 @@ class AuthLogType(IntEnum):
 
     # 代表密碼輸入錯誤
     WRONG_PASSWORD = 3
+
+
+class GroupType(IntEnum):
+    """用來表示群組的類型"""
+
+    # 0 為管理者可無視權限設定
+    ADMIN = 0
+
+    # 1 為行政群組（可張貼最新消息）
+    STAFF = 1
+
+    # 3 為普通群組（比方教師）
+    NORMAL = 2
