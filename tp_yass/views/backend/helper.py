@@ -7,6 +7,7 @@ import transaction
 
 from tp_yass.dal import DAL
 from tp_yass.views.helper.file import get_project_abspath, save_file, convert_image_file
+from tp_yass.enum import GroupType
 
 
 def upload_attachment(cgi_field_storage, upload_sub_dir, prefix, need_resize=False):
@@ -57,7 +58,12 @@ def delete_attachment(file_name, upload_sub_dir):
 
 def _recursive_append(group_node, group):
     if group.ancestor_id == group_node['id']:
-        group_node['descendants'].append({'id': group.id, 'name': group.name, 'descendants': []})
+        descendant = {'id': group.id,
+                      'name': group.name,
+                      'type': group.type,
+                      'inheritance': GroupType.NORMAL.value,  # 預設是普通權限
+                      'descendants': []}
+        group_node['descendants'].append(descendant)
         return True
     else:
         for descendant_group in group_node['descendants']:
@@ -69,8 +75,12 @@ def generate_group_trees():
     group_trees = {}
     for group in all_groups:
         if not group.ancestor_id:
-            # 代表是最上層群組
-            group_trees = {'id': group.id, 'name': group.name, 'descendants': []}
+            # 代表是最上層群組，最上層群組是根群組，不需要特別權限，所以繼承權限設定為 GroupType.NORMAL
+            group_trees = {'id': group.id,
+                           'name': group.name,
+                           'type': group.type,
+                           'inheritance': GroupType.NORMAL.value,
+                           'descendants': []}
         else:
             # 代表是第二層以下的群組
             _recursive_append(group_trees, group)
