@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>登出入紀錄</h1></div>
+    <div class="col-12"><h1>{% if request.GET['u'] %}{{ request.session['account'] }} {% else %}所有帳號{% endif %}的登出入紀錄</h1></div>
     <div class="col-12">
       <div class="card border-primary mb-3">
         <div class="table-responsive">
