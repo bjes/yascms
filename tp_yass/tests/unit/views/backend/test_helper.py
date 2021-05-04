@@ -51,24 +51,33 @@ def test_delete_attachment_should_delete_file(mocker, datadir):
     assert not target_file.exists()
 
 
-
-def test_generate_group_trees_should_return_group_trees(mocker):
-    root_group = GroupModel(id=1, name='濱江國小')
-    academic_affairs_office_group = GroupModel(id=2, name='教務處', ancestor_id=1)
-    student_affairs_office_group = GroupModel(id=3, name='學務處', ancestor_id=1)
-    information_management_section_group = GroupModel(id=4, name='資訊組', ancestor_id=2)
-    student_activities_section_group = GroupModel(id=5, name='訓育組', ancestor_id=3)
-
-    # 同父群組的要排在一起，這是 DAL.get_group_list() 的行為
-    fake_group_list = [root_group, academic_affairs_office_group, student_affairs_office_group,
-                       information_management_section_group, student_activities_section_group]
-
-    mocker.patch.object(helper.DAL, 'get_group_list', return_value=fake_group_list)
-
-
 def test_import_theme_should_call_dal_save_theme_config_once(mocker):
     mocker.patch.object(helper.DAL, 'save_theme_config')
     mocker.patch.object(helper.shutil, 'copy')
     helper.import_theme('tp_yass2020') # 專案預設的佈景主題就是 tp_yass2020 一定存在
     helper.DAL.save_theme_config.assert_called_once()
     helper.shutil.copy.assert_called()
+
+
+def test_generate_inheritance_data_with_group_trees_should_update_group_trees_respectively():
+    fake_sub_group_trees = {'type': 2,
+                            'inheritance': 2,
+                            'descendants': [{'type': 0,
+                                             'inheritance': 2,
+                                             'descendants': [{'type': 1,
+                                                              'inheritance': 2,
+                                                              'descendants': []}]}]}
+    helper._generate_inheritance_data(fake_sub_group_trees, 2)
+    assert fake_sub_group_trees['descendants'][0]['inheritance'] == 0
+    assert fake_sub_group_trees['descendants'][0]['descendants'][0]['inheritance'] == 0
+
+    fake_sub_group_trees = {'type': 2,
+                            'inheritance': 2,
+                            'descendants': [{'type': 1,
+                                             'inheritance': 2,
+                                             'descendants': [{'type': 0,
+                                                              'inheritance': 2,
+                                                              'descendants': []}]}]}
+    helper._generate_inheritance_data(fake_sub_group_trees, 2)
+    assert fake_sub_group_trees['descendants'][0]['inheritance'] == 1
+    assert fake_sub_group_trees['descendants'][0]['descendants'][0]['inheritance'] == 0
