@@ -50,7 +50,25 @@
     <li class="list-group-item" data-value="{{ group.id }}">
       {% if use_link %}
         <div class="d-flex justify-content-between align-content-center">
-          <a href="#">{{ group.name }}</a>
+          <span>
+            <a href="#">{{ group.name }}</a>
+            <span class="badge badge-info">
+              {% if group.type == GroupType.ADMIN %}
+                管理群組
+              {% elif group.type == GroupType.STAFF %}
+                行政群組
+              {% else %}
+                一般群組
+              {% endif %}
+            </span>
+            {% if group.inheritance == GroupType.ADMIN %}
+              <span class="badge badge-danger">繼承：管理權限</span>
+            {% elif group.type == GroupType.STAFF %}
+              <span class="badge badge-primary">繼承：行政權限</span>
+            {% else %}
+              <span class="badge badge-success">繼承：一般權限</span>
+            {% endif %}
+          </span>
           <span>
             {% if group.id > 2 %}
               {# 如果是內建根群組/內建管理者群組，則不該顯示編輯與刪除按鈕 #}

@@ -4,6 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from tp_yass.dal import DAL
 from tp_yass.forms.backend.user import GroupForm
 from tp_yass.views.backend.helper import generate_group_trees
+from tp_yass.enum import GroupType
 
 
 @view_defaults(route_name='backend_group_list',
@@ -17,7 +18,7 @@ class GroupListView:
 
     @view_config()
     def get_view(self):
-        return {'group_trees': generate_group_trees()}
+        return {'group_trees': generate_group_trees(), 'GroupType': GroupType}
 
 
 @view_defaults(route_name='backend_group_create',
