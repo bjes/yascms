@@ -9,39 +9,39 @@
   tasks:
     - block:
         - name: 佈署 production 環境的設定檔
-          template:
+          ansible.builtin.template:
             src: "production.ini.j2"
             dest: "{{ project_base_dir }}/production.ini"
             owner: "www-data"
             group: "www-data"
             mode: "0600"
         - name: 下載益教網製作的圖示作為 favicon
-          unarchive:
+          ansible.builtin.unarchive:
             src: "https://webcode.tp.edu.tw/tcenc/tp_yass_arts/raw/branch/master/webroot.tar.gz"
             dest: "{{ project_base_dir }}/tp_yass/webroot/"
             remote_src: yes
         - name: 確認 uploads/themes/tp_yass2020/banner 目錄存在
-          file:
+          ansible.builtin.file:
             name: "{{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
             owner: www-data
             group: www-data
             state: directory
         - name: 複製 tp_yass2020 樣板的橫幅檔案至 uploads
-          shell:
+          ansible.builtin.shell:
             cmd: "{{ item }}"
           loop:
             - "cp {{ project_base_dir }}/tp_yass/themes/tp_yass2020/static/img/banner/* {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
             - "chown www-data:www-data -R {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
         - name: 使用 poetry 安裝專案相依套件
-          command: .venv/bin/poetry install
+          ansible.builtin.command: .venv/bin/poetry install
           args:
             chdir: "{{ project_base_dir }}"
         - name: 執行資料庫初始化
-          command: .venv/bin/poetry run .venv/bin/inv db.init
+          ansible.builtin.command: .venv/bin/poetry run .venv/bin/inv db.init
           args:
             chdir: "{{ project_base_dir }}"
         - name: 設定目錄權限
-          file:
+          ansible.builtin.file:
             path: "{{ project_base_dir  }}/tp_yass/{{ item }}"
             owner: "www-data"
             group: "www-data"
@@ -52,7 +52,7 @@
             - uploads
         - block:
             - name: 建立專案的 nginx log 檔並設定權限
-              file:
+              ansible.builtin.file:
                 path: "{{ item }}"
                 owner: "www-data"
                 group: "adm"
@@ -62,12 +62,12 @@
                 - "/var/log/nginx/{{ project_domain_name }}-access.log"
                 - "/var/log/nginx/{{ project_domain_name }}-error.log"
             - name: 佈署 nginx 設定檔
-              template:
+              ansible.builtin.template:
                 src: "nginx.conf.j2"
                 dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
               notify: reload nginx
             - name: 啟用 nginx 設定檔
-              file:
+              ansible.builtin.file:
                 src: "/etc/nginx/sites-available/{{ project_domain_name }}"
                 dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
                 state: link
@@ -75,7 +75,7 @@
           tags:
             - deploy_project_nginx_config
         - name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
-          template:
+          ansible.builtin.template:
             src: "uwsgi.ini.j2"
             dest: "/opt/uwsgi/etc/{{ project_domain_name }}.ini"
             owner: "www-data"
@@ -85,10 +85,10 @@
         - deploy_project
   handlers:
     - name: restart redis-server
-      systemd:
+      ansible.builtin.systemd:
         name: "redis-server.service"
         state: restarted
     - name: reload nginx
-      systemd:
+      ansible.builtin.systemd:
         name: "nginx.service"
         state: reloaded

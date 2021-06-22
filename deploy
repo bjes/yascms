@@ -26,7 +26,7 @@ def main():
         subprocess.call(".venv/bin/pip install 'wheel==0.36.2' 'setuptools==57.0.0' 'ansible==4.1.0' 'poetry==1.1.6'", shell=True)
     if args.project_packages:
         check_perm()
-        subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_all_roles.sh'", shell=True)
+        subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_deps.sh'", shell=True)
         if args.project_packages == "default":
             subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf'", shell=True)
         else:
