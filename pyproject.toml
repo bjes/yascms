@@ -23,7 +23,6 @@ email_validator = "*"
 pillow = "*"
 # pyramid-session-redis 官方文件說到 1.6.0 以後只支援 pyramid 2.0 所以這邊使用 ~ 指定 >=1.5.3,<1.6.0
 pyramid-session-redis = "~1.5.3"
-#tp_yass = {path = "tp_yass", develop = true}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
