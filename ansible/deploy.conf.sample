@@ -88,7 +88,7 @@ uwsgi_stats_host: localhost
 uwsgi_stats_port: 14601
 
 # uwsgi 要啟動幾個 worker
-uwsgi_processes: 4
+uwsgi_processes: 2
 
 # 設定寄送信件的 smtp server 位址
 mail_server_host: "localhost"
