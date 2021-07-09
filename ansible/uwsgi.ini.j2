@@ -6,6 +6,7 @@ home = {{ project_base_dir }}/.venv
 wsgi-file = {{ project_base_dir }}/wsgi.py
 single-interpreter = true
 processes = {{ uwsgi_processes }}
+enable-threads = true
 die-on-term = true
 need-app = true
 disable-logging = true
