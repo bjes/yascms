@@ -62,7 +62,7 @@ class LoginView:
                 # 紀錄所屬群組以及其以上各樹狀的所有 group id，方便前端網頁處理，才不用埋太多邏輯
                 self.request.session['group_id_list'] = {i['id'] for each_group_list in groups for i in each_group_list}
                 DAL.log_auth(AuthLogType.LOGIN, user.id, self.request.client_addr)
-                headers = remember(self.request, user.account)
+                headers = remember(self.request, user.id)
                 return HTTPFound(location=self.request.route_url('backend_homepage'),
                                  headers=headers)
             else:

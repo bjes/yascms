@@ -1,8 +1,8 @@
 import logging
 
-from pyramid.security import (Allow,
-                              Everyone,
-                              ALL_PERMISSIONS)
+from pyramid.authorization import (Allow,
+                                   Everyone,
+                                   ALL_PERMISSIONS)
 
 from tp_yass.dal import DAL
 from tp_yass.enum import GroupType

@@ -1,8 +1,6 @@
 from pyramid.config import Configurator
-from pyramid.authentication import AuthTktAuthenticationPolicy
-from pyramid.authorization import ACLAuthorizationPolicy
 
-from .security import group_finder
+from .security import SecurityPolicy
 
 
 def main(global_config, **settings):
@@ -19,12 +17,7 @@ def main(global_config, **settings):
 
         config.set_default_csrf_options(require_csrf=True)
 
-        authn_policy = AuthTktAuthenticationPolicy(settings['auth.secret'],
-                                                   callback=group_finder,
-                                                   hashalg='sha512')
-        authz_policy = ACLAuthorizationPolicy()
-        config.set_authentication_policy(authn_policy)
-        config.set_authorization_policy(authz_policy)
+        config.set_security_policy(SecurityPolicy())
 
         config.include('.routes')
         config.scan('.views')
