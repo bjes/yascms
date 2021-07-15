@@ -36,6 +36,19 @@ def auth_user_factory(request):
     return acl
 
 
+def staff_group_factory(request):
+    """只有管理者或使用者擁有行政群組才有權限"""
+    acl = ACL()
+    acl.__acl__ = []
+    if 'groups' in request.session:
+        for each_sub_group in request.session['groups']:
+            for each_group in each_sub_group:
+                if each_group['type'] in (GroupType.ADMIN, GroupType.STAFF):
+                    acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+                    return acl
+    return acl
+
+
 def page_edit_factory(request):
     """單一頁面所屬的群組（們）才有後台編輯的權限"""
     acl = ACL()
@@ -58,19 +71,6 @@ def page_edit_factory(request):
         logger.error('找不到 page id 為 %s 的單一頁面，群組權限比對異常', page_id)
         acl.__acl__ = []
     return page or acl
-
-
-def staff_group_factory(request):
-    """只有管理者或使用者擁有行政群組才有權限"""
-    acl = ACL()
-    acl.__acl__ = []
-    if 'groups' in request.session:
-        for each_sub_group in request.session['groups']:
-            for each_group in each_sub_group:
-                if each_group['type'] in (GroupType.ADMIN, GroupType.STAFF):
-                    acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
-                    return acl
-    return acl
 
 
 def news_edit_factory(request):
