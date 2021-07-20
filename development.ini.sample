@@ -23,6 +23,8 @@ jinja2.filters =
 jinja2.lstrip_blocks = true
 jinja2.trim_blocks = true
 
+project_abbr_name = tp_yass
+
 # secret key for pyramid security framework
 auth.secret = CHANGE_ME
 
