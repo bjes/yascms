@@ -48,9 +48,6 @@ session_secret: CHANGE_ME
 # session timeout 的時間（秒）
 session_timeout: 86400
 
-# cookie 名稱
-cookie_name: CHANGE_ME
-
 # cookie 最大存活時間
 cookie_max_age: 86400
 

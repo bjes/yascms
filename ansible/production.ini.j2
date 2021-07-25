@@ -34,7 +34,7 @@ auth.secret = {{ auth_secret|default(lookup('password', '/dev/null chars=ascii_l
 # pyramid_session_redis settings
 redis.sessions.secret = {{ session_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
 redis.sessions.timeout = {{ session_timeout|default("86400", true) }}
-redis.sessions.cookie_name = {{ cookie_name }}
+redis.sessions.cookie_name = {{ project_abbr_name }}
 redis.sessions.cookie_max_age = {{ cookie_max_age|default("86400", true) }}
 redis.sessions.cookie_path = /
 redis.sessions.cookie_domain =
