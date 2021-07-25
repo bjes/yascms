@@ -42,10 +42,11 @@ redis.sessions.cookie_domain =
 redis.sessions.cookie_secure = True
 redis.sessions.cookie_httponly = True
 redis.sessions.cookie_on_exception = True
-redis.sessions.host = {{ redis_host|default("localhost", true) }}
-redis.sessions.port = {{ redis_port|default("6379", true) }}
-redis.sessions.db = 0
-redis.sessions.password = {{ redis_pass }}
+{% if redis_pass -%}
+    redis.sessions.url = redis://:{{ redis_pass }}@{{ redis_host|default("localhost", true) }}:{{ redis_port|default("6379", true) }}/0
+{% else -%}
+    redis.sessions.url = redis://{{ redis_host|default("localhost", true) }}:{{ redis_port|default("6379", true) }}/0
+{%- endif %}
 
 sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@{{ db_host }}/{{ db_name }}?charset=utf8mb4
 sqlalchemy.pool_recycle = 3600

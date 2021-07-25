@@ -29,6 +29,7 @@ project_abbr_name = tp_yass
 auth.secret = CHANGE_ME
 
 # pyramid_session_redis settings
+redis.sessions.prefix = tp_yass-
 redis.sessions.secret = COOKIE_SIGNING_SECRET
 redis.sessions.timeout = 86400
 redis.sessions.cookie_name = tp_yass
@@ -38,10 +39,7 @@ redis.sessions.cookie_domain =
 redis.sessions.cookie_secure = False
 redis.sessions.cookie_httponly = True
 redis.sessions.cookie_on_exception = True
-redis.sessions.host = localhost
-redis.sessions.port = 6379
-redis.sessions.db = 0
-redis.sessions.password = None
+redis.sessions.url = redis://localhost:6379/0
 
 # 以下範例假設資料庫帳號是 user，密碼是 pass，目標資料庫為 localhost，
 # 資料庫名稱為 foo，charset 為 utf8mb4:
