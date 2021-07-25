@@ -32,6 +32,7 @@ mail.port = {{ mail_server_port }}
 auth.secret = {{ auth_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
 
 # pyramid_session_redis settings
+redis.sessions.prefix = {{ project_abbr_name }}-
 redis.sessions.secret = {{ session_secret|default(lookup('password', '/dev/null chars=ascii_lowercase,digits length=64'), true) }}
 redis.sessions.timeout = {{ session_timeout|default("86400", true) }}
 redis.sessions.cookie_name = {{ project_abbr_name }}
