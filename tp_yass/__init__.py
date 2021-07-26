@@ -1,6 +1,7 @@
 from pyramid.config import Configurator
 
-from .security import SecurityPolicy
+from tp_yass.security import SecurityPolicy
+from tp_yass.views.cache import CacheController
 
 
 def main(global_config, **settings):
@@ -18,6 +19,9 @@ def main(global_config, **settings):
         config.set_default_csrf_options(require_csrf=True)
 
         config.set_security_policy(SecurityPolicy())
+
+        config.add_request_method(CacheController(settings['redis.sessions.url'], settings['project_abbr_name']),
+                                  'cache', reify=True)
 
         config.include('.routes')
         config.scan('.views')

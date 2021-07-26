@@ -77,11 +77,13 @@ class SiteConfigView:
         for config in updated_config_list:
             if config['name'] == 'site_theme':
                 self._set_theme(config['value'])
+                self.request.cache.delete_theme_config()
                 logger.info('系統樣板變更為 %s', config['value'])
                 break
         if updated_config_list:
             DAL.update_site_config_list(updated_config_list)
             self.request.session.flash('更新設定成功', 'success')
+            self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
             self.request.session.flash('設定沒有異動', 'fail')
