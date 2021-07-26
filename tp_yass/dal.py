@@ -103,7 +103,7 @@ class DAL:
     def get_site_config_list():
         """傳回系統設定檔，其中因為 maintenance mode 不是給使用者操作的，所以過濾掉"""
         return (DBSession.query(SiteConfigModel)
-                         .filter(SiteConfigModel.name != 'maintenance_mode')
+                         .filter(SiteConfigModel.name != 'maintenance_mode_enabled')
                          .all())
 
 
