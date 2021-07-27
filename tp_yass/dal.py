@@ -427,7 +427,7 @@ class DAL:
                 else:
                     logger.error('沒有指定連結的網址')
                     return False
-                navbar.is_external = 1 if form_data.is_external.data else 0
+                navbar.is_href_blank = 1 if form_data.is_href_blank.data else 0
             if form_data.icon.data:
                 navbar.icon = form_data.icon.data
         elif form_data.type.data == 3:

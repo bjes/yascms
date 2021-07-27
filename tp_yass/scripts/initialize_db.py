@@ -96,7 +96,7 @@ def setup_models(dbsession):
     dbsession.add(school_garden)
     dbsession.add(models.navbar.NavbarModel(name='資訊中心', order=1, type=int(NavbarType.LEAF_NODE), page_id=10, ancestor=school_garden))
     dbsession.add(models.navbar.NavbarModel(name='校內服務', order=2, type=int(NavbarType.LEAF_NODE), page_id=11, ancestor=school_garden))
-    dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=int(NavbarType.LEAF_NODE), page_id=12, ancestor=school_garden, is_external=True))
+    dbsession.add(models.navbar.NavbarModel(name='課後社團報名', order=3, type=int(NavbarType.LEAF_NODE), page_id=12, ancestor=school_garden, is_href_blank=True))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=int(NavbarType.DROPDOWN_DIVIDER), ancestor=school_garden))
     # 外站連結
     outside_link = models.navbar.NavbarModel(name='外站連結', aria_name='links', order=5, type=int(NavbarType.TREE_NODE), icon='bi-link-45deg', ancestor=root)

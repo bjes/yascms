@@ -18,7 +18,7 @@ def _recursive_append(request, navbar_node, navbar):
                       'name': navbar.name,
                       'aria_name': navbar.aria_name,
                       'url': url,
-                      'is_external': navbar.is_external,
+                      'is_href_blank': navbar.is_href_blank,
                       'icon': navbar.icon,
                       'type': NavbarType(navbar.type),
                       'module_name': navbar.module_name,

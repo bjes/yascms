@@ -44,7 +44,7 @@ class NavbarForm(Form):
 
     icon = StringField('圖示名稱', [Length(max=50)])
 
-    is_external = BooleanField('連結另開視窗')
+    is_href_blank = BooleanField('連結另開分頁')
 
     is_visible = BooleanField('是否顯示', default='checked')
 

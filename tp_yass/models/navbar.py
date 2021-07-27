@@ -30,8 +30,8 @@ class NavbarModel(BaseObject):
     page_id = Column(Integer, ForeignKey('pages.id'))
     page = relationship(PageModel, back_populates='navbar')
 
-    # 是否為外部連結，若是，點選連結時另開分頁
-    is_external = Column(Integer, nullable=False, default=0, server_default='0')
+    # 是否另開分頁，若是，點選連結時另開分頁
+    is_href_blank = Column(Integer, nullable=False, default=0, server_default='0')
 
     # 使用的 fontawesome icon
     icon = Column(String(50), nullable=False, default='', server_default='')
@@ -51,4 +51,3 @@ class NavbarModel(BaseObject):
     # self-referential relationship
     ancestor_id  = Column(Integer, ForeignKey('navbar.id'))
     ancestor = relationship('NavbarModel', backref='descendants', remote_side=[id])
-
