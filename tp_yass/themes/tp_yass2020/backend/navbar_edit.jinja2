@@ -41,7 +41,7 @@
                 <div>類型：<span id="link_type">未指定</span></div>
                 <div>目的：<span id="link_target"></span></div>
               </p>
-              <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址">手動輸入網址</a>
+              <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址 (含 http/https)">手動輸入網址</a>
             </div>
           </div>
         {% endif %}
@@ -188,6 +188,7 @@
         $('#link_type').text('自訂網址');
         {% if form.url.data %}
           let custom_url = '{{ form.url.data }}';
+          $('#modal-content').html(`<input type="text" class="form-control" name="url" id="url" value="${custom_url}">`);
           $('#link_target').html('<a href="' + custom_url + '" target="_blank">' + custom_url + '</a>');
         {% else %}
           $('#link_target').text();
