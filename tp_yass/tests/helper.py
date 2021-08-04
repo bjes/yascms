@@ -32,7 +32,6 @@ def import_test_db_data(ini_file_path):
     session.query(SiteConfigModel).filter_by(name='site_address').update({'value': '臺北市中山區樂群二路266巷99號'})
     session.query(SiteConfigModel).filter_by(name='site_map_url').update({'value': 'https://goo.gl/maps/X6Y4E37U66aMqQHY6'})
     session.query(SiteConfigModel).filter_by(name='site_map_embedded_url').update({'value': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.7043991522146!2d121.55944821523249!3d25.07800624267944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac72e5e39d17%3A0x3934b7c47c1bbf29!2zMTA0OTHlj7DljJfluILkuK3lsbHljYDmqILnvqTkuozot68yNjblt7c5OeiZnw!5e0!3m2!1szh-TW!2stw!4v1551164410802'})
-    session.query(SiteConfigModel).filter_by(name='site_google_calendar_embedded_url').update({'value': 'https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei'})
     session.commit()
 
     # 建群組。初始化資料庫時會先建立 root group (id 為 1) 與 admin (id 為 2) 這邊從 3 開始

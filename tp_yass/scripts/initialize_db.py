@@ -43,7 +43,6 @@ def setup_models(dbsession):
     dbsession.add(models.site_config.SiteConfigModel(name='site_address', value='', type='str', description='設定地址'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_map_url', value='', type='str', description='設定地圖網址'))
     dbsession.add(models.site_config.SiteConfigModel(name='site_map_embedded_url', value='', type='str', description='設定地圖的嵌入網址'))
-    dbsession.add(models.site_config.SiteConfigModel(name='site_google_calendar_embedded_url', value='', type='str', description='設定 Google 行事曆嵌入網址'))
 
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
     dbsession.add(models.site_config.SiteConfigModel(name='maintenance_mode_enabled', value='false', type='bool', description='設定全站是否唯讀'))
@@ -80,8 +79,7 @@ def setup_models(dbsession):
     dbsession.add(models.navbar.NavbarModel(name='特色課程', order=2, type=int(NavbarType.LEAF_NODE), page_id=2, ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='班群教室', order=3, type=int(NavbarType.LEAF_NODE), page_id=3, ancestor=school_intro))
     dbsession.add(models.navbar.NavbarModel(name='分隔線', order=4, type=int(NavbarType.DROPDOWN_DIVIDER), ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='行事曆', order=5, type=int(NavbarType.BUILTIN_CALENDAR), icon='bi-calendar-date', module_name='calendar', ancestor=school_intro))
-    dbsession.add(models.navbar.NavbarModel(name='分機表', order=6, type=int(NavbarType.BUILTIN_TELEXT), icon='bi-telephone', module_name='telext', ancestor=school_intro))
+    dbsession.add(models.navbar.NavbarModel(name='分機表', order=5, type=int(NavbarType.BUILTIN_TELEXT), icon='bi-telephone', module_name='telext', ancestor=school_intro))
     # 校園單位
     school_org = models.navbar.NavbarModel(name='組織架構', aria_name='organization', order=3, type=int(NavbarType.TREE_NODE), icon='bi-building', ancestor=root)
     dbsession.add(school_org)

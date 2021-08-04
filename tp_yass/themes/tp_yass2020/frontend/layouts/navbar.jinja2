@@ -39,7 +39,7 @@
               {% endif %}
             </ul>
           </li>
-        {% elif navbar.type in (NavbarType.LEAF_NODE, NavbarType.BUILTIN_CALENDAR, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
+        {% elif navbar.type in (NavbarType.LEAF_NODE, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
           {% if loop.depth == 1 %}
             <li class="nav-item">
               <a class="nav-link" href="{{ navbar.url }}"{% if navbar.is_href_blank %} target="_blank"{% endif %}>

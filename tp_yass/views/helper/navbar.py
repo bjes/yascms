@@ -26,8 +26,6 @@ def _recursive_append(request, navbar_node, navbar):
                       'descendants': []}
         if navbar.type == NavbarType.BUILTIN_NEWS:
             sub_navbar['descendants'] = news_factory()
-        elif navbar.type == NavbarType.BUILTIN_CALENDAR:
-            sub_navbar['url'] = request.route_path('calendar')
         elif navbar.type == NavbarType.BUILTIN_TELEXT:
             sub_navbar['url'] = request.route_path('telext')
         elif navbar.type == NavbarType.BUILTIN_LINKS:
