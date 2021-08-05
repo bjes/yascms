@@ -5,10 +5,8 @@
     "author": "William Wu",
     "author_email": "william@pylabs.org",
     "settings": {
-        "banner": {
+        "banners": {
             "description": "橫幅檔案名稱",
-            "visible": true,
-            "mode": "random",
             "value": [
                 "banner01.jpg",
                 "banner02.jpg",
