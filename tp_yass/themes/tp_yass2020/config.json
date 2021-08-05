@@ -15,9 +15,18 @@
             ]
         },
         "custom_css": {
-            "description": "自訂 css",
-            "visible": true,
+            "description": "自訂 CSS",
+            "visible": false,
             "value": ""
+        },
+        "custom_js": {
+            "description": "自訂 JavaScript",
+            "visible": false,
+            "value": ""
+        },
+        "custom": {
+            "description": "自訂設定",
+            "value": []
         }
     }
 }

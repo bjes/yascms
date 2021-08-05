@@ -27,4 +27,5 @@
 {% block layout_js %}
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.min-1.1.0.js'|static_path }}"></script>
   <script src="{{ 'tp_yass:themes/default/static/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js'|static_path }}"></script>
+  {% if request.theme_config['settings']['custom_js']['visible'] %}<script>{{ request.theme_config['settings']['custom_js']['value']|safe }}</script>{% endif %}
 {% endblock layout_js %}
