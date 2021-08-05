@@ -7,13 +7,18 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
       {% if request.session['is_admin'] %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarSiteConfigDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ request.route_url('backend_site_config_edit') }}">
             <i class="bi bi-gear-wide-connected"></i> 系統設定
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarSiteConfigDropdown">
-            <li><a class="dropdown-item" href="{{ request.route_url('backend_site_config_edit') }}">一般設定</a></li>
-            <li><a class="dropdown-item" href="#">自訂 CSS</a></li>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarThemeConfigDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-layout-text-sidebar"></i> 樣板管理
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarThemeConfigDropdown">
+            <li><a class="dropdown-item" href="#">樣板列表</a></li>
+            <li><a class="dropdown-item" href="#">上傳樣板</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
