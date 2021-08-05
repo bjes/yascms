@@ -8,7 +8,7 @@
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         {% for each_config in config_list %}
         <div class="form-group">
-          <label for="{{ each_config.name }}">{{ each_config.name }}</label>
+          <label for="{{ each_config.name }}">{{ each_config.description }}</label>
           {# 選擇樣板不用一般的 input，改用 select #}
           {% if each_config.name == 'site_theme' %}
             <select id="{{ each_config.name }}" class="form-control">
@@ -23,7 +23,6 @@
           {% else %}
             <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
           {% endif %}
-          <small id="{{ each_config.name }}Help" class="form-text text-muted">{{ each_config.description }}</small>
         </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary mb-3">更新</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
