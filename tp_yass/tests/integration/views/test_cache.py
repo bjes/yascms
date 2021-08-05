@@ -70,3 +70,16 @@ def test_get_current_theme_should_return_current_theme_name(ini_settings, init_d
     theme_name = cache(request).get_current_theme()
     assert theme_name
     assert redis_instance.get(f'{test_prefix}_current_theme').decode('utf8') == theme_name
+
+
+def test_delete_current_theme_should_delete_current_theme_cache(ini_settings, init_db_session):
+    test_prefix = 'test'
+
+    redis_instance = get_redis(ini_settings['redis.sessions.url'])
+    redis_instance.set(f'{test_prefix}_current_theme', 'foo')
+
+    request = DummyRequest()
+    cache = CacheController(ini_settings['redis.sessions.url'], test_prefix)
+
+    assert cache(request).delete_current_theme()
+    assert not redis_instance.exists(f'{test_prefix}_current_theme')

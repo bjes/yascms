@@ -113,7 +113,7 @@ class DAL:
         Returns:
             回傳目前的樣板名稱
         """
-        return DBSession.query(ConfigModel.value).filter_by(name='site_theme').one().value
+        return DBSession.query(ConfigModel.value).filter_by(name='theme_name').one().value
 
     @staticmethod
     def get_theme_list():

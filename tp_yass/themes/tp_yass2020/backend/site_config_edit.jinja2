@@ -9,20 +9,7 @@
         {% for each_config in config_list %}
         <div class="form-group">
           <label for="{{ each_config.name }}">{{ each_config.description }}</label>
-          {# 選擇樣板不用一般的 input，改用 select #}
-          {% if each_config.name == 'site_theme' %}
-            <select id="{{ each_config.name }}" class="form-control">
-              {% for each_theme in available_themes_list %}
-                {% if each_config.value == each_theme %}
-                  <option value="{{ each_theme }}" selected>{{ each_theme }}</option>
-                {% else %}
-                  <option value="{{ each_theme }}">{{ each_theme }}</option>
-                {% endif %}
-              {% endfor %}
-            </select>
-          {% else %}
-            <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
-          {% endif %}
+          <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
         </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary mb-3">更新</button> <button type="reset" class="btn btn-danger mb-3">重設</button>

@@ -35,7 +35,7 @@ def setup_models(dbsession):
     # 建立基本系統設定值
     dbsession.add(models.config.ConfigModel(name='site_name', value='', type='str', description='設定全名'))
     dbsession.add(models.config.ConfigModel(name='site_slogan', value='', type='str', description='設定標語'))
-    dbsession.add(models.config.ConfigModel(name='site_theme', value='tp_yass2020', type='str', description='設定樣板'))
+    dbsession.add(models.config.ConfigModel(name='theme_name', value='tp_yass2020', type='str', description='設定啟用的樣板'))
     dbsession.add(models.config.ConfigModel(name='site_phone', value='', type='str', description='設定電話，比如 85021571'))
     dbsession.add(models.config.ConfigModel(name='site_fax', value='', type='str', description='設定傳真電話，比如 85011146'))
     dbsession.add(models.config.ConfigModel(name='site_email', value='', type='str', description='設定聯絡 Email'))

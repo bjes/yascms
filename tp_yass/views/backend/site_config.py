@@ -32,13 +32,16 @@ class SiteConfigView:
         themes_dir =  get_project_abspath() / 'themes'
         return [theme.name for theme in themes_dir.glob('*') if theme.name != 'default']
 
-    def _set_theme(theme_name):
+    def _set_theme(self, theme_name):
         """設定系統樣板"""
         default_theme_dir = get_project_abspath() / 'themes' / 'default'
         new_theme = get_project_abspath() / 'themes' / theme_name
         if default_theme_dir.exists():
             default_theme_dir.unlink()
         default_theme_dir.symlink_to(new_theme)
+        self.request.cache.delete_current_theme()
+        self.request.cache.delete_theme_config()
+        logger.info('系統樣板變更為 %s', config['value'])
         return True
 
     def _validate(self, post_data):
@@ -74,12 +77,6 @@ class SiteConfigView:
         """更新系統設定，並且更換 default symlink 的樣板"""
 
         updated_config_list = self._validate(self.request.POST)
-        for config in updated_config_list:
-            if config['name'] == 'site_theme':
-                self._set_theme(config['value'])
-                self.request.cache.delete_theme_config()
-                logger.info('系統樣板變更為 %s', config['value'])
-                break
         if updated_config_list:
             DAL.update_site_config_list(updated_config_list)
             self.request.session.flash('更新設定成功', 'success')
