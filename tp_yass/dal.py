@@ -101,9 +101,9 @@ class DAL:
 
     @staticmethod
     def get_site_config_list():
-        """傳回系統設定檔，其中因為 maintenance mode 不是給使用者操作的，所以過濾掉"""
+        """傳回系統相關的設定檔，都是以 site_ 開頭的"""
         return (DBSession.query(SiteConfigModel)
-                         .filter(SiteConfigModel.name != 'maintenance_mode_enabled')
+                         .filter(SiteConfigModel.name.startswith('site_'))
                          .all())
 
 
