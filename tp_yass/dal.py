@@ -107,6 +107,15 @@ class DAL:
                          .all())
 
     @staticmethod
+    def get_current_theme():
+        """回傳目前使用的樣板名稱
+
+        Returns:
+            回傳目前的樣板名稱
+        """
+        return DBSession.query(ConfigModel.value).filter_by(name='site_theme').one().value
+
+    @staticmethod
     def get_theme_list():
         """回傳所有樣板名稱列表
 

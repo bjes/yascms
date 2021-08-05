@@ -41,3 +41,13 @@ class CacheController:
     def delete_theme_config(self):
         self.redis.delete(f'{self.prefix}_theme_config')
         return True
+
+    def get_current_theme(self):
+        key = f'{self.prefix}_current_theme'
+        cache = self.redis.get(key)
+        if cache:
+            return cache.decode('utf8')
+        else:
+            current_theme = DAL.get_current_theme()
+            self.redis.set(key, current_theme)
+            return current_theme
