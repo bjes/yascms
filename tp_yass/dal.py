@@ -14,7 +14,7 @@ from pyramid_sqlalchemy import Session as DBSession
 from tp_yass.models.account import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel, NewsAttachmentModel
 from tp_yass.models.navbar import NavbarModel
-from tp_yass.models.site_config import SiteConfigModel
+from tp_yass.models.config import ConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
@@ -102,8 +102,8 @@ class DAL:
     @staticmethod
     def get_site_config_list():
         """傳回系統相關的設定檔，都是以 site_ 開頭的"""
-        return (DBSession.query(SiteConfigModel)
-                         .filter(SiteConfigModel.name.startswith('site_'))
+        return (DBSession.query(ConfigModel)
+                         .filter(ConfigModel.name.startswith('site_'))
                          .all())
 
 
@@ -493,7 +493,7 @@ class DAL:
     def update_site_config_list(updated_config_list):
         """更新 site config"""
         for each_config in updated_config_list:
-            DBSession.query(SiteConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
+            DBSession.query(ConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
         return True
 
     @staticmethod
