@@ -112,14 +112,14 @@ def generate_group_trees():
 
 
 def import_theme(theme_name):
-    """匯入上傳上來的佈景主題設定值與 banner 等檔案"""
+    """匯入上傳上來的佈景主題設定值與 banners 等檔案"""
     project_abspath = get_project_abspath()
     with transaction.manager, open(project_abspath / 'themes' / theme_name / 'config.json') as f:
         config = json.loads(f.read())
         DAL.save_theme_config(config)
     theme_upload_dir = project_abspath / 'uploads/themes' / theme_name
     theme_upload_dir.mkdir(exist_ok=True)
-    theme_banner_upload_dir = theme_upload_dir / 'banner'
-    theme_banner_upload_dir.mkdir(exist_ok=True)
-    for banner in (project_abspath / 'themes' / theme_name / 'static/img/banner').glob('*'):
-        shutil.copy(banner, theme_banner_upload_dir)
+    theme_banners_upload_dir = theme_upload_dir / 'banners'
+    theme_banners_upload_dir.mkdir(exist_ok=True)
+    for banner in (project_abspath / 'themes' / theme_name / 'static/img/banners').glob('*'):
+        shutil.copy(banner, theme_banners_upload_dir)
