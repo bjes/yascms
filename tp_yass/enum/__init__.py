@@ -1,3 +1,4 @@
+import enum
 from enum import IntEnum
 
 
@@ -53,3 +54,19 @@ class GroupType(IntEnum):
 
     # 3 為一般群組權限（比方教師）
     NORMAL = 2
+
+
+class ThemeConfigCustomType(enum.IntEnum):
+    """用來表示樣板自訂設定的每個設定的類型"""
+
+    # 字串
+    STRING = 1
+
+    # 布林值
+    BOOLEAN = 2
+
+    # 整數
+    INTEGER = 3
+
+    # 浮點數
+    FLOAT = 4

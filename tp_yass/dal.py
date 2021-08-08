@@ -139,6 +139,21 @@ class DAL:
                                     .one()).value)
 
     @staticmethod
+    def update_theme_config(theme_config):
+        """更新指定的 theme_confg
+
+        Args:
+            theme_config: 樣板設定資料結構
+
+        Returns:
+            儲存成功則回傳 True
+        """
+        (DBSession.query(ThemeConfigModel)
+                  .filter_by(name=theme_config['name'])
+                  .update({ThemeConfigModel.value: json.dumps(theme_config, ensure_ascii=False)}))
+        return True
+
+    @staticmethod
     def save_theme_config(config):
         """將傳入的 config 資料結構直接存入 theme_config 資料表
 
