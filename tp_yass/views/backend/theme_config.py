@@ -58,7 +58,7 @@ class ThemeConfigGeneralEditView:
             try:
                 for each_setting in custom_value:
                     if each_setting['type'] == ThemeConfigCustomType.BOOLEAN:
-                        if each_setting['value'].upper() in ('FALSE', '0'):
+                        if each_setting['value'].upper() in ('FALSE', '0', ''):
                             each_setting['value'] = False
                         else:
                             each_setting['value'] = True
