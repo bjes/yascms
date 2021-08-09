@@ -70,7 +70,7 @@
         createInputs: 'checkbox'
       });
       {% for i in group_ids %}
-        $('#root-group>li[data-value="{{ i }}"]>input[type="checkbox"]').prop('checked', true);
+        $('#root-group li[data-value="{{ i }}"]>input[type="checkbox"]').prop('checked', true);
       {% endfor %}
       {% if not request.session['is_admin'] %}
         $('#group_trees').hide();
