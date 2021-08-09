@@ -15,13 +15,13 @@
               </tr>
             </thead>
             <tbody>
-            {% for each_theme in theme_list %}
+            {% for each_theme_config in theme_config_list %}
               <tr>
                 <th scope="row">{{ loop.index }}</th>
-                <td>{{ each_theme.name }} {% if each_theme.name == request.current_theme %}<span class="badge badge-info">啟用</span>{% endif %}</td>
+                <td>{{ each_theme_config.name }} {% if each_theme_config.name == request.current_theme %}<span class="badge badge-info">啟用</span>{% endif %}</td>
                 <td>
-                  {% if each_theme.name != request.current_theme %}<a class="btn btn-info" href="#">啟用</a>{% endif %}
-                  <a class="btn btn-primary" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=each_theme.name) }}">設定</a>
+                  {% if each_theme_config.name != request.current_theme %}<a class="btn btn-info" href="#">啟用</a>{% endif %}
+                  <a class="btn btn-primary" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=each_theme_config.name) }}">設定</a>
                   <a class="btn btn-danger" href="#">刪除</a>
                 </td>
               </tr>

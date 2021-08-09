@@ -22,7 +22,7 @@ def includeme(config):
 
     config.add_route('backend_site_config_edit', '/backend/site/config/edit', factory=admin_factory)
 
-    config.add_route('backend_theme_list', '/backend/theme/list', factory=admin_factory)
+    config.add_route('backend_theme_config_list', '/backend/theme_config/list', factory=admin_factory)
     config.add_route('backend_theme_config_general_edit', '/backend/theme_config/general/edit/{theme_name}', factory=admin_factory)
     config.add_route('backend_theme_config_banners_edit', '/backend/theme_config/general/edit/{theme_name}', factory=admin_factory)
 

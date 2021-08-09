@@ -116,7 +116,7 @@ class DAL:
         return DBSession.query(ConfigModel.value).filter_by(name='theme_name').one().value
 
     @staticmethod
-    def get_theme_list():
+    def get_theme_config_list():
         """回傳所有樣板名稱列表
 
         Returns:

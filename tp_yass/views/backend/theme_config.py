@@ -13,11 +13,11 @@ from tp_yass.forms.backend.theme_config import ThemeConfigGeneralForm
 logger = logging.getLogger(__name__)
 
 
-@view_config(route_name='backend_theme_list',
-             renderer='tp_yass:themes/default/backend/theme_list.jinja2',
+@view_config(route_name='backend_theme_config_list',
+             renderer='tp_yass:themes/default/backend/theme_config_list.jinja2',
              permission='view')
-def theme_list_view(request):
-    return {'theme_list': DAL.get_theme_list()}
+def theme_config_list_view(request):
+    return {'theme_config_list': DAL.get_theme_config_list()}
 
 
 @view_defaults(route_name='backend_theme_config_general_edit',
@@ -69,7 +69,7 @@ class ThemeConfigGeneralEditView:
                 pass
             DAL.update_theme_config(theme_config)
             self.request.cache.delete_theme_config()
-            return HTTPFound(location=self.request.route_url('backend_theme_list'))
+            return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         return {'theme_config': theme_config,
                 'form': form}
 
