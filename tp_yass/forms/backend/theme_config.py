@@ -18,8 +18,7 @@ class ThemeConfigCustomForm(Form):
     type = SelectField('類型', [InputRequired('此欄位必選')],
                        choices=[(str(ThemeConfigCustomType.STRING.value), '字串'),
                                 (str(ThemeConfigCustomType.BOOLEAN.value), '布林值'),
-                                (str(ThemeConfigCustomType.INTEGER.value), '整數'),
-                                (str(ThemeConfigCustomType.FLOAT.value), '浮點數')],
+                                (str(ThemeConfigCustomType.INTEGER.value), '整數')],
                        coerce=int)
 
     value = StringField('變數內容*', [InputRequired('此欄位必填'), ])

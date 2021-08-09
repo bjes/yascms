@@ -67,6 +67,3 @@ class ThemeConfigCustomType(enum.IntEnum):
 
     # 整數
     INTEGER = 3
-
-    # 浮點數
-    FLOAT = 4

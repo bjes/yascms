@@ -154,7 +154,7 @@ class DAL:
         return True
 
     @staticmethod
-    def save_theme_config(config):
+    def add_theme_config(config):
         """將傳入的 config 資料結構直接存入 theme_config 資料表
 
         Args:

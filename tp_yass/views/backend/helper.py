@@ -116,7 +116,7 @@ def import_theme(theme_name):
     project_abspath = get_project_abspath()
     with transaction.manager, open(project_abspath / 'themes' / theme_name / 'config.json') as f:
         config = json.loads(f.read())
-        DAL.save_theme_config(config)
+        DAL.add_theme_config(config)
     theme_upload_dir = project_abspath / 'uploads/themes' / theme_name
     theme_upload_dir.mkdir(exist_ok=True)
     theme_banners_upload_dir = theme_upload_dir / 'banners'

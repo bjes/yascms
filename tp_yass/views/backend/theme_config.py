@@ -5,6 +5,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
+from tp_yass.enum import ThemeConfigCustomType
 from tp_yass.views.helper.file import get_project_abspath
 from tp_yass.forms.backend.theme_config import ThemeConfigGeneralForm
 
@@ -46,7 +47,19 @@ class ThemeConfigGeneralEditView:
             theme_config['settings']['custom_css']['visible'] = form.custom_css_visible.data
             theme_config['settings']['custom_js']['value'] = form.custom_js.data
             theme_config['settings']['custom_js']['visible'] = form.custom_js_visible.data
-            theme_config['settings']['custom']['value'] = form.custom.data
+            custom_value = form.custom.data
+            try:
+                for each_setting in custom_value:
+                    if each_setting['type'] == ThemeConfigCustomType.BOOLEAN:
+                        if each_setting['value'].upper() in ('FALSE', '0'):
+                            each_setting['value'] = False
+                        else:
+                            each_setting['value'] = True
+                    elif each_setting['type'] == ThemeConfigCustomType.INTEGER:
+                        each_setting['value'] = int(each_setting['value'])
+                theme_config['settings']['custom']['value'] = custom_value
+            except ValueError as e:
+                pass
             DAL.update_theme_config(theme_config)
             self.request.cache.delete_theme_config()
             return HTTPFound(location=self.request.route_url('backend_theme_list'))
