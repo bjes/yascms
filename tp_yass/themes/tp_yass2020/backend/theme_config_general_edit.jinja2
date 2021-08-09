@@ -9,9 +9,9 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>{{ theme_config['name'] }} 樣板設定</h1></div>
-    <div class="col-12">
-      {% if form.errors %}
+    <div class="col-12"><h1>{{ theme_config['name'] }} 一般設定</h1></div>
+    {% if form.errors %}
+      <div class="col-12">
         <div class="alert alert-danger" role="alert">
           <ul>
             {% for key in form.errors %}
@@ -21,65 +21,75 @@
             {% endfor %}
           </ul>
         </div>
-      {% endif %}
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">一般設定</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">橫幅設定</a>
-        </li>
-      </ul>
-      <div class="border border-top-0 p-3">
-      <form action="" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        <div class="form-group">
-          {{ form.custom_css.label() }}
-          {{ form.custom_css(class_='form-control', placeholder='請設定自訂的 CSS') }}
-          <div class="form-check">
-            {{ form.custom_css_visible(class_='form-check-input') }}
-            {{ form.custom_css_visible.label() }}
+      </div>
+    {% endif %}
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=theme_config['name']) }}">一般設定</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_banner_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <form action="" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+                <div class="form-group">
+                  {{ form.custom_css.label() }}
+                  {{ form.custom_css(class_='form-control', placeholder='請設定自訂的 CSS') }}
+                  <div class="form-check">
+                    {{ form.custom_css_visible(class_='form-check-input') }}
+                    {{ form.custom_css_visible.label() }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  {{ form.custom_js.label() }}
+                  {{ form.custom_js(class_='form-control', placeholder='請設定自訂的 JavaScript') }}
+                  <div class="form-check">
+                    {{ form.custom_js_visible(class_='form-check-input') }}
+                    {{ form.custom_js_visible.label() }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div>{{ form.custom.label.text }}</div>
+                  <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <th scope="col">序號</th>
+                      <th scope="col">變數名稱</th>
+                      <th scope="col">類型</th>
+                      <th scope="col">變數內容</th>
+                      <th scope="col">變數說明</th>
+                    </thead>
+                    <tbody id="custom_tbody">
+                      <tr>
+                        {% if form.custom.entries %}
+                          {% for each_setting in form.custom %}
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ each_setting.form.name(class_="form-control") }}</td>
+                            <td>{{ each_setting.form.type(class_="form-control") }}</td>
+                            <td>{{ each_setting.form.value(class_="form-control") }}</td>
+                            <td>{{ each_setting.form.description(class_="form-control") }}</td>
+                          {% endfor %}
+                        {% else %}
+                          <td colspan="5" class="text-center">無資料</td>
+                        {% endif %}
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3">儲存</button>
+              </form>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          {{ form.custom_js.label() }}
-          {{ form.custom_js(class_='form-control', placeholder='請設定自訂的 JavaScript') }}
-          <div class="form-check">
-            {{ form.custom_js_visible(class_='form-check-input') }}
-            {{ form.custom_js_visible.label() }}
-          </div>
-        </div>
-        <div class="form-group">
-          <div>{{ form.custom.label.text }}</div>
-          <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <th scope="col">序號</th>
-              <th scope="col">變數名稱</th>
-              <th scope="col">類型</th>
-              <th scope="col">變數內容</th>
-              <th scope="col">變數說明</th>
-            </thead>
-            <tbody id="custom_tbody">
-              <tr>
-                {% if form.custom.entries %}
-                  {% for each_setting in form.custom %}
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ each_setting.form.name(class_="form-control") }}</td>
-                    <td>{{ each_setting.form.type(class_="form-control") }}</td>
-                    <td>{{ each_setting.form.value(class_="form-control") }}</td>
-                    <td>{{ each_setting.form.description(class_="form-control") }}</td>
-                  {% endfor %}
-                {% else %}
-                  <td colspan="5" class="text-center">無資料</td>
-                {% endif %}
-              </tr>
-            </tbody>
-          </table>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary mb-3">儲存</button>
-      </form>
       </div>
     </div>
   </div>
