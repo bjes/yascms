@@ -13,6 +13,13 @@ from tp_yass.forms.backend.theme_config import ThemeConfigGeneralForm
 logger = logging.getLogger(__name__)
 
 
+@view_config(route_name='backend_theme_list',
+             renderer='tp_yass:themes/default/backend/theme_list.jinja2',
+             permission='view')
+def theme_list_view(request):
+    return {'theme_list': DAL.get_theme_list()}
+
+
 @view_defaults(route_name='backend_theme_config_general_edit',
                renderer='tp_yass:themes/default/backend/theme_config_general_edit.jinja2',
                permission='edit')

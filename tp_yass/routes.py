@@ -24,6 +24,7 @@ def includeme(config):
 
     config.add_route('backend_theme_list', '/backend/theme/list', factory=admin_factory)
     config.add_route('backend_theme_config_general_edit', '/backend/theme_config/general/edit/{theme_name}', factory=admin_factory)
+    config.add_route('backend_theme_config_banners_edit', '/backend/theme_config/general/edit/{theme_name}', factory=admin_factory)
 
     config.add_route('backend_navbar_create', '/backend/navbar/create', factory=admin_factory)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory)
