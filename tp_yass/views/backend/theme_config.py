@@ -1,4 +1,3 @@
-import pathlib
 import logging
 
 from pyramid.view import view_config, view_defaults
@@ -74,10 +73,27 @@ class ThemeConfigGeneralEditView:
                 'form': form}
 
 
+@view_defaults(route_name='backend_theme_config_banner_edit',
+               renderer='tp_yass:themes/default/backend/theme_config_banner_edit.jinja2',
+               permission='edit')
+class ThemeConfigBannerEditView:
+    """用來處理橫幅的列表與增刪"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        theme_name = self.request.matchdict['theme_name']
+        theme_config = DAL.get_theme_config(theme_name)
+        return {'theme_config': theme_config, 'banner_dict': self._get_banners(theme_name)}
+
     def _get_banners(self, theme_name):
         """回傳一個由 banner 檔名與 url 組成的 dict"""
         banners = {}
         for each_banner in (get_project_abspath() / 'uploads/themes' / theme_name / 'banners').glob('*'):
+            if each_banner.name.startswith('.'):
+                continue
             banners[each_banner.name] = \
-                    self.request.static_url(f'tp_yass:uploads/themes/{theme_name}/banners/{each_banner.name}')
+                self.request.static_url(f'tp_yass:uploads/themes/{theme_name}/banners/{each_banner.name}')
         return banners
