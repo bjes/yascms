@@ -22,10 +22,10 @@
           <div class="row">
             <form action="" method="post">
               <div class="col-12"><a href="#" class="btn btn-primary">儲存顯示設定</a></div>
-              {% for each_banner in banner_dict %}
+              {% for each_banner in banners_dict %}
                 <div class="col-12">
                   <div class="card my-3">
-                    <img src="{{ banner_dict[each_banner] }}" class="card-img-top" alt="{{ each_banner }}">
+                    <img src="{{ banners_dict[each_banner] }}" class="card-img-top" alt="{{ each_banner }}">
                     <div class="card-body py-2 d-flex justify-content-between">
                       <div class="form-check d-flex flex-column justify-content-center">
                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">

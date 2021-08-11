@@ -86,7 +86,7 @@ class ThemeConfigBannerEditView:
     def get_view(self):
         theme_name = self.request.matchdict['theme_name']
         theme_config = DAL.get_theme_config(theme_name)
-        return {'theme_config': theme_config, 'banner_dict': self._get_banners(theme_name)}
+        return {'theme_config': theme_config, 'banners_dict': self._get_banners(theme_name)}
 
     def _get_banners(self, theme_name):
         """回傳一個由 banner 檔名與 url 組成的 dict"""
