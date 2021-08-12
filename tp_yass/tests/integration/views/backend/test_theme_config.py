@@ -21,5 +21,4 @@ def test_theme_config_general_edit_view(webtest_admin_testapp):
     # 會 redirect 回 request.route_url('backend_theme_config_list')
     response = form.submit()
     assert response.status_int == 302
-    assert 'backend/theme_config/list' in response.location
-
+    assert request.route_path('backend_theme_config_list') in response.location
