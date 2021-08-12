@@ -1,12 +1,16 @@
 import logging
+from tempfile import NamedTemporaryFile
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.enum import ThemeConfigCustomType
-from tp_yass.views.helper.file import get_project_abspath
-from tp_yass.forms.backend.theme_config import ThemeConfigGeneralForm, ThemeConfigBannersEditForm
+from tp_yass.views.helper.file import get_project_abspath, save_file
+from tp_yass.views.backend.helper import ThemeImporter
+from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
+                                                ThemeConfigBannersEditForm,
+                                                ThemeConfigBannersUploadForm)
 
 logger = logging.getLogger(__name__)
 
@@ -127,3 +131,38 @@ class ThemeConfigBannersEditView:
             banners[each_banner.name] = \
                 self.request.static_url(f'tp_yass:uploads/themes/{theme_name}/banners/{each_banner.name}')
         return banners
+
+
+@view_defaults(route_name='backend_theme_config_banners_upload',
+               renderer='tp_yass:themes/default/backend/theme_config_banners_upload.jinja2',
+               permission='edit')
+class ThemeConfigBannersUploadView:
+    """用來處理橫幅的上傳"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        theme_name = self.request.matchdict['theme_name']
+        theme_config = DAL.get_theme_config(theme_name)
+        form = ThemeConfigBannersUploadForm()
+        return {'theme_config': theme_config, 'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        theme_name = self.request.matchdict['theme_name']
+        theme_config = DAL.get_theme_config(theme_name)
+        form = ThemeConfigBannersUploadForm(self.request.POST)
+        if form.validate():
+            theme_importer = ThemeImporter(theme_name)
+            for each_file in form.banners.data:
+                dest_file = NamedTemporaryFile(prefix='banner',
+                                               suffix=f'.{each_file.filename.split(".")[1]}',
+                                               delete=False,
+                                               dir=theme_importer.default_dest)
+                save_file(each_file, dest_file)
+                dest_file.flush()
+            return HTTPFound(location=self.request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
+        else:
+            return {'theme_config': theme_config, 'form': form}

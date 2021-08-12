@@ -5,9 +5,15 @@ from pyramid_wtforms import (Form,
                              SelectField,
                              HiddenField,
                              SubmitField,
+                             MultipleFilesField,
                              FieldList,
                              FormField)
-from pyramid_wtforms.validators import InputRequired, Length, ValidationError
+from pyramid_wtforms.validators import (InputRequired,
+                                        Length,
+                                        FileRequired,
+                                        FileSize,
+                                        FileAllowed,
+                                        ValidationError)
 
 from tp_yass.enum import ThemeConfigCustomType
 from .fields import MultiCheckboxField
@@ -65,3 +71,12 @@ class ThemeConfigBannersEditForm(Form):
                 all_disabled = False
         if all_disabled:
             raise ValidationError('至少要選一個橫幅')
+
+
+class ThemeConfigBannersUploadForm(Form):
+    """上傳橫幅的表單"""
+
+    banners = MultipleFilesField('上傳橫幅', [FileRequired('請上傳橫幅檔案'),
+                                             FileAllowed(['png', 'jpg', 'jpeg']),
+                                             FileSize(max=20, base='mb', message='檔案不能大於 20 MB')])
+    submit = SubmitField('上傳')

@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from tp_yass.views.backend import helper
-from tp_yass.models.account import GroupModel
 
 
 def mock_get_project_abspath(mocker, datadir):
@@ -54,8 +53,8 @@ def test_delete_attachment_should_delete_file(mocker, datadir):
 def test_theme_importer_should_work_as_expected(mocker):
     mocker.patch.object(helper.DAL, 'add_theme_config')
     mocker.patch.object(helper.shutil, 'copy')
-    theme_importer = helper.ThemeImporter()
-    theme_importer.import_theme('tp_yass2020')  # 專案預設的佈景主題就是 tp_yass2020 一定存在
+    theme_importer = helper.ThemeImporter('tp_yass2020')
+    theme_importer.import_theme()  # 專案預設的佈景主題就是 tp_yass2020 一定存在
     helper.DAL.add_theme_config.assert_called_once()
     helper.shutil.copy.assert_called()
 

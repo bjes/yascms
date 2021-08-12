@@ -27,7 +27,7 @@
               <a class="nav-link active" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">上傳橫幅</a>
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_upload', theme_name=theme_config['name']) }}">上傳橫幅</a>
             </li>
           </ul>
         </div>
