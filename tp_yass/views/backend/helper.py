@@ -111,15 +111,31 @@ def generate_group_trees():
     return group_trees
 
 
-def import_theme(theme_name):
-    """匯入上傳上來的佈景主題設定值與 banners 等檔案"""
-    project_abspath = get_project_abspath()
-    with transaction.manager, open(project_abspath / 'themes' / theme_name / 'config.json') as f:
-        config = json.loads(f.read())
-        DAL.add_theme_config(config)
-    theme_upload_dir = project_abspath / 'uploads/themes' / theme_name
-    theme_upload_dir.mkdir(exist_ok=True)
-    theme_banners_upload_dir = theme_upload_dir / 'banners'
-    theme_banners_upload_dir.mkdir(exist_ok=True)
-    for banner in (project_abspath / 'themes' / theme_name / 'static/img/banners').glob('*'):
-        shutil.copy(banner, theme_banners_upload_dir)
+class ThemeImporter:
+    """用來處理匯入樣板"""
+
+    def __init__(self, base_dir=None):
+        """初始化
+
+        Args:
+            base_dir: 作為 root dir 的起點，為 pathlib.PosixPath 的實體。若沒有指定則會使用 tp_yass 專案的 base dir
+        """
+        if base_dir is None:
+            self.base_dir = get_project_abspath()
+
+    def import_theme(self, theme_name):
+        self._import_theme_config(theme_name)
+        self.import_theme_banners(theme_name)
+
+    def import_theme_banners(self, theme_name):
+        """匯入指定的佈景主題橫幅檔案"""
+        theme_banners_upload_dir = self.base_dir / 'uploads/themes' / theme_name / 'banners'
+        theme_banners_upload_dir.mkdir(parents=True, exist_ok=True)
+        for banner in (self.base_dir / 'themes' / theme_name / 'static/img/banners').glob('*'):
+            shutil.copy(banner, theme_banners_upload_dir)
+
+    def _import_theme_config(self, theme_name):
+        """匯入指定的佈景主題設定檔"""
+        with transaction.manager, open(self.base_dir / 'themes' / theme_name / 'config.json') as f:
+            config = json.loads(f.read())
+            DAL.add_theme_config(config)

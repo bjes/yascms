@@ -51,10 +51,11 @@ def test_delete_attachment_should_delete_file(mocker, datadir):
     assert not target_file.exists()
 
 
-def test_import_theme_should_call_dal_add_theme_config_once(mocker):
+def test_theme_importer_should_work_as_expected(mocker):
     mocker.patch.object(helper.DAL, 'add_theme_config')
     mocker.patch.object(helper.shutil, 'copy')
-    helper.import_theme('tp_yass2020') # 專案預設的佈景主題就是 tp_yass2020 一定存在
+    theme_importer = helper.ThemeImporter()
+    theme_importer.import_theme('tp_yass2020')  # 專案預設的佈景主題就是 tp_yass2020 一定存在
     helper.DAL.add_theme_config.assert_called_once()
     helper.shutil.copy.assert_called()
 
