@@ -121,7 +121,7 @@ class ThemeConfigBannersEditView:
     def _get_banners(self, theme_name):
         """回傳一個由 banner 檔名與 url 組成的 dict"""
         banners = {}
-        for each_banner in (get_project_abspath() / 'uploads/themes' / theme_name / 'banners').glob('*'):
+        for each_banner in sorted((get_project_abspath() / 'uploads/themes' / theme_name / 'banners').glob('*')):
             if each_banner.name.startswith('.'):
                 continue
             banners[each_banner.name] = \
