@@ -3,6 +3,19 @@
 <div class="container">
   <div class="row">
     <div class="col-12"><h1>{{ theme_config['name'] }} 橫幅設定</h1></div>
+    {% if form.errors %}
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
     <div class="col-12">
       <div class="card">
         <div class="card-header">
@@ -11,7 +24,7 @@
               <a class="nav-link" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=theme_config['name']) }}">一般設定</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_banner_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
+              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">上傳橫幅</a>
@@ -21,22 +34,24 @@
         <div class="card-body">
           <div class="row">
             <form action="" method="post">
-              <div class="col-12"><a href="#" class="btn btn-primary">儲存顯示設定</a></div>
-              {% for each_banner in banners_dict %}
+              <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+              <div class="col-12">{{ form.submit(class_='btn btn-primary') }}</div>
+              {% for each_banner in form.banners %}
                 <div class="col-12">
                   <div class="card my-3">
-                    <img src="{{ banners_dict[each_banner] }}" class="card-img-top" alt="{{ each_banner }}">
+                    <img src="{{ banners_dict[each_banner.data['name']] }}" class="card-img-top" alt="{{ each_banner.data['name'] }}">
                     <div class="card-body py-2 d-flex justify-content-between">
+                      {{ each_banner.form.name() }}
                       <div class="form-check d-flex flex-column justify-content-center">
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">顯示</label>
+                        {{ each_banner.form.is_visible(class_="form-check-input") }}
+                        {{ each_banner.form.is_visible.label(class_="form-check-label") }}
                       </div>
                       <a href="#" class="btn btn-danger">刪除</a>
                     </div>
                   </div>
                 </div>
               {% endfor %}
-              <div class="col-12"><a href="#" class="btn btn-primary">儲存顯示設定</a></div>
+              <div class="col-12">{{ form.submit(class_='btn btn-primary') }}</div>
             </form>
           </div>
         </div>

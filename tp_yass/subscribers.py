@@ -1,3 +1,5 @@
+import random
+
 from pyramid.events import NewRequest, subscriber
 
 from tp_yass.dal import DAL
@@ -15,3 +17,5 @@ def load_config(event):
     # 只有非後台的 url 才需要撈出佈景主題的設定檔置於 request 裡
     if not event.request.path.startswith('/backend'):
         event.request.theme_config = event.request.cache.get_theme_config(event.request.current_theme)
+        banner_name = random.choice(event.request.theme_config['settings']['banners']['value'])
+        event.request.banner = event.request.static_url(f'tp_yass:uploads/themes/{event.request.current_theme}/banners/{banner_name}')

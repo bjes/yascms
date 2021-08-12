@@ -4,8 +4,7 @@
   <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/frontend.css'|static_path }}">
   <style>
     .jumbotron-bg {
-      {# TODO: banner 要隨機顯示 #}
-      background-image: url("{{ 'tp_yass:uploads/themes/tp_yass2020/banners/banner01.jpg'|static_path }}");
+      background-image: url("{{ request.banner }}");
     }
     {% if request.theme_config['settings']['custom_css']['visible'] %}
       {{ request.theme_config['settings']['custom_css']['value']|safe }}

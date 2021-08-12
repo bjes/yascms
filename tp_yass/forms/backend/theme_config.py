@@ -3,9 +3,11 @@ from pyramid_wtforms import (Form,
                              TextAreaField,
                              BooleanField,
                              SelectField,
+                             HiddenField,
+                             SubmitField,
                              FieldList,
                              FormField)
-from pyramid_wtforms.validators import InputRequired, Length
+from pyramid_wtforms.validators import InputRequired, Length, ValidationError
 
 from tp_yass.enum import ThemeConfigCustomType
 from .fields import MultiCheckboxField
@@ -38,3 +40,28 @@ class ThemeConfigGeneralForm(Form):
     custom_js_visible = BooleanField('啟用自訂 JavaScript')
 
     custom = FieldList(FormField(ThemeConfigCustomForm), label='自訂樣板變數')
+
+
+class ThemeConfigBannerVisibleForm(Form):
+    """用來處理是否啟用啟用單一橫幅"""
+
+    # 這個欄位只是用來比對哪個橫幅是否有啟用，在前端不會顯示，其值的修改也不會有作用
+    name = HiddenField('橫幅檔名')
+
+    is_visible = BooleanField('是否啟用')
+
+
+class ThemeConfigBannersEditForm(Form):
+    """用來處理橫幅顯示與否的表單列表"""
+
+    banners = FieldList(FormField(ThemeConfigBannerVisibleForm))
+
+    submit = SubmitField('儲存顯示設定')
+
+    def validate_banners(form, field):
+        all_disabled = True
+        for each_element in field.entries:
+            if each_element.data['is_visible'] == True:
+                all_disabled = False
+        if all_disabled:
+            raise ValidationError('至少要選一個橫幅')
