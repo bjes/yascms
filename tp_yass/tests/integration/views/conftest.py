@@ -1,4 +1,5 @@
 import os
+import shutil
 import pathlib
 import collections
 import subprocess
@@ -77,4 +78,10 @@ def init_test_db():
     cwd = os.getcwd()
     os.chdir(HERE)
     subprocess.run(['inv', 'db.init-test'])
+    for each_theme in pathlib.Path(HERE / 'tp_yass/uploads/themes/').glob('*'):
+        if each_theme.name != 'tp_yass2020':
+            shutil.rmtree(each_theme)
+    for each_theme in pathlib.Path(HERE / 'tp_yass/themes/').glob('*'):
+        if each_theme.name not in ('default', 'tp_yass2020'):
+            shutil.rmtree(each_theme)
     os.chdir(cwd)

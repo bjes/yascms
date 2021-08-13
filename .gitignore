@@ -13,6 +13,9 @@ __pycache__
 .idea/dataSources.local.xml
 tp_yass/uploads/
 tp_yass/logs/
+tp_yass/themes/*
+!tp_yass/themes/default
+!tp_yass/themes/tp_yass2020
 docs/_build/
 docs/tp_yass/
 docs/images/uml_class_diagram.png

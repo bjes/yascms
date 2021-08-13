@@ -1,4 +1,5 @@
 from pyramid.testing import DummyRequest
+from webtest import Upload
 
 
 def test_theme_config_list(webtest_admin_testapp):
@@ -62,3 +63,38 @@ def test_theme_config_banners_edit_view(webtest_admin_testapp):
     form['banners-4-is_visible'] = False
     response = form.submit()
     assert 'alert-danger' in response.body.decode('utf8')  # 顯示 form validation 的 block
+
+
+def test_theme_config_banners_upload_view(webtest_admin_testapp):
+    request = DummyRequest()
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_edit',
+                                                             theme_name='tp_yass2020'))
+    form_check_count = response.body.decode('utf8').count('form-check-input')
+
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_upload',
+                                                            theme_name='tp_yass2020'))
+    test_banner_file_name = 'test_banner.jpg'
+    form = response.form
+    form['banners'] = Upload(test_banner_file_name, b'')
+    response = form.submit()
+    assert response.status_int == 302
+
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_edit',
+                                                            theme_name='tp_yass2020'))
+    assert response.body.decode('utf8').count('form-check-input') == form_check_count + 1
+
+
+def test_theme_config_upload_view(webtest_admin_testapp, datadir):
+    request = DummyRequest()
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
+    theme_count = response.body.decode('utf8').count('一般設定')
+
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_upload'))
+    test_theme_file_name = 'test_theme.zip'
+    form = response.form
+    form['theme'] = Upload(test_theme_file_name, open(datadir / test_theme_file_name, 'rb').read())
+    response = form.submit()
+    assert response.status_int == 302
+
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
+    assert response.body.decode('utf8').count('一般設定') == theme_count + 1
