@@ -5,6 +5,7 @@ from pyramid_wtforms import (Form,
                              SelectField,
                              HiddenField,
                              SubmitField,
+                             FileField,
                              MultipleFilesField,
                              FieldList,
                              FormField)
@@ -79,4 +80,13 @@ class ThemeConfigBannersUploadForm(Form):
     banners = MultipleFilesField('上傳橫幅', [FileRequired('請上傳橫幅檔案'),
                                              FileAllowed(['png', 'jpg', 'jpeg']),
                                              FileSize(max=20, base='mb', message='檔案不能大於 20 MB')])
+    submit = SubmitField('上傳')
+
+
+class ThemeConfigUploadForm(Form):
+    """上傳樣板的表單"""
+
+    theme = FileField('上傳樣板', [FileRequired('請上傳樣板'),
+                                  FileAllowed(['zip']),
+                                  FileSize(max=50, base='mb', message='檔案不能大於 50 MB')])
     submit = SubmitField('上傳')

@@ -1,0 +1,31 @@
+{% extends "layouts/master.jinja2" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12"><h1>上傳樣板</h1></div>
+    {% if form.errors %}
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          <ul>
+            {% for key in form.errors %}
+              {% for msg in form.errors[key] %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    <div class="col-12">
+      <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="form-group">
+          {{ form.theme.label() }}
+          {{ form.theme(class_='form-control-file') }}
+        </div>
+        <div class="col-12">{{ form.submit(class_='btn btn-primary') }}</div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

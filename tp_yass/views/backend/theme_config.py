@@ -1,5 +1,8 @@
+import pathlib
+import zipfile
 import logging
-from tempfile import NamedTemporaryFile
+import shutil
+from tempfile import NamedTemporaryFile, TemporaryDirectory
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
@@ -10,7 +13,8 @@ from tp_yass.views.helper.file import get_project_abspath, save_file
 from tp_yass.views.backend.helper import ThemeImporter
 from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
                                                 ThemeConfigBannersEditForm,
-                                                ThemeConfigBannersUploadForm)
+                                                ThemeConfigBannersUploadForm,
+                                                ThemeConfigUploadForm)
 
 logger = logging.getLogger(__name__)
 
@@ -166,3 +170,37 @@ class ThemeConfigBannersUploadView:
             return HTTPFound(location=self.request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
         else:
             return {'theme_config': theme_config, 'form': form}
+
+
+@view_defaults(route_name='backend_theme_config_upload',
+               renderer='tp_yass:themes/default/backend/theme_config_upload.jinja2',
+               permission='edit')
+class ThemeConfigUploadView:
+    """用來處理樣板的上傳"""
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        form = ThemeConfigUploadForm()
+        return {'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = ThemeConfigUploadForm(self.request.POST)
+        if form.validate():
+            with TemporaryDirectory() as tmpdirname:
+                dest_file_name = f'{tmpdirname}/{form.theme.data.filename}'
+                with open(dest_file_name, 'wb') as dest_file:
+                    save_file(form.theme.data, dest_file)
+                with zipfile.ZipFile(dest_file_name, 'r') as zip_fp:
+                    zip_fp.extractall(tmpdirname)
+                pathlib.PosixPath(dest_file_name).unlink()
+                for each_theme in pathlib.PosixPath(tmpdirname).glob('*'):
+                    shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
+                    theme_importer = ThemeImporter(each_theme.name)
+                    theme_importer.import_theme()
+            return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
+        else:
+            return {'form': form}
