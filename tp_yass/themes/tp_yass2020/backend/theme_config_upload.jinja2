@@ -17,6 +17,9 @@
       </div>
     {% endif %}
     <div class="col-12">
+      <div class="alert alert-warning" role="alert">
+        上傳的樣板請壓縮成一個 .zip 檔案上傳，可將多個樣板壓縮在同一個 zip 檔一起上傳。
+      </div>
       <form action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         <div class="form-group">
