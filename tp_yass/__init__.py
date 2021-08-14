@@ -1,7 +1,7 @@
 from pyramid.config import Configurator
 
 from tp_yass.security import SecurityPolicy
-from tp_yass.views.cache import CacheController
+from tp_yass.cache import CacheController
 
 
 def main(global_config, **settings):

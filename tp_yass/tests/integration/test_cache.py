@@ -1,7 +1,7 @@
 import redis
 from pyramid.testing import DummyRequest
 
-from tp_yass.views.cache import CacheController
+from tp_yass.cache import CacheController
 
 
 def get_redis(redis_url):

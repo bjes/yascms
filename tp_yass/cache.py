@@ -6,6 +6,7 @@ from tp_yass.dal import DAL
 
 
 class CacheController:
+    """透過 redis 實作的 cache 層"""
 
     def __init__(self, redis_url, prefix):
         self.redis = redis.Redis.from_url(redis_url)
