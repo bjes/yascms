@@ -1,8 +1,7 @@
 from pyramid.testing import DummyRequest
 from pyramid.httpexceptions import HTTPFound
 
-from tp_yass.views.frontend import login
-from tp_yass.views import auth
+from tp_yass.views.frontend import login, logout
 
 
 def test_login_logic(webtest_testapp, pyramid_config):
@@ -91,3 +90,38 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
                                                      {'name': '根群組', 'id': 1, 'type': 2}]]
     assert login_view.request.session['group_id_list'] == {1, 3, 4, 6, 7}
     assert isinstance(response, HTTPFound)
+
+
+def test_login_and_logout_logic_with_via_webtest(webtest_testapp):
+    request = DummyRequest()
+
+    response = webtest_testapp.get(request.route_url('backend_homepage'), expect_errors=True)
+    assert response.status_int == 403
+
+    # 一般使用者
+    response = webtest_testapp.get(request.route_url('login'))
+    form = response.form
+    form['account'] = 'user1'
+    form['password'] = 'user1'
+    form.submit()
+    response = webtest_testapp.get(request.route_url('backend_homepage'))
+    assert response.status_int == 200
+    response = webtest_testapp.get(request.route_url('backend_site_config_edit'), expect_errors=True)
+    assert response.status_int == 403
+    webtest_testapp.get(request.route_url('logout'))
+    response = webtest_testapp.get(request.route_url('backend_homepage'), expect_errors=True)
+    assert response.status_int == 403
+
+    # 管理者
+    response = webtest_testapp.get(request.route_url('login'))
+    form = response.form
+    form['account'] = 'admin'
+    form['password'] = 'admin4tp_yass'
+    form.submit()
+    response = webtest_testapp.get(request.route_url('backend_homepage'))
+    assert response.status_int == 200
+    response = webtest_testapp.get(request.route_url('backend_site_config_edit'), expect_errors=True)
+    assert response.status_int == 200
+    webtest_testapp.get(request.route_url('logout'))
+    response = webtest_testapp.get(request.route_url('backend_homepage'), expect_errors=True)
+    assert response.status_int == 403
