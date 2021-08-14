@@ -1,6 +1,7 @@
 from pyramid.testing import DummyRequest
 from pyramid.httpexceptions import HTTPFound
 
+from tp_yass.views.frontend import login
 from tp_yass.views import auth
 
 
@@ -32,10 +33,10 @@ def test_login_post_view_with_invalid_form_data_should_return_list_with_login_fo
     """測試表單驗證失敗的行為"""
     request = DummyRequest()
 
-    form = mocker.patch.object(auth, 'LoginForm')
+    form = mocker.patch.object(login, 'LoginForm')
     form.validate.return_value = False
 
-    login_view = auth.LoginView(request)
+    login_view = login.LoginView(request)
     response = login_view.post()
 
     assert isinstance(response, dict)
@@ -56,9 +57,9 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
     login_form.validate.return_value = True
     login_form.account.data = 'admin'
     login_form.password.data = 'admin4tp_yass'
-    mocker.patch.object(auth, 'LoginForm', return_value=login_form)
+    mocker.patch.object(login, 'LoginForm', return_value=login_form)
 
-    login_view = auth.LoginView(request)
+    login_view = login.LoginView(request)
     response = login_view.post()
 
     assert login_view.request.session['is_admin']
@@ -74,9 +75,9 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
     login_form.validate.return_value = True
     login_form.account.data = 'user1'
     login_form.password.data = 'user1'
-    mocker.patch.object(auth, 'LoginForm', return_value=login_form)
+    mocker.patch.object(login, 'LoginForm', return_value=login_form)
 
-    login_view = auth.LoginView(request)
+    login_view = login.LoginView(request)
     response = login_view.post()
 
     assert login_view.request.session['is_admin'] == False
@@ -90,4 +91,3 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
                                                      {'name': '根群組', 'id': 1, 'type': 2}]]
     assert login_view.request.session['group_id_list'] == {1, 3, 4, 6, 7}
     assert isinstance(response, HTTPFound)
-
