@@ -1,7 +1,7 @@
 from pyramid.view import view_config, view_defaults
 
 from tp_yass.dal import DAL
-from tp_yass.helper import sanitize_input
+from tp_yass.helpers import sanitize_input
 from tp_yass.enum import AuthLogType
 
 

@@ -6,7 +6,8 @@ from tempfile import NamedTemporaryFile
 import transaction
 
 from tp_yass.dal import DAL
-from tp_yass.views.helper.file import get_project_abspath, save_file, convert_image_file
+from tp_yass.helpers import get_project_abspath
+from tp_yass.helpers.file import convert_image_file, save_file
 from tp_yass.enum import GroupType
 
 

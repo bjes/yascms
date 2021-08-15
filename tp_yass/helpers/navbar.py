@@ -25,7 +25,7 @@ def _recursive_append(request, navbar_node, navbar):
                       'order': navbar.order,
                       'descendants': []}
         if navbar.type == NavbarType.BUILTIN_NEWS:
-            sub_navbar['descendants'] = news_factory()
+            sub_navbar['descendants'] = _news_factory()
         elif navbar.type == NavbarType.BUILTIN_TELEXT:
             sub_navbar['url'] = request.route_path('telext')
         elif navbar.type == NavbarType.BUILTIN_LINKS:
@@ -36,6 +36,26 @@ def _recursive_append(request, navbar_node, navbar):
     else:
         for descendant_navbar in navbar_node['descendants']:
             _recursive_append(request, descendant_navbar, navbar)
+
+
+def _news_factory():
+    """存在資料庫的 navbar 只有 news 一筆 record，在這邊要手動的把不存在在資料庫，但必須在前台顯示的子選單加進去"""
+    sub_navbars = []
+    for each_category in DAL.get_news_category_list():
+        # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 代表是 builtin
+        sub_navbars.append({'id': -1,
+                            'type': NavbarType.BUILTIN_NEWS_SUBTYPE,
+                            'category_id': each_category.id,  # 這個欄位是額外加上去的，因為要產生連結的 url 需要 category id
+                            'name': each_category.name,
+                            'url': '#'})
+    # 分隔線，這個是寫死在 news 子選單裡面，沒有要給使用者異動位置，所以 id 也是 -1
+    sub_navbars.append({'id': -1,
+                        'type': NavbarType.DROPDOWN_DIVIDER,
+                        'name': '分隔線'})
+    # 顯示全部最新消息的連結
+    sub_navbars.append({'id': -1,
+                        'type': NavbarType.BUILTIN_NEWS_ALL})
+    return sub_navbars
 
 
 def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=None):
@@ -60,22 +80,3 @@ def generate_navbar_trees(request, type='all', visible_only=False, excluded_id=N
             # 代表是第二層以下的導覽列
             _recursive_append(request, navbar_trees, navbar)
     return navbar_trees
-
-def news_factory():
-    """存在資料庫的 navbar 只有 news 一筆 record，在這邊要手動的把不存在在資料庫，但必須在前台顯示的子選單加進去"""
-    sub_navbars = []
-    for each_category in DAL.get_news_category_list():
-        # 遞迴處理 navbar 時都會用 id 判斷階層關係，這邊設定為 -1 代表是 builtin
-        sub_navbars.append({'id': -1,
-                            'type': NavbarType.BUILTIN_NEWS_SUBTYPE,
-                            'category_id': each_category.id,  # 這個欄位是額外加上去的，因為要產生連結的 url 需要 category id
-                            'name': each_category.name,
-                            'url': '#'})
-    # 分隔線，這個是寫死在 news 子選單裡面，沒有要給使用者異動位置，所以 id 也是 -1
-    sub_navbars.append({'id': -1,
-                        'type': NavbarType.DROPDOWN_DIVIDER,
-                        'name': '分隔線'})
-    # 顯示全部最新消息的連結
-    sub_navbars.append({'id': -1,
-                        'type': NavbarType.BUILTIN_NEWS_ALL})
-    return sub_navbars

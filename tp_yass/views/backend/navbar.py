@@ -4,7 +4,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.enum import NavbarType
-from tp_yass.views.helper.navbar import generate_navbar_trees
+from tp_yass.helpers.navbar import generate_navbar_trees
 from tp_yass.forms.backend.navbar import NavbarForm, NavbarEditForm
 from tp_yass.dal import DAL
 

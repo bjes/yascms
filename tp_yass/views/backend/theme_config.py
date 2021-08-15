@@ -9,7 +9,8 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.enum import ThemeConfigCustomType
-from tp_yass.views.helper.file import get_project_abspath, save_file
+from tp_yass.helpers import get_project_abspath
+from tp_yass.helpers.file import save_file
 from tp_yass.views.backend.helper import ThemeImporter
 from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
                                                 ThemeConfigBannersEditForm,

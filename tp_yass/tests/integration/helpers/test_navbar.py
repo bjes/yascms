@@ -1,7 +1,6 @@
-import pytest
 from pyramid.testing import DummyRequest
 
-from tp_yass.views.helper.navbar import generate_navbar_trees, news_factory
+from tp_yass.helpers.navbar import generate_navbar_trees
 
 
 def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyramid_config, init_db_session):
@@ -17,14 +16,3 @@ def test_generate_navbar_trees_with_params_should_return_navbar_trees_list(pyram
     for sub_navbar in navbar_trees['descendants']:
         for key in sub_navbar.keys():
             assert key in valid_keys
-
-
-def test_news_factory_should_return_news_sub_navbars(init_db_session):
-    news_sub_navbars = news_factory()
-    assert isinstance(news_sub_navbars, list)
-    valid_keys = ['id', 'type', 'category_id', 'name', 'url']
-    for sub_navbar in news_sub_navbars:
-        assert isinstance(sub_navbar, dict)
-        for key in sub_navbar.keys():
-            assert key in valid_keys
-    assert True

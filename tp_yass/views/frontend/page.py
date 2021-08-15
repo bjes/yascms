@@ -2,7 +2,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
 
 from tp_yass.enum import NavbarType
-from tp_yass.views.helper.navbar import generate_navbar_trees
+from tp_yass.helpers.navbar import generate_navbar_trees
 from tp_yass.dal import DAL
 
 

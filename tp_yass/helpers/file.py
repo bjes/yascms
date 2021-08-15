@@ -1,8 +1,4 @@
-from pathlib import Path
-
 from PIL import Image
-
-import tp_yass
 
 
 def convert_image_file(file_path, destination_path) -> bool:
@@ -42,8 +38,3 @@ def save_file(cgi_field_storage, file_obj, bulk_size=5120000) -> bool:
         else:
             break
     return True
-
-
-def get_project_abspath() -> Path:
-    """回傳 tp_yass 專案的絕對路徑"""
-    return Path(tp_yass.__file__).parent

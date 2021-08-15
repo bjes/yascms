@@ -4,8 +4,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
-from tp_yass.views.helper.file import get_project_abspath
-
+from tp_yass.helpers import get_project_abspath
 
 logger = logging.getLogger(__name__)
 
