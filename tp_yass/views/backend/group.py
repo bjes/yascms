@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.forms.backend.user import GroupForm
-from tp_yass.views.backend.helper import generate_group_trees
+from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import GroupType
 
 

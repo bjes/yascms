@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from tp_yass.forms.backend.link import LinkForm, LinkCategoryForm
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.views.backend.helper import upload_attachment, delete_attachment
+from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 
 
 @view_defaults(route_name='backend_link_create', renderer='tp_yass:themes/default/backend/link_create.jinja2', permission='edit')

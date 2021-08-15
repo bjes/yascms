@@ -6,7 +6,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from tp_yass.forms.backend.news import NewsForm, NewsEditForm, NewsCategoryForm
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.views.backend.helper import upload_attachment, delete_attachment
+from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 
 
 @view_defaults(route_name='backend_news_create', renderer='tp_yass:themes/default/backend/news_create.jinja2', permission='edit')

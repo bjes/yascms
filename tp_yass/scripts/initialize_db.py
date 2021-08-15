@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 
 from .. import models
-from ..views.backend.helper import ThemeImporter
+from ..helpers.backend.theme_config import ThemeImporter
 from ..enum import NavbarType
 
 

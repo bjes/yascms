@@ -3,9 +3,9 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.forms.backend.page import PageForm, PageEditForm
 from tp_yass.helpers import sanitize_input
-from tp_yass.views.backend.helper import upload_attachment, delete_attachment
+from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 from tp_yass.dal import DAL
-from tp_yass.views.backend.helper import generate_group_trees
+from tp_yass.helpers.backend.group import generate_group_trees
 
 
 @view_defaults(route_name='backend_page_create',
