@@ -1,5 +1,5 @@
-{% extends "layouts/master.jinja2" %}
-{% from "auth_log_list_macros.jinja2" import paginate with context %}
+{% extends 'layouts/master.jinja2' %}
+{% from 'auth_log_list_macros.jinja2' import paginate with context %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -35,7 +35,7 @@
           </table>
         </div>
       </div>
-    {{ paginate("登出入紀錄列表分頁", "backend_auth_log_list", page_quantity_of_total_auth_logs, page_number, quantity_per_page) }}
+    {{ paginate('登出入紀錄列表分頁', 'backend_auth_log_list', page_quantity_of_total_auth_logs, page_number, quantity_per_page) }}
     </div>
   </div>
 </div>

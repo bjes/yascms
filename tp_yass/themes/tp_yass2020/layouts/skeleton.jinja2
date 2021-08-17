@@ -11,18 +11,18 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ 'tp_yass:webroot/favicon-16x16.png'|static_path }}">
   <link rel="manifest" href="{{ 'tp_yass:webroot/site.webmanifest'|static_path }}">
   <link rel="mask-icon" href="{{ 'tp_yass:webroot/safari-pinned-tab.svg'|static_path }}" color="#5bbad5">
-  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/bootstrap-4.4.1.min.css'|static_path }}">
-  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.smartmenus.bootstrap-4-1.1.0.css'|static_path }}">
-  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/common.css'|static_path  }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:static/tp_yass2020/css/bootstrap-4.4.1.min.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:static/tp_yass2020/css/jquery.smartmenus.bootstrap-4-1.1.0.css'|static_path }}">
+  <link rel="stylesheet" href="{{ 'tp_yass:static/tp_yass2020/css/common.css'|static_path  }}">
   {% block layout_css %}{% endblock layout_css %}
   {% block page_css %}{% endblock page_css %}
   <title>{{ request.site_config['site_name'] }}</title>
 </head>
 <body>
   {% block body %}{% endblock body %}
-  <script src="{{ 'tp_yass:themes/default/static/js/jquery-3.5.1.min.js'|static_path }}"></script>
-  <script src="{{ 'tp_yass:themes/default/static/js/popper-1.16.0.min.js'|static_path }}"></script>
-  <script src="{{ 'tp_yass:themes/default/static/js/bootstrap.bundle-4.4.1.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:static/tp_yass2020/js/jquery-3.5.1.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:static/tp_yass2020/js/popper-1.16.0.min.js'|static_path }}"></script>
+  <script src="{{ 'tp_yass:static/tp_yass2020/js/bootstrap.bundle-4.4.1.min.js'|static_path }}"></script>
   {% block layout_js %}{% endblock layout_js %}
   {% block page_js %}{% endblock page_js %}
 </body>

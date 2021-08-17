@@ -1,4 +1,4 @@
-{% extends "layouts/master.jinja2" %}
+{% extends 'layouts/master.jinja2' %}
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -22,9 +22,9 @@
           {% if news.attachments %}
             <ul class="mb-0">
               {% for each_attachment in news.attachments %}
-                <li><a href="{{ request.static_url('tp_yass:uploads/news/'
-                                                   + news.publication_date.strftime('%Y/%m/'))
-                                                   + each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
+                <li><a href="{{ request.static_path('tp_yass:uploads/news/'
+                                                    ~ news.publication_date.strftime('%Y/%m/'))
+                                                    ~ each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
               {% endfor %}
             </ul>
           {% endif %}

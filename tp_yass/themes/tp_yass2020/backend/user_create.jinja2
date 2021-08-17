@@ -1,7 +1,7 @@
-{% extends "layouts/master.jinja2" %}
+{% extends 'layouts/master.jinja2' %}
 {% from 'macros.jinja2' import generate_group_trees with context %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ 'tp_yass:themes/default/static/css/jquery.bonsai-2.1.1.css'|static_path }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/jquery.bonsai-2.1.1.css') }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -56,8 +56,8 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-  <script src="{{ 'tp_yass:themes/default/static/js/jquery.qubit-2.0.9.js'|static_path }}"></script>
-  <script src="{{ 'tp_yass:themes/default/static/js/jquery.bonsai-2.1.1.js'|static_path }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/js/jquery.qubit-2.0.9.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/js/jquery.bonsai-2.1.1.js') }}"></script>
   <script>
     $(function() {
       $('#root-group').bonsai({

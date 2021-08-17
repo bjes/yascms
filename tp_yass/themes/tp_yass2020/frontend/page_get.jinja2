@@ -1,5 +1,5 @@
-{% extends "layouts/master.jinja2" %}
-{% from "tp_yass:themes/default/macros.jinja2" import paginate with context %}
+{% extends 'layouts/master.jinja2' %}
+{% from 'tp_yass:themes/' ~ request.current_theme ~ '/macros.jinja2' import paginate with context %}
 {% block content %}
 <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
   <div class="container">
