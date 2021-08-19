@@ -13,12 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_navbar_list',
-               renderer='themes/default/backend/navbar_list.jinja2',
+               renderer='',
                permission='view')
 class NavbarListView:
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/navbar_list.jinja2'
 
     @view_config()
     def list_view(self):
@@ -27,13 +28,14 @@ class NavbarListView:
 
 
 @view_defaults(route_name='backend_navbar_create',
-               renderer='themes/default/backend/navbar_create.jinja2',
+               renderer='',
                permission='edit')
 class NavbarCreateView:
     """建立巢狀選單"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/navbar_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -81,12 +83,13 @@ class NavbarDeleteView:
 
 
 @view_defaults(route_name='backend_navbar_edit',
-               renderer='themes/default/backend/navbar_edit.jinja2',
+               renderer='',
                permission='edit')
 class NavbarEditView:
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/navbar_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

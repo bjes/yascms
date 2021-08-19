@@ -1,7 +1,7 @@
 {% extends 'layouts/master.jinja2' %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ 'tp_yass:static/' ~ request.current_theme ~ '/css/summernote-bs4-0.8.16.min.css') }}">
-  <link rel="stylesheet" href="{{ 'tp_yass:static/' ~ request.current_theme ~ '/css/jquery.datetimepicker-master.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/summernote-bs4-0.8.16.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/jquery.datetimepicker-master.min.css') }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -105,4 +105,4 @@
       })
     });
   </script>
-{% endblock %}
+request.static_path({% endblock %}

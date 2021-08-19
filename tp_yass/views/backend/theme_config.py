@@ -21,20 +21,22 @@ logger = logging.getLogger(__name__)
 
 
 @view_config(route_name='backend_theme_config_list',
-             renderer='tp_yass:themes/default/backend/theme_config_list.jinja2',
+             renderer='',
              permission='view')
 def theme_config_list_view(request):
+    request.override_renderer = f'tp_yass:themes/{request.current_theme}/backend/theme_config_list.jinja2'
     return {'theme_config_list': DAL.get_theme_config_list()}
 
 
 @view_defaults(route_name='backend_theme_config_general_edit',
-               renderer='tp_yass:themes/default/backend/theme_config_general_edit.jinja2',
+               renderer='',
                permission='edit')
 class ThemeConfigGeneralEditView:
     """處理樣板的設定值內容"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_general_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -82,13 +84,14 @@ class ThemeConfigGeneralEditView:
 
 
 @view_defaults(route_name='backend_theme_config_banners_edit',
-               renderer='tp_yass:themes/default/backend/theme_config_banners_edit.jinja2',
+               renderer='',
                permission='edit')
 class ThemeConfigBannersEditView:
     """用來處理橫幅的列表與增刪"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_banners_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -139,13 +142,14 @@ class ThemeConfigBannersEditView:
 
 
 @view_defaults(route_name='backend_theme_config_banners_upload',
-               renderer='tp_yass:themes/default/backend/theme_config_banners_upload.jinja2',
+               renderer='',
                permission='edit')
 class ThemeConfigBannersUploadView:
     """用來處理橫幅的上傳"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_banners_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -174,13 +178,14 @@ class ThemeConfigBannersUploadView:
 
 
 @view_defaults(route_name='backend_theme_config_upload',
-               renderer='tp_yass:themes/default/backend/theme_config_upload.jinja2',
+               renderer='',
                permission='edit')
 class ThemeConfigUploadView:
     """用來處理樣板的上傳"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

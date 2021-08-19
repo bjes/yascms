@@ -8,13 +8,14 @@ from tp_yass.helpers.backend.group import generate_group_trees
 
 
 @view_defaults(route_name='backend_user_list',
-               renderer='themes/default/backend/user_list.jinja2',
+               renderer='',
                permission='view')
 class UserListView:
     """列表使用者的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/user_list.jinja2'
 
     @view_config()
     def get_view(self):
@@ -30,13 +31,14 @@ class UserListView:
 
 
 @view_defaults(route_name='backend_user_create',
-               renderer='themes/default/backend/user_create.jinja2',
+               renderer='',
                permission='edit')
 class UserCreateView:
     """新增使用者的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/user_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -60,13 +62,14 @@ class UserCreateView:
 
 
 @view_defaults(route_name='backend_user_edit',
-               renderer='themes/default/backend/user_edit.jinja2',
+               renderer='',
                permission='edit')
 class UserEditView:
     """編輯使用者的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/user_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

@@ -9,7 +9,9 @@ def test_news_list_view_should_return_dict(mocker):
     mocker.patch.object(news.DAL, 'get_news_category')
     mocker.patch.object(news.DAL, 'get_page_quantity_of_total_news')
     mocker.patch.object(news, 'generate_navbar_trees')
-    response = news.news_list_view(DummyRequest())
+    request = DummyRequest()
+    request.current_theme = 'tp_yass2020'
+    response = news.news_list_view(request)
     valid_keys = ['news_list', 'news_category', 'navbar_trees',
                   'page_quantity_of_total_news', 'page_number',
                   'quantity_per_page', 'NavbarType']
@@ -21,6 +23,7 @@ def test_news_get_view_should_return_news_info(mocker):
     mocker.patch.object(news.DAL, 'get_news')
     mocker.patch.object(news, 'generate_navbar_trees')
     request = DummyRequest()
+    request.current_theme = 'tp_yass2020'
     request.matchdict['news_id'] = '999'
 
     # 若資料庫有對應的 news 物件

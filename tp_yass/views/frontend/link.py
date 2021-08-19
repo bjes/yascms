@@ -5,8 +5,9 @@ from tp_yass.helpers.navbar import generate_navbar_trees
 from tp_yass.dal import DAL
 
 
-@view_config(route_name='links', renderer='tp_yass:themes/default/frontend/links.jinja2')
+@view_config(route_name='links', renderer='')
 def links_view(request):
+    request.override_renderer = f'themes/{request.current_theme}/frontend/links.jinja2'
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
             'NavbarType': NavbarType,
             'link_category_list': DAL.get_link_category_list()}

@@ -12,12 +12,13 @@ from tp_yass.forms.auth import LoginForm
 logger = logging.getLogger(__name__)
 
 
-@view_defaults(route_name='login', renderer='themes/default/frontend/login.jinja2')
+@view_defaults(route_name='login', renderer='')
 class LoginView:
     """登入"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/frontend/login.jinja2'
 
     @view_config(request_method='GET')
     def get(self):

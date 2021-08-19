@@ -5,7 +5,7 @@ from tp_yass.helpers import sanitize_input
 from tp_yass.enum import AuthLogType
 
 
-@view_defaults(route_name='backend_auth_log_list', renderer='themes/default/backend/auth_log_list.jinja2', permission='view')
+@view_defaults(route_name='backend_auth_log_list', permission='view', renderer='')
 class AuthLogListView:
     """顯示 auth log 列表的 view class"""
 
@@ -15,6 +15,7 @@ class AuthLogListView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{request.current_theme}/backend/auth_log_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

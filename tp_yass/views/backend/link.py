@@ -7,12 +7,13 @@ from tp_yass.helpers import sanitize_input
 from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 
 
-@view_defaults(route_name='backend_link_create', renderer='tp_yass:themes/default/backend/link_create.jinja2', permission='edit')
+@view_defaults(route_name='backend_link_create', renderer='', permission='edit')
 class LinkCreateView:
     """建立好站連結的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -41,7 +42,7 @@ class LinkCreateView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_link_list', renderer='themes/default/backend/link_list.jinja2', permission='view')
+@view_defaults(route_name='backend_link_list', renderer='', permission='view')
 class LinkListView:
     """顯示好站連結的 view class"""
 
@@ -51,6 +52,7 @@ class LinkListView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -89,7 +91,7 @@ class LinkDeleteView:
 
 
 @view_defaults(route_name='backend_link_edit',
-               renderer='themes/default/backend/link_edit.jinja2',
+               renderer='',
                permission='edit')
 class LinkEditView:
 
@@ -101,6 +103,7 @@ class LinkEditView:
         """
         self.context = context
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -139,12 +142,13 @@ class LinkEditView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_link_category_create', renderer='tp_yass:themes/default/backend/link_category_create.jinja2', permission='edit')
+@view_defaults(route_name='backend_link_category_create', renderer='', permission='edit')
 class LinkCategoryCreateView:
     """建立好站連結分類的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_category_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -162,12 +166,13 @@ class LinkCategoryCreateView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_link_category_list', renderer='tp_yass:themes/default/backend/link_category_list.jinja2', permission='edit')
+@view_defaults(route_name='backend_link_category_list', renderer='', permission='edit')
 class LinkCategoryListView:
     """顯示好站連結列表"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_category_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -201,13 +206,14 @@ class LinkCategoryDeleteView:
         return HTTPFound(self.request.route_url('backend_link_category_list'))
 
 
-@view_defaults(route_name='backend_link_category_edit', renderer='tp_yass:themes/default/backend/link_category_edit.jinja2', permission='edit')
+@view_defaults(route_name='backend_link_category_edit', renderer='', permission='edit')
 class LinkCategoryEditView:
     """編輯好站連結分類的 view"""
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/link_category_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

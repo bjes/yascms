@@ -8,6 +8,7 @@ def test_page_get_view_should_return_dict(mocker):
     mocker.patch.object(page.DAL, 'get_page')
     mocker.patch.object(page, 'generate_navbar_trees')
     request = DummyRequest()
+    request.current_theme = 'tp_yass2020'
     request.matchdict['page_id'] = '999'
 
     # 模擬有對應的 page 物件於資料庫

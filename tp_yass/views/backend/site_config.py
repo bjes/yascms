@@ -10,12 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_site_config_edit',
-               renderer='tp_yass:themes/default/backend/site_config_edit.jinja2',
+               renderer='',
                permission='edit')
 class SiteConfigView:
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{request.current_theme}/backend/site_config_edit.jinja2'
 
     @view_config(request_method='GET')
     def list_view(self):

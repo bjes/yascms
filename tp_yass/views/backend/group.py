@@ -8,13 +8,14 @@ from tp_yass.enum import GroupType
 
 
 @view_defaults(route_name='backend_group_list',
-               renderer='themes/default/backend/group_list.jinja2',
+               renderer='',
                permission='view')
 class GroupListView:
     """列表使用者群組的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/group_list.jinja2'
 
     @view_config()
     def get_view(self):
@@ -22,13 +23,14 @@ class GroupListView:
 
 
 @view_defaults(route_name='backend_group_create',
-               renderer='themes/default/backend/group_create.jinja2',
+               renderer='',
                permission='edit')
 class GroupCreateView:
     """建立使用者群組的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/group_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -49,13 +51,14 @@ class GroupCreateView:
 
 
 @view_defaults(route_name='backend_group_edit',
-               renderer='themes/default/backend/group_edit.jinja2',
+               renderer='',
                permission='edit')
 class GroupEditView:
     """編輯使用者群組的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/group_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

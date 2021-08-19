@@ -9,7 +9,7 @@ from tp_yass.helpers.backend.group import generate_group_trees
 
 
 @view_defaults(route_name='backend_page_create',
-               renderer='themes/default/backend/page_create.jinja2',
+               renderer='',
                permission='edit')
 class PageCreateView:
     """建立單一頁面的 view class"""
@@ -20,6 +20,7 @@ class PageCreateView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/page_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -46,7 +47,7 @@ class PageCreateView:
 
 
 @view_defaults(route_name='backend_page_list',
-               renderer='themes/default/backend/page_list.jinja2',
+               renderer='',
                permission='view')
 class PageListView:
     """顯示單一頁面列表的 view class"""
@@ -57,6 +58,7 @@ class PageListView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/page_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -96,7 +98,7 @@ class PageDeleteView:
 
 
 @view_defaults(route_name='backend_page_edit',
-               renderer='themes/default/backend/page_edit.jinja2',
+               renderer='',
                permission='edit')
 class PageEditView:
 
@@ -108,6 +110,7 @@ class PageEditView:
         """
         self.context = context
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/page_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

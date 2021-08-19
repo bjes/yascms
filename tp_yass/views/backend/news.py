@@ -9,12 +9,13 @@ from tp_yass.helpers import sanitize_input
 from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 
 
-@view_defaults(route_name='backend_news_create', renderer='tp_yass:themes/default/backend/news_create.jinja2', permission='edit')
+@view_defaults(route_name='backend_news_create', renderer='', permission='edit')
 class NewsCreateView:
     """建立最新消息的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -46,7 +47,7 @@ class NewsCreateView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_news_list', renderer='themes/default/backend/news_list.jinja2', permission='view')
+@view_defaults(route_name='backend_news_list', renderer='', permission='view')
 class NewsListView:
     """顯示最新消息列表的 view class"""
 
@@ -56,6 +57,7 @@ class NewsListView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -95,7 +97,7 @@ class NewsDeleteView:
 
 
 @view_defaults(route_name='backend_news_edit',
-               renderer='themes/default/backend/news_edit.jinja2',
+               renderer='',
                permission='edit')
 class NewsEditView:
 
@@ -107,6 +109,7 @@ class NewsEditView:
         """
         self.context = context
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -166,12 +169,13 @@ class NewsEditView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_news_category_create', renderer='tp_yass:themes/default/backend/news_category_create.jinja2', permission='edit')
+@view_defaults(route_name='backend_news_category_create', renderer='', permission='edit')
 class NewsCategoryCreateView:
     """建立最新消息分類的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -189,12 +193,13 @@ class NewsCategoryCreateView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_news_category_list', renderer='tp_yass:themes/default/backend/news_category_list.jinja2', permission='edit')
+@view_defaults(route_name='backend_news_category_list', renderer='', permission='edit')
 class NewsCategoryListView:
     """顯示最新消息列表"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -228,13 +233,14 @@ class NewsCategoryDeleteView:
         return HTTPFound(self.request.route_url('backend_news_category_list'))
 
 
-@view_defaults(route_name='backend_news_category_edit', renderer='tp_yass:themes/default/backend/news_category_edit.jinja2', permission='edit')
+@view_defaults(route_name='backend_news_category_edit', renderer='', permission='edit')
 class NewsCategoryEditView:
     """編輯最新消息分類的 view"""
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

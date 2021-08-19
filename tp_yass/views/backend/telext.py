@@ -5,12 +5,13 @@ from tp_yass.forms.backend.telext import TelExtForm
 from tp_yass.dal import DAL
 
 
-@view_defaults(route_name='backend_telext_create', renderer='tp_yass:themes/default/backend/telext_create.jinja2', permission='edit')
+@view_defaults(route_name='backend_telext_create', renderer='', permission='edit')
 class TelExtCreateView:
     """建立分機表的 view"""
 
     def __init__(self, request):
         self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/telext_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -28,7 +29,7 @@ class TelExtCreateView:
         return {'form': form}
 
 
-@view_defaults(route_name='backend_telext_list', renderer='themes/default/backend/telext_list.jinja2', permission='view')
+@view_defaults(route_name='backend_telext_list', renderer='', permission='view')
 class TelExtListView:
     """顯示分機表的 view class"""
 
@@ -38,6 +39,7 @@ class TelExtListView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/telext_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -67,7 +69,7 @@ class TelExtDeleteView:
 
 
 @view_defaults(route_name='backend_telext_edit',
-               renderer='themes/default/backend/telext_edit.jinja2',
+               renderer='',
                permission='edit')
 class TelExtEditView:
 
@@ -77,6 +79,7 @@ class TelExtEditView:
             request: pyramid.request.Request
         """
         self.request = request
+        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/telext_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

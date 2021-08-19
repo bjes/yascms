@@ -2,13 +2,15 @@ from pyramid.view import (notfound_view_config,
                           forbidden_view_config)
 
 
-@notfound_view_config(renderer='themes/default/404.jinja2', append_slash=True)
+@notfound_view_config(renderer='', append_slash=True)
 def notfound_view(request):
+    request.override_renderer = f'themes/{request.current_theme}/404.jinja2'
     request.response.status = 404
     return {}
 
 
-@forbidden_view_config(renderer='themes/default/403.jinja2')
+@forbidden_view_config(renderer='')
 def forbidden_view(request):
+    request.override_renderer = f'themes/{request.current_theme}/403.jinja2'
     request.response.status = 403
     return {}

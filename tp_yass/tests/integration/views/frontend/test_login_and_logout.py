@@ -31,6 +31,7 @@ def test_login_post_view_with_invalid_form_data_should_return_list_with_login_fo
                                                                                    mocker):
     """測試表單驗證失敗的行為"""
     request = DummyRequest()
+    request.current_theme = 'tp_yass2020'
 
     form = mocker.patch.object(login, 'LoginForm')
     form.validate.return_value = False
@@ -49,6 +50,7 @@ def test_login_post_view_with_valid_form_data_should_login_successfully_with_val
 
     # 預設的 DummyRequest 啥都沒有，要自己補 log 會需要的 client_addr
     request = DummyRequest()
+    request.current_theme = 'tp_yass2020'
     request.client_addr = '127.0.0.1'
 
     # 驗證最高權限的帳號登入的行為
