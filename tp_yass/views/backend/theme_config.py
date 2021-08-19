@@ -207,6 +207,7 @@ class ThemeConfigUploadView:
                     shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
                     theme_importer = ThemeImporter(each_theme.name)
                     theme_importer.import_theme()
+            self.request.cache.delete_available_themes()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'form': form}

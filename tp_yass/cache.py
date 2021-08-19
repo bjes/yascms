@@ -56,3 +56,17 @@ class CacheController:
     def delete_current_theme(self):
         self.redis.delete(f'{self.prefix}_current_theme')
         return True
+
+    def get_available_themes(self):
+        key = f'{self.prefix}_available_themes'
+        cache = self.redis.get(key)
+        if cache:
+            return pickle.loads(cache)
+        else:
+            available_themes = DAL.get_available_themes()
+            self.redis.set(key, pickle.dumps(available_themes))
+            return available_themes
+
+    def delete_available_themes(self):
+        self.redis.delete(f'{self.prefix}_available_themes')
+        return True

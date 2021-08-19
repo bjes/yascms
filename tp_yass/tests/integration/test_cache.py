@@ -1,3 +1,5 @@
+import pickle
+
 import redis
 from pyramid.testing import DummyRequest
 
@@ -83,3 +85,29 @@ def test_delete_current_theme_should_delete_current_theme_cache(ini_settings, in
 
     assert cache(request).delete_current_theme()
     assert not redis_instance.exists(f'{test_prefix}_current_theme')
+
+
+def test_get_available_themes_should_return_available_themes_list(ini_settings, init_db_session):
+    test_prefix = 'test'
+
+    redis_instance = get_redis(ini_settings['redis.sessions.url'])
+    redis_instance.delete(f'{test_prefix}_available_themes')
+
+    request = DummyRequest()
+    cache = CacheController(ini_settings['redis.sessions.url'], test_prefix)
+    available_thems = cache(request).get_available_themes()
+    assert available_thems
+    assert pickle.loads(redis_instance.get(f'{test_prefix}_available_themes')) == available_thems
+
+
+def test_delete_available_themes_should_delete_available_themes_cache(ini_settings, init_db_session):
+    test_prefix = 'test'
+
+    redis_instance = get_redis(ini_settings['redis.sessions.url'])
+    redis_instance.set(f'{test_prefix}_available_themes', 'foo')
+
+    request = DummyRequest()
+    cache = CacheController(ini_settings['redis.sessions.url'], test_prefix)
+
+    assert cache(request).delete_available_themes()
+    assert not redis_instance.exists(f'{test_prefix}_available_themes')
