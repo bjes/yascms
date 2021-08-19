@@ -27,6 +27,7 @@ class ThemeImporter:
     def import_theme(self):
         self._import_theme_config()
         self.import_theme_banners()
+        self._setup_static_assets()
 
     def import_theme_banners(self, src=None, dest=None):
         """匯入指定的佈景主題橫幅檔案"""
@@ -43,3 +44,11 @@ class ThemeImporter:
         with transaction.manager, open(self.base_dir / 'themes' / self.theme_name / 'config.json') as f:
             config = json.loads(f.read())
             DAL.add_theme_config(config)
+
+    def _setup_static_assets(self):
+        """在 tp_yass/static 目錄下建立 soft link 至 themes 對應樣板下的 static 目錄"""
+        src = self.base_dir / f'static/{self.theme_name}'
+        dest = f'../themes/{self.theme_name}/static'
+        if src.exists():
+            src.unlink()
+        src.symlink_to(dest)

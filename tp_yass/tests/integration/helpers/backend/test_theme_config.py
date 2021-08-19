@@ -13,4 +13,3 @@ def test_theme_importer_import_theme_banners_with_theme_name_should_copy_banners
     theme_importer = ThemeImporter('tp_yass2020', tmp_path)
     theme_importer.import_theme_banners(src_dir, dest_dir)
     assert (dest_dir / banner_file_name).exists()
-
