@@ -48,7 +48,7 @@ def init_db_session(ini_settings):
 def webtest_testapp(pyramid_config, ini_settings):
     """產生 webtest 物件以用來跑測試"""
 
-    init_test_db()
+    init_test_data()
 
     global_config = collections.OrderedDict()
     global_config['here'] = str(HERE)
@@ -73,7 +73,7 @@ def webtest_admin_testapp(webtest_testapp):
     yield webtest_testapp
 
 
-def init_test_db():
+def init_test_data():
     """自動初始化測試用資料"""
     cwd = os.getcwd()
     os.chdir(HERE)
@@ -82,6 +82,9 @@ def init_test_db():
         if each_theme.name != 'tp_yass2020':
             shutil.rmtree(each_theme)
     for each_theme in pathlib.Path(HERE / 'tp_yass/themes/').glob('*'):
-        if each_theme.name not in ('default', 'tp_yass2020'):
+        if each_theme.name != 'tp_yass2020':
             shutil.rmtree(each_theme)
+    for each_theme in pathlib.Path(HERE / 'tp_yass/static/').glob('*'):
+        if each_theme.name != 'tp_yass2020':
+            each_theme.unlink()
     os.chdir(cwd)
