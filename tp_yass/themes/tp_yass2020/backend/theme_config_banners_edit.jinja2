@@ -46,7 +46,7 @@
                         {{ each_banner.form.is_visible(class_="form-check-input") }}
                         {{ each_banner.form.is_visible.label(class_="form-check-label") }}
                       </div>
-                      <a href="#" class="btn btn-danger">刪除</a>
+                      <a href="{{ request.route_url('backend_theme_config_banners_delete', theme_name=theme_config['name'], banner_name=each_banner.data['name']) }}" class="btn btn-danger">刪除</a>
                     </div>
                   </div>
                 </div>

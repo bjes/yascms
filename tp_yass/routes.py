@@ -37,6 +37,9 @@ def includeme(config):
                      factory=admin_factory, pregenerator=preview_override_param)
     config.add_route('backend_theme_config_banners_edit', '/backend/theme_config/banners/edit/{theme_name}',
                      factory=admin_factory, pregenerator=preview_override_param)
+    config.add_route('backend_theme_config_banners_delete',
+                     '/backend/theme_config/banners/delete/{theme_name}/{banner_name}',
+                     factory=admin_factory, pregenerator=preview_override_param)
     config.add_route('backend_theme_config_banners_upload', '/backend/theme_config/banners/upload/{theme_name}',
                      factory=admin_factory, pregenerator=preview_override_param)
     config.add_route('backend_theme_config_upload', '/backend/theme_config/upload',

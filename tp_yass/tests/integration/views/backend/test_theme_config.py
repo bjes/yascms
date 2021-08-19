@@ -1,5 +1,9 @@
+import pathlib
+
 from pyramid.testing import DummyRequest
 from webtest import Upload
+
+from tp_yass.helpers import get_project_abspath
 
 
 def test_theme_config_list(webtest_admin_testapp):
@@ -82,6 +86,19 @@ def test_theme_config_banners_upload_view(webtest_admin_testapp):
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_edit',
                                                             theme_name='tp_yass2020'))
     assert response.body.decode('utf8').count('form-check-input') == form_check_count + 1
+
+
+def test_theme_config_banners_delete_view(webtest_admin_testapp):
+    banner_name = 'banner01.jpg'
+    theme_name = 'tp_yass2020'
+    request = DummyRequest()
+    banner_path = pathlib.Path(get_project_abspath()) / f'uploads/themes/{theme_name}/banners/{banner_name}'
+    assert banner_path.exists()
+
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_delete',
+                                                            theme_name=theme_name, banner_name=banner_name))
+    assert response.status_int == 302
+    assert not banner_path.exists()
 
 
 def test_theme_config_upload_view(webtest_admin_testapp, datadir):

@@ -211,3 +211,22 @@ class ThemeConfigUploadView:
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'form': form}
+
+
+@view_config(route_name='backend_theme_config_banners_delete', permission='edit')
+def theme_config_banners_delete_view(request):
+    theme_name = request.matchdict['theme_name']
+    banner_name = request.matchdict['banner_name']
+    theme_config = DAL.get_theme_config(theme_name)
+    theme_config_changed = False
+
+    banner_full_path = get_project_abspath() / f'uploads/themes/{theme_name}/banners/{banner_name}'
+    if banner_full_path.exists():
+        banner_full_path.unlink()
+        if banner_full_path.name in theme_config['settings']['banners']['value']:
+            theme_config['settings']['banners']['value'].remove(banner_full_path.name)
+            theme_config_changed = True
+    if theme_config_changed:
+        DAL.update_theme_config(theme_config)
+        request.cache.delete_theme_config()
+    return HTTPFound(location=request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
