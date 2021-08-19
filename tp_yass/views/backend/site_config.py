@@ -4,7 +4,6 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
-from tp_yass.helpers import get_project_abspath
 
 logger = logging.getLogger(__name__)
 
@@ -20,29 +19,10 @@ class SiteConfigView:
 
     @view_config(request_method='GET')
     def list_view(self):
-        """列出 tp_yass:themes 目錄下扣掉 default 後有哪些樣板"""
+        """列出 site config 列表"""
 
         config_list = DAL.get_site_config_list()
-        available_themes_list = self._get_themes_list()
-        return {'config_list': config_list,
-                'available_themes_list': available_themes_list}
-
-    def _get_themes_list(self):
-        """回傳目前系統上的樣板名稱列表"""
-        themes_dir =  get_project_abspath() / 'themes'
-        return [theme.name for theme in themes_dir.glob('*') if theme.name != 'default']
-
-    def _set_theme(self, theme_name):
-        """設定系統樣板"""
-        default_theme_dir = get_project_abspath() / 'themes' / 'default'
-        new_theme = get_project_abspath() / 'themes' / theme_name
-        if default_theme_dir.exists():
-            default_theme_dir.unlink()
-        default_theme_dir.symlink_to(new_theme)
-        self.request.cache.delete_current_theme()
-        self.request.cache.delete_theme_config()
-        logger.info('系統樣板變更為 %s', config['value'])
-        return True
+        return {'config_list': config_list}
 
     def _validate(self, post_data):
         """跟資料庫的 sys config 比對，除了驗證資料類型之外，只回傳需要更改的 config list
@@ -55,26 +35,25 @@ class SiteConfigView:
         db_site_config_list = DAL.get_site_config_list()
         updated_config_list = []
         for key, value in post_data.items():
-            if key.startswith('site_'):
-                for each_config in db_site_config_list:
-                    if key == each_config.name:
-                        if not value:
-                            logger.error('系統設定 %s 其值為空', key)
-                            return False
-                        if each_config.type == 'int' and not value.isdigit():
-                            logger.error('系統設定 %s 其值 %s 不合法 int', key, value)
-                            return False
-                        if each_config.type == 'bool' and value not in ('true', 'false'):
-                            logger.error('系統設定 %s 其值 %s 不是合法 bool', key, value)
-                            return False
-                        if value != each_config.value:
-                            updated_config_list.append({'id': each_config.id, 'name': key, 'value': value})
-                            break
+            for each_config in db_site_config_list:
+                if key == each_config.name:
+                    if not value:
+                        logger.error('系統設定 %s 其值為空', key)
+                        return False
+                    if each_config.type == 'int' and not value.isdigit():
+                        logger.error('系統設定 %s 其值 %s 不合法 int', key, value)
+                        return False
+                    if each_config.type == 'bool' and value not in ('true', 'false'):
+                        logger.error('系統設定 %s 其值 %s 不是合法 bool', key, value)
+                        return False
+                    if value != each_config.value:
+                        updated_config_list.append({'id': each_config.id, 'name': key, 'value': value})
+                        break
         return updated_config_list
 
     @view_config(request_method='POST')
     def post_view(self):
-        """更新系統設定，並且更換 default symlink 的樣板"""
+        """更新系統設定"""
 
         updated_config_list = self._validate(self.request.POST)
         if updated_config_list:
