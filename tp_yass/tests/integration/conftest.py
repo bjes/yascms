@@ -77,7 +77,6 @@ def init_test_data():
     """自動初始化測試用資料"""
     cwd = os.getcwd()
     os.chdir(HERE)
-    subprocess.run(['inv', 'db.init-test'])
     for each_theme in pathlib.Path(HERE / 'tp_yass/uploads/themes/').glob('*'):
         if each_theme.name != 'tp_yass2020':
             shutil.rmtree(each_theme)
@@ -85,6 +84,9 @@ def init_test_data():
         if each_theme.name != 'tp_yass2020':
             shutil.rmtree(each_theme)
     for each_theme in pathlib.Path(HERE / 'tp_yass/static/').glob('*'):
-        if each_theme.name != 'tp_yass2020':
+        if (each_theme.name != 'tp_yass2020') and (not each_theme.name.startswith('.')):
             each_theme.unlink()
+    for each_banner in pathlib.Path(HERE / 'tp_yass/uploads/themes/tp_yass2020/banners/').glob('*'):
+        each_banner.unlink()
+    subprocess.run(['inv', 'db.init-test'])
     os.chdir(cwd)
