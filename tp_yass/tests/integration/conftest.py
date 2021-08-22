@@ -80,9 +80,12 @@ def init_test_data():
     for each_theme in pathlib.Path(HERE / 'tp_yass/uploads/themes/').glob('*'):
         if each_theme.name != 'tp_yass2020':
             shutil.rmtree(each_theme)
-    for each_theme in pathlib.Path(HERE / 'tp_yass/themes/').glob('*'):
-        if each_theme.name != 'tp_yass2020':
-            shutil.rmtree(each_theme)
+    for each_item in pathlib.Path(HERE / 'tp_yass/themes/').glob('*'):
+        if each_item.name != 'tp_yass2020':
+            if each_item.is_dir():
+                shutil.rmtree(each_item)
+            else:
+                each_item.unlink()
     for each_theme in pathlib.Path(HERE / 'tp_yass/static/').glob('*'):
         if (each_theme.name != 'tp_yass2020') and (not each_theme.name.startswith('.')):
             each_theme.unlink()

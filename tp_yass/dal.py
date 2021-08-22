@@ -125,6 +125,19 @@ class DAL:
         return DBSession.query(ConfigModel.value).filter_by(name='theme_name').one().value
 
     @staticmethod
+    def set_current_theme(theme_name):
+        """設定目前使用的樣板名稱
+
+        Args:
+            theme_name: 設定成預設的樣板名稱
+
+        Returns:
+            成功回傳 True
+        """
+        DBSession.query(ConfigModel).filter_by(name='theme_name').update({ConfigModel.value: theme_name})
+        return True
+
+    @staticmethod
     def get_theme_config_list():
         """回傳所有樣板名稱列表
 

@@ -4,6 +4,7 @@ from pyramid.testing import DummyRequest
 from webtest import Upload
 
 from tp_yass.helpers import get_project_abspath
+from tp_yass.dal import DAL
 
 
 def test_theme_config_list(webtest_admin_testapp):
@@ -101,13 +102,14 @@ def test_theme_config_banners_delete_view(webtest_admin_testapp):
     assert not banner_path.exists()
 
 
-def test_theme_config_upload_view(webtest_admin_testapp, datadir):
+def test_theme_config_upload_and_activate_view(webtest_admin_testapp, datadir):
     request = DummyRequest()
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
     theme_count = response.body.decode('utf8').count('一般設定')
 
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_upload'))
-    test_theme_file_name = 'test_theme.zip'
+    test_theme_name = 'test_theme'
+    test_theme_file_name = f'{test_theme_name}.zip'
     form = response.form
     form['theme'] = Upload(test_theme_file_name, open(datadir / test_theme_file_name, 'rb').read())
     response = form.submit()
@@ -115,3 +117,8 @@ def test_theme_config_upload_view(webtest_admin_testapp, datadir):
 
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
     assert response.body.decode('utf8').count('一般設定') == theme_count + 1
+
+    assert DAL.get_current_theme() == 'tp_yass2020'
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_activate',
+                                                            theme_name=test_theme_name))
+    assert DAL.get_current_theme() == test_theme_name
