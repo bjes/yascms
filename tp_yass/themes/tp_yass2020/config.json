@@ -7,6 +7,7 @@
     "settings": {
         "banners": {
             "description": "橫幅檔案名稱",
+            "size": "2000x400",
             "value": [
                 "banner01.jpg",
                 "banner02.jpg",
