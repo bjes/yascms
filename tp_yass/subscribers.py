@@ -11,11 +11,11 @@ def load_config(event):
     """
     event.request.site_config = event.request.cache.get_site_config()
 
-    # 為了實作可以 preview 不同的樣板，透過 GET 傳入參數 override_theme 用來動態改變 request.current_theme 的值
+    # 為了實作可以 preview 不同的樣板，透過 GET 傳入參數 override_theme_name 用來動態改變 request.current_theme 的值
     if (event.request.session.get('is_admin', False) and
-        event.request.GET.get('override_theme', None) in event.request.cache.get_available_theme_name_list()):
+        event.request.GET.get('override_theme_name', None) in event.request.cache.get_available_theme_name_list()):
 
-        event.request.current_theme_name = event.request.GET['override_theme']
+        event.request.current_theme_name = event.request.GET['override_theme_name']
     else:
         event.request.current_theme_name = event.request.cache.get_current_theme_name()
 

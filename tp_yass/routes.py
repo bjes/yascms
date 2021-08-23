@@ -9,11 +9,11 @@ def includeme(config):
 
     # frontend
     def preview_override_param(request, elements, kwargs):
-        """override_theme 這個 query param 可以用來暫時覆蓋 request.current_theme ，用在預覽樣板用。
-        所以一旦 url 上出現了 override_theme 且其值不為空，就要全部自動的加在所有 route_url 後"""
+        """override_theme_name 這個 query param 可以用來暫時覆蓋 request.current_theme ，用在預覽樣板用。
+        所以一旦 url 上出現了 override_theme_name 且其值不為空，就要全部自動的加在所有 route_url 後"""
         query = kwargs.setdefault('_query', {})
-        if request.GET.get('override_theme', None):
-            query.setdefault('override_theme', request.GET['override_theme'])
+        if request.GET.get('override_theme_name', None):
+            query.setdefault('override_theme_name', request.GET['override_theme_name'])
         return elements, kwargs
 
     config.add_route('homepage', '/', pregenerator=preview_override_param)
