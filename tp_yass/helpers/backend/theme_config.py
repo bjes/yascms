@@ -7,7 +7,7 @@ from tp_yass.dal import DAL
 from tp_yass.helpers import get_project_abspath
 
 
-class ThemeImporter:
+class ThemeController:
     """用來處理匯入樣板"""
 
     def __init__(self, theme_name, base_dir=None):

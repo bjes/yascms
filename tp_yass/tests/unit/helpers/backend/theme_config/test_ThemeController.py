@@ -1,17 +1,17 @@
 import pathlib
 
-from tp_yass.helpers.backend.theme_config import ThemeImporter
+from tp_yass.helpers.backend.theme_config import ThemeController
 
 
 def test_import_theme_should_work_as_expected(mocker):
     """ backend 的 theme_config 已經有實際跑 integration test 確認資料庫與 banners 都正常出現，
     所以這邊只跑 mock 驗證"""
 
-    mocker.patch.object(ThemeImporter, '_import_theme_config')
-    mocker.patch.object(ThemeImporter, 'import_theme_banners')
-    mocker.patch.object(ThemeImporter, '_setup_static_assets')
+    mocker.patch.object(ThemeController, '_import_theme_config')
+    mocker.patch.object(ThemeController, 'import_theme_banners')
+    mocker.patch.object(ThemeController, '_setup_static_assets')
 
-    theme_importer = ThemeImporter('tp_yass2020')
+    theme_importer = ThemeController('tp_yass2020')
     theme_importer.import_theme()
 
     theme_importer._import_theme_config.assert_called_once()
@@ -25,6 +25,6 @@ def test__setup_static_assets_should_link_to_theme_static_path(tmp_path):
     pathlib.Path(tmp_path / 'static').mkdir(parents=True)
     pathlib.Path(tmp_path / f'themes/{theme_name}/static').mkdir(parents=True)
 
-    theme_importer = ThemeImporter(theme_name, tmp_path)
+    theme_importer = ThemeController(theme_name, tmp_path)
     theme_importer._setup_static_assets()
     assert (tmp_path / f'static/{theme_name}').resolve() == tmp_path / f'themes/{theme_name}/static'

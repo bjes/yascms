@@ -1,4 +1,4 @@
-from tp_yass.helpers.backend.theme_config import ThemeImporter
+from tp_yass.helpers.backend.theme_config import ThemeController
 
 
 def test_import_theme_banners_with_theme_name_should_copy_banners_to_dest(tmp_path):
@@ -10,6 +10,6 @@ def test_import_theme_banners_with_theme_name_should_copy_banners_to_dest(tmp_pa
     src_banner = src_dir / banner_file_name
     src_banner.touch()
     assert not (dest_dir / banner_file_name).exists()
-    theme_importer = ThemeImporter('tp_yass2020', tmp_path)
+    theme_importer = ThemeController('tp_yass2020', tmp_path)
     theme_importer.import_theme_banners(src_dir, dest_dir)
     assert (dest_dir / banner_file_name).exists()

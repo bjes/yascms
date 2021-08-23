@@ -11,7 +11,7 @@ from tp_yass.dal import DAL
 from tp_yass.enum import ThemeConfigCustomType
 from tp_yass.helpers import get_project_abspath
 from tp_yass.helpers.file import save_file
-from tp_yass.helpers.backend.theme_config import ThemeImporter
+from tp_yass.helpers.backend.theme_config import ThemeController
 from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
                                                 ThemeConfigBannersEditForm,
                                                 ThemeConfigBannersUploadForm,
@@ -46,7 +46,7 @@ def theme_config_delete_view(request):
     if (theme_name in request.cache.get_available_theme_name_list() and
         theme_name != request.cache.get_current_theme_name()):
 
-        ThemeImporter(theme_name).delete_theme()
+        ThemeController(theme_name).delete_theme()
     return HTTPFound(location=request.route_url('backend_theme_config_list'))
 
 
@@ -78,7 +78,7 @@ class ThemeConfigUploadView:
                 pathlib.PosixPath(dest_file_name).unlink()
                 for each_theme in pathlib.PosixPath(tmpdirname).glob('*'):
                     shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
-                    theme_importer = ThemeImporter(each_theme.name)
+                    theme_importer = ThemeController(each_theme.name)
                     theme_importer.import_theme()
             self.request.cache.delete_available_theme_name_list()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
@@ -224,7 +224,7 @@ class ThemeConfigBannersUploadView:
         theme_config = DAL.get_theme_config(theme_name)
         form = ThemeConfigBannersUploadForm(self.request.POST)
         if form.validate():
-            theme_importer = ThemeImporter(theme_name)
+            theme_importer = ThemeController(theme_name)
             for each_file in form.banners.data:
                 dest_file = NamedTemporaryFile(prefix='banner',
                                                suffix=f'.{each_file.filename.split(".")[1]}',

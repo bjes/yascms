@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 
 from .. import models
-from ..helpers.backend.theme_config import ThemeImporter
+from ..helpers.backend.theme_config import ThemeController
 from ..enum import NavbarType
 
 
@@ -50,7 +50,7 @@ def setup_models(dbsession):
     dbsession.add(models.config.ConfigModel(name='site_homepage_news_quantity', value='20', type='int', description='設定首頁顯示幾筆最新消息'))
 
     # 匯入預設樣板 tp_yass2020 的佈景主題設定檔
-    theme_importer = ThemeImporter('tp_yass2020')
+    theme_importer = ThemeController('tp_yass2020')
     theme_importer.import_theme()
 
     # 預先建立單一頁面，以讓後面建立的 navbar 可以進行連結
