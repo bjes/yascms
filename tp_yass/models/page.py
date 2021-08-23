@@ -6,7 +6,6 @@ from sqlalchemy import (Column,
                         ForeignKey)
 from sqlalchemy.orm import relationship
 
-from tp_yass import models
 from tp_yass.models.associations import pages_tags_association, groups_pages_association
 
 
