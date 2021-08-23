@@ -1,13 +1,13 @@
-{% extends 'tp_yass:themes/' ~ request.current_theme ~ '/layouts/master.jinja2' %}
+{% extends 'tp_yass:themes/' ~ request.current_theme_name ~ '/layouts/master.jinja2' %}
 {% block layout_css %}
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/bootstrap-icons/bootstrap-icons.css') }}">
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/frontend.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/bootstrap-icons/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/frontend.css') }}">
   <style>
     .jumbotron-bg {
       background-image: url("{{ request.banner }}");
     }
-    {% if request.theme_config['settings']['custom_css']['visible'] %}
-      {{ request.theme_config['settings']['custom_css']['value']|safe }}
+    {% if request.current_theme_config['settings']['custom_css']['visible'] %}
+      {{ request.current_theme_config['settings']['custom_css']['value']|safe }}
     {% endif %}
   </style>
 {% endblock layout_css %}
@@ -24,9 +24,9 @@
 {% endblock banner %}
 {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
 {% block layout_js %}
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/js/jquery.smartmenus.min-1.1.0.js') }}"></script>
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js') }}"></script>
-  {% if request.theme_config['settings']['custom_js']['visible'] %}
-    <script>{{ request.theme_config['settings']['custom_js']['value']|safe }}</script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.smartmenus.min-1.1.0.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js') }}"></script>
+  {% if request.current_theme_config['settings']['custom_js']['visible'] %}
+    <script>{{ request.current_theme_config['settings']['custom_js']['value']|safe }}</script>
   {% endif %}
 {% endblock layout_js %}

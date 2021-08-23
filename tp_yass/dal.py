@@ -107,7 +107,7 @@ class DAL:
                          .all())
 
     @staticmethod
-    def get_available_themes():
+    def get_available_theme_name_list():
         """回傳目前可用的樣板名稱列表
 
         Returns:

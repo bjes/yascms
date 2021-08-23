@@ -15,7 +15,7 @@ class NewsCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -57,7 +57,7 @@ class NewsListView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -109,7 +109,7 @@ class NewsEditView:
         """
         self.context = context
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -175,7 +175,7 @@ class NewsCategoryCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_category_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -199,7 +199,7 @@ class NewsCategoryListView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_category_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -240,7 +240,7 @@ class NewsCategoryEditView:
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/backend/news_category_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/news_category_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
              renderer='',
              permission='view')
 def theme_config_list_view(request):
-    request.override_renderer = f'tp_yass:themes/{request.current_theme}/backend/theme_config_list.jinja2'
+    request.override_renderer = f'tp_yass:themes/{request.current_theme_name}/backend/theme_config_list.jinja2'
     return {'theme_config_list': DAL.get_theme_config_list()}
 
 
@@ -36,7 +36,7 @@ class ThemeConfigGeneralEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_general_edit.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_general_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -77,7 +77,7 @@ class ThemeConfigGeneralEditView:
             except ValueError as e:
                 pass
             DAL.update_theme_config(theme_config)
-            self.request.cache.delete_theme_config()
+            self.request.cache.delete_current_theme_config()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         return {'theme_config': theme_config,
                 'form': form}
@@ -91,7 +91,7 @@ class ThemeConfigBannersEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_banners_edit.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_banners_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -125,7 +125,7 @@ class ThemeConfigBannersEditView:
                         theme_config_changed = True
             if theme_config_changed:
                 DAL.update_theme_config(theme_config)
-                self.request.cache.delete_theme_config()
+                self.request.cache.delete_current_theme_config()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'theme_config': theme_config, 'form': form, 'banners_dict': banners_dict}
@@ -149,7 +149,7 @@ class ThemeConfigBannersUploadView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_banners_upload.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_banners_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -192,7 +192,7 @@ def theme_config_banners_delete_view(request):
             theme_config_changed = True
     if theme_config_changed:
         DAL.update_theme_config(theme_config)
-        request.cache.delete_theme_config()
+        request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
 
 
@@ -204,7 +204,7 @@ class ThemeConfigUploadView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme}/backend/theme_config_upload.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -226,7 +226,7 @@ class ThemeConfigUploadView:
                     shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
                     theme_importer = ThemeImporter(each_theme.name)
                     theme_importer.import_theme()
-            self.request.cache.delete_available_themes()
+            self.request.cache.delete_available_theme_name_list()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'form': form}
@@ -236,8 +236,8 @@ class ThemeConfigUploadView:
 def theme_config_activate_view(request):
     """將預設的樣板設定成指定的樣板"""
     theme_name = request.matchdict['theme_name']
-    if theme_name in request.cache.get_available_themes():
+    if theme_name in request.cache.get_available_theme_name_list():
         DAL.set_current_theme(theme_name)
-        request.cache.delete_current_theme()
-        request.cache.delete_theme_config()
+        request.cache.delete_current_theme_name()
+        request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_list'))

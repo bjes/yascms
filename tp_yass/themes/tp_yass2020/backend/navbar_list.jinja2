@@ -1,6 +1,6 @@
 {% extends 'layouts/master.jinja2' %}
 {% block page_css %}
-<link href="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/css/jquery.bonsai-2.1.1.css') }}" rel="stylesheet">
+<link href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/jquery.bonsai-2.1.1.css') }}" rel="stylesheet">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -52,7 +52,7 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-<script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme ~ '/js/jquery.bonsai-2.1.1.js') }}"></script>
+<script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.bonsai-2.1.1.js') }}"></script>
 <script>
   $(function() {
     $('#root-navbar').bonsai({

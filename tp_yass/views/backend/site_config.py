@@ -15,7 +15,7 @@ class SiteConfigView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{request.current_theme}/backend/site_config_edit.jinja2'
+        self.request.override_renderer = f'themes/{request.current_theme_name}/backend/site_config_edit.jinja2'
 
     @view_config(request_method='GET')
     def list_view(self):

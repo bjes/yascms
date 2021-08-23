@@ -18,7 +18,7 @@ class LoginView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme}/frontend/login.jinja2'
+        self.request.override_renderer = f'themes/{self.request.current_theme_name}/frontend/login.jinja2'
 
     @view_config(request_method='GET')
     def get(self):

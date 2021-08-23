@@ -19,10 +19,10 @@
               <tr>
                 <th scope="row" class="align-middle">{{ loop.index }}</th>
                 <td class="align-middle">
-                  {{ each_theme_config.name }} {% if each_theme_config.name == request.current_theme %}<span class="badge badge-info">啟用</span>{% endif %}</td>
+                  {{ each_theme_config.name }} {% if each_theme_config.name == request.current_theme_name %}<span class="badge badge-info">啟用</span>{% endif %}</td>
                 <td>
                   <div class="d-flex justify-content-end">
-                    {% if each_theme_config.name != request.current_theme %}<a class="btn btn-info mx-1" href="{{ request.route_url('backend_theme_config_activate', theme_name=each_theme_config.name) }}">啟用</a>{% endif %}
+                    {% if each_theme_config.name != request.current_theme_name %}<a class="btn btn-info mx-1" href="{{ request.route_url('backend_theme_config_activate', theme_name=each_theme_config.name) }}">啟用</a>{% endif %}
                     <a class="btn btn-primary mx-1" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=each_theme_config.name) }}">一般設定</a>
                     <a class="btn btn-primary mx-1" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=each_theme_config.name) }}">橫幅設定</a>
                     <a class="btn btn-danger mx-1" href="#">刪除</a>

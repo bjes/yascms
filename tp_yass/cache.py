@@ -29,22 +29,22 @@ class CacheController:
         self.redis.delete(f'{self.prefix}_site_config')
         return True
 
-    def get_theme_config(self, theme_name):
-        key = f'{self.prefix}_theme_config'
+    def get_current_theme_config(self):
+        key = f'{self.prefix}_current_theme_config'
         cache = self.redis.get(key)
         if cache:
             return pickle.loads(cache)
         else:
-            config = DAL.get_theme_config(theme_name)
+            config = DAL.get_theme_config(self.get_current_theme_name())
             self.redis.set(key, pickle.dumps(config))
             return config
 
-    def delete_theme_config(self):
-        self.redis.delete(f'{self.prefix}_theme_config')
+    def delete_current_theme_config(self):
+        self.redis.delete(f'{self.prefix}_current_theme_config')
         return True
 
-    def get_current_theme(self):
-        key = f'{self.prefix}_current_theme'
+    def get_current_theme_name(self):
+        key = f'{self.prefix}_current_theme_name'
         cache = self.redis.get(key)
         if cache:
             return cache.decode('utf8')
@@ -53,20 +53,20 @@ class CacheController:
             self.redis.set(key, current_theme)
             return current_theme
 
-    def delete_current_theme(self):
-        self.redis.delete(f'{self.prefix}_current_theme')
+    def delete_current_theme_name(self):
+        self.redis.delete(f'{self.prefix}_current_theme_name')
         return True
 
-    def get_available_themes(self):
-        key = f'{self.prefix}_available_themes'
+    def get_available_theme_name_list(self):
+        key = f'{self.prefix}_available_theme_name_list'
         cache = self.redis.get(key)
         if cache:
             return pickle.loads(cache)
         else:
-            available_themes = DAL.get_available_themes()
-            self.redis.set(key, pickle.dumps(available_themes))
-            return available_themes
+            available_theme_name_list = DAL.get_available_theme_name_list()
+            self.redis.set(key, pickle.dumps(available_theme_name_list))
+            return available_theme_name_list
 
-    def delete_available_themes(self):
-        self.redis.delete(f'{self.prefix}_available_themes')
+    def delete_available_theme_name_list(self):
+        self.redis.delete(f'{self.prefix}_available_theme_name_list')
         return True
