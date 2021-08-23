@@ -116,7 +116,7 @@ class DAL:
         return [each_theme.name for each_theme in DBSession.query(ThemeConfigModel.name)]
 
     @staticmethod
-    def get_current_theme():
+    def get_current_theme_name():
         """回傳目前使用的樣板名稱
 
         Returns:
@@ -125,7 +125,7 @@ class DAL:
         return DBSession.query(ConfigModel.value).filter_by(name='theme_name').one().value
 
     @staticmethod
-    def set_current_theme(theme_name):
+    def set_current_theme_name(theme_name):
         """設定目前使用的樣板名稱
 
         Args:
@@ -187,6 +187,19 @@ class DAL:
         """
         theme_config = ThemeConfigModel(name=config['name'], value=json.dumps(config, ensure_ascii=False))
         DBSession.add(theme_config)
+
+    @staticmethod
+    def delete_theme_config(theme_name):
+        """根據傳入的樣板名稱刪除該樣板的設定
+
+        Args:
+            theme_name: 樣板名稱
+
+        Returns:
+            成功回傳 True
+        """
+        DBSession.query(ThemeConfigModel).filter_by(name=theme_name).delete()
+        return True
 
     @staticmethod
     def create_user():

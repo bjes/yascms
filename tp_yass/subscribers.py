@@ -6,7 +6,7 @@ from pyramid.events import NewRequest, subscriber
 @subscriber(NewRequest)
 def load_config(event):
     """為避免不必要的權限檢查造成過多的資料庫存取，
-    採用 event 在每次 request 時將 site_config / current_theme / available_themes / current_theme_config 存入 request 下。
+    採用 event 在每次 request 時將 site_config / current_theme_name / current_theme_config 存入 request 下。
     其中 event.request.cache 是在初始化專案時透過 add_request_method 加進來的。
     """
     event.request.site_config = event.request.cache.get_site_config()

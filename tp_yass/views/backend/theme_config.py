@@ -28,6 +28,66 @@ def theme_config_list_view(request):
     return {'theme_config_list': DAL.get_theme_config_list()}
 
 
+@view_config(route_name='backend_theme_config_activate', permission='edit')
+def theme_config_activate_view(request):
+    """將預設的樣板設定成指定的樣板"""
+    theme_name = request.matchdict['theme_name']
+    if theme_name in request.cache.get_available_theme_name_list():
+        DAL.set_current_theme_name(theme_name)
+        request.cache.delete_current_theme_name()
+        request.cache.delete_current_theme_config()
+    return HTTPFound(location=request.route_url('backend_theme_config_list'))
+
+
+@view_config(route_name='backend_theme_config_delete', permission='edit')
+def theme_config_delete_view(request):
+    """刪除指定的樣板，為避免被 override_theme_name 這個 GET param 干擾，所以從 cache 取得 current_theme_name"""
+    theme_name = request.matchdict['theme_name']
+    if (theme_name in request.cache.get_available_theme_name_list() and
+        theme_name != request.cache.get_current_theme_name()):
+
+        ThemeImporter(theme_name).delete_theme()
+    return HTTPFound(location=request.route_url('backend_theme_config_list'))
+
+
+@view_defaults(route_name='backend_theme_config_upload',
+               renderer='',
+               permission='edit')
+class ThemeConfigUploadView:
+    """用來處理樣板的上傳"""
+
+    def __init__(self, request):
+        self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_upload.jinja2'
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        form = ThemeConfigUploadForm()
+        return {'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = ThemeConfigUploadForm(self.request.POST)
+        if form.validate():
+            with TemporaryDirectory() as tmpdirname:
+                dest_file_name = f'{tmpdirname}/{form.theme.data.filename}'
+                with open(dest_file_name, 'wb') as dest_file:
+                    save_file(form.theme.data, dest_file)
+                with zipfile.ZipFile(dest_file_name, 'r') as zip_fp:
+                    zip_fp.extractall(tmpdirname)
+                pathlib.PosixPath(dest_file_name).unlink()
+                for each_theme in pathlib.PosixPath(tmpdirname).glob('*'):
+                    shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
+                    theme_importer = ThemeImporter(each_theme.name)
+                    theme_importer.import_theme()
+            self.request.cache.delete_available_theme_name_list()
+            return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
+        else:
+            return {'form': form}
+
+
+
+
 @view_defaults(route_name='backend_theme_config_general_edit',
                renderer='',
                permission='edit')
@@ -169,7 +229,7 @@ class ThemeConfigBannersUploadView:
                 dest_file = NamedTemporaryFile(prefix='banner',
                                                suffix=f'.{each_file.filename.split(".")[1]}',
                                                delete=False,
-                                               dir=theme_importer.default_dest)
+                                               dir=theme_importer.uploaded_banners_dir)
                 save_file(each_file, dest_file)
                 dest_file.flush()
             return HTTPFound(location=self.request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
@@ -194,50 +254,3 @@ def theme_config_banners_delete_view(request):
         DAL.update_theme_config(theme_config)
         request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
-
-
-@view_defaults(route_name='backend_theme_config_upload',
-               renderer='',
-               permission='edit')
-class ThemeConfigUploadView:
-    """用來處理樣板的上傳"""
-
-    def __init__(self, request):
-        self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_upload.jinja2'
-
-    @view_config(request_method='GET')
-    def get_view(self):
-        form = ThemeConfigUploadForm()
-        return {'form': form}
-
-    @view_config(request_method='POST')
-    def post_view(self):
-        form = ThemeConfigUploadForm(self.request.POST)
-        if form.validate():
-            with TemporaryDirectory() as tmpdirname:
-                dest_file_name = f'{tmpdirname}/{form.theme.data.filename}'
-                with open(dest_file_name, 'wb') as dest_file:
-                    save_file(form.theme.data, dest_file)
-                with zipfile.ZipFile(dest_file_name, 'r') as zip_fp:
-                    zip_fp.extractall(tmpdirname)
-                pathlib.PosixPath(dest_file_name).unlink()
-                for each_theme in pathlib.PosixPath(tmpdirname).glob('*'):
-                    shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
-                    theme_importer = ThemeImporter(each_theme.name)
-                    theme_importer.import_theme()
-            self.request.cache.delete_available_theme_name_list()
-            return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
-        else:
-            return {'form': form}
-
-
-@view_config(route_name='backend_theme_config_activate', permission='edit')
-def theme_config_activate_view(request):
-    """將預設的樣板設定成指定的樣板"""
-    theme_name = request.matchdict['theme_name']
-    if theme_name in request.cache.get_available_theme_name_list():
-        DAL.set_current_theme(theme_name)
-        request.cache.delete_current_theme_name()
-        request.cache.delete_current_theme_config()
-    return HTTPFound(location=request.route_url('backend_theme_config_list'))

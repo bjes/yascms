@@ -49,7 +49,7 @@ class CacheController:
         if cache:
             return cache.decode('utf8')
         else:
-            current_theme = DAL.get_current_theme()
+            current_theme = DAL.get_current_theme_name()
             self.redis.set(key, current_theme)
             return current_theme
 
