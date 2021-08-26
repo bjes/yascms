@@ -3,7 +3,7 @@ from pyramid_sqlalchemy import BaseObject
 
 
 class ConfigModel(BaseObject):
-    '''存放系統設定值'''
+    """存放系統設定值"""
 
     __tablename__ = 'config'
 
