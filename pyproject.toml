@@ -40,6 +40,7 @@ mycli = "*"
 Sphinx = "*"
 pylint = "*"
 pytest-datadir = "*"
+Cython = "*"
 
 [build-system]
 requires = ["poetry>=0.12"]
