@@ -67,3 +67,19 @@ class ThemeConfigCustomType(enum.IntEnum):
 
     # 整數
     INTEGER = 3
+
+
+class HomepageOrderType(enum.IntEnum):
+    """用來表示首頁顯示順序的類別"""
+
+    # 最新消息模組
+    NEWS = 1
+
+    # 單一頁面模組
+    PAGE = 2
+
+    # 分機表模組
+    TELEXT = 3
+
+    # 好站連結模組
+    LINKS = 4
