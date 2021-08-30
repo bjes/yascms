@@ -1,8 +1,8 @@
 """add homepage_order table
 
-Revision ID: ea1b8fbfe9af
+Revision ID: 1501538eecba
 Revises: bbd5019a0645
-Create Date: 2021-08-30 02:23:43.570294
+Create Date: 2021-08-30 03:16:31.497920
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ea1b8fbfe9af'
+revision = '1501538eecba'
 down_revision = 'bbd5019a0645'
 branch_labels = None
 depends_on = None
@@ -21,8 +21,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
     sa.Column('type', sa.Integer(), nullable=False),
-    sa.Column('sub_type', sa.Integer(), nullable=True),
-    sa.Column('quantity', sa.Integer(), nullable=False),
+    sa.Column('params', sa.Text(), nullable=False),
     sa.Column('description', sa.String(length=100), nullable=True),
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.PrimaryKeyConstraint('id')

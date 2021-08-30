@@ -83,3 +83,10 @@ class HomepageOrderType(enum.IntEnum):
 
     # 好站連結模組
     LINKS = 4
+
+
+class HomepageOrderParamsSubType(enum.IntEnum):
+    """用來定義 sub type，會用到 sub type 的為最新消息與好站連結"""
+
+    # 未指定
+    UNSPECIFIED = 0

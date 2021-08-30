@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 
 from pyramid_sqlalchemy import BaseObject
 
@@ -16,12 +16,10 @@ class HomepageOrderModel(BaseObject):
     # 類型，目前可以接受的類型定義在 tp_yass.enum.HomepageOrderType
     type = Column(Integer, nullable=False)
 
-    # 子類型，目前只有最新消息和好站連結，可以指定子類型，用來讓首頁顯示特定類型的內容。
-    # 0 代表沒有指定全部顯示
-    sub_type = Column(Integer, nullable=True)
+    # 顏色
 
-    # 要撈取的數量，比方最新消息要撈幾筆資料顯示在首頁
-    quantity = Column(Integer, nullable=False)
+    # 參數，不同的類型會需要儲存不同的參數，以 json 格式存放
+    params = Column(Text, nullable=False)
 
     # 詳細說明
     description = Column(String(100))

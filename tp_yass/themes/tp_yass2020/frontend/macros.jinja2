@@ -1,0 +1,95 @@
+{% macro generate_news_block(news_entities) %}
+  <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#3498db;">
+    <div class="container">
+      <p class="h1 display-5 text-center text-white"><i class="bi bi-megaphone"></i> 最新消息</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card border-primary mb-3">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped text-center mb-0">
+            <thead>
+              <tr>
+                <th scope="col" class="d-none d-md-table-cell">編號</th>
+                <th scope="col" class="d-none d-md-table-cell">時間</th>
+                <th scope="col" class="d-none d-sm-table-cell">發佈單位</th>
+                <th scope="col" class="d-none d-sm-table-cell">類別</th>
+                <th scope="col" class="d-none d-sm-table-cell">標題</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for each_news in news_entities %}
+                <tr>
+                  <th class="d-none d-md-table-cell" scope="row">{{ loop.index }}</th>
+                  <td class="d-none d-md-table-cell">{{ each_news.publication_date }}</td>
+                  <td class="d-none d-sm-table-cell">{{ each_news.group.name }}</td>
+                  <td class="d-none d-sm-table-cell">{{ each_news.category.name }}</td>
+                  <td style="padding: 0px;"><a style="display: block; width: 100%; height: 100%; padding: .75rem;" href="{{ request.route_url('news_get', news_id=each_news.id) }}"><li class="d-flex justify-content-between align-items-center"><span>{% if each_news.is_pinned %}<i class="bi bi-pin"></i> {% endif %}{{ each_news.title }}</span><span class="badge badge-pill badge-primary d-md-none">{{ each_news.publication_date.strftime('%Y-%m-%d %H:%M') }}</span></li></a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+      <div class="col-12 text-center"><a class="btn btn-primary btn-lg" href="{{ request.route_url('news_list') }}">顯示全部最新消息</a></div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro generate_page_block(page_entity) %}
+  <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
+    <div class="container">
+      <p class="h1 display-5 text-center text-white">{{ page.title }}</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {{ page.content|safe }}
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro generate_telext_block(telext_entities) %}
+  <div class="jumbotron jumbotron-fluid my-3 p-2" style="background-color: #2ecc71;">
+    <div class="container">
+      <p class="h1 display-5 text-center text-white"><i class="bi bi-telephone"></i> 常用分機</a></p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      {% for each_telext in telext_entities %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
+          <a href="tel:{{ request.site_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="col-12 text-center mt-2"><a class="btn btn-lg text-white" href="{{ request.route_path('telext') }}" style="background-color: #2ecc71;">觀看完整分機表</a></div>
+  </div>
+{% endmacro %}
+
+{% macro generate_links_block(link_entities) %}
+  <div class="jumbotron jumbotron-fluid my-3 p-2 d-none d-sm-block" style="background-color: #e67e22;">
+    <div class="container">
+      <p class="h1 display-5 text-center text-white"><i class="bi bi-link-45deg"></i> 好站連結</p>
+    </div>
+  </div>
+
+  <div class="container d-none d-sm-block">
+    <div class="row text-center align-items-center">
+      {% for each_link in link_list %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
+          <a href="{{ each_link.url }}" target="_blank"><img src="{{ request.static_path('tp_yass:uploads/links/' ~ each_link.icon) }}" class="img-fluid img-thumbnail align-middle" alt="{{ each_link.title }}"></a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="col-12 text-center mt-2"><a class="btn btn-lg text-white" href="{{ request.route_path('links') }}" style="background-color: #e67e22;">觀看完整好站連結</a></div>
+  </div>
+{% endmacro %}

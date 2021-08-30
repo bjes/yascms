@@ -47,8 +47,6 @@ def setup_models(dbsession):
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
     dbsession.add(models.config.ConfigModel(name='sys_maint_mode', value='0', type='bool', description='設定全站是否唯讀'))
 
-    dbsession.add(models.config.ConfigModel(name='site_homepage_news_quantity', value='20', type='int', description='設定首頁顯示幾筆最新消息'))
-
     # 匯入預設樣板 tp_yass2020 的佈景主題設定檔
     theme_importer = ThemeController('tp_yass2020')
     theme_importer.import_theme()

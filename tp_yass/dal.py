@@ -22,12 +22,23 @@ from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.enum import GroupType, NavbarType
+from tp_yass.models.homepage_order import HomepageOrderModel
 
 
 logger = logging.getLogger(__name__)
 
 
 class DAL:
+
+    @staticmethod
+    def get_homepage_order():
+        """回傳 homepage_order 資料表的資料，作為首頁顯示
+
+        Returns:
+            homepage_order 資料表的資料
+        """
+        return DBSession.query(HomepageOrderModel).order_by(HomepageOrderModel.order, HomepageOrderModel.id)
+
 
     @staticmethod
     def auth_user(account, password):
@@ -43,18 +54,6 @@ class DAL:
         user = DBSession.query(UserModel).filter_by(account=account).one_or_none()
         if user and user.verify_password(password):
             return user
-
-    @staticmethod
-    def get_latest_news(quantity):
-        """傳回指定筆數的最新消息
-
-        Args:
-            quantity: 指定要撈取幾筆最新消息
-
-        Returns:
-            回傳取得的最新消息
-        """
-        return DBSession.query(NewsModel).order_by(NewsModel.is_pinned.desc()).order_by(NewsModel.id.desc())[:quantity]
 
     @staticmethod
     def get_news_list(page_number=1, quantity_per_page=20, category_id=None):
@@ -714,7 +713,7 @@ class DAL:
 
     @staticmethod
     def get_page_list(page_number=1, quantity_per_page=20, group_id=None, pagination=True):
-        """傳回使用者列表
+        """傳回單一頁面列表
 
         Args:
             page_number: 指定頁數，若沒指定則回傳第一頁
@@ -723,7 +722,7 @@ class DAL:
             pagination: 代表是否要分頁，預設為要分頁，若為 False 代表不分頁傳回全部的單一頁面
 
         Returns:
-            回傳使用者列表
+            回傳單一頁面列表
         """
         results = DBSession.query(PageModel)
         if group_id:
