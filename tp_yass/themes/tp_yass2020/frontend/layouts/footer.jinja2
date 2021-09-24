@@ -2,21 +2,21 @@
   <div class="container">
     <div class="row">
       <div class="col py-3">
-        <p><a href="tel:+886-2-{{ request.site_config['site_phone'] }}"><i class="bi bi-telephone"></i> 聯絡電話：{{ request.site_config['site_phone'] }}</a></p>
-        <p><a href="tel:+886-2-{{ request.site_config['site_fax'] }}"><i class="bi bi-telephone-fill"></i> 傳真電話：{{ request.site_config['site_fax'] }}</a></p>
-        <p><a href="mailto:{{ request.site_config['site_email'] }}"><i class="bi bi-envelope"></i> 學校信箱：{{ request.site_config['site_email'] }}</a></p>
-        {% if request.site_config['site_map_url'] %}
-          <address><a href="{{ request.site_config['site_map_url'] }}" target="_blank"><i class="bi bi-map"></i> 學校地址：{{ request.site_config['site_zip'] }} {{ request.site_config['site_address'] }}</a></address>
+        <p><a href="tel:+886-2-{{ request.global_config['site_phone'] }}"><i class="bi bi-telephone"></i> 聯絡電話：{{ request.global_config['site_phone'] }}</a></p>
+        <p><a href="tel:+886-2-{{ request.global_config['site_fax'] }}"><i class="bi bi-telephone-fill"></i> 傳真電話：{{ request.global_config['site_fax'] }}</a></p>
+        <p><a href="mailto:{{ request.global_config['site_email'] }}"><i class="bi bi-envelope"></i> 學校信箱：{{ request.global_config['site_email'] }}</a></p>
+        {% if request.global_config['site_map_url'] %}
+          <address><a href="{{ request.global_config['site_map_url'] }}" target="_blank"><i class="bi bi-map"></i> 學校地址：{{ request.global_config['site_zip'] }} {{ request.global_config['site_address'] }}</a></address>
         {% endif %}
       </div>
       <div class="col d-none d-sm-block">
-        {% if request.site_config['site_map_embedded_url'] %}
-          <iframe class="h-100 w-100" src="{{ request.site_config['site_map_embedded_url'] }}" frameborder="0" style="border:0" allowfullscreen></iframe>
+        {% if request.global_config['site_map_embedded_url'] %}
+          <iframe class="h-100 w-100" src="{{ request.global_config['site_map_embedded_url'] }}" frameborder="0" style="border:0" allowfullscreen></iframe>
         {% endif %}
       </div>
     </div>
     <div class="row my-2">
-      <div class="col text-center">© 2019-2021 {{ request.site_config['site_name'] }}</div>
+      <div class="col text-center">© 2019-2021 {{ request.global_config['site_name'] }}</div>
     </div>
   </div>
 </footer>

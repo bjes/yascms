@@ -14,7 +14,7 @@ from pyramid_sqlalchemy import Session as DBSession
 from tp_yass.models.account import UserModel, GroupModel
 from tp_yass.models.news import NewsModel, NewsCategoryModel, NewsAttachmentModel
 from tp_yass.models.navbar import NavbarModel
-from tp_yass.models.config import ConfigModel
+from tp_yass.models.global_config import GlobalConfigModel
 from tp_yass.models.page import PageModel, PageAttachmentModel
 from tp_yass.models.tag import TagModel
 from tp_yass.models.link import LinkModel, LinkCategoryModel
@@ -88,10 +88,10 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_site_config_list():
+    def get_global_config_list():
         """傳回系統相關的設定檔，都是以 site_ 開頭的"""
-        return (DBSession.query(ConfigModel)
-                         .filter(ConfigModel.name.startswith('site_'))
+        return (DBSession.query(GlobalConfigModel)
+                         .filter(GlobalConfigModel.name.startswith('site_'))
                          .all())
 
     @staticmethod
@@ -110,7 +110,7 @@ class DAL:
         Returns:
             回傳目前的樣板名稱
         """
-        return DBSession.query(ConfigModel.value).filter_by(name='theme_name').one().value
+        return DBSession.query(GlobalConfigModel.value).filter_by(name='theme_name').one().value
 
     @staticmethod
     def set_current_theme_name(theme_name):
@@ -122,7 +122,7 @@ class DAL:
         Returns:
             成功回傳 True
         """
-        DBSession.query(ConfigModel).filter_by(name='theme_name').update({ConfigModel.value: theme_name})
+        DBSession.query(GlobalConfigModel).filter_by(name='theme_name').update({GlobalConfigModel.value: theme_name})
         return True
 
     @staticmethod
@@ -545,10 +545,10 @@ class DAL:
             return False
 
     @staticmethod
-    def update_site_config_list(updated_config_list):
+    def update_global_config_list(updated_config_list):
         """更新 site config"""
         for each_config in updated_config_list:
-            DBSession.query(ConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
+            DBSession.query(GlobalConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)
         return True
 
     @staticmethod

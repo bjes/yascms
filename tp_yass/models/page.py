@@ -6,7 +6,7 @@ from sqlalchemy import (Column,
                         ForeignKey)
 from sqlalchemy.orm import relationship
 
-from tp_yass.models.associations import pages_tags_association, groups_pages_association
+from tp_yass.models.association import pages_tags_association, groups_pages_association
 
 
 class PageAttachmentModel(BaseObject):

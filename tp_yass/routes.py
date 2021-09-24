@@ -28,7 +28,7 @@ def includeme(config):
     # backend
     config.add_route('backend_homepage', '/backend/', factory=auth_user_factory, pregenerator=preview_override_param)
 
-    config.add_route('backend_site_config_edit', '/backend/site/config/edit', factory=admin_factory,
+    config.add_route('backend_global_config_edit', '/backend/site/config/edit', factory=admin_factory,
                                                                               pregenerator=preview_override_param)
 
     config.add_route('backend_theme_config_list', '/backend/theme_config/list', factory=admin_factory,

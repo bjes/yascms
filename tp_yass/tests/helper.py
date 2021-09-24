@@ -14,7 +14,7 @@ def import_test_db_data(ini_file_path):
 
     from tp_yass.models.account import GroupModel, UserModel
     from tp_yass.models.news import NewsModel, NewsCategoryModel
-    from tp_yass.models.config import ConfigModel
+    from tp_yass.models.global_config import GlobalConfigModel
     from tp_yass.models.page import PageModel
     from tp_yass.models.navbar import NavbarModel
     from tp_yass.models.theme_config import ThemeConfigModel
@@ -27,16 +27,16 @@ def import_test_db_data(ini_file_path):
     session = Session()
 
     # 初始化系統設定
-    session.query(ConfigModel).filter_by(name='site_name').update({'value': '臺北市中山區濱江國小'})
-    session.query(ConfigModel).filter_by(name='site_slogan').update({'value': '快樂學習 - 教學相長'})
-    session.query(ConfigModel).filter_by(name='theme_name').update({'value': 'tp_yass2020'})
-    session.query(ConfigModel).filter_by(name='site_phone').update({'value': '85021571'})
-    session.query(ConfigModel).filter_by(name='site_fax').update({'value': '85011146'})
-    session.query(ConfigModel).filter_by(name='site_email').update({'value': 'public@bjes.tp.edu.tw'})
-    session.query(ConfigModel).filter_by(name='site_zip').update({'value': '10462'})
-    session.query(ConfigModel).filter_by(name='site_address').update({'value': '臺北市中山區樂群二路266巷99號'})
-    session.query(ConfigModel).filter_by(name='site_map_url').update({'value': 'https://goo.gl/maps/X6Y4E37U66aMqQHY6'})
-    session.query(ConfigModel).filter_by(name='site_map_embedded_url').update({'value': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.7043991522146!2d121.55944821523249!3d25.07800624267944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac72e5e39d17%3A0x3934b7c47c1bbf29!2zMTA0OTHlj7DljJfluILkuK3lsbHljYDmqILnvqTkuozot68yNjblt7c5OeiZnw!5e0!3m2!1szh-TW!2stw!4v1551164410802'})
+    session.query(GlobalConfigModel).filter_by(name='site_name').update({'value': '臺北市中山區濱江國小'})
+    session.query(GlobalConfigModel).filter_by(name='site_slogan').update({'value': '快樂學習 - 教學相長'})
+    session.query(GlobalConfigModel).filter_by(name='theme_name').update({'value': 'tp_yass2020'})
+    session.query(GlobalConfigModel).filter_by(name='site_phone').update({'value': '85021571'})
+    session.query(GlobalConfigModel).filter_by(name='site_fax').update({'value': '85011146'})
+    session.query(GlobalConfigModel).filter_by(name='site_email').update({'value': 'public@bjes.tp.edu.tw'})
+    session.query(GlobalConfigModel).filter_by(name='site_zip').update({'value': '10462'})
+    session.query(GlobalConfigModel).filter_by(name='site_address').update({'value': '臺北市中山區樂群二路266巷99號'})
+    session.query(GlobalConfigModel).filter_by(name='site_map_url').update({'value': 'https://goo.gl/maps/X6Y4E37U66aMqQHY6'})
+    session.query(GlobalConfigModel).filter_by(name='site_map_embedded_url').update({'value': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.7043991522146!2d121.55944821523249!3d25.07800624267944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac72e5e39d17%3A0x3934b7c47c1bbf29!2zMTA0OTHlj7DljJfluILkuK3lsbHljYDmqILnvqTkuozot68yNjblt7c5OeiZnw!5e0!3m2!1szh-TW!2stw!4v1551164410802'})
     session.commit()
 
     # 建群組。初始化資料庫時會先建立 root group (id 為 1) 與 admin (id 為 2) 這邊從 3 開始

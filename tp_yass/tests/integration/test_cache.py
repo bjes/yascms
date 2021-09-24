@@ -10,29 +10,29 @@ def get_redis(redis_url):
     return redis.Redis.from_url(redis_url)
 
 
-def test_get_site_config_should_return_config(ini_settings, init_db_session):
+def test_get_global_config_should_return_config(ini_settings, init_db_session):
     test_prefix = 'test'
 
     redis_instance = get_redis(ini_settings['redis.sessions.url'])
-    redis_instance.delete(f'{test_prefix}_site_config')
+    redis_instance.delete(f'{test_prefix}_global_config')
 
     request = DummyRequest()
     cache = CacheController(ini_settings['redis.sessions.url'], test_prefix)
-    assert cache(request).get_site_config()
-    assert redis_instance.get(f'{test_prefix}_site_config')
+    assert cache(request).get_global_config()
+    assert redis_instance.get(f'{test_prefix}_global_config')
 
 
-def test_delete_site_config_should_delete_config(ini_settings, init_db_session):
+def test_delete_global_config_should_delete_config(ini_settings, init_db_session):
     test_prefix = 'test'
 
     redis_instance = get_redis(ini_settings['redis.sessions.url'])
-    redis_instance.set(f'{test_prefix}_site_config', 'foo')
+    redis_instance.set(f'{test_prefix}_global_config', 'foo')
 
     request = DummyRequest()
     cache = CacheController(ini_settings['redis.sessions.url'], test_prefix)
 
-    assert cache(request).delete_site_config()
-    assert not redis_instance.exists(f'{test_prefix}_site_config')
+    assert cache(request).delete_global_config()
+    assert not redis_instance.exists(f'{test_prefix}_global_config')
 
 
 def test_get_current_theme_config_should_return_config(ini_settings, init_db_session):

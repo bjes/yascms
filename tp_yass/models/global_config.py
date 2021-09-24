@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, String, Text
 from pyramid_sqlalchemy import BaseObject
 
 
-class ConfigModel(BaseObject):
-    """存放系統設定值"""
+class GlobalConfigModel(BaseObject):
+    """存放全站層級的設定值"""
 
-    __tablename__ = 'config'
+    __tablename__ = 'global_config'
 
     id = Column(Integer, primary_key=True)
 

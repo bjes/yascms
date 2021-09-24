@@ -10,7 +10,7 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
-from tp_yass.models.associations import news_tags_association
+from tp_yass.models.association import news_tags_association
 
 
 class NewsAttachmentModel(BaseObject):

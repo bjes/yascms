@@ -4,7 +4,7 @@ from sqlalchemy import (Column,
                         String)
 from sqlalchemy.orm import relationship
 
-from tp_yass.models.associations import news_tags_association, pages_tags_association
+from tp_yass.models.association import news_tags_association, pages_tags_association
 
 
 class TagModel(BaseObject):

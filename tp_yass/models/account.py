@@ -6,7 +6,7 @@ from sqlalchemy import (Column,
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
-from tp_yass.models.associations import users_groups_association, groups_pages_association
+from tp_yass.models.association import users_groups_association, groups_pages_association
 from tp_yass.enum import GroupType
 
 
