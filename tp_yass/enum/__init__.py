@@ -69,7 +69,7 @@ class ThemeConfigCustomType(enum.IntEnum):
     INTEGER = 3
 
 
-class HomepageOrderType(enum.IntEnum):
+class HomepageItemType(enum.IntEnum):
     """用來表示首頁顯示順序的類別"""
 
     # 最新消息模組
@@ -85,7 +85,7 @@ class HomepageOrderType(enum.IntEnum):
     LINKS = 4
 
 
-class HomepageOrderParamsSubType(enum.IntEnum):
+class HomepageItemParamsSubType(enum.IntEnum):
     """用來定義 sub type，會用到 sub type 的為最新消息與好站連結"""
 
     # 未指定

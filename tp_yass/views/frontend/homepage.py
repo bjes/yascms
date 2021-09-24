@@ -3,7 +3,7 @@ import json
 import logging
 from pyramid.view import view_config
 
-from tp_yass.enum import NavbarType, HomepageOrderType, HomepageOrderParamsSubType
+from tp_yass.enum import NavbarType, HomepageItemType, HomepageItemParamsSubType
 from tp_yass.helpers.navbar import generate_navbar_trees
 from tp_yass.dal import DAL
 
@@ -18,18 +18,18 @@ def homepage_view(request):
     homepage_items_list = []
     for each_item in DAL.get_theme_config(request.current_theme_name)['settings']['homepage_items_order']['value']:
         new_item = copy.deepcopy(each_item)
-        if new_item['type'] == HomepageOrderType.NEWS:
-            if new_item['params']['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
+        if new_item['type'] == HomepageItemType.NEWS:
+            if new_item['params']['sub_type'] == HomepageItemParamsSubType.UNSPECIFIED:
                 new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'])
             else:
                 new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'],
                                                          category_id=new_item['params']['sub_type'])
-        elif new_item['type'] == HomepageOrderType.PAGE:
+        elif new_item['type'] == HomepageItemType.PAGE:
             new_item['entities'] = DAL.get_page(new_item['params']['id'])
-        elif new_item['type'] == HomepageOrderType.TELEXT:
+        elif new_item['type'] == HomepageItemType.TELEXT:
             new_item['entities'] = DAL.get_pinned_telext_list()
-        elif new_item['type'] == HomepageOrderType.LINKS:
-            if new_item['params']['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
+        elif new_item['type'] == HomepageItemType.LINKS:
+            if new_item['params']['sub_type'] == HomepageItemParamsSubType.UNSPECIFIED:
                 new_item['entities'] = DAL.get_pinned_link_list()
             else:
                 new_item['entities'] = DAL.get_link_list(quantity_per_page=new_item['params']['quantity'],
@@ -41,5 +41,5 @@ def homepage_view(request):
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
             'homepage_items_list': homepage_items_list,
             'NavbarType': NavbarType,
-            'HomepageOrderType': HomepageOrderType,
-            'HomepageOrderParamsSubType': HomepageOrderParamsSubType}
+            'HomepageItemType': HomepageItemType,
+            'HomepageItemParamsSubType': HomepageItemParamsSubType}

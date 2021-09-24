@@ -2,6 +2,8 @@ import random
 
 from pyramid.events import NewRequest, subscriber
 
+from tp_yass.dal import DAL
+
 
 @subscriber(NewRequest)
 def load_config(event):
@@ -15,12 +17,13 @@ def load_config(event):
     if (event.request.session.get('is_admin', False) and
         event.request.GET.get('override_theme_name', None) in event.request.cache.get_available_theme_name_list()):
 
-        event.request.current_theme_name = event.request.GET['override_theme_name']
+        current_theme_name = event.request.GET['override_theme_name']
+        event.request.current_theme_name = current_theme_name
+        event.request.current_theme_config = DAL.get_theme_config(current_theme_name)
     else:
         event.request.current_theme_name = event.request.cache.get_current_theme_name()
-
-    # 只有非後台的 url 才需要撈出佈景主題的設定檔置於 request 裡
-    if not event.request.path.startswith('/backend'):
         event.request.current_theme_config = event.request.cache.get_current_theme_config()
+
+    if not event.request.path.startswith('/backend'):
         banner_name = random.choice(event.request.current_theme_config['settings']['banners']['value'])
         event.request.banner = event.request.static_url(f'tp_yass:uploads/themes/{event.request.current_theme_name}/banners/{banner_name}')

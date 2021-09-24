@@ -3,13 +3,13 @@
 {% block content %}
 
   {% for each_item in homepage_items_list %}
-    {% if each_item['type'] == HomepageOrderType.NEWS.value %}
+    {% if each_item['type'] == HomepageItemType.NEWS.value %}
       {{ generate_news_block(each_item['entities']) }}
-    {% elif each_item['type'] == HomepageOrderType.PAGE.value %}
+    {% elif each_item['type'] == HomepageItemType.PAGE.value %}
       {{ generate_page_block(each_item['entities']) }}
-    {% elif each_item['type'] == HomepageOrderType.TELEXT.value %}
+    {% elif each_item['type'] == HomepageItemType.TELEXT.value %}
       {{ generate_telext_block(each_item['entities']) }}
-    {% elif each_item['type'] == HomepageOrderType.LINKS.value %}
+    {% elif each_item['type'] == HomepageItemType.LINKS.value %}
       {{ generate_links_block(each_item['entities']) }}
     {% endif %}
   {% endfor %}
