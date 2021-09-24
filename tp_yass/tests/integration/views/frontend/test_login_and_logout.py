@@ -108,7 +108,7 @@ def test_login_and_logout_logic_with_via_webtest(webtest_testapp):
     form.submit()
     response = webtest_testapp.get(request.route_url('backend_homepage'))
     assert response.status_int == 200
-    response = webtest_testapp.get(request.route_url('backend_global_config_edit'), expect_errors=True)
+    response = webtest_testapp.get(request.route_url('backend_site_config_edit'), expect_errors=True)
     assert response.status_int == 403
     webtest_testapp.get(request.route_url('logout'))
     response = webtest_testapp.get(request.route_url('backend_homepage'), expect_errors=True)
@@ -122,7 +122,7 @@ def test_login_and_logout_logic_with_via_webtest(webtest_testapp):
     form.submit()
     response = webtest_testapp.get(request.route_url('backend_homepage'))
     assert response.status_int == 200
-    response = webtest_testapp.get(request.route_url('backend_global_config_edit'), expect_errors=True)
+    response = webtest_testapp.get(request.route_url('backend_site_config_edit'), expect_errors=True)
     assert response.status_int == 200
     webtest_testapp.get(request.route_url('logout'))
     response = webtest_testapp.get(request.route_url('backend_homepage'), expect_errors=True)

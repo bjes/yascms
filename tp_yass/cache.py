@@ -15,18 +15,18 @@ class CacheController:
     def __call__(self, request):
         return self
 
-    def get_global_config(self):
-        key = f'{self.prefix}_global_config'
+    def get_site_config(self):
+        key = f'{self.prefix}_site_config'
         cache = self.redis.get(key)
         if cache:
             return pickle.loads(cache)
         else:
-            config = {config.name: config.value for config in DAL.get_global_config_list()}
+            config = {config.name: config.value for config in DAL.get_site_config_list()}
             self.redis.set(key, pickle.dumps(config))
             return config
 
-    def delete_global_config(self):
-        self.redis.delete(f'{self.prefix}_global_config')
+    def delete_site_config(self):
+        self.redis.delete(f'{self.prefix}_site_config')
         return True
 
     def get_current_theme_config(self):

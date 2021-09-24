@@ -88,7 +88,7 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_global_config_list():
+    def get_site_config_list():
         """傳回系統相關的設定檔，都是以 site_ 開頭的"""
         return (DBSession.query(GlobalConfigModel)
                          .filter(GlobalConfigModel.name.startswith('site_'))
@@ -545,7 +545,7 @@ class DAL:
             return False
 
     @staticmethod
-    def update_global_config_list(updated_config_list):
+    def update_site_config_list(updated_config_list):
         """更新 site config"""
         for each_config in updated_config_list:
             DBSession.query(GlobalConfigModel).filter_by(id=each_config['id']).update(each_config, synchronize_session=False)

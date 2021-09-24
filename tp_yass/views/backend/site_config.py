@@ -8,20 +8,20 @@ from tp_yass.dal import DAL
 logger = logging.getLogger(__name__)
 
 
-@view_defaults(route_name='backend_global_config_edit',
+@view_defaults(route_name='backend_site_config_edit',
                renderer='',
                permission='edit')
 class SiteConfigView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{request.current_theme_name}/backend/global_config_edit.jinja2'
+        self.request.override_renderer = f'themes/{request.current_theme_name}/backend/site_config_edit.jinja2'
 
     @view_config(request_method='GET')
     def list_view(self):
         """列出 site config 列表"""
 
-        config_list = DAL.get_global_config_list()
+        config_list = DAL.get_site_config_list()
         return {'config_list': config_list}
 
     def _validate(self, post_data):
@@ -32,10 +32,10 @@ class SiteConfigView:
         Returns:
             回傳需要更新的 list
         """
-        db_global_config_list = DAL.get_global_config_list()
+        db_site_config_list = DAL.get_site_config_list()
         updated_config_list = []
         for key, value in post_data.items():
-            for each_config in db_global_config_list:
+            for each_config in db_site_config_list:
                 if key == each_config.name:
                     if not value:
                         logger.error('系統設定 %s 其值為空', key)
@@ -57,9 +57,9 @@ class SiteConfigView:
 
         updated_config_list = self._validate(self.request.POST)
         if updated_config_list:
-            DAL.update_global_config_list(updated_config_list)
+            DAL.update_site_config_list(updated_config_list)
             self.request.session.flash('更新設定成功', 'success')
-            self.request.cache.delete_global_config()
+            self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
             self.request.session.flash('設定沒有異動', 'fail')

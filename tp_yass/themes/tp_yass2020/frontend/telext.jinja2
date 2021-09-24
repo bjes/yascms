@@ -10,7 +10,7 @@
   <div class="row">
     {% for each_telext in telext_list %}
       <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
-        <a href="tel:{{ request.global_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
+        <a href="tel:{{ request.site_config['site_phone'] }},{{ each_telext.ext }}" class="btn btn-outline-success btn-lg btn-block">{{ each_telext.title }}</a>
       </div>
     {% endfor %}
   </div>
