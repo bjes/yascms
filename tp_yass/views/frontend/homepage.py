@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 from pyramid.view import view_config
@@ -14,32 +15,31 @@ logger = logging.getLogger(__name__)
 def homepage_view(request):
     request.override_renderer = f'themes/{request.current_theme_name}/frontend/homepage.jinja2'
 
-    homepage_content_list = []
-    for each_item in DAL.get_homepage_order():
-        params = json.loads(each_item.params)
-        new_item = dict(name=each_item.name, type=each_item.type, params=params, description=each_item.description)
-        if each_item.type == HomepageOrderType.NEWS:
-            if params['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
-                new_item['entities'] = DAL.get_news_list(quantity_per_page=params['quantity'])
+    homepage_items_list = []
+    for each_item in DAL.get_theme_config(request.current_theme_name)['settings']['homepage_items_order']['value']:
+        new_item = copy.deepcopy(each_item)
+        if new_item['type'] == HomepageOrderType.NEWS:
+            if new_item['params']['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
+                new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'])
             else:
-                new_item['entities'] = DAL.get_news_list(quantity_per_page=params['quantity'],
-                                                         category_id=params['sub_type'])
-        elif each_item.type == HomepageOrderType.PAGE:
-            new_item['entities'] = DAL.get_page(params['id'])
-        elif each_item.type == HomepageOrderType.TELEXT:
+                new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'],
+                                                         category_id=new_item['params']['sub_type'])
+        elif new_item['type'] == HomepageOrderType.PAGE:
+            new_item['entities'] = DAL.get_page(new_item['params']['id'])
+        elif new_item['type'] == HomepageOrderType.TELEXT:
             new_item['entities'] = DAL.get_pinned_telext_list()
-        elif each_item.type == HomepageOrderType.LINKS:
-            if params['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
-                new_item['entities'] = DAL.get_link_list(quantity_per_page=params['quantity'])
+        elif new_item['type'] == HomepageOrderType.LINKS:
+            if new_item['params']['sub_type'] == HomepageOrderParamsSubType.UNSPECIFIED:
+                new_item['entities'] = DAL.get_pinned_link_list()
             else:
-                new_item['entities'] = DAL.get_link_list(quantity_per_page=params['quantity'],
-                                                         category_id=params['sub_type'])
+                new_item['entities'] = DAL.get_link_list(quantity_per_page=new_item['params']['quantity'],
+                                                         category_id=new_item['params']['sub_type'])
         else:
-            logger.critical('homepage_order 資料表出現不合法的資料： %s', each_item)
+            logger.critical('homepage_items_order 設定出現不合法的資料： %s', new_item)
             continue
-        homepage_content_list.append(new_item)
+        homepage_items_list.append(new_item)
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
-            'homepage_content_list': homepage_content_list,
+            'homepage_items_list': homepage_items_list,
             'NavbarType': NavbarType,
             'HomepageOrderType': HomepageOrderType,
             'HomepageOrderParamsSubType': HomepageOrderParamsSubType}

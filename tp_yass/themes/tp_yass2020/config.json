@@ -26,6 +26,34 @@
             "visible": false,
             "value": ""
         },
+        "homepage_items_order": {
+            "description": "自訂首頁的物件順序",
+            "value": [
+                {
+                    "name": "最新消息",
+                    "type": 1,
+                    "params": {
+                        "sub_type": 0,
+                        "quantity": 20
+                    },
+                    "description": "顯示最新的公告"
+                },
+                {
+                    "name": "常用分機",
+                    "type": 3,
+                    "params": {},
+                    "description": "常用分機表"
+                },
+                {
+                    "name": "好站連結",
+                    "type": 4,
+                    "params": {
+                        "sub_type": 0
+                    },
+                    "description": "顯示網站連結"
+                }
+            ]
+        },
         "custom": {
             "description": "自訂設定",
             "value": []

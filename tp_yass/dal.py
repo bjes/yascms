@@ -22,23 +22,12 @@ from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.enum import GroupType, NavbarType
-from tp_yass.models.homepage_order import HomepageOrderModel
 
 
 logger = logging.getLogger(__name__)
 
 
 class DAL:
-
-    @staticmethod
-    def get_homepage_order():
-        """回傳 homepage_order 資料表的資料，作為首頁顯示
-
-        Returns:
-            homepage_order 資料表的資料
-        """
-        return DBSession.query(HomepageOrderModel).order_by(HomepageOrderModel.order, HomepageOrderModel.id)
-
 
     @staticmethod
     def auth_user(account, password):

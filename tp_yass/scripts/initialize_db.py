@@ -107,6 +107,7 @@ def setup_models(dbsession):
     dbsession.add(models.news.NewsCategoryModel(name='行政公告'))
     dbsession.add(models.news.NewsCategoryModel(name='學校榮譽'))
     dbsession.add(models.news.NewsCategoryModel(name='教師甄試'))
+
     dbsession.commit()
 
 

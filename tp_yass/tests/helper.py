@@ -71,8 +71,10 @@ def import_test_db_data(ini_file_path):
     session.add(news1)
     session.add(news2)
 
-    calendar_page = PageModel(id=13, title='學校行事曆', content='<iframe src="https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>')
+    # 因為跑 initialize_db.py 預先建立了幾個 page，所以這邊測試的 page id 從 13 開始
+    calendar_page = PageModel(id=13, title='學校行事曆', content='<iframe src="https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>')
     session.add(calendar_page)
+    # 接續 initialize_db.py 建立的資料繼續建立測試資料
     calendar_navbar = NavbarModel(name='學校行事曆', page=calendar_page, order=6, type=int(NavbarType.LEAF_NODE), icon='bi-calendar-date', ancestor_id=3)
     session.add(calendar_navbar)
 
