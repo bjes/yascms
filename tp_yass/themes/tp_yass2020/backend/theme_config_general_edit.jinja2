@@ -71,19 +71,21 @@
                       <th scope="col">變數說明</th>
                     </thead>
                     <tbody id="custom_tbody">
+                    {% if form.custom.entries %}
+                      {% for each_setting in form.custom %}
+                        <tr>
+                          <th scope="row">{{ loop.index }}</th>
+                          <td>{{ each_setting.form.name(class_="form-control") }}</td>
+                          <td>{{ each_setting.form.type(class_="form-control") }}</td>
+                          <td>{{ each_setting.form.value(class_="form-control") }}</td>
+                          <td>{{ each_setting.form.description(class_="form-control") }}</td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
                       <tr>
-                        {% if form.custom.entries %}
-                          {% for each_setting in form.custom %}
-                            <th scope="row">{{ loop.index }}</th>
-                            <td>{{ each_setting.form.name(class_="form-control") }}</td>
-                            <td>{{ each_setting.form.type(class_="form-control") }}</td>
-                            <td>{{ each_setting.form.value(class_="form-control") }}</td>
-                            <td>{{ each_setting.form.description(class_="form-control") }}</td>
-                          {% endfor %}
-                        {% else %}
-                          <td colspan="5" class="text-center">此樣板沒有開放自訂設定</td>
-                        {% endif %}
+                        <td colspan="5" class="text-center">此樣板沒有開放自訂設定</td>
                       </tr>
+                    {% endif %}
                     </tbody>
                   </table>
                   </div>

@@ -30,7 +30,7 @@ class ThemeConfigCustomForm(Form):
                                 (str(ThemeConfigCustomType.INTEGER.value), '整數')],
                        coerce=int)
 
-    value = StringField('變數內容*', [InputRequired('此欄位必填'), ])
+    value = StringField('變數內容')
 
     description = StringField('變數說明', [Length(max=100, message='變數說明最長只接受 100 個字元')])
 
