@@ -6,7 +6,6 @@ from tp_yass.views.frontend import homepage
 def test_homepage_view(mocker):
     request = testing.DummyRequest()
     request.current_theme_name = 'tp_yass2020'
-    request.site_config = {'site_homepage_news_quantity': 10}
     mocker.patch.object(homepage, 'DAL')
     mocker.patch.object(homepage, 'generate_navbar_trees')
     info = homepage.homepage_view(request)
