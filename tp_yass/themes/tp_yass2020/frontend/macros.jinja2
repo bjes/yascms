@@ -41,16 +41,16 @@
 {% endmacro %}
 
 {% macro generate_page_block(page_entity) %}
-  <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
+  <div class="jumbotron jumbotron-fluid my-3 p-2" style="background-color:#2980b9;">
     <div class="container">
-      <p class="h1 display-5 text-center text-white">{{ page.title }}</p>
+      <p class="h1 display-5 text-center text-white">{{ page_entity.title }}</p>
     </div>
   </div>
 
   <div class="container">
     <div class="row">
       <div class="col-12">
-        {{ page.content|safe }}
+        {{ page_entity.content|safe }}
       </div>
     </div>
   </div>

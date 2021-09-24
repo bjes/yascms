@@ -1,22 +1,24 @@
-import plaster
-from sqlalchemy import engine_from_config
-from sqlalchemy.orm import sessionmaker
-
-
 def get_ini_settings(ini_file_path):
     """Return ini settings"""
+    import plaster
 
     return plaster.get_settings(ini_file_path, 'app:main')
 
 
 def import_test_db_data(ini_file_path):
     """Import test data to test database"""
+    import json
+
+    from sqlalchemy import engine_from_config
+    from sqlalchemy.orm import sessionmaker
+
     from tp_yass.models.account import GroupModel, UserModel
     from tp_yass.models.news import NewsModel, NewsCategoryModel
     from tp_yass.models.config import ConfigModel
     from tp_yass.models.page import PageModel
     from tp_yass.models.navbar import NavbarModel
-    from tp_yass.enum import NavbarType
+    from tp_yass.models.theme_config import ThemeConfigModel
+    from tp_yass.enum import NavbarType, HomepageItemType
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
@@ -77,5 +79,19 @@ def import_test_db_data(ini_file_path):
     # 接續 initialize_db.py 建立的資料繼續建立測試資料
     calendar_navbar = NavbarModel(name='學校行事曆', page=calendar_page, order=6, type=int(NavbarType.LEAF_NODE), icon='bi-calendar-date', ancestor_id=3)
     session.add(calendar_navbar)
+
+    theme_config = json.loads(session.query(ThemeConfigModel.value).filter_by(name='tp_yass2020').scalar())
+    new_homepage_item = {
+        'name': '行事曆',
+        'type': int(HomepageItemType.PAGE),
+        'params': {
+            'id': 13  # 上面建立的 page id
+        },
+        'description': '學校行事曆'
+    }
+    theme_config['settings']['homepage_items_order']['value'].append(new_homepage_item)
+    (session.query(ThemeConfigModel)
+            .filter_by(name='tp_yass2020')
+            .update({ThemeConfigModel.value: json.dumps(theme_config, ensure_ascii=False)}))
 
     session.commit()
