@@ -14,6 +14,9 @@ def import_test_db_data(ini_file_path):
     from tp_yass.models.account import GroupModel, UserModel
     from tp_yass.models.news import NewsModel, NewsCategoryModel
     from tp_yass.models.config import ConfigModel
+    from tp_yass.models.page import PageModel
+    from tp_yass.models.navbar import NavbarModel
+    from tp_yass.enum import NavbarType
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
@@ -67,5 +70,10 @@ def import_test_db_data(ini_file_path):
     news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category=category2)
     session.add(news1)
     session.add(news2)
+
+    calendar_page = PageModel(id=13, title='學校行事曆', content='<iframe src="https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>')
+    session.add(calendar_page)
+    calendar_navbar = NavbarModel(name='學校行事曆', page=calendar_page, order=6, type=int(NavbarType.LEAF_NODE), icon='bi-calendar-date', ancestor_id=3)
+    session.add(calendar_navbar)
 
     session.commit()
