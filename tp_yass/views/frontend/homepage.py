@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def homepage_view(request):
     request.override_renderer = f'themes/{request.current_theme_name}/frontend/homepage.jinja2'
 
-    homepage_items_list = []
+    homepage_items = []
     for each_item in DAL.get_theme_config(request.current_theme_name)['settings']['homepage_items_order']['value']:
         new_item = copy.deepcopy(each_item)
         if new_item['type'] == HomepageItemType.NEWS:
@@ -37,9 +37,9 @@ def homepage_view(request):
         else:
             logger.critical('homepage_items_order 設定出現不合法的資料： %s', new_item)
             continue
-        homepage_items_list.append(new_item)
+        homepage_items.append(new_item)
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
-            'homepage_items_list': homepage_items_list,
+            'homepage_items': homepage_items,
             'NavbarType': NavbarType,
             'HomepageItemType': HomepageItemType,
             'HomepageItemParamsSubType': HomepageItemParamsSubType}

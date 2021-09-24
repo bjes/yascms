@@ -1,7 +1,7 @@
 from pyramid.testing import DummyRequest
 from pyramid.httpexceptions import HTTPFound
 
-from tp_yass.views.frontend import login, logout
+from tp_yass.views.frontend import login
 
 
 def test_login_logic(webtest_testapp, pyramid_config):
