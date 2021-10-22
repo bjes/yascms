@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>上傳 {{ theme_config['name'] }} 橫幅</h1></div>
+    <div class="col-12"><h1>樣板 {{ theme_config['name'] }} 首頁設定</h1></div>
     {% if form.errors %}
       <div class="col-12">
         <div class="alert alert-danger" role="alert">
@@ -24,27 +24,24 @@
               <a class="nav-link" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=theme_config['name']) }}">一般設定</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=theme_config['name']) }}">首頁設定</a>
+              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=theme_config['name']) }}">首頁設定</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_banners_upload', theme_name=theme_config['name']) }}">上傳橫幅</a>
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_upload', theme_name=theme_config['name']) }}">上傳橫幅</a>
             </li>
           </ul>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col-12">
-              <div class="alert alert-warning" role="alert">
-                橫幅尺寸：{{ theme_config['settings']['banners']['size'] }}
-              </div>
               <form action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
                 <div class="form-group">
-                  {{ form.banners.label() }}
-                  {{ form.banners(class_='form-control-file') }}
+                  {{ form.config.label() }}
+                  {{ form.config(class_='form-control', rows=10) }}
                 </div>
                 <div class="col-12">{{ form.submit(class_='btn btn-primary') }}</div>
               </form>

@@ -1,3 +1,4 @@
+import json
 import pathlib
 import zipfile
 import logging
@@ -15,7 +16,7 @@ from tp_yass.helpers.backend.theme_config import ThemeController
 from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
                                                 ThemeConfigBannersEditForm,
                                                 ThemeConfigBannersUploadForm,
-                                                ThemeConfigUploadForm)
+                                                ThemeConfigUploadForm, ThemeConfigHomepageItemsOrderEditForm)
 
 logger = logging.getLogger(__name__)
 
@@ -254,3 +255,31 @@ def theme_config_banners_delete_view(request):
         DAL.update_theme_config(theme_config)
         request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
+
+
+@view_defaults(route_name='backend_theme_config_homepage_items_order_edit', renderer='', permission='edit')
+class ThemeConfigHomepageItemsOrderEditView:
+
+    def __init__(self, request):
+        self.request = request
+        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_homepage_items_order_edit.jinja2'
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        theme_config = DAL.get_theme_config(self.request.matchdict['theme_name'])
+        form = ThemeConfigHomepageItemsOrderEditForm(config=json.dumps(theme_config['settings']['homepage_items_order']['value'], ensure_ascii=False))
+        return {'theme_config': theme_config, 'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        theme_name = self.request.matchdict['theme_name']
+        theme_config = DAL.get_theme_config(theme_name)
+        form = ThemeConfigHomepageItemsOrderEditForm(self.request.POST)
+        if form.validate():
+            theme_config['settings']['homepage_items_order']['value'] = json.loads(form.config.data)
+            DAL.update_theme_config(theme_config)
+            if theme_name == self.request.cache.get_current_theme_name():
+                self.request.cache.delete_current_theme_config()
+            return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
+        else:
+            return {'theme_config': theme_config, 'form': form}
