@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container mb-3">
     <div class="row">
       <div class="col-12">
         <div class="card border-primary mb-3">
@@ -41,13 +41,13 @@
 {% endmacro %}
 
 {% macro generate_page_block(page_entity) %}
-  <div class="jumbotron jumbotron-fluid my-3 p-2" style="background-color:#2980b9;">
+  <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
     <div class="container">
       <p class="h1 display-5 text-center text-white">{{ page_entity.title }}</p>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container mb-3">
     <div class="row">
       <div class="col-12">
         {{ page_entity.content|safe }}
@@ -57,13 +57,13 @@
 {% endmacro %}
 
 {% macro generate_telext_block(telext_entities) %}
-  <div class="jumbotron jumbotron-fluid my-3 p-2" style="background-color: #2ecc71;">
+  <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color: #2ecc71;">
     <div class="container">
       <p class="h1 display-5 text-center text-white"><i class="bi bi-telephone"></i> 常用分機</a></p>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container mb-3">
     <div class="row">
       {% for each_telext in telext_entities %}
         <div class="col-lg-3 col-md-4 col-sm-6 col-12 py-1">
@@ -76,13 +76,13 @@
 {% endmacro %}
 
 {% macro generate_links_block(link_entities) %}
-  <div class="jumbotron jumbotron-fluid my-3 p-2 d-none d-sm-block" style="background-color: #e67e22;">
+  <div class="jumbotron jumbotron-fluid mb-3 p-2 d-none d-sm-block" style="background-color: #e67e22;">
     <div class="container">
       <p class="h1 display-5 text-center text-white"><i class="bi bi-link-45deg"></i> 好站連結</p>
     </div>
   </div>
 
-  <div class="container d-none d-sm-block">
+  <div class="container mb-3 d-none d-sm-block">
     <div class="row text-center align-items-center">
       {% for each_link in link_list %}
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 py-1">
