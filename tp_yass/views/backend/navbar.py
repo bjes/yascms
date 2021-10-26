@@ -19,7 +19,7 @@ class NavbarListView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/navbar_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/navbar_list.jinja2'
 
     @view_config()
     def list_view(self):
@@ -35,7 +35,7 @@ class NavbarCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/navbar_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/navbar_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -89,7 +89,7 @@ class NavbarEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/navbar_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/navbar_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

@@ -15,7 +15,7 @@ class AuthLogListView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{request.current_theme_name}/backend/auth_log_list.jinja2'
+        self.request.override_renderer = f'themes/{request.effective_theme_name}/backend/auth_log_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

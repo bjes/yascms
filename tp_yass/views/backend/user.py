@@ -15,7 +15,7 @@ class UserListView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/user_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/user_list.jinja2'
 
     @view_config()
     def get_view(self):
@@ -38,7 +38,7 @@ class UserCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/user_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/user_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -69,7 +69,7 @@ class UserEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/user_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/user_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

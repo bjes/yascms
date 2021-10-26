@@ -1,4 +1,4 @@
-{% extends 'tp_yass:themes/' ~ request.current_theme_name ~ '/macros.jinja2' %}
+{% extends 'tp_yass:themes/' ~ request.effective_theme_name ~ '/macros.jinja2' %}
 {% if request.GET['u'] %}
   {% block first_page_url %}{{ request.route_url('backend_auth_log_list', _query={'p': 1, 'q': quantity_per_page, 'u': request.GET['u']}) }}{% endblock %}
   {% block next_page_url %}{{ request.route_url('backend_auth_log_list', _query={'p': current_page_number+1, 'q': quantity_per_page, 'u': request.GET['u']}) }}{% endblock %}

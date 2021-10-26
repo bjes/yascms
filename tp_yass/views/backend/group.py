@@ -15,7 +15,7 @@ class GroupListView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/group_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/group_list.jinja2'
 
     @view_config()
     def get_view(self):
@@ -30,7 +30,7 @@ class GroupCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/group_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/group_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -58,7 +58,7 @@ class GroupEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/group_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/group_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

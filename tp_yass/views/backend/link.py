@@ -13,7 +13,7 @@ class LinkCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -52,7 +52,7 @@ class LinkListView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -103,7 +103,7 @@ class LinkEditView:
         """
         self.context = context
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -148,7 +148,7 @@ class LinkCategoryCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_category_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_category_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -172,7 +172,7 @@ class LinkCategoryListView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_category_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_category_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -213,7 +213,7 @@ class LinkCategoryEditView:
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/link_category_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/link_category_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

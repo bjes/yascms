@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
              renderer='',
              permission='view')
 def theme_config_list_view(request):
-    request.override_renderer = f'tp_yass:themes/{request.current_theme_name}/backend/theme_config_list.jinja2'
+    request.override_renderer = f'tp_yass:themes/{request.effective_theme_name}/backend/theme_config_list.jinja2'
     return {'theme_config_list': DAL.get_theme_config_list()}
 
 
@@ -59,7 +59,7 @@ class ThemeConfigUploadView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_upload.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/theme_config_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -97,7 +97,7 @@ class ThemeConfigGeneralEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_general_edit.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/theme_config_general_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -152,7 +152,7 @@ class ThemeConfigBannersEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_banners_edit.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/theme_config_banners_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -210,7 +210,7 @@ class ThemeConfigBannersUploadView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_banners_upload.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/theme_config_banners_upload.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -262,7 +262,7 @@ class ThemeConfigHomepageItemsOrderEditView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/theme_config_homepage_items_order_edit.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/theme_config_homepage_items_order_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

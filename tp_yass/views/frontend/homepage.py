@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 @view_config(route_name='homepage', renderer='')
 def homepage_view(request):
-    request.override_renderer = f'themes/{request.current_theme_name}/frontend/homepage.jinja2'
+    request.override_renderer = f'themes/{request.effective_theme_name}/frontend/homepage.jinja2'
 
     homepage_items = []
 
-    if request.current_theme_name != request.cache.get_current_theme_name():
-        homepage_items_order_config = DAL.get_theme_config(request.current_theme_name)['settings']['homepage_items_order']['value']
+    if request.effective_theme_name != request.current_theme_name:
+        homepage_items_order_config = request.effective_theme_config['settings']['homepage_items_order']['value']
     else:
         homepage_items_order_config = request.current_theme_config['settings']['homepage_items_order']['value']
 

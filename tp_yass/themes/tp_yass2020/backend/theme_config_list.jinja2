@@ -15,14 +15,12 @@
               </tr>
             </thead>
             <tbody>
-            {# 若透過 override_theme_name 這個 GET param 去動態 preview 樣板時，我們希望啟用與樣板狀態不會受到影響，所以改直接取用 cache 的值#}
-            {% set current_theme_name = request.cache.get_current_theme_name() -%}
             {% for each_theme_config in theme_config_list %}
               <tr>
                 <th scope="row" class="align-middle">{{ loop.index }}</th>
                 <td class="align-middle">
                   {{ each_theme_config.name }}
-                  {% if each_theme_config.name == current_theme_name %}
+                  {% if each_theme_config.name == request.current_theme_name %}
                     <span class="badge badge-info">已啟用</span>
                   {% elif each_theme_config.name == request.GET['override_theme_name'] %}
                     <span class="badge badge-warning">目前預覽</span>
@@ -30,10 +28,10 @@
                 </td>
                 <td>
                   <div class="d-flex justify-content-end">
-                    {% if each_theme_config.name != current_theme_name %}
+                    {% if each_theme_config.name != request.current_theme_name %}
                       <a class="btn btn-info mx-1" href="{{ request.route_url('backend_theme_config_activate', theme_name=each_theme_config.name) }}">啟用</a>
                     {% endif %}
-                    {% if each_theme_config.name != current_theme_name %}
+                    {% if each_theme_config.name != request.current_theme_name %}
                       <a class="btn btn-primary mx-1" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=each_theme_config.name) }}">一般設定</a>
                       <a class="btn btn-primary mx-1" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=each_theme_config.name) }}">首頁設定</a>
                       <a class="btn btn-primary mx-1" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=each_theme_config.name) }}">橫幅設定</a>

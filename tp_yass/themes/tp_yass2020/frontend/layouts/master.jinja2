@@ -1,7 +1,7 @@
 {% extends 'tp_yass:themes/' ~ request.current_theme_name ~ '/layouts/master.jinja2' %}
 {% block layout_css %}
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/bootstrap-icons/bootstrap-icons.css') }}">
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/frontend.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/bootstrap-icons/bootstrap-icons.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/frontend.css') }}">
   <style>
     .jumbotron-bg {
       background-image: url("{{ request.banner }}");
@@ -24,8 +24,8 @@
 {% endblock banner %}
 {% block footer %}{% include "footer.jinja2" %}{% endblock footer%}
 {% block layout_js %}
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.smartmenus.min-1.1.0.js') }}"></script>
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.smartmenus.min-1.1.0.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.smartmenus.bootstrap-4.min-1.1.0.js') }}"></script>
   {% if request.current_theme_config['settings']['custom_js']['visible'] %}
     <script>{{ request.current_theme_config['settings']['custom_js']['value']|safe }}</script>
   {% endif %}

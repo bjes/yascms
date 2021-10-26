@@ -10,7 +10,7 @@ from tp_yass.dal import DAL
 @view_config(route_name='news_list', renderer='')
 def news_list_view(request):
     """前台顯示最新消息列表"""
-    request.override_renderer = f'themes/{request.current_theme_name}/frontend/news_list.jinja2'
+    request.override_renderer = f'themes/{request.effective_theme_name}/frontend/news_list.jinja2'
     quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
     category_id = sanitize_input(request.GET.get('c'), int, None)
     page_number = sanitize_input(request.GET.get('p', 1), int, 1)
@@ -28,7 +28,7 @@ def news_list_view(request):
 @view_config(route_name='news_get', renderer='')
 def news_get_view(request):
     """前台顯示單一最新消息"""
-    request.override_renderer = f'themes/{request.current_theme_name}/frontend/news_get.jinja2'
+    request.override_renderer = f'themes/{request.effective_theme_name}/frontend/news_get.jinja2'
     news_id = int(request.matchdict['news_id'])
     news = DAL.get_news(news_id)
     if news:

@@ -1,7 +1,7 @@
 {% extends 'layouts/master.jinja2' %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/summernote-bs4-0.8.16.min.css') }}">
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/css/jquery.datetimepicker-master.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/summernote-bs4-0.8.16.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/jquery.datetimepicker-master.min.css') }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -72,9 +72,9 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/summernote-bs4-0.8.16.min.js') }}"></script>
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/summernote-zh-TW-0.8.16.min.js') }}"></script>
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.current_theme_name ~ '/js/jquery.datetimepicker.full-master.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote-bs4-0.8.16.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote-zh-TW-0.8.16.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.datetimepicker.full-master.min.js') }}"></script>
   <script>
     $(function (){
       $('#content').summernote({

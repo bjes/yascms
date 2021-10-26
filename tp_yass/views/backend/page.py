@@ -20,7 +20,7 @@ class PageCreateView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/page_create.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/page_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -58,7 +58,7 @@ class PageListView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/page_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/page_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -110,7 +110,7 @@ class PageEditView:
         """
         self.context = context
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/page_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/page_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):

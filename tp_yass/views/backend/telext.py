@@ -11,7 +11,7 @@ class TelExtCreateView:
 
     def __init__(self, request):
         self.request = request
-        self.request.override_renderer = f'tp_yass:themes/{self.request.current_theme_name}/backend/telext_create.jinja2'
+        self.request.override_renderer = f'tp_yass:themes/{self.request.effective_theme_name}/backend/telext_create.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -39,7 +39,7 @@ class TelExtListView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/telext_list.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/telext_list.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
@@ -79,7 +79,7 @@ class TelExtEditView:
             request: pyramid.request.Request
         """
         self.request = request
-        self.request.override_renderer = f'themes/{self.request.current_theme_name}/backend/telext_edit.jinja2'
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/telext_edit.jinja2'
 
     @view_config(request_method='GET')
     def get_view(self):
