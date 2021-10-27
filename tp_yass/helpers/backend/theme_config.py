@@ -36,7 +36,11 @@ class ThemeController:
             self.static_symlink.unlink()
         if self.uploaded_banners_dir.parent.exists():
             shutil.rmtree(self.uploaded_banners_dir.parent)
+        theme_dir = self.base_dir / 'themes' / self.theme_name
+        if theme_dir.exists():
+            shutil.rmtree(theme_dir)
         DAL.delete_theme_config(self.theme_name)
+
 
     def import_theme_banners(self, src=None, dest=None):
         """匯入指定的佈景主題橫幅檔案"""

@@ -42,10 +42,10 @@ def theme_config_activate_view(request):
 
 @view_config(route_name='backend_theme_config_delete', permission='edit')
 def theme_config_delete_view(request):
-    """刪除指定的樣板，為避免被 override_theme_name 這個 GET param 干擾，所以從 cache 取得 current_theme_name"""
+    """刪除指定的樣板"""
     theme_name = request.matchdict['theme_name']
     if (theme_name in request.cache.get_available_theme_name_list() and
-        theme_name != request.cache.get_current_theme_name()):
+        theme_name != request.current_theme_name):
 
         ThemeController(theme_name).delete_theme()
     return HTTPFound(location=request.route_url('backend_theme_config_list'))
