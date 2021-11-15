@@ -90,3 +90,19 @@ class HomepageItemParamsSubType(enum.IntEnum):
 
     # 未指定
     UNSPECIFIED = 0
+
+
+class EmailType(enum.IntEnum):
+    """定義這個 Email 是哪一種類型"""
+
+    # 帳號的 primary email
+    USER_PRIMARY = 1
+
+    # 帳號的 secondary email
+    USER_SECONDARY = 2
+
+    # 群組的 primary email
+    GROUP_PRIMARY = 3
+
+    # 群組的 secondary email
+    GROUP_SECONDARY = 4

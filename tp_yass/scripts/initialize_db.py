@@ -21,11 +21,15 @@ def setup_models(dbsession):
     root_group = models.account.GroupModel(name='根群組', type=2)
     dbsession.add(root_group)
 
+    # 建立管理者 Email
+    admin_email = models.account.EmailModel(address='webmaster@example.org', type=1)
+
+
     # 建立管理者帳號
     group = models.account.GroupModel(name='最高管理者群組', type=0, ancestor=root_group)
     user = models.account.UserModel(first_name='管理者',
                                  last_name='最高',
-                                 email='webmaster@example.org',
+                                 email=[admin_email],
                                  account='admin',
                                  password='admin4tp_yass',
                                  groups=[group])

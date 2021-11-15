@@ -2,7 +2,10 @@ from pyramid_wtforms import (Form,
                              IntegerField,
                              StringField,
                              SelectField,
-                             PasswordField)
+                             PasswordField,
+                             RadioField,
+                             FormField,
+                             FieldList)
 from pyramid_wtforms.validators import (InputRequired,
                                         Length,
                                         Email,
@@ -12,6 +15,12 @@ from tp_yass.enum import GroupType
 from .fields import MultiCheckboxField
 
 
+class EmailForm(Form):
+    """處理關聯至帳號與群組的 Email"""
+
+    address = StringField('電子郵件位址*', [InputRequired('電子郵件為必填'), Length(max=100), Email('需為合法的電子郵件位址')])
+
+
 class UserForm(Form):
     """建立使用者的表單"""
 
@@ -19,7 +28,11 @@ class UserForm(Form):
 
     last_name = StringField('姓*', [InputRequired('姓為必填'), Length(max=20)])
 
-    email = StringField('電子郵件*', [InputRequired('電子郵件為必填'), Length(max=50), Email('需為合法的電子郵件位址')])
+    email = FieldList(FormField(EmailForm), min_entries=1)
+
+    # 用來在前端讓使用者勾選，多個 email 的列表中，哪一個是 primary email。相關的列表會在 view
+    # 那邊動態產生與處理，這邊只是定義有這個欄位，驗證等都是在 view 那邊處理
+    primary_email = RadioField('主要郵件位址', [InputRequired('主要郵件位址必填'), Email('需為合法的電子郵件位址')])
 
     account = StringField('帳號*', [InputRequired('帳號為必填'), Length(max=50)])
 
@@ -34,7 +47,7 @@ class UserForm(Form):
 
 
 class UserEditForm(UserForm):
-    """編輯使用者的表單，密碼欄位因為允許不更改，所以移除 validator"""
+    """編輯使用者的表單，密碼欄位因為允許使用者不用更改，所以移除 validator"""
 
     password = PasswordField('密碼*', [Length(max=50)])
 
@@ -53,6 +66,8 @@ class GroupForm(Form):
                                 (GroupType.NORMAL.value, '普通群組'),
                                 (GroupType.ADMIN.value, '管理者')],
                        coerce=int)
+
+    email = FieldList(FormField(EmailForm), min_entries=1)
 
     # TODO: 要動態產生，目前先寫死 20 組
     order = SelectField('排序*', [InputRequired('排序必填')],

@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 4ed0d65ae2e2
+Revision ID: 432beacdc6b6
 Revises: 
-Create Date: 2021-09-24 14:34:00.543249
+Create Date: 2021-11-02 15:50:08.345599
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4ed0d65ae2e2'
+revision = '432beacdc6b6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -82,7 +82,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=20), nullable=False),
     sa.Column('last_name', sa.String(length=20), nullable=False),
-    sa.Column('email', sa.String(length=50), nullable=False),
     sa.Column('account', sa.String(length=50), nullable=False),
     sa.Column('password', sa.String(length=77), server_default='*', nullable=False),
     sa.Column('status', sa.Integer(), server_default='0', nullable=False),
@@ -97,6 +96,17 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('email',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('address', sa.String(length=100), nullable=False),
+    sa.Column('type', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('address')
     )
     op.create_table('groups_pages_association',
     sa.Column('group_id', sa.Integer(), nullable=True),
@@ -205,6 +215,7 @@ def downgrade():
     op.drop_index(op.f('ix_links_title'), table_name='links')
     op.drop_table('links')
     op.drop_table('groups_pages_association')
+    op.drop_table('email')
     op.drop_table('auth_logs')
     op.drop_table('users')
     op.drop_table('theme_config')

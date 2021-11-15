@@ -1,7 +1,7 @@
 from pyramid_sqlalchemy import BaseObject
 
 
-from .account import UserModel, GroupModel  # flake8: noqa
+from .account import UserModel, EmailModel, GroupModel  # flake8: noqa
 from .news import NewsModel, NewsAttachmentModel  # flake8: noqa
 from .page import PageModel, PageAttachmentModel  # flake8: noqa
 from .link import LinkModel, LinkCategoryModel  # flake8: noqa

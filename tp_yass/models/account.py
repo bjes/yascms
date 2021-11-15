@@ -10,6 +10,22 @@ from tp_yass.models.association import users_groups_association, groups_pages_as
 from tp_yass.enum import GroupType
 
 
+class EmailModel(BaseObject):
+    __tablename__ = 'email'
+
+    id = Column(Integer, primary_key=True)
+
+    # Email 位址
+    address = Column(String(100), nullable=False, unique=True)
+
+    # Email 類型，請參閱 tp_yass.enum.EmailType 定義
+    type = Column(Integer, nullable=False)
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    group_id = Column(Integer, ForeignKey('groups.id'))
+
+
 class UserModel(BaseObject):
 
     __tablename__ = 'users'
@@ -22,8 +38,8 @@ class UserModel(BaseObject):
     # 姓
     last_name = Column(String(20), nullable=False)
 
-    # 電子郵件
-    email = Column(String(50), nullable=False)
+    # 帳號電子郵件
+    email = relationship('EmailModel', backref='user')
 
     # 帳號
     account = Column(String(50), nullable=False, unique=True)
@@ -65,6 +81,9 @@ class GroupModel(BaseObject):
 
     # 群組名稱
     name = Column(String(100), nullable=False)
+
+    # 群組電子郵件
+    email = relationship('EmailModel', backref='group')
 
     # 類別，定義請參照 tp_yass.enum.GroupType
     type = Column('type', Integer, nullable=False, default=GroupType.STAFF.value,

@@ -19,7 +19,7 @@
             </ul>
         </div>
       {% endif %}
-      <form action="" method="POST">
+      <form id="user-create-form" action="" method="POST">
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         <div class="form-group">
           {{ form.last_name.label() }}
@@ -29,9 +29,27 @@
           {{ form.first_name.label() }}
           {{ form.first_name(class_='form-control', placeholder='名') }}
         </div>
-        <div class="form-group">
-          {{ form.email.label() }}
-          {{ form.email(class_='form-control', placeholder='user@example.org') }}
+        <div class="form-group" id="email-form-group">
+        {% for each_email in form.email %}
+          {{ each_email.form.address.label() }}
+          <div>
+            <div class="form-row">
+              {{ each_email.form.address(class_='form-control col mx-1 mb-1', placeholder='user@example.org') }}
+              <div class="form-check form-check-inline col mx-1">
+                {% if each_email.address.data == form.primary_email.data %}
+                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
+                {% else %}
+                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                {% endif %}
+                <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
+              </div>
+              <div class="col d-flex justify-content-end align-items-center">
+                <a href="#" class="btn btn-danger">移除</a>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="btn btn-primary">新增</a>
+        {% endfor %}
         </div>
         <div class="form-group">
           {{ form.account.label() }}
@@ -63,6 +81,42 @@
       $('#root-group').bonsai({
         expandAll: true,
         createInputs: 'checkbox'
+      });
+      // 讓每個 email 移除的按鈕都可以移除對應的 email 欄位，除非只剩下一個
+      let remove_email_event = function(e) {
+        if ($('#email-form-group>div').length <= 1) {
+          alert('使用者至少要有一組 Email');
+        } else if ($(this).parent().prev().children('input[name=primary_email]:checked').length !== 0) {
+          alert('此 Email 為主要 Email，不可刪除');
+        } else {
+          $(this).parent().parent().parent().remove();
+        }
+        e.preventDefault();
+      };
+      $('#email-form-group a.btn.btn-danger').click(remove_email_event);
+      // 可以新增 Email 欄位
+      $('#email-form-group>a').click(function(e) {
+        let email_list_length = $('#email-form-group>div').length;
+        $('#email-form-group>div').last().after(`<div>
+  <div class="form-row">
+    <input class="form-control col mx-1 mb-1" id="email-${email_list_length - 1}-address" name="email-${email_list_length - 1}-address" placeholder="user@example.org" required="" type="text" value="">
+    <div class="form-check form-check-inline col mx-1">
+      <input type="radio" class="form-check-input" name="primary_email" id="primary_email_${email_list_length + 1}" value="">
+      <label for="primary_email_${email_list_length + 1}" class="form-check-label">設為主要</label>
+    </div>
+    <div class="col d-flex justify-content-end align-items-center">
+      <a href="#" class="btn btn-danger">移除</a>
+    </div>
+  </div>
+</div>`);
+        $('#email-form-group a.btn.btn-danger').last().click(remove_email_event);
+        e.preventDefault();
+      });
+      // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
+      $('#user-create-form').submit(function() {
+        $('input[type=radio]').each(function() {
+          $(this).val($(this).parent().prev().val());
+        });
       });
     });
   </script>
