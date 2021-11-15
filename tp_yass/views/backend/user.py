@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.forms.backend.user import UserForm, UserEditForm
+from tp_yass.forms.backend.user import UserCreateForm, UserEditForm
 from tp_yass.helpers.backend.group import generate_group_trees
 
 
@@ -42,13 +42,13 @@ class UserCreateView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        form = UserForm()
+        form = UserCreateForm()
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
-        form = UserForm()
+        form = UserCreateForm()
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
         if form.validate():

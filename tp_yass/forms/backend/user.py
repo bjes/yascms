@@ -21,7 +21,7 @@ class EmailForm(Form):
     address = StringField('電子郵件位址*', [InputRequired('電子郵件為必填'), Length(max=100), Email('需為合法的電子郵件位址')])
 
 
-class UserForm(Form):
+class UserCreateForm(Form):
     """建立使用者的表單"""
 
     first_name = StringField('名*', [InputRequired('名為必填'), Length(max=20)])
@@ -46,7 +46,7 @@ class UserForm(Form):
     group_ids = MultiCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
 
-class UserEditForm(UserForm):
+class UserEditForm(UserCreateForm):
     """編輯使用者的表單，密碼欄位因為允許使用者不用更改，所以移除 validator"""
 
     password = PasswordField('密碼*', [Length(max=50)])
@@ -55,8 +55,8 @@ class UserEditForm(UserForm):
                                                      EqualTo('password', message='兩次密碼輸入需相符')])
 
 
-class GroupForm(Form):
-    """使用者群組的表單"""
+class GroupCreateForm(Form):
+    """建立使用者群組的表單"""
 
     name = StringField('群組名稱*', [InputRequired('群組名稱為必填'), Length(max=100)])
 
@@ -68,6 +68,10 @@ class GroupForm(Form):
                        coerce=int)
 
     email = FieldList(FormField(EmailForm), min_entries=1)
+
+    # 用來在前端讓使用者勾選，多個 email 的列表中，哪一個是 primary email。相關的列表會在 view
+    # 那邊動態產生與處理，這邊只是定義有這個欄位，驗證等都是在 view 那邊處理
+    primary_email = RadioField('主要郵件位址', [InputRequired('主要郵件位址必填'), Email('需為合法的電子郵件位址')])
 
     # TODO: 要動態產生，目前先寫死 20 組
     order = SelectField('排序*', [InputRequired('排序必填')],

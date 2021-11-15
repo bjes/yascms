@@ -2,7 +2,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
-from tp_yass.forms.backend.user import GroupForm
+from tp_yass.forms.backend.user import GroupCreateForm
 from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import GroupType
 
@@ -34,13 +34,13 @@ class GroupCreateView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        form = GroupForm()
+        form = GroupCreateForm()
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
-        form = GroupForm(self.request.POST)
+        form = GroupCreateForm(self.request.POST)
         if form.validate():
             group = DAL.create_group()
             form.populate_obj(group)
@@ -69,14 +69,14 @@ class GroupEditView:
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         group = DAL.get_group(group_id)
         if group:
-            form = GroupForm(obj=group)
+            form = GroupCreateForm(obj=group)
             return {'form': form,
                     'group_trees': generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_group_list'))
 
     @view_config(request_method='POST')
     def post_view(self):
-        form = GroupForm(self.request.POST)
+        form = GroupCreateForm(self.request.POST)
         if form.validate():
             group_id = int(self.request.matchdict['group_id'])
             if group_id <= 2:
