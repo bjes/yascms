@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.forms.backend.user import UserCreateForm, UserEditForm
+from tp_yass.forms.backend.account import UserCreateForm, UserEditForm
 from tp_yass.helpers.backend.group import generate_group_trees
 
 

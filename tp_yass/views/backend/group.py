@@ -2,7 +2,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
-from tp_yass.forms.backend.user import GroupCreateForm
+from tp_yass.forms.backend.account import GroupCreateForm
 from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import GroupType
 
