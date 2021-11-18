@@ -29,27 +29,27 @@
           {{ form.first_name.label() }}
           {{ form.first_name(class_='form-control', placeholder='名') }}
         </div>
-        <div class="form-group" id="email-form-group">
-        {% for each_email in form.email %}
-          {{ each_email.form.address.label() }}
-          <div>
-            <div class="form-row">
-              {{ each_email.form.address(class_='form-control col mx-1 mb-1', placeholder='user@example.org') }}
-              <div class="form-check form-check-inline col mx-1">
-                {% if each_email.address.data == form.primary_email.data %}
-                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
-                {% else %}
-                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
-                {% endif %}
-                <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
-              </div>
-              <div class="col d-flex justify-content-end align-items-center">
-                <a href="#" class="btn btn-danger">移除</a>
+        <div id="email-form-group" class="mb-3">
+          {% for each_email in form.email %}
+            <div class="form-group">
+              {{ each_email.form.address.label() }}
+              <div class="d-flex">
+                <div>{{ each_email.form.address(class_='form-control mb-2', placeholder='user@example.org') }}</div>
+                <div class="form-check form-check-inline mx-2">
+                  {% if each_email.address.data == form.primary_email.data %}
+                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
+                  {% else %}
+                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                  {% endif %}
+                  <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
+                </div>
+                <div class="d-flex justify-content-end align-items-center mx-2">
+                  <a href="#" class="btn btn-danger">移除</a>
+                </div>
               </div>
             </div>
-          </div>
-          <a href="#" class="btn btn-primary">新增</a>
-        {% endfor %}
+          {% endfor %}
+          <a href="#" class="btn btn-primary">新增電子郵件</a>
         </div>
         <div class="form-group">
           {{ form.account.label() }}
@@ -95,20 +95,23 @@
       };
       $('#email-form-group a.btn.btn-danger').click(remove_email_event);
       // 可以新增 Email 欄位
-      $('#email-form-group>a').click(function(e) {
+      $('#email-form-group>a.btn-primary').click(function(e) {
         let email_list_length = $('#email-form-group>div').length;
-        $('#email-form-group>div').last().after(`<div>
-  <div class="form-row">
-    <input class="form-control col mx-1 mb-1" id="email-${email_list_length - 1}-address" name="email-${email_list_length - 1}-address" placeholder="user@example.org" required="" type="text" value="">
-    <div class="form-check form-check-inline col mx-1">
-      <input type="radio" class="form-check-input" name="primary_email" id="primary_email_${email_list_length + 1}" value="">
-      <label for="primary_email_${email_list_length + 1}" class="form-check-label">設為主要</label>
-    </div>
-    <div class="col d-flex justify-content-end align-items-center">
-      <a href="#" class="btn btn-danger">移除</a>
-    </div>
-  </div>
-</div>`);
+        $('#email-form-group>div').last().after(`
+            <div class="form-group">
+              <label for="email-${email_list_length}-address">電子郵件位址*</label>
+              <div class="d-flex">
+                <div><input class="form-control mb-2" id="email-${email_list_length}-address" name="email-${email_list_length}-address" placeholder="user@example.org" required="" type="text" value=""></div>
+                <div class="form-check form-check-inline mx-2">
+                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_${email_list_length + 1}" value="">
+                  <label for="primary_email_${email_list_length + 1}" class="form-check-label">設為主要</label>
+                </div>
+                <div class="d-flex justify-content-end align-items-center mx-2">
+                  <a href="#" class="btn btn-danger">移除</a>
+                </div>
+              </div>
+            </div>
+        `);
         $('#email-form-group a.btn.btn-danger').last().click(remove_email_event);
         e.preventDefault();
       });
