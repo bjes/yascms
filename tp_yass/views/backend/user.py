@@ -76,7 +76,9 @@ class UserEditView:
         user_id = int(self.request.matchdict['user_id'])
         user = DAL.get_user(user_id)
         if user:
+            primary_email = DAL.get_user_primary_email(user)
             form = UserEditForm(obj=user)
+            form.primary_email.data = primary_email
             group_ids = [each_group.id for each_group in user.groups]
             return {'form': form,
                     'group_ids': group_ids,

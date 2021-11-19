@@ -21,7 +21,7 @@ from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
-from tp_yass.enum import GroupType, NavbarType
+from tp_yass.enum import GroupType, NavbarType, EmailType
 
 
 logger = logging.getLogger(__name__)
@@ -221,6 +221,21 @@ class DAL:
             回傳使用者物件
         """
         return DBSession.query(UserModel).get(user_id)
+
+    @staticmethod
+    def get_user_primary_email(user):
+        """取得使用者的主要 email 位址
+
+        Args:
+            user: UserModel
+
+        Returns:
+            回傳使用者的主要 email 位址
+        """
+
+        for email in user.email:
+            if email.type == EmailType.USER_PRIMARY:
+                return email.address
 
     @staticmethod
     def save_user(user):
