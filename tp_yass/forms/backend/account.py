@@ -67,11 +67,13 @@ class GroupCreateForm(Form):
                                 (GroupType.ADMIN.value, '管理者')],
                        coerce=int)
 
-    email = FieldList(FormField(EmailForm), min_entries=1)
+    email = FieldList(FormField(EmailForm))
 
     # 用來在前端讓使用者勾選，多個 email 的列表中，哪一個是 primary email。相關的列表會在 view
     # 那邊動態產生與處理，這邊只是定義有這個欄位，驗證等都是在 view 那邊處理
-    primary_email = RadioField('主要郵件位址', [InputRequired('主要郵件位址必填'), Email('需為合法的電子郵件位址')])
+    # 群組沒有強制一定要輸入 email，所以這邊是選填，驗證的部份在 view 那邊處理
+    # 不在這邊自己刻驗證的原因是覺得，直接在 view 那邊比對是否符合有填入的 email 即可
+    primary_email = RadioField('主要郵件位址', [Email('需為合法的電子郵件位址')])
 
     # TODO: 要動態產生，目前先寫死 20 組
     order = SelectField('排序*', [InputRequired('排序必填')],

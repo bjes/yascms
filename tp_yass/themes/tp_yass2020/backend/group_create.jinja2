@@ -29,6 +29,24 @@
           {{ form.type.label() }}
           {{ form.type(class_='form-control') }}
         </div>
+        <div id="email-form-group" class="mb-3">
+          {% for each_email in form.email %}
+            <div class="form-group">
+              {{ each_email.form.address.label() }}
+              <div class="d-flex">
+                <div>{{ each_email.form.address(class_='form-control mb-2', placeholder='group@example.org') }}</div>
+                <div class="form-check form-check-inline mx-2">
+                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                  <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
+                </div>
+                <div class="d-flex justify-content-end align-items-center mx-2">
+                  <a href="#" class="btn btn-danger">移除</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          <a href="#" class="btn btn-primary">新增電子郵件</a>
+        </div>
         <div class="form-group">
           {{ form.order.label() }}
           {{ form.order(class_='form-control') }}
@@ -51,6 +69,51 @@
     $('#root-group').bonsai({
       expandAll: true,
       createInputs: 'radio'
+    });
+    // 讓每個 email 移除的按鈕都可以移除對應的 email 欄位，除非只剩下一個
+    let remove_email_event = function(e) {
+      if ($('#email-form-group>div').length <= 1) {
+        alert('使用者至少要有一組 Email');
+      } else if ($(this).parent().prev().children('input[name=primary_email]:checked').length !== 0) {
+        alert('此 Email 為主要 Email，不可刪除');
+      } else {
+        $(this).parent().parent().parent().remove();
+      }
+      e.preventDefault();
+    };
+    $('#email-form-group a.btn.btn-danger').click(remove_email_event);
+    // 可以新增 Email 欄位
+    $('#email-form-group>a.btn-primary').click(function(e) {
+      let email_list_length = $('#email-form-group>div').length;
+      let new_node = `
+        <div class="form-group">
+          <label for="email-${email_list_length}-address">電子郵件位址*</label>
+          <div class="d-flex">
+            <div><input class="form-control mb-2" id="email-${email_list_length}-address" name="email-${email_list_length}-address" placeholder="group@example.org" required="" type="text" value=""></div>
+            <div class="form-check form-check-inline mx-2">
+              <input type="radio" class="form-check-input" name="primary_email" id="primary_email_${email_list_length + 1}" value="">
+              <label for="primary_email_${email_list_length + 1}" class="form-check-label">設為主要</label>
+            </div>
+            <div class="d-flex justify-content-end align-items-center mx-2">
+              <a href="#" class="btn btn-danger">移除</a>
+            </div>
+          </div>
+        </div>
+      `;
+      if ($('#email-form-group>div').length > 0) {
+        $('#email-form-group>div').last().after(new_node);
+      } else {
+        $('#email-form-group a.btn-primary').before(new_node);
+        $('#email-form-group input[type=radio]').prop('checked', true);
+      }
+      $('#email-form-group a.btn.btn-danger').last().click(remove_email_event);
+      e.preventDefault();
+    });
+    // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
+    $('#user-create-form').submit(function() {
+      $('input[type=radio]').each(function() {
+        $(this).val($(this).parent().prev().val());
+      });
     });
   });
 </script>
