@@ -11,6 +11,7 @@ from tp_yass.enum import GroupType
 
 
 class EmailModel(BaseObject):
+
     __tablename__ = 'email'
 
     id = Column(Integer, primary_key=True)
@@ -24,6 +25,9 @@ class EmailModel(BaseObject):
     user_id = Column(Integer, ForeignKey('users.id'))
 
     group_id = Column(Integer, ForeignKey('groups.id'))
+
+    def __str__(self):
+        return self.address
 
 
 class UserModel(BaseObject):

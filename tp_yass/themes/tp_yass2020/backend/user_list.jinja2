@@ -27,7 +27,7 @@
                 <th scope="row">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
                 <td><a href="#">{{ user.last_name }}{{ user.first_name }}</a></td>
                 <td>{{ user.account }}</td>
-                <td>{{ user.email }}</td>
+                <td>{{ user.email|join(', ') }}</td>
                 <td>
                 {% for group in user.groups %}
                   <a href="#">{{ group.name }}</a>{% if not loop.last %}, {% endif %}

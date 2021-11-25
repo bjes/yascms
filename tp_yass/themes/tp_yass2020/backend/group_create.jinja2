@@ -72,10 +72,12 @@
     });
     // 讓每個 email 移除的按鈕都可以移除對應的 email 欄位，除非只剩下一個
     let remove_email_event = function(e) {
-      if ($('#email-form-group>div').length <= 1) {
-        alert('使用者至少要有一組 Email');
-      } else if ($(this).parent().prev().children('input[name=primary_email]:checked').length !== 0) {
-        alert('此 Email 為主要 Email，不可刪除');
+      if ($(this).parent().prev().children('input[name=primary_email]:checked').length !== 0) {
+        if ($('#email-form-group>div').length !== 1) {
+          alert('此 Email 為主要 Email，不可刪除');
+        } else {
+          $(this).parent().parent().parent().remove();
+        }
       } else {
         $(this).parent().parent().parent().remove();
       }
