@@ -19,7 +19,7 @@
             </ul>
         </div>
       {% endif %}
-      <form action="" method="POST">
+      <form id="user-edit-form" action="" method="POST">
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         <div class="form-group">
           {{ form.last_name.label() }}
@@ -126,9 +126,9 @@
         e.preventDefault();
       });
       // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
-      $('#user-create-form').submit(function() {
+      $('#user-edit-form').submit(function() {
         $('input[type=radio]').each(function() {
-          $(this).val($(this).parent().prev().val());
+          $(this).val($(this).parent().prev().find('input[type=text]').val());
         });
       });
     });

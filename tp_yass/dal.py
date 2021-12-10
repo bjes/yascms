@@ -21,6 +21,7 @@ from tp_yass.models.link import LinkModel, LinkCategoryModel
 from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
+from tp_yass.models.account import EmailModel
 from tp_yass.enum import GroupType, NavbarType, EmailType
 
 
@@ -236,6 +237,33 @@ class DAL:
         for email in user.email:
             if email.type == EmailType.USER_PRIMARY:
                 return email.address
+
+    @staticmethod
+    def sync_user_email(user, email_list, primay_email):
+        """將傳入的 email_list 同步至該使用者的 email
+
+        Args:
+            user: user model
+            email_list: email 位址的 list
+            primay_email: 主要 email
+
+        Returns:
+            成功回傳 True
+        """
+        email_model_list = DBSession.query(EmailModel).filter(EmailModel.address.in_(email_list)).all()
+        email_address_list = [each_email_model.address for each_email_model in email_model_list]
+
+        for each_email in email_list:
+            if each_email not in email_address_list:
+                email_model_list.append(EmailModel(address=each_email))
+
+        for each_email_model in email_model_list:
+            if each_email_model.address == primay_email:
+                each_email_model.type = EmailType.USER_PRIMARY.value
+            else:
+                each_email_model.type = EmailType.USER_SECONDARY.value
+        user.email = email_model_list
+        DBSession.add(user)
 
     @staticmethod
     def save_user(user):

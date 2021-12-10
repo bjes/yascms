@@ -82,6 +82,11 @@
         expandAll: true,
         createInputs: 'checkbox'
       });
+      {% if group_ids %}
+        {% for i in group_ids %}
+          $('#root-group li[data-value="{{ i }}"]>input[type="checkbox"]').prop('checked', true);
+        {% endfor %}
+      {% endif %}
       // 讓每個 email 移除的按鈕都可以移除對應的 email 欄位，除非只剩下一個
       let remove_email_event = function(e) {
         if ($('#email-form-group>div').length <= 1) {
@@ -118,7 +123,7 @@
       // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
       $('#user-create-form').submit(function() {
         $('input[type=radio]').each(function() {
-          $(this).val($(this).parent().prev().val());
+          $(this).val($(this).parent().prev().find('input[type=text]').val());
         });
       });
     });

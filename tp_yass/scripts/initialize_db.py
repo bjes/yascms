@@ -8,7 +8,7 @@ from sqlalchemy.exc import OperationalError
 
 from .. import models
 from ..helpers.backend.theme_config import ThemeController
-from ..enum import NavbarType
+from ..enum import NavbarType, EmailType
 
 
 def setup_models(dbsession):
@@ -22,7 +22,7 @@ def setup_models(dbsession):
     dbsession.add(root_group)
 
     # 建立管理者 Email
-    admin_email = models.account.EmailModel(address='webmaster@example.org', type=1)
+    admin_email = models.account.EmailModel(address='webmaster@example.org', type=EmailType.USER_PRIMARY.value)
 
 
     # 建立管理者帳號

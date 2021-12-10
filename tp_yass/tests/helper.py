@@ -18,7 +18,7 @@ def import_test_db_data(ini_file_path):
     from tp_yass.models.page import PageModel
     from tp_yass.models.navbar import NavbarModel
     from tp_yass.models.theme_config import ThemeConfigModel
-    from tp_yass.enum import NavbarType, HomepageItemType
+    from tp_yass.enum import NavbarType, HomepageItemType, EmailType
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
@@ -47,12 +47,12 @@ def import_test_db_data(ini_file_path):
     group5 = GroupModel(id=7, name='資訊組', type=1, ancestor_id=4)
     group6 = GroupModel(id=8, name='系管師', type=1, ancestor_id=4)
     # 建帳號。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始
-    user1_email = EmailModel(address='user1@example.org', type=1)
+    user1_email = EmailModel(address='user1@example.org', type=EmailType.USER_PRIMARY.value)
     user1 = UserModel(id=2, first_name='小明', last_name='陳', email=[user1_email],
                       account='user1', password='user1', status=1)
     # user1 群組為資訊組、藝文領域科任
     user1.groups = [group5, group4]
-    user2_email = EmailModel(address='user2@example.org', type=1)
+    user2_email = EmailModel(address='user2@example.org', type=EmailType.USER_PRIMARY.value)
     user2 = UserModel(id=3, first_name='大寶', last_name='王', email=[user2_email],
                       account='user2', password='user2', status=1)
     # user2 群組為系管師、自然領域科認

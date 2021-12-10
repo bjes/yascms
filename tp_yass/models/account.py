@@ -43,7 +43,7 @@ class UserModel(BaseObject):
     last_name = Column(String(20), nullable=False)
 
     # 帳號電子郵件
-    email = relationship('EmailModel', backref='user')
+    email = relationship('EmailModel', backref='user', order_by='EmailModel.type', cascade='all, delete-orphan')
 
     # 帳號
     account = Column(String(50), nullable=False, unique=True)
@@ -87,7 +87,7 @@ class GroupModel(BaseObject):
     name = Column(String(100), nullable=False)
 
     # 群組電子郵件
-    email = relationship('EmailModel', backref='group')
+    email = relationship('EmailModel', backref='group', order_by='EmailModel.type', cascade='all, delete-orphan')
 
     # 類別，定義請參照 tp_yass.enum.GroupType
     type = Column('type', Integer, nullable=False, default=GroupType.STAFF.value,
