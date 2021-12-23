@@ -41,13 +41,32 @@ class GroupCreateView:
     @view_config(request_method='POST')
     def post_view(self):
         form = GroupCreateForm(self.request.POST)
+        form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
         if form.validate():
             group = DAL.create_group()
-            form.populate_obj(group)
+            self._sync(form, group)
             DAL.save_group(group)
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         return {'form': form,
                 'group_trees': generate_group_trees()}
+
+    def _sync(self, form, group):
+        """將表單的資料同步給 group model
+
+        Args:
+            form: wtforms.Form 物件
+            group: tp_yass.models.account.GroupModel
+
+        Returns:
+            同步成功回傳 True
+        """
+        group.name = form.name.data
+        email_list = [each_email['address'] for each_email in form.email.data]
+        DAL.sync_group_email(group, email_list, form.primary_email.data)
+        group.type = form.type.data
+        group.order = form.order.data
+        group.ancestor_id = form.ancestor_id.data
+        return True
 
 
 @view_defaults(route_name='backend_group_edit',
@@ -69,7 +88,10 @@ class GroupEditView:
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         group = DAL.get_group(group_id)
         if group:
+            primary_email = DAL.get_group_primary_email(group_id)
             form = GroupCreateForm(obj=group)
+            if primary_email:
+                form.primary_email.data = primary_email
             return {'form': form,
                     'group_trees': generate_group_trees()}
         return HTTPFound(location=self.request.route_url('backend_group_list'))
@@ -77,19 +99,38 @@ class GroupEditView:
     @view_config(request_method='POST')
     def post_view(self):
         form = GroupCreateForm(self.request.POST)
+        form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
         if form.validate():
             group_id = int(self.request.matchdict['group_id'])
             if group_id <= 2:
                 # 內建根群組與管理者群組不能編輯
                 self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
-                return HTTPFound(location=self.request.route_url('backend_group_list'))
             group = DAL.get_group(group_id)
             if group:
-                form.populate_obj(group)
+                self._sync(form, group)
                 DAL.save_group(group)
-            return HTTPFound(location=self.request.route_url('backend_group_list'))
-        return {'form': form,
-                'group_trees': generate_group_trees()}
+        else:
+            return {'form': form,
+                    'group_trees': generate_group_trees()}
+        return HTTPFound(location=self.request.route_url('backend_group_list'))
+
+    def _sync(self, form, group):
+        """將表單的資料同步給 group model
+
+        Args:
+            form: wtforms.Form 物件
+            group: tp_yass.models.account.GroupModel
+
+        Returns:
+            同步成功回傳 True
+        """
+        group.name = form.name.data
+        email_list = [each_email['address'] for each_email in form.email.data]
+        DAL.sync_group_email(group, email_list, form.primary_email.data)
+        group.type = form.type.data
+        group.order = form.order.data
+        group.ancestor_id = form.ancestor_id.data
+        return True
 
 
 @view_defaults(route_name='backend_group_delete', permission='edit')

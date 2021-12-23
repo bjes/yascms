@@ -19,7 +19,7 @@
             </ul>
         </div>
       {% endif %}
-      <form action="" method="POST">
+      <form id="group-create-form" action="" method="POST">
         <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
         <div class="form-group">
           {{ form.name.label() }}
@@ -36,7 +36,11 @@
               <div class="d-flex">
                 <div>{{ each_email.form.address(class_='form-control mb-2', placeholder='group@example.org') }}</div>
                 <div class="form-check form-check-inline mx-2">
-                  <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                  {% if each_email.address.data == form.primary_email.data %}
+                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
+                  {% else %}
+                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                  {% endif %}
                   <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
                 </div>
                 <div class="d-flex justify-content-end align-items-center mx-2">
@@ -70,6 +74,8 @@
       expandAll: true,
       createInputs: 'radio'
     });
+    // 預設勾選最上層根群組
+    $('#bonsai-checkbox-0').prop('checked', true);
     // 讓每個 email 移除的按鈕都可以移除對應的 email 欄位，除非只剩下一個
     let remove_email_event = function(e) {
       if ($(this).parent().prev().children('input[name=primary_email]:checked').length !== 0) {
@@ -112,9 +118,9 @@
       e.preventDefault();
     });
     // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
-    $('#user-create-form').submit(function() {
-      $('input[type=radio]').each(function() {
-        $(this).val($(this).parent().prev().val());
+    $('#group-create-form').submit(function() {
+      $('#email-form-group input[type=radio]').each(function() {
+        $(this).val($(this).parent().prev().find('input[type=text]').val());
       });
     });
   });

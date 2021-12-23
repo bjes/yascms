@@ -224,19 +224,17 @@ class DAL:
         return DBSession.query(UserModel).get(user_id)
 
     @staticmethod
-    def get_user_primary_email(user):
+    def get_user_primary_email(user_id):
         """取得使用者的主要 email 位址
 
         Args:
-            user: UserModel
+            user_id: UserModel primary key
 
         Returns:
             回傳使用者的主要 email 位址
         """
-
-        for email in user.email:
-            if email.type == EmailType.USER_PRIMARY:
-                return email.address
+        return DBSession.query(EmailModel.address).filter(EmailModel.user_id==user_id,
+                                                          EmailModel.type==EmailType.USER_PRIMARY.value).one()
 
     @staticmethod
     def sync_user_email(user, email_list, primay_email):
@@ -337,6 +335,46 @@ class DAL:
         return DBSession.query(GroupModel).get(group_id)
 
     @staticmethod
+    def get_group_primary_email(group_id):
+        """取得群組主要 email 位址
+
+        Args:
+            group_id: GroupModel primary key
+
+        Returns:
+            回傳群組的主要 email 位址或 None
+        """
+        return DBSession.query(EmailModel.address).filter(EmailModel.group_id==group_id,
+                                                          EmailModel.type==EmailType.GROUP_PRIMARY.value).one_or_none()
+
+    @staticmethod
+    def sync_group_email(group, email_list, primay_email):
+        """將傳入的 email_list 同步至該群組的 email
+
+        Args:
+            group: group model
+            email_list: email 位址的 list
+            primay_email: 主要 email
+
+        Returns:
+            成功回傳 True
+        """
+        email_model_list = DBSession.query(EmailModel).filter(EmailModel.address.in_(email_list)).all()
+        email_address_list = [each_email_model.address for each_email_model in email_model_list]
+
+        for each_email in email_list:
+            if each_email not in email_address_list:
+                email_model_list.append(EmailModel(address=each_email))
+
+        for each_email_model in email_model_list:
+            if each_email_model.address == primay_email:
+                each_email_model.type = EmailType.GROUP_PRIMARY.value
+            else:
+                each_email_model.type = EmailType.GROUP_SECONDARY.value
+        group.email = email_model_list
+        DBSession.add(group)
+
+    @staticmethod
     def get_group_by_name(name):
         """根據傳入的群組名稱回傳對應的群組物件
 
@@ -374,10 +412,10 @@ class DAL:
 
     @staticmethod
     def save_group(group):
-        """將 UserModel 物件存至 DB
+        """將 GroupModel 物件存至 DB
 
         Args:
-            user: GroupModel 實體
+            group: GroupModel 實體
 
         Returns:
             None

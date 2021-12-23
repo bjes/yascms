@@ -53,7 +53,7 @@ class UserCreateView:
         form = UserCreateForm()
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
-        form.primary_email.choices = [each_email_form.form.address.data for each_email_form in form.email]
+        form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
         if form.validate():
             user = DAL.create_user()
             existed_account = DAL.get_user_account(form.account.data)
@@ -103,7 +103,7 @@ class UserEditView:
         user_id = int(self.request.matchdict['user_id'])
         user = DAL.get_user(user_id)
         if user:
-            primary_email = DAL.get_user_primary_email(user)
+            primary_email = DAL.get_user_primary_email(user_id)
             form = UserEditForm(obj=user)
             form.primary_email.data = primary_email
             group_ids = [each_group.id for each_group in user.groups]
@@ -117,7 +117,7 @@ class UserEditView:
         form = UserEditForm()
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
-        form.primary_email.choices = [each_email_form.form.address.data for each_email_form in form.email]
+        form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
         if form.validate():
             user_id = int(self.request.matchdict['user_id'])
             user = DAL.get_user(user_id)
@@ -141,7 +141,7 @@ class UserEditView:
 
         Args:
             form: wtforms.Form 物件
-            user: tp_yass.models.account
+            user: tp_yass.models.account.UserModel
 
         Returns:
             同步成功回傳 True
