@@ -23,7 +23,7 @@ def main():
     if args.deploy_packages:
         subprocess.call("python3 -m venv .venv --system-site-packages", shell=True)
         subprocess.call(".venv/bin/pip install 'pip==21.3.1'", shell=True)
-        subprocess.call(".venv/bin/pip install 'wheel==0.37.0' 'setuptools==58.3.0' 'ansible==4.7.0' 'poetry==1.1.11'", shell=True)
+        subprocess.call(".venv/bin/pip install 'wheel==0.37.0' 'setuptools==60.1.0' 'ansible==4.7.0' 'poetry==1.1.12'", shell=True)
     if args.project_packages:
         check_perm()
         subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_deps.sh'", shell=True)
