@@ -234,7 +234,7 @@ class DAL:
             回傳使用者的主要 email 位址
         """
         return DBSession.query(EmailModel.address).filter(EmailModel.user_id==user_id,
-                                                          EmailModel.type==EmailType.USER_PRIMARY.value).one()
+                                                          EmailModel.type==EmailType.USER_PRIMARY.value).scalar()
 
     @staticmethod
     def sync_user_email(user, email_list, primay_email):
@@ -345,7 +345,7 @@ class DAL:
             回傳群組的主要 email 位址或 None
         """
         return DBSession.query(EmailModel.address).filter(EmailModel.group_id==group_id,
-                                                          EmailModel.type==EmailType.GROUP_PRIMARY.value).one_or_none()
+                                                          EmailModel.type==EmailType.GROUP_PRIMARY.value).scalar()
 
     @staticmethod
     def sync_group_email(group, email_list, primay_email):
