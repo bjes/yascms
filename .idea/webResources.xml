@@ -5,7 +5,9 @@
       <entry url="file://$PROJECT_DIR$">
         <entryData>
           <resourceRoots>
-            <path value="file://$PROJECT_DIR$/tp_yass/themes/tp_yass/static" />
+            <path value="file://$PROJECT_DIR$/tp_yass/static" />
+            <path value="file://$PROJECT_DIR$/tp_yass/uploads" />
+            <path value="file://$PROJECT_DIR$/tp_yass/webroot" />
           </resourceRoots>
         </entryData>
       </entry>

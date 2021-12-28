@@ -22,6 +22,7 @@ wtforms = {extras = ["email"], version = "*"}
 email_validator = "*"
 pillow = "*"
 pyramid-session-redis = "*"
+Authlib = "*"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"

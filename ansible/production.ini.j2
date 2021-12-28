@@ -47,6 +47,8 @@ redis.sessions.cookie_on_exception = True
 {% else -%}
     redis.sessions.url = redis://{{ redis_host|default("localhost", true) }}:{{ redis_port|default("6379", true) }}/0
 {%- endif %}
+redis.sessions.redis_encoding = utf-8                                                                                                             
+redis.sessions.redis_encoding_errors = strict
 
 sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@{{ db_host }}/{{ db_name }}?charset=utf8mb4
 sqlalchemy.pool_recycle = 3600

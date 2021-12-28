@@ -41,7 +41,9 @@ class GroupCreateView:
     @view_config(request_method='POST')
     def post_view(self):
         form = GroupCreateForm(self.request.POST)
-        form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
+        #valid_primary_email_choices = [each_email['address'] for each_email in form.email.data]
+        #if valid_primary_email_choices:
+        #    form.primary_email.choices = valid_primary_email_choices
         if form.validate():
             group = DAL.create_group()
             self._sync(form, group)

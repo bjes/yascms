@@ -1,4 +1,3 @@
-import enum
 from enum import IntEnum
 
 
@@ -56,7 +55,7 @@ class GroupType(IntEnum):
     NORMAL = 2
 
 
-class ThemeConfigCustomType(enum.IntEnum):
+class ThemeConfigCustomType(IntEnum):
     """用來表示樣板自訂設定的每個設定的類型"""
 
     # 字串
@@ -69,7 +68,7 @@ class ThemeConfigCustomType(enum.IntEnum):
     INTEGER = 3
 
 
-class HomepageItemType(enum.IntEnum):
+class HomepageItemType(IntEnum):
     """用來表示首頁顯示順序的類別"""
 
     # 最新消息模組
@@ -85,14 +84,14 @@ class HomepageItemType(enum.IntEnum):
     LINKS = 4
 
 
-class HomepageItemParamsSubType(enum.IntEnum):
+class HomepageItemParamsSubType(IntEnum):
     """用來定義 sub type，會用到 sub type 的為最新消息與好站連結"""
 
     # 未指定
     UNSPECIFIED = 0
 
 
-class EmailType(enum.IntEnum):
+class EmailType(IntEnum):
     """定義這個 Email 是哪一種類型"""
 
     # 帳號的 primary email

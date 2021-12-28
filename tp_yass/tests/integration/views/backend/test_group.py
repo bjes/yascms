@@ -21,8 +21,9 @@ def test_group_create_view_and_list_view_should_create_and_show_group(webtest_ad
     response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
     assert group_name not in response.body.decode('utf8')
     form = fill_form(response.form, group_name, ancestor_group_id)
-    form.submit()
-    response = webtest_admin_testapp.get(request.route_path('backend_group_create'))
+    response = form.submit()
+    assert response.status_int == 302
+    response = webtest_admin_testapp.get(request.route_path('backend_group_list'))
     assert group_name in response.body.decode('utf8')
 
     # 可以建立同名的群組

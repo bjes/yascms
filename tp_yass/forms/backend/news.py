@@ -3,12 +3,12 @@ from datetime import date
 from pyramid_wtforms import (Form,
                              StringField,
                              TextAreaField,
-                             MultipleCheckboxField,
                              BooleanField,
                              DateTimeField,
                              DateField,
                              SelectField,
-                             MultipleFilesField)
+                             MultipleFilesField,
+                             MultipleCheckboxField)
 from pyramid_wtforms.validators import (InputRequired,
                                         Length,
                                         FileSize,

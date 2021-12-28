@@ -5,15 +5,16 @@ from pyramid_wtforms import (Form,
                              PasswordField,
                              RadioField,
                              FormField,
-                             FieldList)
+                             FieldList,
+                             MultipleCheckboxField)
 from pyramid_wtforms.validators import (InputRequired,
                                         Length,
                                         Email,
                                         EqualTo,
+                                        Optional,
                                         ValidationError)
 
 from tp_yass.enum import GroupType
-from .fields import MultiCheckboxField
 
 
 class EmailForm(Form):
@@ -48,7 +49,7 @@ class UserCreateForm(Form):
                                                      EqualTo('password', message='兩次密碼輸入需相符')])
 
     # 只是用來驗證，前端會靠 jquery bonsai 產生巢狀多選選單，不會依靠這個 field 產生
-    group_ids = MultiCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
+    group_ids = MultipleCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
 
 class UserEditForm(UserCreateForm):
@@ -74,11 +75,16 @@ class GroupCreateForm(Form):
 
     email = FieldList(FormField(EmailForm))
 
+    def check_primary_email(form, field):
+        email_list = [each_email['address'] for each_email in form.email.data]
+        if email_list and (field.data not in email_list):
+            raise ValidationError('不合法的 primary email')
+
     # 用來在前端讓使用者勾選，多個 email 的列表中，哪一個是 primary email。相關的列表會在 view
     # 那邊動態產生與處理，這邊只是定義有這個欄位，驗證等都是在 view 那邊處理
     # 群組沒有強制一定要輸入 email，所以這邊是選填，驗證的部份在 view 那邊處理
     # 不在這邊自己刻驗證的原因是覺得，直接在 view 那邊比對是否符合有填入的 email 即可
-    primary_email = RadioField('主要郵件位址', [Email('需為合法的電子郵件位址')])
+    primary_email = RadioField('主要郵件位址', [check_primary_email, Optional()], choices=[])
 
     # TODO: 要動態產生，目前先寫死 20 組
     order = SelectField('排序*', [InputRequired('排序必填')],
