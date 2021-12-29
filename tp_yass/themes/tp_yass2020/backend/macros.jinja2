@@ -49,9 +49,9 @@
     {% endif %}
     <li class="list-group-item" data-value="{{ group.id }}">
       {% if use_link %}
-        <div class="d-flex justify-content-between align-content-center">
-          <span>
-            <a href="#">{{ group.name }}</a>
+        <div class="d-flex flex-wrap">
+          <div>
+            {{ group.name }}
             <span class="badge badge-info">
               {% if group.type == GroupType.ADMIN %}
                 管理群組
@@ -68,14 +68,21 @@
             {% else %}
               <span class="badge badge-success">繼承：一般權限</span>
             {% endif %}
-          </span>
-          <span>
+            {% for each_email in group.email %}
+              {% if each_email.type == EmailType.GROUP_PRIMARY.value %}
+                <span class="badge badge-light">主要 Email：{{ each_email.address }}</span>
+              {% elif each_email.type == EmailType.GROUP_SECONDARY.value %}
+                <span class="badge badge-light">次要 Email：{{ each_email.address }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="ml-auto d-flex">
             {% if group.id > 2 %}
               {# 如果是內建根群組/內建管理者群組，則不該顯示編輯與刪除按鈕 #}
-              <a href="{{ request.route_url('backend_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a>
-              <a href="{{ request.route_url('backend_group_delete', group_id=group.id) }}" class="btn btn-sm btn-danger">刪除</a>
+              <div><a href="{{ request.route_url('backend_group_edit', group_id=group.id) }}" class="btn btn-sm btn-primary">編輯</a></div>
+              <div><a href="{{ request.route_url('backend_group_delete', group_id=group.id) }}" class="btn btn-sm btn-danger">刪除</a></div>
             {% endif %}
-          </span>
+          </div>
         </div>
       {% else %}
         {{ group.name }}

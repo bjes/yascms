@@ -1,4 +1,3 @@
-import tp_yass.helpers.backend.group
 from tp_yass.helpers.backend import group
 
 

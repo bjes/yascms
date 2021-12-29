@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from tp_yass.dal import DAL
 from tp_yass.forms.backend.account import GroupCreateForm
 from tp_yass.helpers.backend.group import generate_group_trees
-from tp_yass.enum import GroupType
+from tp_yass.enum import GroupType, EmailType
 
 
 @view_defaults(route_name='backend_group_list',
@@ -19,7 +19,7 @@ class GroupListView:
 
     @view_config()
     def get_view(self):
-        return {'group_trees': generate_group_trees(), 'GroupType': GroupType}
+        return {'group_trees': generate_group_trees(), 'GroupType': GroupType, 'EmailType': EmailType}
 
 
 @view_defaults(route_name='backend_group_create',
@@ -41,9 +41,9 @@ class GroupCreateView:
     @view_config(request_method='POST')
     def post_view(self):
         form = GroupCreateForm(self.request.POST)
-        #valid_primary_email_choices = [each_email['address'] for each_email in form.email.data]
-        #if valid_primary_email_choices:
-        #    form.primary_email.choices = valid_primary_email_choices
+        valid_primary_email_choices = [each_email['address'] for each_email in form.email.data]
+        if valid_primary_email_choices:
+            form.primary_email.choices = valid_primary_email_choices
         if form.validate():
             group = DAL.create_group()
             self._sync(form, group)

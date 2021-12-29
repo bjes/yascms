@@ -28,6 +28,7 @@ def _recursive_append(group_node, group):
     if group.ancestor_id == group_node['id']:
         descendant = {'id': group.id,
                       'name': group.name,
+                      'email': [{'address': each_email.address, 'type': each_email.type} for each_email in group.email],
                       'type': group.type,
                       'inheritance': GroupType.NORMAL.value,  # 預設是普通權限
                       'descendants': []}
@@ -47,6 +48,7 @@ def generate_group_trees():
             # 代表是最上層群組，最上層群組是根群組，預設的繼承權限為 GroupType.NORMAL
             group_trees = {'id': group.id,
                            'name': group.name,
+                           'email': [{'address': each_email.address, 'type': each_email.type} for each_email in group.email],
                            'type': group.type,
                            'inheritance': GroupType.NORMAL.value,
                            'descendants': []}

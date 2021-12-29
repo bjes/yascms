@@ -84,6 +84,8 @@ class GroupCreateForm(Form):
     # 那邊動態產生與處理，這邊只是定義有這個欄位，驗證等都是在 view 那邊處理
     # 群組沒有強制一定要輸入 email，所以這邊是選填，驗證的部份在 view 那邊處理
     # 不在這邊自己刻驗證的原因是覺得，直接在 view 那邊比對是否符合有填入的 email 即可
+    # 驗證的部份經過實測，必須先放自訂的驗證，再放 Optional() 才可以讓這個表單欄位可填可不填，
+    # 並在有值的時候，用我們自訂的驗證邏輯去驗證
     primary_email = RadioField('主要郵件位址', [check_primary_email, Optional()], choices=[])
 
     # TODO: 要動態產生，目前先寫死 20 組
