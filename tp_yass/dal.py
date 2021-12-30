@@ -237,18 +237,28 @@ class DAL:
                                                           EmailModel.type==EmailType.USER_PRIMARY.value).scalar()
 
     @staticmethod
-    def sync_user_email(user, email_list, primay_email):
+    def sync_user_email(user, email_list, primary_email):
         """將傳入的 email_list 同步至該使用者的 email
 
         Args:
             user: user model
             email_list: email 位址的 list
-            primay_email: 主要 email
+            primary_email: 主要 email
 
         Returns:
-            成功回傳 True
+            成功回傳 True，失敗回傳 False
         """
         email_model_list = DBSession.query(EmailModel).filter(EmailModel.address.in_(email_list)).all()
+        if user.id:
+            # 撈回來的 email "必須" 是關聯到這位使用者帳號
+            for each_email_model in email_model_list:
+                if each_email_model.user_id != user.id:
+                    return False
+        else:
+            # 新建的使用者，理論上資料庫不該撈回任何東西，否則就代表會改到資料庫現有的紀錄
+            if email_model_list:
+                return False
+
         email_address_list = [each_email_model.address for each_email_model in email_model_list]
 
         for each_email in email_list:
@@ -256,12 +266,13 @@ class DAL:
                 email_model_list.append(EmailModel(address=each_email))
 
         for each_email_model in email_model_list:
-            if each_email_model.address == primay_email:
+            if each_email_model.address == primary_email:
                 each_email_model.type = EmailType.USER_PRIMARY.value
             else:
                 each_email_model.type = EmailType.USER_SECONDARY.value
         user.email = email_model_list
         DBSession.add(user)
+        return True
 
     @staticmethod
     def save_user(user):
@@ -348,18 +359,28 @@ class DAL:
                                                           EmailModel.type==EmailType.GROUP_PRIMARY.value).scalar()
 
     @staticmethod
-    def sync_group_email(group, email_list, primay_email):
+    def sync_group_email(group, email_list, primary_email):
         """將傳入的 email_list 同步至該群組的 email
 
         Args:
             group: group model
             email_list: email 位址的 list
-            primay_email: 主要 email
+            primary_email: 主要 email
 
         Returns:
-            成功回傳 True
+            成功回傳 True，失敗回傳 False
         """
         email_model_list = DBSession.query(EmailModel).filter(EmailModel.address.in_(email_list)).all()
+        if group.id:
+            # 撈回來的 email "必須" 是關聯到這群組
+            for each_email_model in email_model_list:
+                if each_email_model.group_id != group.id:
+                    return False
+        else:
+            # 新建的群組，理論上資料庫不該撈回任何東西，否則就代表會改到資料庫現有的紀錄
+            if email_model_list:
+                return False
+
         email_address_list = [each_email_model.address for each_email_model in email_model_list]
 
         for each_email in email_list:
@@ -367,12 +388,13 @@ class DAL:
                 email_model_list.append(EmailModel(address=each_email))
 
         for each_email_model in email_model_list:
-            if each_email_model.address == primay_email:
+            if each_email_model.address == primary_email:
                 each_email_model.type = EmailType.GROUP_PRIMARY.value
             else:
                 each_email_model.type = EmailType.GROUP_SECONDARY.value
         group.email = email_model_list
         DBSession.add(group)
+        return True
 
     @staticmethod
     def get_group_by_name(name):

@@ -46,9 +46,12 @@ class GroupCreateView:
             form.primary_email.choices = valid_primary_email_choices
         if form.validate():
             group = DAL.create_group()
-            self._sync(form, group)
-            DAL.save_group(group)
-            return HTTPFound(location=self.request.route_url('backend_group_list'))
+            result = self._sync(form, group)
+            if result:
+                DAL.save_group(group)
+                return HTTPFound(location=self.request.route_url('backend_group_list'))
+            else:
+                self.request.session.flash('設定的 Email 已存在且未關聯至此使用者')
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
@@ -60,11 +63,13 @@ class GroupCreateView:
             group: tp_yass.models.account.GroupModel
 
         Returns:
-            同步成功回傳 True
+            同步成功回傳 True，失敗回傳 False
         """
         group.name = form.name.data
         email_list = [each_email['address'] for each_email in form.email.data]
-        DAL.sync_group_email(group, email_list, form.primary_email.data)
+        if email_list:
+            if not DAL.sync_group_email(group, email_list, form.primary_email.data):
+                return False
         group.type = form.type.data
         group.order = form.order.data
         group.ancestor_id = form.ancestor_id.data
@@ -109,12 +114,14 @@ class GroupEditView:
                 self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
             group = DAL.get_group(group_id)
             if group:
-                self._sync(form, group)
-                DAL.save_group(group)
-        else:
-            return {'form': form,
-                    'group_trees': generate_group_trees()}
-        return HTTPFound(location=self.request.route_url('backend_group_list'))
+                result = self._sync(form, group)
+                if result:
+                    DAL.save_group(group)
+                    return HTTPFound(location=self.request.route_url('backend_group_list'))
+                else:
+                    self.request.session.flash('設定的 Email 已存在且未關聯至此使用者')
+        return {'form': form,
+                'group_trees': generate_group_trees()}
 
     def _sync(self, form, group):
         """將表單的資料同步給 group model
@@ -128,7 +135,9 @@ class GroupEditView:
         """
         group.name = form.name.data
         email_list = [each_email['address'] for each_email in form.email.data]
-        DAL.sync_group_email(group, email_list, form.primary_email.data)
+        if email_list:
+            if not DAL.sync_group_email(group, email_list, form.primary_email.data):
+                return False
         group.type = form.type.data
         group.order = form.order.data
         group.ancestor_id = form.ancestor_id.data
