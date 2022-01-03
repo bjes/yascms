@@ -22,6 +22,6 @@ class OAuth2IntegrationListView:
         provider_list = []
         oauth2_integration_settings = json.loads(DAL.get_oauth2_integration_settings())
         for each_provider in oauth2_integration_settings:
-            provider_list.append({'name': each_provider,
+            provider_list.append({'name': oauth2_integration_settings[each_provider]['canonical_name'],
                                   'enabled': oauth2_integration_settings[each_provider]['settings']['enabled']})
         return {'provider_list': provider_list}

@@ -12,6 +12,51 @@ from tp_yass.forms.auth import LoginForm
 logger = logging.getLogger(__name__)
 
 
+def create_credential(request, user):
+    """建立使用者的權限相關設定，比如 session 等資訊
+
+    Args:
+        request: pyramid.request.Request
+        user: tp_yass.models.account.UserModel
+
+    Returns:
+        重導至 backend_homepage
+    """
+    request.session['user_id'] = user.id
+    request.session['first_name'] = user.first_name
+    request.session['last_name'] = user.last_name
+    request.session['account'] = user.account
+    request.session['is_admin'] = False
+    # 一個帳號可以隸屬多個群組，這邊紀錄隸屬群組的 id 列表
+    request.session['main_group_id_list'] = {each_group.id for each_group in user.groups}
+    groups = []
+    for each_group in user.groups:
+        group_tree = []
+        current_group = each_group
+        while True:
+            # 只要有任一個群組（含上層）為管理者權限，則 is_admin 就為 True
+            if not request.session['is_admin']:
+                if current_group.type == GroupType.ADMIN:
+                    request.session['is_admin'] = True
+            if current_group.ancestor:
+                # 代表還有上層群組
+                group_tree.append({'name': current_group.name, 'id': current_group.id, 'type': current_group.type})
+                current_group = current_group.ancestor
+            else:
+                # 代表已經到了最上層群組
+                group_tree.append({'name': current_group.name, 'id': current_group.id, 'type': current_group.type})
+                groups.append(group_tree)
+                break
+    # 隸屬群組以及其上的樹狀的群組資料
+    request.session['groups'] = groups
+    # 紀錄所屬群組以及其以上各樹狀的所有 group id，方便前端網頁處理，才不用埋太多邏輯
+    request.session['group_id_list'] = {i['id'] for each_group_list in groups for i in each_group_list}
+    DAL.log_auth(AuthLogType.LOGIN, user.id, request.client_addr)
+    headers = remember(request, user.id)
+    return HTTPFound(location=request.route_url('backend_homepage'),
+                     headers=headers)
+
+
 @view_defaults(route_name='login', renderer='')
 class LoginView:
     """登入"""
@@ -34,39 +79,7 @@ class LoginView:
             user = DAL.auth_user(login_form.account.data,
                                  login_form.password.data)
             if user:
-                self.request.session['user_id'] = user.id
-                self.request.session['first_name'] = user.first_name
-                self.request.session['last_name'] = user.last_name
-                self.request.session['account'] = user.account
-                self.request.session['is_admin'] = False
-                # 一個帳號可以隸屬多個群組，這邊紀錄隸屬群組的 id 列表
-                self.request.session['main_group_id_list'] = {each_group.id for each_group in user.groups}
-                groups = []
-                for each_group in user.groups:
-                    group_tree = []
-                    current_group = each_group
-                    while True:
-                        # 只要有任一個群組（含上層）為管理者權限，則 is_admin 就為 True
-                        if not self.request.session['is_admin']:
-                            if current_group.type == GroupType.ADMIN:
-                                self.request.session['is_admin'] = True
-                        if current_group.ancestor:
-                            # 代表還有上層群組
-                            group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
-                            current_group = current_group.ancestor
-                        else:
-                            # 代表已經到了最上層群組
-                            group_tree.append({'name': current_group.name, 'id': current_group.id,'type': current_group.type})
-                            groups.append(group_tree)
-                            break
-                # 隸屬群組以及其上的樹狀的群組資料
-                self.request.session['groups'] = groups
-                # 紀錄所屬群組以及其以上各樹狀的所有 group id，方便前端網頁處理，才不用埋太多邏輯
-                self.request.session['group_id_list'] = {i['id'] for each_group_list in groups for i in each_group_list}
-                DAL.log_auth(AuthLogType.LOGIN, user.id, self.request.client_addr)
-                headers = remember(self.request, user.id)
-                return HTTPFound(location=self.request.route_url('backend_homepage'),
-                                 headers=headers)
+                return create_credential(self.request, user)
             else:
                 user = DAL.get_user_account(login_form.account.data)
                 if user:

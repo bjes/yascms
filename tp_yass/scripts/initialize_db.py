@@ -53,7 +53,8 @@ def setup_models(dbsession):
     dbsession.add(models.global_config.GlobalConfigModel(name='sys_maint_mode', value='0', type='bool', description='設定全站是否唯讀'))
 
     # oauth2 整合的設定，以 json 格式存放
-    oauth2_config = {'Google': {'access_token_uri': 'https://www.googleapis.com/oauth2/v4/token',
+    oauth2_config = {'google': {'canonical_name': 'Google',
+                                'access_token_uri': 'https://www.googleapis.com/oauth2/v4/token',
                                 'authorization_url': 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline',
                                 'settings': {'enabled': False,
                                              'client_id': '',
