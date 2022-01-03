@@ -4,7 +4,6 @@ from .resources import (auth_user_factory,
                         staff_group_factory,
                         news_edit_factory,
                         link_edit_factory)
-from .dal import DAL
 
 
 def includeme(config):
@@ -26,6 +25,8 @@ def includeme(config):
     config.add_route('page_get', '/page/get/{page_id:\d+}', pregenerator=preview_override_param)
     config.add_route('login', '/login', pregenerator=preview_override_param)
     config.add_route('logout', '/logout', pregenerator=preview_override_param)
+
+    config.add_route('oauth2_provider_callback', '/oauth2/{provider_name}/callback')
 
     # backend
     config.add_route('backend_homepage', '/backend/', factory=auth_user_factory, pregenerator=preview_override_param)

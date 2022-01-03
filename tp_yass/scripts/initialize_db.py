@@ -55,7 +55,8 @@ def setup_models(dbsession):
     # oauth2 整合的設定，以 json 格式存放
     oauth2_config = {'Google': {'access_token_uri': 'https://www.googleapis.com/oauth2/v4/token',
                                 'authorization_url': 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline',
-                                'settings': {'client_id': '',
+                                'settings': {'enabled': False,
+                                             'client_id': '',
                                              'client_secret': ''}}}
     dbsession.add(models.global_config.GlobalConfigModel(name='oauth2_integration', value=json.dumps(oauth2_config, ensure_ascii=False), type='str', description='OAuth2 整合設定'))
 

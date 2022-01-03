@@ -11,6 +11,7 @@
               <tr>
                 <th scope="col" class="d-none d-md-table-cell">編號</th>
                 <th scope="col" class="d-none d-sm-table-cell">Provider</th>
+                <th scope="col" class="d-none d-sm-table-cell">狀態</th>
                 <th scope="col" class="d-none d-sm-table-cell">動作</th>
               </tr>
               </thead>
@@ -18,10 +19,9 @@
               {% for each_provider in provider_list %}
                 <tr>
                   <th scope="row">{{ loop.index }}</th>
-                  <td><a href="#">{{ each_provider }}</a></td>
-                  <td>
-                    <a class="btn btn-primary" href="#">編輯</a>
-                  </td>
+                  <td><a href="#">{{ each_provider['name'] }}</a></td>
+                  <td>{% if each_provider['enabled'] %}已啟用{% else %}未啟用{% endif %}</td>
+                  <td><a class="btn btn-primary" href="#">編輯</a></td>
                 </tr>
               {% endfor %}
               </tbody>
