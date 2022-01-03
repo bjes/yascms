@@ -102,7 +102,6 @@ def test_group_edit_view_should_change_group_attributes(webtest_admin_testapp):
     form.fields['ancestor_id'] = [field]
     form.field_order.append(('ancestor_id', field))
     form['ancestor_id'].force_value(ancestor_group_id)
-    response = form.submit()
     form.submit()
     response = webtest_admin_testapp.get(request.route_path('backend_group_list'))
     assert school_email in response.body.decode('utf8')
