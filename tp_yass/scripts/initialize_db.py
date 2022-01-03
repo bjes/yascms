@@ -1,5 +1,6 @@
-import argparse
 import sys
+import json
+import argparse
 
 from pyramid.paster import bootstrap, setup_logging
 from sqlalchemy import engine_from_config
@@ -50,6 +51,14 @@ def setup_models(dbsession):
 
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
     dbsession.add(models.global_config.GlobalConfigModel(name='sys_maint_mode', value='0', type='bool', description='設定全站是否唯讀'))
+
+    # oauth2 整合的設定，以 json 格式存放
+    oauth2_config = {'Google': {'access_token_uri': 'https://www.googleapis.com/oauth2/v4/token',
+                                'authorization_url': 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline',
+                                'settings': {'client_id': '',
+                                             'client_secret': ''}}}
+    dbsession.add(models.global_config.GlobalConfigModel(name='oauth2_integration', value=json.dumps(oauth2_config, ensure_ascii=False), type='str', description='OAuth2 整合設定'))
+
 
     # 匯入預設樣板 tp_yass2020 的佈景主題設定檔
     theme_importer = ThemeController('tp_yass2020')

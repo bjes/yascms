@@ -96,6 +96,11 @@ class DAL:
                          .all())
 
     @staticmethod
+    def get_oauth2_integration_list():
+        """傳回系統支援的 OAuth2 Providers 的列表"""
+        return DBSession.query(GlobalConfigModel.value).filter_by(name='oauth2_integration').scalar()
+
+    @staticmethod
     def get_available_theme_name_list():
         """回傳目前可用的樣板名稱列表
 
