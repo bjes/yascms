@@ -1,10 +1,31 @@
+import logging
+
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, HTTPForbidden
 
 from tp_yass.dal import DAL
 from tp_yass.forms.backend.account import GroupCreateForm
 from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import GroupType, EmailType
+
+
+logger = logging.getLogger(__name__)
+
+
+def check_editing_permission(group_id):
+    """根群組與最高管理者群組其 id 為 1 和 2，這兩個群組唯讀不可編輯
+
+    Args:
+        request: pyramid.request.Request
+        group_id: group id
+
+    Returns:
+        如果是內建群組，回傳 HTTPForbidden，否則回傳 None
+    """
+    if group_id <= 2:
+        msg = '內建根群組/最高管理者群組不可編輯'
+        logger.warning(msg)
+        return HTTPForbidden()
 
 
 @view_defaults(route_name='backend_group_list',
@@ -49,9 +70,14 @@ class GroupCreateView:
             result = self._sync(form, group)
             if result:
                 DAL.save_group(group)
+                msg = f'建立 {group.name} 群組成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(location=self.request.route_url('backend_group_list'))
             else:
-                self.request.session.flash('設定的 Email 已存在且未關聯至此使用者')
+                msg = 'Email 已存在不可重複'
+                logger.info(msg)
+                self.request.session.flash(msg, 'fail')
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
@@ -89,10 +115,9 @@ class GroupEditView:
     @view_config(request_method='GET')
     def get_view(self):
         group_id = int(self.request.matchdict['group_id'])
-        if group_id <= 2:
-            # 內建根群組與管理者群組不能編輯
-            self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
-            return HTTPFound(location=self.request.route_url('backend_group_list'))
+        invalid_permission = check_editing_permission(group_id)
+        if invalid_permission:
+            return invalid_permission
         group = DAL.get_group(group_id)
         if group:
             primary_email = DAL.get_group_primary_email(group_id)
@@ -109,17 +134,22 @@ class GroupEditView:
         form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
         if form.validate():
             group_id = int(self.request.matchdict['group_id'])
-            if group_id <= 2:
-                # 內建根群組與管理者群組不能編輯
-                self.request.session.flash('內建根群組/內建管理者群組不能編輯', 'fail')
+            invalid_permission = check_editing_permission(group_id)
+            if invalid_permission:
+                return invalid_permission
             group = DAL.get_group(group_id)
             if group:
                 result = self._sync(form, group)
                 if result:
                     DAL.save_group(group)
+                    msg = f'修改 {group.name} 群組成功'
+                    logger.info(msg)
+                    self.request.session.flash(msg, 'success')
                     return HTTPFound(location=self.request.route_url('backend_group_list'))
                 else:
-                    self.request.session.flash('設定的 Email 已存在且未關聯至此使用者')
+                    msg = '設定的 Email 已存在且未關聯至此群組'
+                    logger.info(msg)
+                    self.request.session.flash(msg, 'fail')
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
@@ -144,6 +174,7 @@ class GroupEditView:
         return True
 
 
+# TODO: 改成用 post 處理刪除
 @view_defaults(route_name='backend_group_delete', permission='edit')
 class GroupDeleteView:
     """刪除使用者群組的 view"""
@@ -154,14 +185,17 @@ class GroupDeleteView:
     @view_config(request_method='GET')
     def get_view(self):
         group_id = int(self.request.matchdict['group_id'])
-        if group_id <= 2:
-            # 內建的根群組與最高管理者群組不能砍
-            self.request.session.flash('管理者群組不能刪除', 'fail')
-            return HTTPFound(location=self.request.route_url('backend_group_list'))
+        invalid_check = self._check_if_invalid_group_editing(group_id)
+        if invalid_check:
+            return invalid_check
         group = DAL.get_group(group_id)
         if group:
             DAL.change_group_ancestor_id(group_id, group.ancestor_id)
             DAL.delete_group(group)
+            msg = f'刪除 {group.name} 群組成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
+            return HTTPFound(location=self.request.route_url('backend_group_list'))
         else:
-            self.request.session.flash('找不到指定群組', 'fail')
-        return HTTPFound(location=self.request.route_url('backend_group_list'))
+            logger.warning('找不到群組 ID 為 %s 的群組', group_id)
+            return HTTPNotFound()

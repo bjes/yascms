@@ -32,7 +32,7 @@ def test_group_create_view_and_list_view_should_create_and_show_group(webtest_ad
     response = form.submit()
     assert response.status_int == 302
     response = webtest_admin_testapp.get(request.route_path('backend_group_list'))
-    assert response.body.decode('utf8').count(group_name) == 2
+    assert response.body.decode('utf8').count(group_name) == 3  # 兩筆群組、加上 flash 成功訊息裡面也會顯示
 
     # 一個群組可以建立多組 email
     response = webtest_admin_testapp.get(request.route_path('backend_group_create'))

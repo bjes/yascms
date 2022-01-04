@@ -1,3 +1,5 @@
+import logging
+
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
@@ -5,6 +7,9 @@ from tp_yass.forms.backend.link import LinkForm, LinkCategoryForm
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
 from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_link_create', renderer='', permission='edit')
@@ -38,6 +43,9 @@ class LinkCreateView:
             if form.icon.data:
                 created_link.icon = upload_attachment(form.icon.data, 'links', f'{created_link.id}_', need_resize=True)
             DAL.save_link(created_link)
+            msg = f'好站連結 {created_link.title} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_link_list'))
         return {'form': form}
 
@@ -67,6 +75,7 @@ class LinkListView:
                 'quantity_per_page': quantity_per_page}
 
 
+# TODO: 要把刪除改成 post 處理
 @view_defaults(route_name='backend_link_delete',
                permission='edit')
 class LinkDeleteView:
@@ -87,7 +96,14 @@ class LinkDeleteView:
         if link:
             delete_attachment(link.icon, 'links')
             DAL.delete_link(link)
-        return HTTPFound(self.request.route_url('backend_link_list'))
+            msg = f'好站連結 {link.title} 刪除成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
+            return HTTPFound(self.request.route_url('backend_link_list'))
+        else:
+            msg = f'找不到 ID 為 {link_id} 的好站連結'
+            logger.warning(msg)
+            return HTTPNotFound()
 
 
 @view_defaults(route_name='backend_link_edit',
@@ -136,9 +152,14 @@ class LinkEditView:
                     delete_attachment(link.icon, 'links')
                     link.icon = upload_attachment(form.icon.data, 'links', f'{link.id}_')
                 DAL.save_link(link)
+                msg = f'好站連結 {link.title} 修改成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_link_list'))
             else:
-                self.request.flash('link 物件不存在', 'fail')
+                msg = f'找不到 ID 為 {link_id} 的好站連結'
+                logger.warning(msg)
+                return HTTPNotFound()
         return {'form': form}
 
 
@@ -162,6 +183,9 @@ class LinkCategoryCreateView:
         form = LinkCategoryForm(self.request.POST)
         if form.validate():
             DAL.create_link_category(form)
+            msg = f'好站連結分類 {form.name} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_link_category_list'))
         return {'form': form}
 
@@ -185,6 +209,7 @@ class LinkCategoryListView:
                 'quantity_per_page': quantity_per_page}
 
 
+# TODO: 改成用 post 處理刪除
 @view_defaults(route_name='backend_link_category_delete',
                permission='edit')
 class LinkCategoryDeleteView:
@@ -202,7 +227,9 @@ class LinkCategoryDeleteView:
         """刪除指定的好站連結分類"""
         link_category_id = int(self.request.matchdict['link_category_id'])
         if not DAL.delete_link_category(link_category_id):
-            self.request.session.flash('刪除分類失敗，請確認是否還有相依的好站連結。', 'fail')
+            msg = f'好站連結分類 ID {link_category_id} 刪除失敗，請確認是否還有相依的好站連結。'
+            logger.warning(msg)
+            self.request.session.flash(msg, 'fail')
         return HTTPFound(self.request.route_url('backend_link_category_list'))
 
 
@@ -218,23 +245,30 @@ class LinkCategoryEditView:
     @view_config(request_method='GET')
     def get_view(self):
         """產生建立好站連結分類表單"""
-        link_category = DAL.get_link_category(int(self.request.matchdict['link_category_id']))
+        link_category_id = int(self.request.matchdict['link_category_id'])
+        link_category = DAL.get_link_category(link_category_id)
         if link_category:
             form = LinkCategoryForm(obj=link_category)
             return {'form': form}
         else:
+            logger.warning(f'找不到 ID 為 {link_category_id} 的好站連結分類')
             return HTTPNotFound()
 
     @view_config(request_method='POST')
     def post_view(self):
         """編輯好站連結分類的表單"""
-        link_category = DAL.get_link_category(int(self.request.matchdict['link_category_id']))
+        link_category_id = int(self.request.matchdict['link_category_id'])
+        link_category = DAL.get_link_category(link_category_id)
         if link_category:
             form = LinkCategoryForm(self.request.POST)
             if form.validate():
                 DAL.update_link_category(link_category, form)
+                msg = f'更新好站連結分類 {link_category.name} 成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_link_category_list'))
             else:
                 return {'form': form}
         else:
+            logger.warning(f'找不到 ID 為 {link_category_id} 的好站連結分類')
             return HTTPNotFound()

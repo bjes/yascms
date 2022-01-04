@@ -1,7 +1,7 @@
 import logging
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, HTTPForbidden
 
 from tp_yass.enum import NavbarType
 from tp_yass.helpers.navbar import generate_navbar_trees
@@ -49,9 +49,14 @@ class NavbarCreateView:
         form = NavbarForm(self.request.POST)
         if form.validate():
             if DAL.create_navbar(form):
+                msg = f'建立導覽列 {form.name.data} 成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_navbar_list'))
-        else:
-            self.request.session.flash('建立導覽列失敗', 'fail')
+            else:
+                msg = f'建立導覽列 {form.name.data} 失敗，請查閱 log'
+                logger.error(msg)
+                self.request.session.flash(msg, 'fail')
         return {'form': form,
                 'navbar_trees': generate_navbar_trees(self.request, type='intermediate'),
                 'NavbarType': NavbarType}
@@ -71,14 +76,19 @@ class NavbarDeleteView:
         navbar_id = int(self.request.matchdict['navbar_id'])
         if navbar_id == 1:
             # 內建的根導覽列不能刪
-            self.request.session.flash('根導覽列不能刪除', 'fail')
-            return HTTPFound(location=self.request.route_url('backend_navbar_list'))
+            msg = '內建的根導覽列不可刪除'
+            logger.error(msg)
+            return HTTPForbidden()
         navbar = DAL.get_navbar(navbar_id)
         if navbar:
             DAL.change_navbar_ancestor_id(navbar_id, navbar.ancestor_id)
             DAL.delete_navbar(navbar)
+            msg = f'刪除導覽列 {navbar.name} 成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
         else:
-            self.request.session.flash('找不到指定導覽列', 'fail')
+            logger.error(f'找不到 ID 為 {navbar_id} 的導覽列')
+            return HTTPForbidden()
         return HTTPFound(self.request.route_url('backend_navbar_list'))
 
 
@@ -123,9 +133,17 @@ class NavbarEditView:
             form = NavbarEditForm(self.request.POST)
             if form.validate():
                 if DAL.sync_navbar(form, navbar):
+                    msg = f'導覽列 {navbar.name} 修改成功'
+                    logger.info(msg)
+                    self.request.session.flash(msg, 'success')
                     return HTTPFound(self.request.route_url('backend_navbar_list'))
+                else:
+                    msg = f'導覽列 ID {navbar_id} 修改失敗'
+                    logger.error(msg)
+                    self.request.session.flash(msg, 'fail')
         else:
-            self.request.session.flash('navbar id 不存在', 'fail')
+            logger.error(f'導覽列 ID {navbar_id} 不存在')
+            return HTTPNotFound()
         return {'form': form,
                 'navbar_trees': generate_navbar_trees(self.request, type='intermediate', excluded_id=navbar_id),
                 'NavbarType': NavbarType}
