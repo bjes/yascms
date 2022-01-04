@@ -96,9 +96,9 @@ class DAL:
                          .all())
 
     @staticmethod
-    def get_oauth2_integration_settings():
+    def get_oauth2_integration_config():
         """傳回系統支援的 OAuth2 Providers 的列表"""
-        return DBSession.query(GlobalConfigModel.value).filter_by(name='oauth2_integration').scalar()
+        return json.loads(DBSession.query(GlobalConfigModel.value).filter_by(name='oauth2_integration').scalar())
 
     @staticmethod
     def get_available_theme_name_list():
@@ -215,6 +215,22 @@ class DAL:
             回傳使用者物件
         """
         return DBSession.query(UserModel).filter_by(account=account).one_or_none()
+
+    @staticmethod
+    def get_user_from_email(address):
+        """根據傳入的 email 位址找到對應的使用者並回傳
+
+        Args:
+            address: 使用者 email 位址
+
+        Returns:
+            成功則回傳使用者物件，否則回傳 None
+        """
+        email = DBSession.query(EmailModel).filter_by(address=address).one_or_none()
+        if email:
+            return email.user
+        else:
+            return None
 
     @staticmethod
     def get_user(user_id):

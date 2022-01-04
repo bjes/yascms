@@ -26,6 +26,7 @@ def includeme(config):
     config.add_route('login', '/login', pregenerator=preview_override_param)
     config.add_route('logout', '/logout', pregenerator=preview_override_param)
 
+    config.add_route('oauth2_provider_login', '/oauth2/{provider_name}/login')
     config.add_route('oauth2_provider_callback', '/oauth2/{provider_name}/callback')
 
     # backend

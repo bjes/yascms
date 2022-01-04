@@ -20,8 +20,8 @@ class OAuth2IntegrationListView:
     def get_view(self):
         """顯示目前支援的 OAuth2 Providers 列表"""
         provider_list = []
-        oauth2_integration_settings = json.loads(DAL.get_oauth2_integration_settings())
-        for each_provider in oauth2_integration_settings:
-            provider_list.append({'name': oauth2_integration_settings[each_provider]['canonical_name'],
-                                  'enabled': oauth2_integration_settings[each_provider]['settings']['enabled']})
+        oauth2_integration_config = json.loads(DAL.get_oauth2_integration_config())
+        for each_provider in oauth2_integration_config:
+            provider_list.append({'name': oauth2_integration_config[each_provider]['canonical_name'],
+                                  'enabled': oauth2_integration_config[each_provider]['settings']['enabled']})
         return {'provider_list': provider_list}
