@@ -70,7 +70,7 @@ class GroupCreateView:
             result = self._sync(form, group)
             if result:
                 DAL.save_group(group)
-                msg = f'建立 {group.name} 群組成功'
+                msg = f'{group.name} 群組建立成功'
                 logger.info(msg)
                 self.request.session.flash(msg, 'success')
                 return HTTPFound(location=self.request.route_url('backend_group_list'))
@@ -142,7 +142,7 @@ class GroupEditView:
                 result = self._sync(form, group)
                 if result:
                     DAL.save_group(group)
-                    msg = f'修改 {group.name} 群組成功'
+                    msg = f'{group.name} 群組修改成功'
                     logger.info(msg)
                     self.request.session.flash(msg, 'success')
                     return HTTPFound(location=self.request.route_url('backend_group_list'))
@@ -192,7 +192,7 @@ class GroupDeleteView:
         if group:
             DAL.change_group_ancestor_id(group_id, group.ancestor_id)
             DAL.delete_group(group)
-            msg = f'刪除 {group.name} 群組成功'
+            msg = f'{group.name} 群組刪除成功'
             logger.info(msg)
             self.request.session.flash(msg, 'success')
             return HTTPFound(location=self.request.route_url('backend_group_list'))

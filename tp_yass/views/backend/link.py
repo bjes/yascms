@@ -227,7 +227,7 @@ class LinkCategoryDeleteView:
         """刪除指定的好站連結分類"""
         link_category_id = int(self.request.matchdict['link_category_id'])
         if not DAL.delete_link_category(link_category_id):
-            msg = f'好站連結分類 ID {link_category_id} 刪除失敗，請確認是否還有相依的好站連結。'
+            msg = f'好站連結分類 ID {link_category_id} 刪除失敗，請確認是否還有相依的好站連結'
             logger.warning(msg)
             self.request.session.flash(msg, 'fail')
         return HTTPFound(self.request.route_url('backend_link_category_list'))
@@ -263,7 +263,7 @@ class LinkCategoryEditView:
             form = LinkCategoryForm(self.request.POST)
             if form.validate():
                 DAL.update_link_category(link_category, form)
-                msg = f'更新好站連結分類 {link_category.name} 成功'
+                msg = f'好站連結分類 {link_category.name} 更新成功'
                 logger.info(msg)
                 self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_link_category_list'))

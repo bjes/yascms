@@ -49,12 +49,12 @@ class NavbarCreateView:
         form = NavbarForm(self.request.POST)
         if form.validate():
             if DAL.create_navbar(form):
-                msg = f'建立導覽列 {form.name.data} 成功'
+                msg = f'導覽列 {form.name.data} 建立成功'
                 logger.info(msg)
                 self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_navbar_list'))
             else:
-                msg = f'建立導覽列 {form.name.data} 失敗，請查閱 log'
+                msg = f'導覽列 {form.name.data} 建立失敗，請查閱 log'
                 logger.error(msg)
                 self.request.session.flash(msg, 'fail')
         return {'form': form,
@@ -83,7 +83,7 @@ class NavbarDeleteView:
         if navbar:
             DAL.change_navbar_ancestor_id(navbar_id, navbar.ancestor_id)
             DAL.delete_navbar(navbar)
-            msg = f'刪除導覽列 {navbar.name} 成功'
+            msg = f'導覽列 {navbar.name} 刪除成功'
             logger.info(msg)
             self.request.session.flash(msg, 'success')
         else:
