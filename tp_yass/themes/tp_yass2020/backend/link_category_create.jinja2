@@ -5,14 +5,14 @@
     <div class="col-12"><h1>好站連結分類 - 建立</h1></div>
     <div class="col-12">
       {% if form.errors %}
-        <div class="alert alert-danger"  role="alert">
-            <ul>
+        <div class="alert alert-danger" role="alert">
+          <ul>
             {% for key in form.errors %}
               {% for msg in form.errors[key] %}
-              <li>{{ msg }}</li>
+                <li>{{ msg }}</li>
               {% endfor %}
             {% endfor %}
-            </ul>
+          </ul>
         </div>
       {% endif %}
       <form action="" method="POST">
