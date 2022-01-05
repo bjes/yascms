@@ -1,11 +1,15 @@
+import logging
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 from tp_yass.forms.backend.page import PageForm, PageEditForm
 from tp_yass.helpers import sanitize_input
 from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
 from tp_yass.dal import DAL
 from tp_yass.helpers.backend.group import generate_group_trees
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_page_create',
@@ -41,6 +45,9 @@ class PageCreateView:
                     saved_file_name = upload_attachment(each_upload, 'pages', f'{created_page.id}_')
                     created_page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
             DAL.save_page(created_page)
+            msg = f'單一頁面 {form.title.name} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_page_list'))
         else:
             return {'form': form}
@@ -73,6 +80,7 @@ class PageListView:
                 'quantity_per_page': quantity_per_page}
 
 
+# TODO: 用 post 處理刪除
 @view_defaults(route_name='backend_page_delete',
                permission='edit')
 class PageDeleteView:
@@ -94,6 +102,12 @@ class PageDeleteView:
             for each_attachment in page.attachments:
                 delete_attachment(each_attachment.real_name, 'pages')
             DAL.delete_page(page)
+            msg = f'單一頁面 {page.title} 刪除成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
+        else:
+            logger.error('找不到單一頁面 ID %s', page_id)
+            return HTTPNotFound()
         return HTTPFound(self.request.route_url('backend_page_list'))
 
 
@@ -154,10 +168,13 @@ class PageEditView:
                         page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
 
                 DAL.save_page(page)
-
+                msg = f'單一頁面 {page.title} 建立成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_page_list'))
             else:
-                self.request.flash('page 物件不存在', 'fail')
+                logger.error('找不到單一頁面 ID %d', page_id)
+                return HTTPNotFound()
         return {'form': form,
                 'group_ids': form.group_ids.data,
                 'group_trees': generate_group_trees()}

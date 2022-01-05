@@ -1,8 +1,12 @@
 import json
+import logging
 
 from pyramid.view import view_config, view_defaults
 
 from tp_yass.dal import DAL
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_oauth2_integration_list', renderer='', permission='view')

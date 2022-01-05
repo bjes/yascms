@@ -87,7 +87,7 @@ class NavbarDeleteView:
             logger.info(msg)
             self.request.session.flash(msg, 'success')
         else:
-            logger.error(f'找不到 ID 為 {navbar_id} 的導覽列')
+            logger.error('找不到導覽列 ID %d', navbar_id)
             return HTTPForbidden()
         return HTTPFound(self.request.route_url('backend_navbar_list'))
 
@@ -142,7 +142,7 @@ class NavbarEditView:
                     logger.error(msg)
                     self.request.session.flash(msg, 'fail')
         else:
-            logger.error(f'導覽列 ID {navbar_id} 不存在')
+            logger.error('找不到導覽列 ID %d', navbar_id)
             return HTTPNotFound()
         return {'form': form,
                 'navbar_trees': generate_navbar_trees(self.request, type='intermediate', excluded_id=navbar_id),

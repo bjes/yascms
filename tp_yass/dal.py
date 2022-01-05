@@ -1300,10 +1300,12 @@ class DAL:
             form_data: wtforms.forms.Form
         """
         telext = DBSession.query(TelExtModel).get(telext_id)
-        form_data.populate_obj(telext)
-        telext.is_pinned = 1 if form_data.is_pinned.data else 0
-        DBSession.add(telext)
-        return True
+        if telext:
+            form_data.populate_obj(telext)
+            telext.is_pinned = 1 if form_data.is_pinned.data else 0
+            DBSession.add(telext)
+            return True
+        return False
 
     @staticmethod
     def get_telext(telext_id):

@@ -5,6 +5,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -58,9 +59,13 @@ class SiteConfigView:
         updated_config_list = self._validate(self.request.POST)
         if updated_config_list:
             DAL.update_site_config_list(updated_config_list)
-            self.request.session.flash('更新設定成功', 'success')
+            msg = '設定更新成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
-            self.request.session.flash('設定沒有異動', 'fail')
+            msg = '設定無異動'
+            logger.info(msg)
+            self.request.session.flash(msg, 'fail')
             return HTTPFound(location=self.request.current_route_url())

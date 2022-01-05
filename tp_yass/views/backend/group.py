@@ -24,7 +24,7 @@ def check_editing_permission(group_id):
     """
     if group_id <= 2:
         msg = '內建根群組/最高管理者群組不可編輯'
-        logger.warning(msg)
+        logger.error(msg)
         return HTTPForbidden()
 
 
@@ -197,5 +197,5 @@ class GroupDeleteView:
             self.request.session.flash(msg, 'success')
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         else:
-            logger.warning('找不到群組 ID 為 %s 的群組', group_id)
+            logger.error('找不到群組 ID 為 %s 的群組', group_id)
             return HTTPNotFound()

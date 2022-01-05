@@ -1,12 +1,16 @@
+import logging
 from datetime import datetime
 
 from pyramid.view import view_config, view_defaults
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound, HTTPForbidden
 
 from tp_yass.forms.backend.news import NewsForm, NewsEditForm, NewsCategoryForm
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
 from tp_yass.helpers.backend.file import upload_attachment, delete_attachment
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_news_create', renderer='', permission='edit')
@@ -43,6 +47,9 @@ class NewsCreateView:
                     saved_file_name = upload_attachment(each_upload, now.strftime('news/%Y/%m'), f'{created_news.id}_')
                     created_news.attachments.append(DAL.create_news_attachment(each_upload.filename, saved_file_name))
             DAL.save_news(created_news)
+            msg = f'最新消息 {created_news.title} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_news_list'))
         return {'form': form}
 
@@ -72,6 +79,7 @@ class NewsListView:
                 'quantity_per_page': quantity_per_page}
 
 
+# TODO: 改成用 post 處理刪除
 @view_defaults(route_name='backend_news_delete',
                permission='edit')
 class NewsDeleteView:
@@ -93,6 +101,12 @@ class NewsDeleteView:
             for each_attachment in news.attachments:
                 delete_attachment(each_attachment.real_name, news.publication_date.strftime('news/%Y/%m'))
             DAL.delete_news(news)
+            msg = f'最新消息 {news.title} 刪除成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
+        else:
+            logger.error('找不到最新消息 ID %d', news_id)
+            return HTTPNotFound()
         return HTTPFound(self.request.route_url('backend_news_list'))
 
 
@@ -162,10 +176,13 @@ class NewsEditView:
                         news.attachments.append(DAL.create_news_attachment(each_upload.filename, saved_file_name))
 
                 DAL.save_news(news)
-
+                msg = f'最新消息 {news.title} 更新成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_news_list'))
             else:
-                self.request.flash('news 物件不存在', 'fail')
+                logger.error('找不到最新消息 ID %d', news_id)
+                return HTTPNotFound()
         return {'form': form}
 
 
@@ -189,6 +206,9 @@ class NewsCategoryCreateView:
         form = NewsCategoryForm(self.request.POST)
         if form.validate():
             DAL.create_news_category(form)
+            msg = f'最新消息分類 {form.name.data} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_news_category_list'))
         return {'form': form}
 
@@ -212,6 +232,7 @@ class NewsCategoryListView:
                 'quantity_per_page': quantity_per_page}
 
 
+# TODO: 換用 post 處理 delete
 @view_defaults(route_name='backend_news_category_delete',
                permission='edit')
 class NewsCategoryDeleteView:
@@ -229,7 +250,12 @@ class NewsCategoryDeleteView:
         """刪除指定的最新消息分類"""
         news_category_id = int(self.request.matchdict['news_category_id'])
         if not DAL.delete_news_category(news_category_id):
-            self.request.session.flash('刪除分類失敗，請確認是否還有相依的最新消息。', 'fail')
+            msg = f'最新消息分類 ID {news_category_id} 刪除失敗，請確認是否還有相依的最新消息'
+            logger.warning(msg)
+            self.request.session.flash(msg, 'fail')
+        msg = f'最新消息分類 ID {news_category_id} 刪除成功'
+        logger.info(msg)
+        self.request.session.flash(msg, 'success')
         return HTTPFound(self.request.route_url('backend_news_category_list'))
 
 
@@ -255,13 +281,18 @@ class NewsCategoryEditView:
     @view_config(request_method='POST')
     def post_view(self):
         """編輯最新消息分類的表單"""
-        news_category = DAL.get_news_category(int(self.request.matchdict['news_category_id']))
+        news_category_id = int(self.request.matchdict['news_category_id'])
+        news_category = DAL.get_news_category(news_category_id)
         if news_category:
             form = NewsCategoryForm(self.request.POST)
             if form.validate():
                 DAL.update_news_category(news_category, form)
+                msg = f'最新消息分類 {news_category.name} 更新成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_news_category_list'))
             else:
                 return {'form': form}
         else:
+            logger.error('找不到最新消息分類 ID %d', news_category_id)
             return HTTPNotFound()

@@ -1,8 +1,13 @@
+import logging
+
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 
 from tp_yass.forms.backend.telext import TelExtForm
 from tp_yass.dal import DAL
+
+
+logger = logging.getLogger(__name__)
 
 
 @view_defaults(route_name='backend_telext_create', renderer='', permission='edit')
@@ -25,6 +30,9 @@ class TelExtCreateView:
         form = TelExtForm(self.request.POST)
         if form.validate():
             DAL.create_telext(form)
+            msg = f'分機 {form.title.data} 建立成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_telext_list'))
         return {'form': form}
 
@@ -48,6 +56,7 @@ class TelExtListView:
         return {'telext_list': telext_list}
 
 
+# TODO: 改用 post 處理刪除
 @view_defaults(route_name='backend_telext_delete',
                permission='edit')
 class TelExtDeleteView:
@@ -65,6 +74,9 @@ class TelExtDeleteView:
         """刪除指定的分機"""
         telext_id = int(self.request.matchdict['telext_id'])
         DAL.delete_telext(telext_id)
+        msg = f'分機 ID {telext_id} 刪除成功'
+        logger.info(msg)
+        self.request.session.flash(msg, 'success')
         return HTTPFound(self.request.route_url('backend_telext_list'))
 
 
@@ -94,7 +106,11 @@ class TelExtEditView:
             telext_id = int(self.request.matchdict['telext_id'])
             result = DAL.update_telext(telext_id, form)
             if result:
+                msg = f'分機 ID {telext_id} 更新成功'
+                logger.info(msg)
+                self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_telext_list'))
             else:
-                self.request.flash('telext 物件不存在', 'fail')
+                logger.error('分機 ID %d 不存在', telext_id)
+                return HTTPNotFound()
         return {'form': form}

@@ -101,8 +101,7 @@ class LinkDeleteView:
             self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_link_list'))
         else:
-            msg = f'找不到 ID 為 {link_id} 的好站連結'
-            logger.error(msg)
+            logger.error('找不到好站連結 ID %d', link_id)
             return HTTPNotFound()
 
 
@@ -157,8 +156,7 @@ class LinkEditView:
                 self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_link_list'))
             else:
-                msg = f'找不到 ID 為 {link_id} 的好站連結'
-                logger.error(msg)
+                logger.error('找不到好站連結 ID %d', link_id)
                 return HTTPNotFound()
         return {'form': form}
 
@@ -251,7 +249,7 @@ class LinkCategoryEditView:
             form = LinkCategoryForm(obj=link_category)
             return {'form': form}
         else:
-            logger.error(f'找不到 ID 為 {link_category_id} 的好站連結分類')
+            logger.error('找不到好站連結分類 ID %d', link_category_id)
             return HTTPNotFound()
 
     @view_config(request_method='POST')
@@ -270,5 +268,5 @@ class LinkCategoryEditView:
             else:
                 return {'form': form}
         else:
-            logger.error(f'找不到 ID 為 {link_category_id} 的好站連結分類')
+            logger.error('找不到好站連結分類 ID %d', link_category_id)
             return HTTPNotFound()
