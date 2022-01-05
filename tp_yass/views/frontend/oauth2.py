@@ -93,7 +93,7 @@ def oauth2_google_callback_factory(request, provider_name, provider_config):
     jwt_payload = json.loads(base64.b64decode(b64_padding_payload, '-_').decode('utf8'))
     user = DAL.get_user_from_email(jwt_payload['email'])
     if user:
-        return create_credential(request, user)
+        return create_credential(request, user, provider_name)
     logger.warning('Google OAuth2 認証異常：Email %s 找不到對應的使用者', jwt_payload['email'])
     return HTTPNotFound()
 

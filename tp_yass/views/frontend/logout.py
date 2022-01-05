@@ -18,7 +18,8 @@ class LogoutView:
 
     @view_config(route_name='logout')
     def logout(self):
-        DAL.log_auth(AuthLogType.LOGOUT, self.request.session['user_id'], self.request.client_addr)
+        DAL.log_auth(AuthLogType.LOGOUT, self.request.session['user_id'],
+                     self.request.client_addr, self.request.session['auth_source'])
         headers = forget(self.request)
         self.request.session.clear()
         return HTTPFound(location=self.request.route_url('homepage'),

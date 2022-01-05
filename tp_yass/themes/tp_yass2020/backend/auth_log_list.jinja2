@@ -14,6 +14,7 @@
                 <th scope="col" class="d-none d-sm-table-cell">時間</th>
                 <th scope="col" class="d-none d-md-table-cell">帳號</th>
                 <th scope="col" class="d-none d-md-table-cell">類型</th>
+                <th scope="col" class="d-none d-md-table-cell">認証來源</th>
               </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                 {% elif each_auth_log.type == AuthLogType.WRONG_PASSWORD %}
                   <td>密碼錯誤</td>
                 {% endif %}
+                <td>{{ each_auth_log.source }}</td>
               </tr>
             {% endfor %}
             </tbody>

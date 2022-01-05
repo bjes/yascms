@@ -1317,15 +1317,16 @@ class DAL:
         return DBSession.query(TelExtModel).get(telext_id)
 
     @staticmethod
-    def log_auth(auth_log_type, user_id, client_addr):
+    def log_auth(auth_log_type, user_id, client_addr, source):
         """紀錄使用者的認証
 
         Args:
             auth_log_type: enum.AuthLogType
             user_id: 使用者的 id
             client_addr: 來源端的 ip 位址
+            source: 認証管道來源
         """
-        auth_log = AuthLogModel(type=int(auth_log_type), user_id=user_id, client_addr=client_addr)
+        auth_log = AuthLogModel(type=int(auth_log_type), user_id=user_id, client_addr=client_addr, source=source)
         DBSession.add(auth_log)
 
     @staticmethod

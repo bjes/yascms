@@ -12,12 +12,13 @@ from tp_yass.forms.auth import LoginForm
 logger = logging.getLogger(__name__)
 
 
-def create_credential(request, user):
+def create_credential(request, user, auth_source='local'):
     """建立使用者的權限相關設定，比如 session 等資訊
 
     Args:
         request: pyramid.request.Request
         user: tp_yass.models.account.UserModel
+        auth_source: auth 的來源，預設是 local 代表本地認証，若是透過 oauth2 則是傳入 provider 名稱，比如 google
 
     Returns:
         重導至 backend_homepage
@@ -26,6 +27,7 @@ def create_credential(request, user):
     request.session['first_name'] = user.first_name
     request.session['last_name'] = user.last_name
     request.session['account'] = user.account
+    request.session['auth_source'] = auth_source
     request.session['is_admin'] = False
     # 一個帳號可以隸屬多個群組，這邊紀錄隸屬群組的 id 列表
     request.session['main_group_id_list'] = {each_group.id for each_group in user.groups}
@@ -51,7 +53,7 @@ def create_credential(request, user):
     request.session['groups'] = groups
     # 紀錄所屬群組以及其以上各樹狀的所有 group id，方便前端網頁處理，才不用埋太多邏輯
     request.session['group_id_list'] = {i['id'] for each_group_list in groups for i in each_group_list}
-    DAL.log_auth(AuthLogType.LOGIN, user.id, request.client_addr)
+    DAL.log_auth(AuthLogType.LOGIN, user.id, request.client_addr, auth_source)
     headers = remember(request, user.id)
     return HTTPFound(location=request.route_url('backend_homepage'),
                      headers=headers)
