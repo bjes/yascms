@@ -23,8 +23,7 @@ def check_editing_permission(group_id):
         如果是內建群組，回傳 HTTPForbidden，否則回傳 None
     """
     if group_id <= 2:
-        msg = '內建根群組/最高管理者群組不可編輯'
-        logger.error(msg)
+        logger.error('內建根群組/最高管理者群組不可編輯')
         return HTTPForbidden()
 
 
@@ -126,6 +125,9 @@ class GroupEditView:
                 form.primary_email.data = primary_email
             return {'form': form,
                     'group_trees': generate_group_trees()}
+        else:
+            logger.error('找不到群組 ID %d', group_id)
+            return HTTPNotFound()
         return HTTPFound(location=self.request.route_url('backend_group_list'))
 
     @view_config(request_method='POST')
@@ -150,6 +152,9 @@ class GroupEditView:
                     msg = '設定的 Email 已存在且未關聯至此群組'
                     logger.info(msg)
                     self.request.session.flash(msg, 'fail')
+            else:
+                logger.error('找不到群組 ID %d', group_id)
+                return HTTPNotFound()
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
@@ -197,5 +202,5 @@ class GroupDeleteView:
             self.request.session.flash(msg, 'success')
             return HTTPFound(location=self.request.route_url('backend_group_list'))
         else:
-            logger.error('找不到群組 ID 為 %s 的群組', group_id)
+            logger.error('找不到群組 ID %d', group_id)
             return HTTPNotFound()

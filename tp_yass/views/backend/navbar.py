@@ -75,9 +75,7 @@ class NavbarDeleteView:
         # TODO: 要做成讓使用者決定要整串刪掉還是孤兒的節點都搬移至未指定
         navbar_id = int(self.request.matchdict['navbar_id'])
         if navbar_id == 1:
-            # 內建的根導覽列不能刪
-            msg = '內建的根導覽列不可刪除'
-            logger.error(msg)
+            logger.error('內建的根導覽列不可刪除')
             return HTTPForbidden()
         navbar = DAL.get_navbar(navbar_id)
         if navbar:

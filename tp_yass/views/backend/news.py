@@ -271,11 +271,13 @@ class NewsCategoryEditView:
     @view_config(request_method='GET')
     def get_view(self):
         """產生建立最新消息分類表單"""
-        news_category = DAL.get_news_category(int(self.request.matchdict['news_category_id']))
+        news_category_id = int(self.request.matchdict['news_category_id'])
+        news_category = DAL.get_news_category(news_category_id)
         if news_category:
             form = NewsCategoryForm(obj=news_category)
             return {'form': form}
         else:
+            logger.error('找不到最新消息分類 ID %d', news_category_id)
             return HTTPNotFound()
 
     @view_config(request_method='POST')

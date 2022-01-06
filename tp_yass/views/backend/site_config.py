@@ -19,7 +19,7 @@ class SiteConfigView:
         self.request.override_renderer = f'themes/{request.effective_theme_name}/backend/site_config_edit.jinja2'
 
     @view_config(request_method='GET')
-    def list_view(self):
+    def get_view(self):
         """列出 site config 列表"""
 
         config_list = DAL.get_site_config_list()
@@ -65,7 +65,7 @@ class SiteConfigView:
             self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
-            msg = '設定無異動'
+            msg = '網站設定無異動'
             logger.info(msg)
             self.request.session.flash(msg, 'fail')
             return HTTPFound(location=self.request.current_route_url())

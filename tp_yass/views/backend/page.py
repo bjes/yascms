@@ -106,7 +106,7 @@ class PageDeleteView:
             logger.info(msg)
             self.request.session.flash(msg, 'success')
         else:
-            logger.error('找不到單一頁面 ID %s', page_id)
+            logger.error('找不到單一頁面 ID %d', page_id)
             return HTTPNotFound()
         return HTTPFound(self.request.route_url('backend_page_list'))
 

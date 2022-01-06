@@ -53,7 +53,7 @@ def page_edit_factory(request):
     """單一頁面所屬的群組（們）才有後台編輯的權限"""
     acl = ACL()
     page_id = int(request.matchdict['page_id'])
-    logger.debug('page_id 為 %s', page_id)
+    logger.debug('page_id 為 %d', page_id)
     page = DAL.get_page(page_id)
     if page:
         # 若為管理者，權限全開
@@ -68,7 +68,7 @@ def page_edit_factory(request):
                 logger.debug('群組 %s 可編輯此單一頁面', each_group.name)
                 page.__acl__.append((Allow, each_group.id, 'edit'))
     else:
-        logger.error('找不到 page id 為 %s 的單一頁面，群組權限比對異常', page_id)
+        logger.error('找不到 page_id 為 %d 的單一頁面，群組權限比對異常', page_id)
         acl.__acl__ = []
     return page or acl
 
@@ -77,7 +77,7 @@ def news_edit_factory(request):
     """最新消息只有建立的群組與管理者可以刪除或修改"""
     acl = ACL()
     news_id = int(request.matchdict['news_id'])
-    logger.debug('news_id 為 %s', news_id)
+    logger.debug('news_id 為 %d', news_id)
     news = DAL.get_news(news_id)
     if news:
         # 若為管理者，權限全開
@@ -90,7 +90,7 @@ def news_edit_factory(request):
             logger.debug('群組 %s 可編輯最新消息', news.group.name)
             news.__acl__ = [(Allow, news.group.id, 'edit')]
     else:
-        logger.error('找不到 news id 為 %s 的最新消息，群組權限比對異常', news_id)
+        logger.error('找不到 news_id 為 %d 的最新消息，群組權限比對異常', news_id)
         acl.__acl__ = []
     return news or acl
 
@@ -99,7 +99,7 @@ def link_edit_factory(request):
     """好站連結只有建立的群組與管理者可以刪除或修改"""
     acl = ACL()
     link_id = int(request.matchdict['link_id'])
-    logger.debug('link_id 為 %s', link_id)
+    logger.debug('link_id 為 %d', link_id)
     link = DAL.get_link(link_id)
     if link:
         # 若為管理者，權限全開
@@ -112,6 +112,6 @@ def link_edit_factory(request):
             logger.debug('群組 %s 可編輯最新消息', link.group.name)
             link.__acl__ = [(Allow, link.group.id, 'edit')]
     else:
-        logger.error('找不到 link id 為 %s 的最新消息，群組權限比對異常', link_id)
+        logger.error('找不到 link_id 為 %d 的最新消息，群組權限比對異常', link_id)
         acl.__acl__ = []
     return link or acl
