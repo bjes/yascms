@@ -101,6 +101,21 @@ class DAL:
         return json.loads(DBSession.query(GlobalConfigModel.value).filter_by(name='oauth2_integration').scalar())
 
     @staticmethod
+    def save_oauth2_integration_config(config):
+        """儲存 OAuth2 整合的設定
+
+        Args:
+            config: OAuth2 的整合設定
+
+        Returns:
+            儲存成功回傳 True
+        """
+        (DBSession.query(GlobalConfigModel)
+         .filter_by(name='oauth2_integration')
+         .update({GlobalConfigModel.value: json.dumps(config, ensure_ascii=False)}))
+        return True
+
+    @staticmethod
     def get_available_theme_name_list():
         """回傳目前可用的樣板名稱列表
 

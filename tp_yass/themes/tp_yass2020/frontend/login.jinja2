@@ -1,6 +1,6 @@
 {% extends 'tp_yass:themes/' ~ request.effective_theme_name ~ '/layouts/skeleton.jinja2' %}
 {% block body %}
-<div class="container">
+<div class="container mt-3">
   <div class="row">
     <div class="col-12">
       {% if request.session.peek_flash('fail') %}
@@ -32,6 +32,12 @@
         </div>
       </form>
     </div>
+    {% if oauth2_provider_info_list %}
+      <div class="col-12"><hr></div>
+      {% for each_provider_info in oauth2_provider_info_list %}
+        <a href="{{ request.route_url('oauth2_provider_login', provider_name=each_provider_info['name']) }}" class="btn btn-primary btn-lg btn-block">{{ each_provider_info['canonical_name'] }} 登入</a>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 {% endblock body %}

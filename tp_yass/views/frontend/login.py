@@ -72,7 +72,13 @@ class LoginView:
         if self.request.session.get('account'):
             return HTTPFound(location=self.request.route_url('backend_homepage'))
         else:
-            return {'login_form': LoginForm()}
+            oauth2_provider_info_list = []
+            oauth2_integration_config = DAL.get_oauth2_integration_config()
+            for each_provider in oauth2_integration_config:
+                if oauth2_integration_config[each_provider]['settings']['enabled']:
+                    oauth2_provider_info_list.append({'name': each_provider,
+                                                          'canonical_name': oauth2_integration_config[each_provider]['canonical_name']})
+            return {'login_form': LoginForm(), 'oauth2_provider_info_list': oauth2_provider_info_list}
 
     @view_config(request_method='POST')
     def post(self):

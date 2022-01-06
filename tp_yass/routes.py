@@ -143,6 +143,8 @@ def includeme(config):
     config.add_route('backend_api_page_get', '/backend/api/page/get/{page_id:\d+}', factory=admin_factory)
 
     config.add_route('backend_oauth2_integration_list', '/backend/oauth2/integration/list', factory=admin_factory)
+    config.add_route('backend_oauth2_integration_edit', '/backend/oauth2/integration/{provider_name}/edit',
+                     factory=admin_factory)
 
     # 開發用，上線環境會讓前端的 web server 處理這部份
     config.add_static_view('static', 'static', cache_max_age=3600)

@@ -19,9 +19,9 @@
               {% for each_provider in provider_list %}
                 <tr>
                   <th scope="row">{{ loop.index }}</th>
-                  <td><a href="#">{{ each_provider['name'] }}</a></td>
+                  <td><a href="#">{{ each_provider['canonical_name'] }}</a></td>
                   <td>{% if each_provider['enabled'] %}已啟用{% else %}未啟用{% endif %}</td>
-                  <td><a class="btn btn-primary" href="#">編輯</a></td>
+                  <td><a class="btn btn-primary" href="{{ request.route_url('backend_oauth2_integration_edit', provider_name=each_provider['name']) }}">編輯</a></td>
                 </tr>
               {% endfor %}
               </tbody>

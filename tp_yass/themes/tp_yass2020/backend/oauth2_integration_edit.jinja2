@@ -1,0 +1,36 @@
+{% extends 'layouts/master.jinja2' %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12"><h1>{{ provider_config['canonical_name'] }} OAuth2 整合設定</h1></div>
+      <div class="col-12">
+        <form action="" method="post">
+          <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+          {% for each_config_key in provider_config %}
+            {% if each_config_key == 'settings' %}
+              {% for each_editable_key in provider_config[each_config_key] %}
+                <div class="form-group">
+                  <label for="{{ each_editable_key }}">{{ each_editable_key }}</label>
+                  {% if each_editable_key == 'enabled' %}
+                    <select class="form-control" name="{{ each_editable_key }}" id="{{ each_editable_key }}">
+                      <option value="True"{% if provider_config[each_config_key][each_editable_key] %} selected{% endif %}>啟用</option>
+                      <option value="False"{% if not provider_config[each_config_key][each_editable_key] %} selected{% endif %}>停用</option>
+                    </select>
+                  {% else %}
+                    <input type="text" class="form-control" name="{{ each_editable_key }}" id="{{ each_editable_key }}" value="{{ provider_config[each_config_key][each_editable_key] }}" aria-describedby="{{ each_editable_key }}">
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="form-group">
+                <label for="{{ each_config_key }}">{{ each_config_key }}</label>
+                <input type="text" class="form-control" name="{{ each_config_key }}" id="{{ each_config_key }}" value="{{ provider_config[each_config_key] }}" readonly aria-describedby="{{ each_config_key }}" aria-readonly="true">
+              </div>
+            {% endif %}
+          {% endfor %}
+          <button type="submit" class="btn btn-primary">更新</button> <button type="reset" class="btn btn-danger">重置</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
