@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+import datetime
 
 from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound, HTTPForbidden
@@ -43,7 +43,7 @@ class NewsCreateView:
             # 先上傳檔案再將檔案相關資料寫入資料庫
             if form.attachments.data:
                 for each_upload in form.attachments.data:
-                    now = datetime.now()
+                    now = datetime.datetime.now()
                     saved_file_name = upload_attachment(each_upload, now.strftime('news/%Y/%m'), f'{created_news.id}_')
                     created_news.attachments.append(DAL.create_news_attachment(each_upload.filename, saved_file_name))
             DAL.save_news(created_news)
@@ -72,9 +72,12 @@ class NewsListView:
         quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
         category_id = sanitize_input(self.request.GET.get('c'), int, None)
         page_number = sanitize_input(self.request.GET.get('p', 1), int, 1)
-        news_list = DAL.get_news_list(page_number=page_number, quantity_per_page=quantity_per_page, category_id=category_id)
+        news_list = DAL.get_backend_news_list(page_number, quantity_per_page, category_id)
         return {'news_list': news_list,
-                'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
+                'today': datetime.date.today(),
+                'now': datetime.datetime.now(),
+                'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id,
+                                                                                   False),
                 'page_number': page_number,
                 'quantity_per_page': quantity_per_page}
 
@@ -171,7 +174,7 @@ class NewsEditView:
                 # 上傳新增的附件
                 if form.attachments.data:
                     for each_upload in form.attachments.data:
-                        now = datetime.now()
+                        now = datetime.datetime.now()
                         saved_file_name = upload_attachment(each_upload, now.strftime('news/%Y/%m'), f'{news.id}_')
                         news.attachments.append(DAL.create_news_attachment(each_upload.filename, saved_file_name))
 

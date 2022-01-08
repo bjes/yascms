@@ -1,3 +1,5 @@
+import datetime
+
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
 
@@ -15,10 +17,13 @@ def news_list_view(request):
     category_id = sanitize_input(request.GET.get('c'), int, None)
     page_number = sanitize_input(request.GET.get('p', 1), int, 1)
 
-    news_list = DAL.get_news_list(page_number=page_number, category_id=category_id, quantity_per_page=quantity_per_page)
+    news_list = DAL.get_frontend_news_list(page_number=page_number,
+                                           quantity_per_page=quantity_per_page,
+                                           category_id=category_id)
     return {'news_list': news_list,
             'news_category': DAL.get_news_category(category_id),
             'navbar_trees': generate_navbar_trees(request, visible_only=True),
+            'today': datetime.date.today(),
             'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
             'page_number': page_number,
             'quantity_per_page': quantity_per_page,

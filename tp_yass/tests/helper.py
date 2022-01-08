@@ -8,6 +8,7 @@ def get_ini_settings(ini_file_path):
 def import_test_db_data(ini_file_path):
     """Import test data to test database"""
     import json
+    import datetime
 
     from sqlalchemy import engine_from_config
     from sqlalchemy.orm import sessionmaker
@@ -18,7 +19,7 @@ def import_test_db_data(ini_file_path):
     from tp_yass.models.page import PageModel
     from tp_yass.models.navbar import NavbarModel
     from tp_yass.models.theme_config import ThemeConfigModel
-    from tp_yass.enum import NavbarType, HomepageItemType, EmailType
+    from tp_yass.enum import NavbarType, HomepageItemType, EmailType, PinnedType
 
     ini_settings = get_ini_settings(ini_file_path)
     engine = engine_from_config(ini_settings)
@@ -69,11 +70,42 @@ def import_test_db_data(ini_file_path):
     # 最新消息分類群組
     category1 = session.query(NewsCategoryModel).filter_by(name='行政公告').one_or_none()
     category2 = session.query(NewsCategoryModel).filter_by(name='學校榮譽').one_or_none()
-    # 建最新消息
+
+    ######## 建最新消息 ########
+    today = datetime.date.today()
+    now = datetime.datetime.now()
+    # 普通最新消息，永遠顯示
     news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category=category1)
-    news2 = NewsModel(id=2, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7, is_pinned=1, category=category2)
+    # 普通最新消息，超過時間已無法顯示
+    news2 = NewsModel(id=2, title='無法顯示的最新消息', content='前台看不到後台看得到', group_id=6, category=category1,
+                      visible_start_date=now-datetime.timedelta(days=2),
+                      visible_end_date=now-datetime.timedelta(days=1))
+    # 置頂最新消息，今天最後一天置頂，永遠顯示
+    news3 = NewsModel(id=3, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7,
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=1),
+                      pinned_end_date=today, category=category2)
+    # 置頂最新消息，已超過置頂時間，但仍可顯示
+    news4 = NewsModel(id=4, title='超過置頂時間的置頂最新消息', content='仍然可顯示', group_id=7,
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=2),
+                      pinned_end_date=today-datetime.timedelta(days=1), category=category2)
+    # 置頂最新消息，仍在指定的置頂時間內，但無法顯示
+    news5 = NewsModel(id=5, title='置頂時間正常但不可顯示的最新消息', content='只有後台看得到', group_id=7,
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today,
+                      pinned_end_date=today+datetime.timedelta(days=1),
+                      visible_start_date=now-datetime.timedelta(days=2),
+                      visible_end_date=now-datetime.timedelta(days=1), category=category2)
+    # 置頂最新消息，但置頂時間已超過，顯示時間也已超過
+    news6 = NewsModel(id=6, title='超過置頂時間的置頂最新消息，且顯示時間已過', content='只有後台看得到', group_id=7,
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=2),
+                      pinned_end_date=today+datetime.timedelta(days=1),
+                      visible_start_date=now-datetime.timedelta(days=2),
+                      visible_end_date=now-datetime.timedelta(days=1), category=category2)
     session.add(news1)
     session.add(news2)
+    session.add(news3)
+    session.add(news4)
+    session.add(news5)
+    session.add(news6)
 
     # 因為跑 initialize_db.py 預先建立了幾個 page，所以這邊測試的 page id 從 13 開始
     calendar_page = PageModel(id=13, title='學校行事曆', content='<iframe src="https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>')

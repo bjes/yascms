@@ -7,7 +7,7 @@ import math
 import logging
 from datetime import datetime, date
 
-from sqlalchemy import or_, func
+from sqlalchemy import or_, and_, func
 from sqlalchemy.exc import IntegrityError
 from pyramid_sqlalchemy import Session as DBSession
 
@@ -22,7 +22,7 @@ from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.models.account import EmailModel
-from tp_yass.enum import GroupType, NavbarType, EmailType
+from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType
 
 
 logger = logging.getLogger(__name__)
@@ -46,8 +46,66 @@ class DAL:
             return user
 
     @staticmethod
-    def get_news_list(page_number=1, quantity_per_page=20, category_id=None):
-        """傳回最新消息列表
+    def get_frontend_news_list(page_number=1, quantity_per_page=20, category_id=None):
+        """傳回 frontend 會用到的最新消息列表，包含置頂與非置頂。
+
+        一般傳回資料，都是根據傳入的頁數與每頁的數量，來計算要傳回去的資料。但我這邊故意設計成只有第1頁才可以回傳置頂的最新消息，
+        而且置頂的最新消息，不算在每頁的數量裡面。
+
+        舉個例子：假設現在置頂有 10 筆，然後設定值為每一頁有 20 筆。那這樣第一頁就會有 10 + 20 = 30 筆最新消息，
+        第二頁以後才會恢復成每一頁 20 筆。
+
+        這樣的設計，可以讓想長期置頂的需求可以滿足，又不會因此遮蓋到沒有置頂的最新消息顯示的空間。
+
+        Args:
+            page_number: 指定頁數，若沒指定則回傳第一頁
+            quantity_per_page: 指定每頁的筆數，預設為 20 筆
+            category_id: 指定要撈取的最新消息分類，None 代表不指定
+
+        Returns:
+            回傳最新消息列表
+        """
+        results = []
+        now = datetime.now()
+
+        # 第一頁要先撈設為置頂、置頂時間有效且顯示時間有效的最新消息
+        if page_number == 1:
+            pinned_results = DBSession.query(NewsModel)
+            if category_id:
+                pinned_results = pinned_results.filter_by(category_id=category_id)
+            pinned_results = pinned_results.filter(NewsModel.is_pinned == PinnedType.IS_PINNED.value)
+            pinned_results = (pinned_results.filter(now >= NewsModel.pinned_start_date,
+                                                    now < NewsModel.pinned_end_date)
+                                            .filter(or_(NewsModel.visible_start_date.is_(None),
+                                                        now >= NewsModel.visible_start_date))
+                                            .filter(or_(NewsModel.visible_end_date.is_(None),
+                                                        now < NewsModel.visible_end_date)))
+            results.extend(pinned_results.order_by(NewsModel.id.desc()).all())
+
+        # 撈出沒有設定置頂的、或是有設定置頂但置頂時間已經超過的最新消息
+        unpinned_results = DBSession.query(NewsModel)
+        if category_id:
+            unpinned_results = unpinned_results.filter_by(category_id=category_id)
+        unpinned_results = unpinned_results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
+                                                            or_(NewsModel.visible_start_date.is_(None),
+                                                                now >= NewsModel.visible_start_date),
+                                                            or_(NewsModel.visible_end_date.is_(None),
+                                                                now < NewsModel.visible_end_date)),
+                                                       and_(NewsModel.is_pinned == PinnedType.IS_PINNED.value,
+                                                            or_(now < NewsModel.pinned_start_date,
+                                                                now >= NewsModel.pinned_end_date),
+                                                            or_(NewsModel.visible_start_date.is_(None),
+                                                                now >= NewsModel.visible_start_date),
+                                                            or_(NewsModel.visible_end_date.is_(None),
+                                                                now < NewsModel.visible_end_date))))
+        results.extend(unpinned_results.order_by(NewsModel.id.desc())
+                                       .limit(quantity_per_page)
+                                       .offset((page_number-1)*quantity_per_page))
+        return results
+
+    @staticmethod
+    def get_backend_news_list(page_number=1, quantity_per_page=20, category_id=None):
+        """傳回 backend 會用到的最新消息列表，置頂的不用特別放在最上面，按照 id 反向排序即可
 
         Args:
             page_number: 指定頁數，若沒指定則回傳第一頁
@@ -59,13 +117,8 @@ class DAL:
         """
         results = DBSession.query(NewsModel)
         if category_id:
-            results = results.filter_by(category_id=category_id)
-        now = datetime.now()
-        # 只顯示在發佈時間內的最新消息
-        results = (results.filter(or_(NewsModel.visible_start_date == None, now >= NewsModel.visible_start_date))
-                          .filter(or_(NewsModel.visible_end_date == None, now < NewsModel.visible_end_date)))
-        return (results.order_by(NewsModel.is_pinned.desc(), NewsModel.id.desc())
-                   [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+            results.filter_by(category_id=category_id)
+        return results.order_by(NewsModel.id.desc()).limit(quantity_per_page).offset((page_number-1)*quantity_per_page)
 
     @staticmethod
     def get_news_category_list():
@@ -73,19 +126,34 @@ class DAL:
         return DBSession.query(NewsCategoryModel).order_by(NewsCategoryModel.order)
 
     @staticmethod
-    def get_page_quantity_of_total_news(quantity_per_page, category_id=None):
+    def get_page_quantity_of_total_news(quantity_per_page, category_id=None, unpinned_only=True):
         """回傳最新消息總共有幾頁
 
         Args:
             quantity_per_page: 每頁幾筆最新消息
             category_id: 若有指定，則只會傳回符合此分類的最新消息頁數
+            unpinned_only: 是否只計算非有效置頂期限的最新消息筆數，若為 False 則計算 "所有" 最新消息的筆數
 
         Returns:
             回傳總共頁數
         """
         results = DBSession.query(func.count(NewsModel.id))
+        now = datetime.now()
         if category_id:
             results = results.filter_by(category_id=category_id)
+        if unpinned_only:
+            results = results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
+                                              or_(NewsModel.visible_start_date.is_(None),
+                                                  now >= NewsModel.visible_start_date),
+                                              or_(NewsModel.visible_end_date.is_(None),
+                                                  now < NewsModel.visible_end_date)),
+                                         and_(NewsModel.is_pinned == PinnedType.IS_PINNED.value,
+                                              or_(now < NewsModel.pinned_start_date,
+                                                  now >= NewsModel.pinned_end_date),
+                                              or_(NewsModel.visible_start_date.is_(None),
+                                                  now >= NewsModel.visible_start_date),
+                                              or_(NewsModel.visible_end_date.is_(None),
+                                                  now < NewsModel.visible_end_date))))
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
@@ -888,16 +956,11 @@ class DAL:
                          group_id=form_data.group_id.data,
                          category_id=form_data.category_id.data)
 
-        # 處理置頂的邏輯，如果勾選了置頂，先確認是否有指定起訖時間，再檢查後者要比前者晚，
-        # 若現在是置頂期間，才將 is_pinned 設為 1 否則為 0 等待 cronjob 處理
+        # 處理置頂的邏輯，如果勾選了置頂，就順便紀錄置頂的起訖時間
         if form_data.is_pinned.data:
             news.pinned_start_date = form_data.pinned_start_date.data
             news.pinned_end_date = form_data.pinned_end_date.data
-            today = date.today()
-            if news.pinned_start_date <= today <= news.pinned_end_date:
-                news.is_pinned = 1
-            else:
-                news.is_pinned = 0
+            news.is_pinned = PinnedType.IS_PINNED.value
 
         if form_data.visible_start_date.data:
             news.visible_start_date = form_data.visible_start_date.data
@@ -974,16 +1037,11 @@ class DAL:
         news.group_id = form_data.group_id.data
         news.category_id = form_data.category_id.data
 
-        # 處理置頂的邏輯，如果勾選了置頂，先確認是否有指定起訖時間，再檢查後者要比前者晚，
-        # 若現在是置頂期間，才將 is_pinned 設為 1 否則為 0 等待 cronjob 處理
+        # 處理置頂的邏輯，如果勾選了置頂，就順便紀錄置頂的起訖時間
         if form_data.is_pinned.data:
             news.pinned_start_date = form_data.pinned_start_date.data
             news.pinned_end_date = form_data.pinned_end_date.data
-            today = date.today()
-            if news.pinned_start_date <= today <= news.pinned_end_date:
-                news.is_pinned = 1
-            else:
-                news.is_pinned = 0
+            news.is_pinned = PinnedType.IS_PINNED.value
 
         if form_data.visible_start_date.data:
             news.visible_start_date = form_data.visible_start_date.data
@@ -1099,7 +1157,7 @@ class DAL:
                          group_id=form_data.group_id.data,
                          category_id=form_data.category_id.data)
 
-        link.is_pinned = True if form_data.is_pinned.data else False
+        link.is_pinned = PinnedType.IS_PINNED.value if form_data.is_pinned.data else PinnedType.IS_NOT_PINNED.value
         DBSession.add(link)
         DBSession.flush()
         return link
@@ -1134,7 +1192,7 @@ class DAL:
     @staticmethod
     def get_pinned_link_list():
         """取得需要顯示在首頁上的好站連結"""
-        return DBSession.query(LinkModel).filter_by(is_pinned=1)
+        return DBSession.query(LinkModel).filter_by(is_pinned=PinnedType.IS_PINNED.value)
 
     @staticmethod
     def get_page_quantity_of_total_link(quantity_per_page, category_id=None):
@@ -1171,7 +1229,7 @@ class DAL:
         """
         link.title = form_data.title.data
         link.url = form_data.url.data
-        link.is_pinned = 1 if form_data.is_pinned.data else 0
+        link.is_pinned = PinnedType.IS_PINNED.value if form_data.is_pinned.data else PinnedType.IS_NOT_PINNED.value
         return link
 
     @staticmethod
@@ -1282,7 +1340,7 @@ class DAL:
         """
         telext = TelExtModel()
         form_data.populate_obj(telext)
-        telext.is_pinned = 1 if form_data.is_pinned.data else 0
+        telext.is_pinned = PinnedType.IS_PINNED.value if form_data.is_pinned.data else PinnedType.IS_NOT_PINNED.value
         DBSession.add(telext)
 
     @staticmethod
@@ -1294,7 +1352,7 @@ class DAL:
     def get_pinned_telext_list():
         """回傳根據 order 排序指定顯示在首頁的分機表"""
         return (DBSession.query(TelExtModel)
-                .filter_by(is_pinned=1)
+                .filter_by(is_pinned=PinnedType.IS_PINNED.value)
                 .order_by(TelExtModel.order))
 
     @staticmethod
@@ -1317,7 +1375,7 @@ class DAL:
         telext = DBSession.query(TelExtModel).get(telext_id)
         if telext:
             form_data.populate_obj(telext)
-            telext.is_pinned = 1 if form_data.is_pinned.data else 0
+            telext.is_pinned = PinnedType.IS_PINNED.value if form_data.is_pinned.data else PinnedType.IS_NOT_PINNED.value
             DBSession.add(telext)
             return True
         return False

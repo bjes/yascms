@@ -105,3 +105,13 @@ class EmailType(IntEnum):
 
     # 群組的 secondary email
     GROUP_SECONDARY = 4
+
+
+class PinnedType(IntEnum):
+    """定義置頂的類型"""
+
+    # 沒有置頂
+    IS_NOT_PINNED = 0
+
+    # 有置頂
+    IS_PINNED = 1

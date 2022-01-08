@@ -1,5 +1,5 @@
 import copy
-import json
+import datetime
 import logging
 from pyramid.view import view_config
 
@@ -26,10 +26,10 @@ def homepage_view(request):
         new_item = copy.deepcopy(each_item)
         if new_item['type'] == HomepageItemType.NEWS:
             if new_item['params']['sub_type'] == HomepageItemParamsSubType.UNSPECIFIED:
-                new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'])
+                new_item['entities'] = DAL.get_frontend_news_list(quantity_per_page=new_item['params']['quantity'])
             else:
-                new_item['entities'] = DAL.get_news_list(quantity_per_page=new_item['params']['quantity'],
-                                                         category_id=new_item['params']['sub_type'])
+                new_item['entities'] = DAL.get_frontend_news_list(quantity_per_page=new_item['params']['quantity'],
+                                                                  category_id=new_item['params']['sub_type'])
         elif new_item['type'] == HomepageItemType.PAGE:
             new_item['entities'] = DAL.get_page(new_item['params']['id'])
         elif new_item['type'] == HomepageItemType.TELEXT:
@@ -46,6 +46,7 @@ def homepage_view(request):
         homepage_items.append(new_item)
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
             'homepage_items': homepage_items,
+            'today': datetime.date.today(),
             'NavbarType': NavbarType,
             'HomepageItemType': HomepageItemType,
             'HomepageItemParamsSubType': HomepageItemParamsSubType}

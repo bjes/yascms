@@ -5,7 +5,7 @@ from tp_yass.views.frontend import news
 
 
 def test_news_list_view_should_return_dict(mocker):
-    mocker.patch.object(news.DAL, 'get_news_list')
+    mocker.patch.object(news.DAL, 'get_frontend_news_list')
     mocker.patch.object(news.DAL, 'get_news_category')
     mocker.patch.object(news.DAL, 'get_page_quantity_of_total_news')
     mocker.patch.object(news, 'generate_navbar_trees')
