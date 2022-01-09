@@ -5,7 +5,7 @@
 import json
 import math
 import logging
-from datetime import datetime, date
+from datetime import datetime
 
 from sqlalchemy import or_, and_, func
 from sqlalchemy.exc import IntegrityError
@@ -1009,6 +1009,27 @@ class DAL:
             回傳 NewsModel
         """
         return DBSession.query(NewsModel).get(news_id)
+
+    @staticmethod
+    def get_frontend_news(news_id):
+        """取得前台有存取權限的最新消息，會檢查是否超過顯示時間
+
+        Args:
+             news_id: news 的 primary key
+
+        Returns:
+            回傳 NewsModel，若找不到或已無法顯示回傳 None
+        """
+        news = DAL.get_news(news_id)
+        if news:
+            now = datetime.now()
+            if news.visible_start_datetime:
+                if not news.visible_start_datetime <= now:
+                    return None
+            if news.visible_end_datetime:
+                if not now < news.visible_end_datetime:
+                    return None
+            return news
 
     @staticmethod
     def delete_news(news):

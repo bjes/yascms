@@ -12,7 +12,7 @@ def test_news_list_view_should_return_dict(mocker):
     request = DummyRequest()
     request.current_theme_name = request.effective_theme_name = 'tp_yass2020'
     response = news.news_list_view(request)
-    valid_keys = ['news_list', 'news_category', 'navbar_trees',
+    valid_keys = ['news_list', 'news_category', 'navbar_trees', 'today',
                   'page_quantity_of_total_news', 'page_number',
                   'quantity_per_page', 'NavbarType']
     for key in valid_keys:
@@ -20,7 +20,7 @@ def test_news_list_view_should_return_dict(mocker):
 
 
 def test_news_get_view_should_return_news_info(mocker):
-    mocker.patch.object(news.DAL, 'get_news')
+    mocker.patch.object(news.DAL, 'get_frontend_news')
     mocker.patch.object(news, 'generate_navbar_trees')
     request = DummyRequest()
     request.current_theme_name = request.effective_theme_name = 'tp_yass2020'
@@ -34,6 +34,6 @@ def test_news_get_view_should_return_news_info(mocker):
         assert key in response
 
     # 若資料庫沒有對應的 news 物件要回傳 http not found
-    mocker.patch.object(news.DAL, 'get_news', return_value=None)
+    mocker.patch.object(news.DAL, 'get_frontend_news', return_value=None)
     response = news.news_get_view(request)
     assert isinstance(response, HTTPNotFound)

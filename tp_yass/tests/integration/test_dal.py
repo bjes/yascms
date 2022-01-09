@@ -31,3 +31,12 @@ def test_get_page_quantity_of_total_news_should_return_page_quantity(init_db_ses
     # 同上，但只算沒有設定置頂或置頂超過時間的最新消息總頁數
     assert DAL.get_page_quantity_of_total_news(quantity_per_page=1, unpinned_only=True) == 3
 
+
+def test_get_frontend_news_should_return_news_if_visible(init_db_session):
+    init_test_data()
+
+    # 測試資料中 id 為 1 的最新消息，前台可以看
+    assert DAL.get_frontend_news(1)
+
+    # 測試資料中 id 為 2 的最新消息，前台不能看，因為已經超過顯示時間
+    assert DAL.get_frontend_news(2) is None

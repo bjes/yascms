@@ -35,7 +35,7 @@ def news_get_view(request):
     """前台顯示單一最新消息"""
     request.override_renderer = f'themes/{request.effective_theme_name}/frontend/news_get.jinja2'
     news_id = int(request.matchdict['news_id'])
-    news = DAL.get_news(news_id)
+    news = DAL.get_frontend_news(news_id)
     if news:
         return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
                 'NavbarType': NavbarType,
