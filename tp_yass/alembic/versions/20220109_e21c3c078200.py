@@ -1,8 +1,8 @@
 """init
 
-Revision ID: ab6f63664b19
-Revises: 
-Create Date: 2022-01-05 15:28:26.927263
+Revision ID: e21c3c078200
+Revises:
+Create Date: 2022-01-09 12:31:49.455396
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ab6f63664b19'
+revision = 'e21c3c078200'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -66,8 +66,8 @@ def upgrade():
     sa.Column('ext', sa.String(length=50), nullable=False),
     sa.Column('order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('publication_date', sa.DateTime(), nullable=False),
-    sa.Column('last_updated_date', sa.DateTime(), nullable=False),
+    sa.Column('publication_datetime', sa.DateTime(), nullable=False),
+    sa.Column('last_updated_datetime', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_telext_title'), 'telext', ['title'], unique=False)
@@ -123,8 +123,8 @@ def upgrade():
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
     sa.Column('pinned_order', sa.Integer(), server_default='0', nullable=False),
     sa.Column('categorized_order', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('publication_date', sa.DateTime(), nullable=False),
-    sa.Column('last_updated_date', sa.DateTime(), nullable=False),
+    sa.Column('publication_datetime', sa.DateTime(), nullable=False),
+    sa.Column('last_updated_datetime', sa.DateTime(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['link_categories.id'], ),
@@ -154,12 +154,12 @@ def upgrade():
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('is_pinned', sa.Integer(), server_default='0', nullable=False),
-    sa.Column('pinned_start_date', sa.Date(), nullable=True),
-    sa.Column('pinned_end_date', sa.Date(), nullable=True),
-    sa.Column('visible_start_date', sa.DateTime(), nullable=True),
-    sa.Column('visible_end_date', sa.DateTime(), nullable=True),
-    sa.Column('publication_date', sa.DateTime(), nullable=False),
-    sa.Column('last_updated_date', sa.DateTime(), nullable=False),
+    sa.Column('pinned_start_datetime', sa.Date(), nullable=True),
+    sa.Column('pinned_end_datetime', sa.Date(), nullable=True),
+    sa.Column('visible_start_datetime', sa.DateTime(), nullable=True),
+    sa.Column('visible_end_datetime', sa.DateTime(), nullable=True),
+    sa.Column('publication_datetime', sa.DateTime(), nullable=False),
+    sa.Column('last_updated_datetime', sa.DateTime(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['news_categories.id'], ),

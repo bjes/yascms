@@ -27,7 +27,7 @@ class TelExtModel(BaseObject):
     is_pinned = Column(Integer, nullable=False, default=0, server_default='0')
 
     # 發佈時間，建立這篇好站連結當下的時間
-    publication_date = Column(DateTime, nullable=False, default=datetime.now)
+    publication_datetime = Column(DateTime, nullable=False, default=datetime.now)
 
     # 最後更新時間
-    last_updated_date = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+    last_updated_datetime = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)

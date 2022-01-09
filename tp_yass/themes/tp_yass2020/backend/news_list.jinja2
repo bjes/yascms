@@ -23,7 +23,7 @@
             {% for each_news in news_list %}
               <tr>
                 <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
-                <td>{{ each_news.publication_date }}</td>
+                <td>{{ each_news.publication_datetime }}</td>
                 <td>{{ each_news.category.name }}</td>
                 <td>
                   <a href="#">
@@ -31,10 +31,10 @@
                       <i class="bi bi-pin"></i>
                     {% endif %}
                     {{ each_news.title }}
-                    {% if each_news.pinned_start_date and today < each_news.pinned_start_date or each_news.pinned_end_date and today >= each_news.pinned_end_date %}
+                    {% if each_news.pinned_start_datetime and today < each_news.pinned_start_datetime or each_news.pinned_end_datetime and today >= each_news.pinned_end_datetime %}
                       <span class="badge badge-warning">超過置頂時間</span>
                     {% endif %}
-                    {% if each_news.visible_start_date and now < each_news.visible_start_date or each_news.visible_end_date and now >= each_news.visible_end_date %}
+                    {% if each_news.visible_start_datetime and now < each_news.visible_start_datetime or each_news.visible_end_datetime and now >= each_news.visible_end_datetime %}
                       <span class="badge badge-warning">超過顯示時間</span>
                     {% endif %}
                   </a>

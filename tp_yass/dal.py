@@ -74,12 +74,12 @@ class DAL:
             if category_id:
                 pinned_results = pinned_results.filter_by(category_id=category_id)
             pinned_results = pinned_results.filter(NewsModel.is_pinned == PinnedType.IS_PINNED.value)
-            pinned_results = (pinned_results.filter(now >= NewsModel.pinned_start_date,
-                                                    now < NewsModel.pinned_end_date)
-                                            .filter(or_(NewsModel.visible_start_date.is_(None),
-                                                        now >= NewsModel.visible_start_date))
-                                            .filter(or_(NewsModel.visible_end_date.is_(None),
-                                                        now < NewsModel.visible_end_date)))
+            pinned_results = (pinned_results.filter(now >= NewsModel.pinned_start_datetime,
+                                                    now < NewsModel.pinned_end_datetime)
+                              .filter(or_(NewsModel.visible_start_datetime.is_(None),
+                                                        now >= NewsModel.visible_start_datetime))
+                              .filter(or_(NewsModel.visible_end_datetime.is_(None),
+                                          now < NewsModel.visible_end_datetime)))
             results.extend(pinned_results.order_by(NewsModel.id.desc()).all())
 
         # 撈出沒有設定置頂的、或是有設定置頂但置頂時間已經超過的最新消息
@@ -87,17 +87,17 @@ class DAL:
         if category_id:
             unpinned_results = unpinned_results.filter_by(category_id=category_id)
         unpinned_results = unpinned_results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
-                                                            or_(NewsModel.visible_start_date.is_(None),
-                                                                now >= NewsModel.visible_start_date),
-                                                            or_(NewsModel.visible_end_date.is_(None),
-                                                                now < NewsModel.visible_end_date)),
+                                                            or_(NewsModel.visible_start_datetime.is_(None),
+                                                                now >= NewsModel.visible_start_datetime),
+                                                            or_(NewsModel.visible_end_datetime.is_(None),
+                                                                now < NewsModel.visible_end_datetime)),
                                                        and_(NewsModel.is_pinned == PinnedType.IS_PINNED.value,
-                                                            or_(now < NewsModel.pinned_start_date,
-                                                                now >= NewsModel.pinned_end_date),
-                                                            or_(NewsModel.visible_start_date.is_(None),
-                                                                now >= NewsModel.visible_start_date),
-                                                            or_(NewsModel.visible_end_date.is_(None),
-                                                                now < NewsModel.visible_end_date))))
+                                                            or_(now < NewsModel.pinned_start_datetime,
+                                                                now >= NewsModel.pinned_end_datetime),
+                                                            or_(NewsModel.visible_start_datetime.is_(None),
+                                                                now >= NewsModel.visible_start_datetime),
+                                                            or_(NewsModel.visible_end_datetime.is_(None),
+                                                                now < NewsModel.visible_end_datetime))))
         results.extend(unpinned_results.order_by(NewsModel.id.desc())
                                        .limit(quantity_per_page)
                                        .offset((page_number-1)*quantity_per_page))
@@ -143,17 +143,17 @@ class DAL:
             results = results.filter_by(category_id=category_id)
         if unpinned_only:
             results = results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
-                                              or_(NewsModel.visible_start_date.is_(None),
-                                                  now >= NewsModel.visible_start_date),
-                                              or_(NewsModel.visible_end_date.is_(None),
-                                                  now < NewsModel.visible_end_date)),
+                                              or_(NewsModel.visible_start_datetime.is_(None),
+                                                  now >= NewsModel.visible_start_datetime),
+                                              or_(NewsModel.visible_end_datetime.is_(None),
+                                                  now < NewsModel.visible_end_datetime)),
                                          and_(NewsModel.is_pinned == PinnedType.IS_PINNED.value,
-                                              or_(now < NewsModel.pinned_start_date,
-                                                  now >= NewsModel.pinned_end_date),
-                                              or_(NewsModel.visible_start_date.is_(None),
-                                                  now >= NewsModel.visible_start_date),
-                                              or_(NewsModel.visible_end_date.is_(None),
-                                                  now < NewsModel.visible_end_date))))
+                                              or_(now < NewsModel.pinned_start_datetime,
+                                                  now >= NewsModel.pinned_end_datetime),
+                                              or_(NewsModel.visible_start_datetime.is_(None),
+                                                  now >= NewsModel.visible_start_datetime),
+                                              or_(NewsModel.visible_end_datetime.is_(None),
+                                                  now < NewsModel.visible_end_datetime))))
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
@@ -958,14 +958,12 @@ class DAL:
 
         # 處理置頂的邏輯，如果勾選了置頂，就順便紀錄置頂的起訖時間
         if form_data.is_pinned.data:
-            news.pinned_start_date = form_data.pinned_start_date.data
-            news.pinned_end_date = form_data.pinned_end_date.data
+            news.pinned_start_datetime = form_data.pinned_start_datetime.data
+            news.pinned_end_datetime = form_data.pinned_end_datetime.data
             news.is_pinned = PinnedType.IS_PINNED.value
 
-        if form_data.visible_start_date.data:
-            news.visible_start_date = form_data.visible_start_date.data
-        if form_data.visible_end_date.data:
-            news.visible_end_date = form_data.visible_end_date.data
+        news.visible_start_datetime = form_data.visible_start_datetime.data
+        news.visible_end_datetime = form_data.visible_end_datetime.data
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
@@ -1039,14 +1037,12 @@ class DAL:
 
         # 處理置頂的邏輯，如果勾選了置頂，就順便紀錄置頂的起訖時間
         if form_data.is_pinned.data:
-            news.pinned_start_date = form_data.pinned_start_date.data
-            news.pinned_end_date = form_data.pinned_end_date.data
+            news.pinned_start_datetime = form_data.pinned_start_datetime.data
+            news.pinned_end_datetime = form_data.pinned_end_datetime.data
             news.is_pinned = PinnedType.IS_PINNED.value
 
-        if form_data.visible_start_date.data:
-            news.visible_start_date = form_data.visible_start_date.data
-        if form_data.visible_end_date.data:
-            news.visible_end_date = form_data.visible_end_date.data
+        news.visible_start_datetime = form_data.visible_start_datetime.data
+        news.visible_end_datetime = form_data.visible_end_datetime.data
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}

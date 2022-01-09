@@ -46,20 +46,20 @@
           {{ form.is_pinned.label(class_="form-check-label") }}
         </div>
         <div class="form-group">
-          {{ form.pinned_start_date.label() }}
-          {{ form.pinned_start_date(class_='form-control') }}
+          {{ form.pinned_start_datetime.label() }}
+          {{ form.pinned_start_datetime(class_='form-control') }}
         </div>
         <div class="form-group">
-          {{ form.pinned_end_date.label() }}
-          {{ form.pinned_end_date(class_='form-control') }}
+          {{ form.pinned_end_datetime.label() }}
+          {{ form.pinned_end_datetime(class_='form-control') }}
         </div>
         <div class="form-group">
-          {{ form.visible_start_date.label() }}
-          {{ form.visible_start_date(class_='form-control') }}
+          {{ form.visible_start_datetime.label() }}
+          {{ form.visible_start_datetime(class_='form-control') }}
         </div>
         <div class="form-group">
-          {{ form.visible_end_date.label() }}
-          {{ form.visible_end_date(class_='form-control') }}
+          {{ form.visible_end_datetime.label() }}
+          {{ form.visible_end_datetime(class_='form-control') }}
         </div>
         <div class="form-group">
           {{ form.tags.label() }}
@@ -88,15 +88,15 @@
         height: 300
       });
       $.datetimepicker.setLocale('zh-TW');
-      $('#visible_start_date, #visible_end_date').datetimepicker({
+      $('#visible_start_datetime, #visible_end_datetime').datetimepicker({
         format: 'Y-m-d H:i'
       });
-      $('#pinned_start_date, #pinned_end_date').datetimepicker({
+      $('#pinned_start_datetime, #pinned_end_datetime').datetimepicker({
         timepicker: false,
         format: 'Y-m-d'
       });
       let pinned_checkbox = $('#is_pinned');
-      let pinned_inputs = $('#pinned_start_date, #pinned_end_date');
+      let pinned_inputs = $('#pinned_start_datetime, #pinned_end_datetime');
       if (pinned_checkbox.prop('checked') === true) {
         pinned_inputs.prop('disabled', false);
       } else {

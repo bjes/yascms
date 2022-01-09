@@ -72,34 +72,33 @@ def import_test_db_data(ini_file_path):
     category2 = session.query(NewsCategoryModel).filter_by(name='學校榮譽').one_or_none()
 
     ######## 建最新消息 ########
-    today = datetime.date.today()
     now = datetime.datetime.now()
     # 普通最新消息，永遠顯示
     news1 = NewsModel(id=1, title='採購 10 台伺服器', content='設備已放機房', group_id=6, category=category1)
     # 普通最新消息，超過時間已無法顯示
     news2 = NewsModel(id=2, title='無法顯示的最新消息', content='前台看不到後台看得到', group_id=6, category=category1,
-                      visible_start_date=now-datetime.timedelta(days=2),
-                      visible_end_date=now-datetime.timedelta(days=1))
+                      visible_start_datetime=now-datetime.timedelta(days=2),
+                      visible_end_datetime=now-datetime.timedelta(days=1))
     # 置頂最新消息，今天最後一天置頂，永遠顯示
     news3 = NewsModel(id=3, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7,
-                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=1),
-                      pinned_end_date=today, category=category2)
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now-datetime.timedelta(days=1),
+                      pinned_end_datetime=now, category=category2)
     # 置頂最新消息，已超過置頂時間，但仍可顯示
     news4 = NewsModel(id=4, title='超過置頂時間的置頂最新消息', content='仍然可顯示', group_id=7,
-                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=2),
-                      pinned_end_date=today-datetime.timedelta(days=1), category=category2)
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now-datetime.timedelta(days=2),
+                      pinned_end_datetime=now-datetime.timedelta(days=1), category=category2)
     # 置頂最新消息，仍在指定的置頂時間內，但無法顯示
     news5 = NewsModel(id=5, title='置頂時間正常但不可顯示的最新消息', content='只有後台看得到', group_id=7,
-                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today,
-                      pinned_end_date=today+datetime.timedelta(days=1),
-                      visible_start_date=now-datetime.timedelta(days=2),
-                      visible_end_date=now-datetime.timedelta(days=1), category=category2)
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now,
+                      pinned_end_datetime=now+datetime.timedelta(days=1),
+                      visible_start_datetime=now-datetime.timedelta(days=2),
+                      visible_end_datetime=now-datetime.timedelta(days=1), category=category2)
     # 置頂最新消息，但置頂時間已超過，顯示時間也已超過
     news6 = NewsModel(id=6, title='超過置頂時間的置頂最新消息，且顯示時間已過', content='只有後台看得到', group_id=7,
-                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_date=today-datetime.timedelta(days=2),
-                      pinned_end_date=today+datetime.timedelta(days=1),
-                      visible_start_date=now-datetime.timedelta(days=2),
-                      visible_end_date=now-datetime.timedelta(days=1), category=category2)
+                      is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now-datetime.timedelta(days=2),
+                      pinned_end_datetime=now+datetime.timedelta(days=1),
+                      visible_start_datetime=now-datetime.timedelta(days=2),
+                      visible_end_datetime=now-datetime.timedelta(days=1), category=category2)
     session.add(news1)
     session.add(news2)
     session.add(news3)

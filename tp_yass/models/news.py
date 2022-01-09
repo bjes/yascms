@@ -48,22 +48,22 @@ class NewsModel(BaseObject):
     is_pinned = Column(Integer, nullable=False, default=0, server_default='0')
 
     # 置頂開始時間
-    pinned_start_date = Column(Date)
+    pinned_start_datetime = Column(Date)
 
     # 置頂結束時間
-    pinned_end_date = Column(Date)
+    pinned_end_datetime = Column(Date)
 
     # 顯示開始時間，時間到了才會顯示在網頁上。若沒指定（null）則代表馬上顯示
-    visible_start_date = Column(DateTime)
+    visible_start_datetime = Column(DateTime)
 
     # 顯示結束時間，時間到了才會消失在網頁上。若沒指定 (null) 則代表永久顯示
-    visible_end_date = Column(DateTime)
+    visible_end_datetime = Column(DateTime)
 
     # 發佈時間，建立這篇最新消息當下的時間
-    publication_date = Column(DateTime, nullable=False, default=datetime.now)
+    publication_datetime = Column(DateTime, nullable=False, default=datetime.now)
 
     # 最後更新時間
-    last_updated_date = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+    last_updated_datetime = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     # 標籤
     tags = relationship('models.tag.TagModel', secondary=news_tags_association, back_populates='news')

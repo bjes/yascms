@@ -1,11 +1,10 @@
-from datetime import date
+from datetime import datetime
 
 from pyramid_wtforms import (Form,
                              StringField,
                              TextAreaField,
                              BooleanField,
                              DateTimeField,
-                             DateField,
                              SelectField,
                              MultipleFilesField,
                              MultipleCheckboxField)
@@ -28,17 +27,45 @@ class NewsForm(Form):
 
     is_pinned = BooleanField('是否置頂')
 
-    pinned_start_date = DateField('置頂開始日期', format='%Y-%m-%d', validators=[Optional()])
+    pinned_start_datetime = DateTimeField('置頂開始時間', format='%Y-%m-%d %H:%M')
 
-    pinned_end_date = DateField('置頂結束日期', format='%Y-%m-%d', validators=[Optional()])
+    pinned_end_datetime = DateTimeField('置頂結束時間', format='%Y-%m-%d %H:%M')
 
-    visible_start_date = DateTimeField('顯示開始時間（未指定則代表馬上顯示）',
-                                       format='%Y-%m-%d %H:%M',
-                                       validators=[Optional()])
+    def check_visible_start_datetime(form, field):
+        """檢查 visible_start_datetime 欄位
+        
+        其值必須是 None 或是 datetime.datetime 實體，且值要小於等於 visible_end_datetime
+        """
+        if field.data:
+            if not isinstance(field.data, datetime):
+                raise ValidationError('顯示開始時間必須是時間格式')
+            if form.visible_end_datetime.data:
+                if not isinstance(form.visible_end_datetime.data, datetime):
+                    raise ValidationError('顯示結束時間必須是時間格式')
+                if field.data > form.visible_end_datetime.data:
+                    raise ValidationError('顯示開始時間必須早於或等於顯示結束時間')
 
-    visible_end_date = DateTimeField('顯示結束時間（未指定則代表永遠顯示）',
-                                     format='%Y-%m-%d %H:%M',
-                                     validators=[Optional()])
+    visible_start_datetime = DateTimeField('顯示開始時間（未指定則代表馬上顯示）',
+                                           [check_visible_start_datetime, Optional()],
+                                           format='%Y-%m-%d %H:%M')
+
+    def check_visible_end_datetime(form, field):
+        """檢查 visible_end_datetime 欄位
+        
+        其值必須是 None 或是 datetime.datetime 實體，且值要大於等於 visible_end_datetime
+        """
+        if field.data:
+            if not isinstance(field.data, datetime):
+                raise ValidationError('顯示結束時間必須是時間格式')
+            if form.visible_start_datetime.data:
+                if not isinstance(form.visible_start_datetime.data, datetime):
+                    raise ValidationError('顯示開始時間必須是時間格式')
+                if field.data < form.visible_end_datetime.data:
+                    raise ValidationError('顯示結束時間必須晚於或等於顯示開始時間')
+
+    visible_end_datetime = DateTimeField('顯示結束時間（未指定則代表永遠顯示）',
+                                         [check_visible_end_datetime, Optional()],
+                                         format='%Y-%m-%d %H:%M')
 
     tags = StringField('標籤（以逗號分隔）')
 
@@ -49,11 +76,11 @@ class NewsForm(Form):
     def validate_is_pinned(form, field):
         """若勾選了置頂，那麼置頂起訖日期都要設定"""
         if field.data is True:
-            if not (isinstance(form.pinned_start_date.data, date)
-                    and isinstance(form.pinned_end_date.data, date)):
-                raise ValidationError('置頂起訖日期都需要指定')
-            if form.pinned_end_date.data < form.pinned_start_date.data:
-                raise ValidationError('置頂結束日期需晚於置頂開始日期')
+            if not (isinstance(form.pinned_start_datetime.data, datetime)
+                    and isinstance(form.pinned_end_datetime.data, datetime)):
+                raise ValidationError('置頂起訖時間都需要指定')
+            if form.pinned_end_datetime.data < form.pinned_start_datetime.data:
+                raise ValidationError('置頂結束時間需晚於置頂開始日期')
 
     class Meta:
         locales = ['zh_TW', 'tw']

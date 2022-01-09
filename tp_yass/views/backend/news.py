@@ -102,7 +102,7 @@ class NewsDeleteView:
         news = DAL.get_news(news_id)
         if news:
             for each_attachment in news.attachments:
-                delete_attachment(each_attachment.real_name, news.publication_date.strftime('news/%Y/%m'))
+                delete_attachment(each_attachment.real_name, news.publication_datetime.strftime('news/%Y/%m'))
             DAL.delete_news(news)
             msg = f'最新消息 {news.title} 刪除成功'
             logger.info(msg)
@@ -142,10 +142,10 @@ class NewsEditView:
         form.process(None, None,
                      title=self.context.title,
                      content=self.context.content,
-                     pinned_start_date=self.context.pinned_start_date,
-                     pinned_end_date=self.context.pinned_end_date,
-                     visible_start_date=self.context.visible_start_date,
-                     visible_end_date=self.context.visible_end_date,
+                     pinned_start_datetime=self.context.pinned_start_datetime,
+                     pinned_end_datetime=self.context.pinned_end_datetime,
+                     visible_start_datetime=self.context.visible_start_datetime,
+                     visible_end_datetime=self.context.visible_end_datetime,
                      tags=', '.join([each_tag.name for each_tag in self.context.tags]))
         return {'form': form}
 
@@ -169,7 +169,7 @@ class NewsEditView:
                 for each_uploaded_attachment in news.attachments:
                     if each_uploaded_attachment.id not in selected_attachment_ids:
                         DAL.delete_news_attachment(each_uploaded_attachment)
-                        delete_attachment(each_uploaded_attachment.real_name, news.publication_date.strftime('news/%Y/%m'))
+                        delete_attachment(each_uploaded_attachment.real_name, news.publication_datetime.strftime('news/%Y/%m'))
 
                 # 上傳新增的附件
                 if form.attachments.data:
