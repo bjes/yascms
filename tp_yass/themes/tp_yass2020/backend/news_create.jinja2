@@ -76,6 +76,14 @@
   <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote-zh-TW-0.8.16.min.js') }}"></script>
   <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.datetimepicker.full-master.min.js') }}"></script>
   <script>
+    function generate_pinned_input_format(date) {
+      let year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString().padStart(2, '0');
+      let day = date.getDate().toString().padStart(2, '0');
+      let hours = date.getHours().toString().padStart(2, 0)
+      let minutes = date.getMinutes().toString().padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    }
     $(function (){
       $('#content').summernote({
         lang: 'zh-TW',
@@ -88,15 +96,27 @@
       let pinned_checkbox = $('#is_pinned');
       let pinned_inputs = $('#pinned_start_datetime, #pinned_end_datetime');
       if (pinned_checkbox.prop('checked') === true) {
+        let now = new Date();
+        $('#pinned_start_datetime').val(generate_pinned_input_format(now));
+        let pinned_end_datetime = new Date(now);
+        pinned_end_datetime.setDate(pinned_end_datetime.getDate() + 7); // 預設置頂 7 天
+        $('#pinned_end_datetime').val(generate_pinned_input_format(pinned_end_datetime));
         pinned_inputs.prop('disabled', false);
       } else {
         pinned_inputs.prop('disabled', true);
+        pinned_inputs.val('')
       }
       pinned_checkbox.change(function (){
         if ($(this).prop('checked') === true) {
+          let now = new Date();
+          $('#pinned_start_datetime').val(generate_pinned_input_format(now));
+          let pinned_end_datetime = new Date(now);
+          pinned_end_datetime.setDate(pinned_end_datetime.getDate() + 7); // 預設置頂 7 天
+          $('#pinned_end_datetime').val(generate_pinned_input_format(pinned_end_datetime));
           pinned_inputs.prop('disabled', false);
         } else {
           pinned_inputs.prop('disabled', true);
+          pinned_inputs.val('')
         }
       })
     });
