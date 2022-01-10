@@ -39,7 +39,7 @@
                     {% endif %}
                   </a>
                 </td>
-                <td><a href="{{ request.route_url('backend_group_edit', group_id=each_news.group.id) }}">{{ each_news.group.name }}</a></td>
+                <td>{{ each_news.group.name }}</td>
                 <td>
                 {% for each_tag in each_news.tags %}
                   {{ each_tag.name }}{% if not loop.last %}, {% endif %}
