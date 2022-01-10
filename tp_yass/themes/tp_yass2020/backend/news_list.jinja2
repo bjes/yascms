@@ -1,7 +1,7 @@
 {% extends 'layouts/master.jinja2' %}
 {% from 'tp_yass:themes/' ~ request.effective_theme_name ~ '/macros.jinja2' import paginate with context %}
 {% block content %}
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12"><h1>最新消息列表</h1></div>
     <div class="col-12">
@@ -25,7 +25,7 @@
                 <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
                 <td>{{ each_news.publication_datetime }}</td>
                 <td>{{ each_news.category.name }}</td>
-                <td>
+                <td class="text-left">
                   <a href="{{ request.route_url('news_get', news_id=each_news.id) }}">
                     {% if each_news.is_pinned %}
                       <i class="bi bi-pin"></i>
