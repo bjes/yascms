@@ -116,4 +116,5 @@ cp development.ini.sample development.ini
 
 ## 使用套件
 - jQuery https://jquery.com MIT License
+- jQuery Bonsai https://github.com/aexmachina/jquery-bonsai MIT License
 - jQuery DateTimePicker https://github.com/xdan/datetimepicker MIT License
