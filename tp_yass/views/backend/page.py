@@ -168,7 +168,7 @@ class PageEditView:
                         page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
 
                 DAL.save_page(page)
-                msg = f'單一頁面 {page.title} 建立成功'
+                msg = f'單一頁面 {page.title} 更新成功'
                 logger.info(msg)
                 self.request.session.flash(msg, 'success')
                 return HTTPFound(self.request.route_url('backend_page_list'))

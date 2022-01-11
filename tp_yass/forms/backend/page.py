@@ -16,7 +16,7 @@ class PageForm(Form):
     content = TextAreaField('內容')
 
     # 只是用來驗證，前端會靠 jquery bonsai 產生巢狀多選選單，不會依靠這個 field 產生
-    group_ids = MultipleFilesField('管理群組*', [InputRequired('至少要選一個群組')], coerce=int)
+    group_ids = MultipleCheckboxField('管理群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
     # TODO: 要讓系統可以設定上傳的檔案大小限制，目前寫死必須小於 200 MB
     attachments = MultipleFilesField('附件', [FileSize(max=200, base='mb')])
