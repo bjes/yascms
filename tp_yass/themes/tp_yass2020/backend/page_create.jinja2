@@ -1,7 +1,7 @@
 {% extends 'layouts/master.jinja2' %}
 {% from 'macros.jinja2' import generate_group_trees with context %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/summernote-bs4-0.8.18.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/summernote/summernote-bs4-0.8.18.min.css') }}">
   <link rel="stylesheet" href="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/css/jquery.bonsai-2.1.1.css') }}">
 {% endblock page_css %}
 {% block content %}
@@ -49,8 +49,8 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote-bs4-0.8.18.min.js') }}"></script>
-  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote-zh-TW-0.8.18.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote/summernote-bs4-0.8.18.min.js') }}"></script>
+  <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/summernote/summernote-zh-TW-0.8.18.min.js') }}"></script>
   <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.qubit-2.0.9.js') }}"></script>
   <script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/jquery.bonsai-2.1.1.js') }}"></script>
   <script>
