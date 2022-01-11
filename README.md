@@ -122,3 +122,4 @@ cp development.ini.sample development.ini
 - jQuery DateTimePicker https://github.com/xdan/datetimepicker MIT License
 - jquery-qubit https://github.com/simonexmachina/jquery-qubit MIT License
 - SmartMenus jQuery Website Menu Plugin https://www.smartmenus.org MIT License
+- Summernote https://summernote.org/ MIT License
