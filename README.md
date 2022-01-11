@@ -113,3 +113,6 @@ cp development.ini.sample development.ini
 
 - 2020/10/16 [臺北市集中化網站功能介紹與佈署申請](https://docs.google.com/presentation/d/18YZlmiMYo8hlSvAEi_SQQMwZuMp0ma3O_DngXFF33m4/edit?usp=sharing)
 
+
+## 使用套件
+- jQuery DateTimePicker https://github.com/xdan/datetimepicker MIT License
