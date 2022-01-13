@@ -126,3 +126,8 @@ cp development.ini.sample development.ini
 - jquery-qubit https://github.com/simonexmachina/jquery-qubit MIT License
 - SmartMenus jQuery Website Menu Plugin https://www.smartmenus.org MIT License
 - Summernote https://summernote.org/ MIT License
+- Sortable https://github.com/SortableJS/Sortable MIT License
+
+### 後端
+
+請參閱 pyproject.toml
