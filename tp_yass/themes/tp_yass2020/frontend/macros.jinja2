@@ -1,7 +1,7 @@
-{% macro generate_news_block(news_entities) %}
+{% macro generate_news_block(block_name, icon, news_entities) %}
   <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#3498db;">
     <div class="container">
-      <p class="h1 display-5 text-center text-white"><i class="bi bi-megaphone"></i> 最新消息</p>
+      <p class="h1 display-5 text-center text-white">{% if icon %}<i class="{{ icon }}"></i> {% endif %}{{ block_name }}</p>
     </div>
   </div>
 
@@ -40,10 +40,10 @@
   </div>
 {% endmacro %}
 
-{% macro generate_page_block(page_entity) %}
+{% macro generate_page_block(block_name, icon, page_entity) %}
   <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color:#2980b9;">
     <div class="container">
-      <p class="h1 display-5 text-center text-white">{{ page_entity.title }}</p>
+      <p class="h1 display-5 text-center text-white">{% if icon %}<i class="{{ icon }}"></i> {% endif %}{{ block_name }}</p>
     </div>
   </div>
 
@@ -56,10 +56,10 @@
   </div>
 {% endmacro %}
 
-{% macro generate_telext_block(telext_entities) %}
+{% macro generate_telext_block(block_name, icon, telext_entities) %}
   <div class="jumbotron jumbotron-fluid mb-3 p-2" style="background-color: #2ecc71;">
     <div class="container">
-      <p class="h1 display-5 text-center text-white"><i class="bi bi-telephone"></i> 常用分機</a></p>
+      <p class="h1 display-5 text-center text-white">{% if icon %}<i class="{{ icon }}"></i> {% endif %}{{ block_name }}</p>
     </div>
   </div>
 
@@ -75,10 +75,10 @@
   </div>
 {% endmacro %}
 
-{% macro generate_links_block(link_entities) %}
+{% macro generate_links_block(block_name, icon, link_entities) %}
   <div class="jumbotron jumbotron-fluid mb-3 p-2 d-none d-sm-block" style="background-color: #e67e22;">
     <div class="container">
-      <p class="h1 display-5 text-center text-white"><i class="bi bi-link-45deg"></i> 好站連結</p>
+      <p class="h1 display-5 text-center text-white">{% if icon %}<i class="{{ icon }}"></i> {% endif %}{{ block_name }}</p>
     </div>
   </div>
 

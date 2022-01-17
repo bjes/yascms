@@ -268,6 +268,9 @@ class ThemeConfigHomepageItemsOrderEditView:
         theme_config = DAL.get_theme_config(self.request.matchdict['theme_name'])
         form = ThemeConfigHomepageItemsOrderEditForm(config=json.dumps(theme_config['settings']['homepage_items_order']['value'], ensure_ascii=False))
         return {'theme_config': theme_config,
+                'news_category_list': DAL.get_news_category_list(),
+                'page_list': DAL.get_page_list(pagination=False),
+                'link_category_list': DAL.get_link_category_list(),
                 'HomepageItemType': HomepageItemType,
                 'HomepageItemParamsSubType': HomepageItemParamsSubType,
                 'form': form}
@@ -288,6 +291,9 @@ class ThemeConfigHomepageItemsOrderEditView:
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'theme_config': theme_config,
+                    'news_category_list': DAL.get_news_category_list(),
+                    'page_list': DAL.get_page_list(pagination=False),
+                    'link_category_list': DAL.get_link_category_list(),
                     'HomepageItemType': HomepageItemType,
                     'HomepageItemParamsSubType': HomepageItemParamsSubType,
                     'form': form}

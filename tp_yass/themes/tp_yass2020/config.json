@@ -34,23 +34,24 @@
                     "type": 1,
                     "params": {
                         "sub_type": 0,
-                        "quantity": 20
-                    },
-                    "description": "顯示最新的公告"
+                        "quantity": 20,
+                        "icon": ""
+                    }
                 },
                 {
                     "name": "常用分機",
                     "type": 3,
-                    "params": {},
-                    "description": "常用分機表"
+                    "params": {
+                        "icon": ""
+                    }
                 },
                 {
                     "name": "好站連結",
                     "type": 4,
                     "params": {
-                        "sub_type": 0
-                    },
-                    "description": "顯示網站連結"
+                        "sub_type": 0,
+                        "icon": ""
+                    }
                 }
             ]
         },

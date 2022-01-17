@@ -4,13 +4,13 @@
 
   {% for each_item in homepage_items %}
     {% if each_item['type'] == HomepageItemType.NEWS.value %}
-      {{ generate_news_block(each_item['entities']) }}
+      {{ generate_news_block(each_item['name'], each_item['params']['icon'], each_item['entities']) }}
     {% elif each_item['type'] == HomepageItemType.PAGE.value %}
-      {{ generate_page_block(each_item['entities']) }}
+      {{ generate_page_block(each_item['name'], each_item['params']['icon'], each_item['entities']) }}
     {% elif each_item['type'] == HomepageItemType.TELEXT.value %}
-      {{ generate_telext_block(each_item['entities']) }}
+      {{ generate_telext_block(each_item['name'], each_item['params']['icon'], each_item['entities']) }}
     {% elif each_item['type'] == HomepageItemType.LINKS.value %}
-      {{ generate_links_block(each_item['entities']) }}
+      {{ generate_links_block(each_item['name'], each_item['params']['icon'], each_item['entities']) }}
     {% endif %}
   {% endfor %}
 

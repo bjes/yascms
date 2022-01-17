@@ -117,17 +117,24 @@ class ThemeConfigHomepageItemsOrderEditForm(Form):
                     if key not in valid_keys:
                         raise ValidationError(f'設定值含有不合法的鍵值: {key}')
                 item_type = HomepageItemType(each_item['type'])
-                if item_type in (HomepageItemType.NEWS, HomepageItemType.LINKS):
-                    HomepageItemParamsSubType(each_item['params']['sub_type'])  # 若不合法會引發例外
-                    if item_type == HomepageItemType.NEWS:
-                        news_quantity = each_item['params'].get('quantity', None)
-                        # TODO: 最新消息的顯示數量上限值應該要拉出來
-                        if not (isinstance(news_quantity, int) and news_quantity <= 100):
-                            raise ValidationError('最新消息顯示數量設定值不合法，需小於等於 100')
-                elif item_type == HomepageItemType.PAGE:
+                if item_type == HomepageItemType.NEWS.value:
+                    if not (each_item['params']['sub_type'] == HomepageItemParamsSubType.UNSPECIFIED.value or
+                            each_item['params']['sub_type'] in [each_news_category.id for each_news_category
+                                                                in DAL.get_news_category_list()]):
+                        raise ValidationError(f'找不到最新消息分類 ID {item_type}')
+                    news_quantity = each_item['params'].get('quantity', None)
+                    # TODO: 最新消息的顯示數量上限值應該要拉出來
+                    if not (isinstance(news_quantity, int) and news_quantity <= 100):
+                        raise ValidationError('最新消息顯示數量設定值不合法，需小於等於 100')
+                elif item_type == HomepageItemType.LINKS.value:
+                    if not (each_item['params']['sub_type'] == HomepageItemParamsSubType.UNSPECIFIED.value or
+                            each_item['params']['sub_type'] in [each_link_category.id for each_link_category
+                                                                in DAL.get_link_category_list()]):
+                        raise ValidationError(f'找不到好站連結分類 ID {item_type}')
+                elif item_type == HomepageItemType.PAGE.value:
                     page_id = each_item['params'].get('id', None)
                     if not (isinstance(page_id, int) and DAL.get_page(page_id)):
                         raise ValidationError('指涉的單一頁面不存在')
-        except ValueError as err:
+        except (ValueError, KeyError) as err:
             logger.error(err)
             raise ValidationError(f'類別或子類別含有不合法的設定值：{err}')
