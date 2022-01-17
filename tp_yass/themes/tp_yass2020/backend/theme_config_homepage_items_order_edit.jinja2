@@ -1,8 +1,9 @@
 {% extends 'layouts/master.jinja2' %}
+
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>樣板 {{ theme_config['name'] }} 首頁設定</h1></div>
+    <div class="col-12"><h1>樣板 {{ theme_config['name'] }} 首頁物件順序設定</h1></div>
     {% if form.errors %}
       <div class="col-12">
         <div class="alert alert-danger" role="alert">
@@ -24,7 +25,7 @@
               <a class="nav-link" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=theme_config['name']) }}">一般設定</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=theme_config['name']) }}">首頁設定</a>
+              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=theme_config['name']) }}">首頁物件順序設定</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
@@ -39,11 +40,82 @@
             <div class="col-12">
               <form action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-                <div class="form-group">
-                  {{ form.config.label() }}
-                  {{ form.config(class_='form-control', rows=10) }}
+                <div class="alert alert-info" role="alert">拖曳下方區塊 <i class="bi bi-arrows-move"></i> 處以調整首頁的顯示順序</div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>{{ form.submit(class_='btn btn-primary') }}</div>
+                  <div>
+                    <button type="button" class="btn btn-primary" id="top-add-news-block-button" data-title="最新消息區塊"><i class="bi bi-arrow-up-circle"></i> 新增最新消息區塊</button>
+                    <button type="button" class="btn btn-primary" id="top-add-page-block-button" data-title="單一頁面區塊"><i class="bi bi-arrow-up-circle"></i> 新增單一頁面區塊</button>
+                    <button type="button" class="btn btn-primary" id="top-add-link-block-button" data-title="好站連結區塊"><i class="bi bi-arrow-up-circle"></i> 新增好站連結區塊</button>
+                    <button type="button" class="btn btn-primary" id="top-add-telext-block-button" data-title="分機表區塊"><i class="bi bi-arrow-up-circle"></i> 新增分機表區塊</button>
+                  </div>
                 </div>
-                <div class="col-12">{{ form.submit(class_='btn btn-primary') }}</div>
+                <div id="sortable-cards">
+                {% for each_homepage_item in theme_config['settings']['homepage_items_order']['value'] %}
+                  <div class="card border-dark my-3">
+                    <div class="card-header">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-arrows-move"></i>
+                          {% if each_homepage_item['type'] == HomepageItemType.NEWS.value %}
+                            最新消息區塊
+                          {% elif each_homepage_item['type'] == HomepageItemType.PAGE.value %}
+                            單一頁面區塊
+                          {% elif each_homepage_item['type'] == HomepageItemType.TELEXT.value %}
+                            分機表區塊
+                          {% elif each_homepage_item['type'] == HomepageItemType.LINKS.value %}
+                            好站連結區塊
+                          {% endif %}
+                        </div>
+                        <div><button type="button" class="btn btn-danger">刪除</button></div>
+                      </div>
+                    </div>
+                    <div class="card-body text-dark">
+                      <div class="form-group">
+                        <label for="block_name_{{ loop.index }}">區塊名稱</label>
+                        <input type="text" class="form-control" name="block_name_{{ loop.index }}" id="block_name_{{ loop.index }}" value="{{ each_homepage_item['name'] }}">
+                        <small id="block_name_help_{{ loop.index }}" class="form-text text-muted">自訂這個區塊的名稱以方便記憶</small>
+                      </div>
+                      {% if each_homepage_item['type'] == HomepageItemType.NEWS.value %}
+                        <div class="form-group">
+                          <label for="news_sub_type">顯示分類</label>
+                          <select name="news_sub_type" id="news_sub_type" class="form-control">
+                            <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+                          </select>
+                          <small id="news_help" class="form-text text-muted">顯示指定分類的最新消息</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="news_quantity">顯示數量</label>
+                          <input type="text" class="form-control" id="news_quantity" value="{{ each_homepage_item['params']['quantity'] }}">
+                        </div>
+                      {% elif each_homepage_item['type'] == HomepageItemType.PAGE.value %}
+                        <div class="form-group">未指定</div>
+                        <div class="form-group">
+                          <button type="button" class="btn btn-primary">選擇單一頁面</button>
+                        </div>
+                      {% elif each_homepage_item['type'] == HomepageItemType.TELEXT.value %}
+                      {% elif each_homepage_item['type'] == HomepageItemType.LINKS.value %}
+                        <div class="form-group">
+                          <label for="links_sub_type">顯示分類</label>
+                          <select name="links_sub_type" id="links_sub_type" class="form-control">
+                            <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+                          </select>
+                          <small id="links_help" class="form-text text-muted">顯示指定分類的好站連結</small>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>{{ form.submit(class_='btn btn-primary') }}</div>
+                  <div>
+                    <button type="button" class="btn btn-primary" id="bottom-add-news-block-button" data-title="最新消息區塊"><i class="bi bi-arrow-down-circle"></i> 新增最新消息區塊</button>
+                    <button type="button" class="btn btn-primary" id="bottom-add-page-block-button" data-title="單一頁面區塊"><i class="bi bi-arrow-down-circle"></i> 新增單一頁面區塊</button>
+                    <button type="button" class="btn btn-primary" id="bottom-add-link-block-button" data-title="好站連結區塊"><i class="bi bi-arrow-down-circle"></i> 新增好站連結區塊</button>
+                    <button type="button" class="btn btn-primary" id="bottom-add-telext-block-button" data-title="分機表區塊"><i class="bi bi-arrow-down-circle"></i> 新增分機表區塊</button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -53,3 +125,123 @@
   </div>
 </div>
 {% endblock content %}
+{% block page_js %}
+<script src="{{ request.static_path('tp_yass:static/' ~ request.effective_theme_name ~ '/js/sortable-1.14.0.min.js') }}"></script>
+<script>
+  $(function () {
+    // 讓順序可以排序
+    let sortable_cards = document.getElementById('sortable-cards');
+    let sortable = Sortable.create(sortable_cards, {
+      handle: '.bi-arrows-move',
+      animation: 150
+    });
+
+    // 刪除按鈕的功能
+    function delete_card_block(e) {
+      $(this).parent().parent().parent().parent().remove();
+    }
+
+    $('div.card-header button.btn-danger').click(delete_card_block);
+
+    $('#top-add-news-block-button, #top-add-page-block-button, #top-add-link-block-button, ' +
+      '#top-add-telext-block-button, #bottom-add-news-block-button, #bottom-add-page-block-button, ' +
+      '#bottom-add-link-block-button, #bottom-add-telext-block-button').click(function (e) {
+
+      let button_id = $(this).prop('id');
+      let title = $(this).data('title');
+      let block_content = '';
+      let new_block_id = $('#sortable-cards>div.card').length + 1;
+
+      block_content += `
+        <div class="card border-primary my-3">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <i class="bi bi-arrows-move"></i> ${title} <span class="badge badge-danger">未儲存</span>
+              </div>
+              <div><button type="button" class="btn btn-danger">刪除</button></div>
+            </div>
+          </div>
+          <div class="card-body text-dark">
+            <div class="form-group">
+            <label for="block_name_${new_block_id}">區塊名稱</label>
+            <input type="text" class="form-control" name="block_name_${new_block_id}" id="block_name_${new_block_id}">
+            <small id="block_name_help_${new_block_id}" class="form-text text-muted">自訂這個區塊的名稱以方便記憶</small>
+          </div>
+      `;
+
+      if (button_id === 'top-add-news-block-button' || button_id === 'bottom-add-news-block-button') {
+        block_content += `
+        <div class="form-group">
+          <label for="news_sub_type">顯示分類</label>
+          <select name="news_sub_type" id="news_sub_type" class="form-control">
+            <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>`;
+
+        $.ajax({
+          url: '{{ request.route_url('backend_api_news_category_list') }}',
+          type: 'GET',
+          success: function (data) {
+            $.each(data, function (key, val) {
+              block_content += `<option value="${val['id']}">${val['name']}</option>`;
+            });
+          },
+          error: function () {alert('讀取最新消息分類 api 失敗');},
+          async: false
+        });
+
+        block_content += `
+            </select>
+            <small id="news_help" class="form-text text-muted">顯示指定分類的最新消息</small>
+          </div>
+          <div class="form-group">
+            <label for="news_quantity">顯示數量</label>
+            <input type="text" class="form-control" id="news_quantity">
+          </div>
+        `;
+      } else if (button_id === 'top-add-page-block-button' || button_id === 'bottom-add-page-block-button') {
+        block_content += `
+          <div class="form-group">未指定</div>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary">選擇單一頁面</button>
+          </div>
+        `;
+      } else if (button_id === 'top-add-link-block-button' || button_id === 'bottom-add-link-block-button') {
+        block_content += `
+          <div class="form-group">
+            <label for="links_sub_type">顯示分類</label>
+            <select name="links_sub_type" id="links_sub_type" class="form-control">
+              <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+        `;
+
+        $.ajax({
+          url: '{{ request.route_url('backend_api_link_category_list') }}',
+          type: 'GET',
+          success: function (data) {
+            $.each(data, function (key, val) {
+              block_content += `<option value="${val['id']}">${val['name']}</option>`;
+            });
+          },
+          error: function () {alert('讀取最新消息分類 api 失敗');},
+          async: false
+        });
+
+        block_content += `
+            </select>
+            <small id="links_help" class="form-text text-muted">顯示指定分類的好站連結</small>
+          </div>
+        `;
+      }
+
+      block_content += '</div></div>';
+
+      // 插入新的 block 並讓刪除按鈕可以運作
+      if (button_id.includes('top')) {
+        $('#sortable-cards>div.card').first().before(block_content).prev().find('.card-header button.btn-danger').click(delete_card_block);
+      } else if (button_id.includes('bottom')) {
+        $('#sortable-cards>div.card').last().after(block_content).next().find('.card-header button.btn-danger').click(delete_card_block);
+      }
+
+    });
+  });
+</script>
+{% endblock %}

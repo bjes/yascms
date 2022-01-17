@@ -21,3 +21,21 @@ def backend_api_page_get_view(request):
         return {'id': page.id, 'title': page.title, 'url': request.route_url('page_get', page_id=page.id)}
     else:
         return {}
+
+
+@view_config(route_name='backend_api_news_category_list', renderer='json', permission='view')
+def backend_api_news_category_list_view(request):
+    """回傳最新消息分類的列表"""
+    news_category_list = []
+    for each_news_category in DAL.get_news_category_list():
+        news_category_list.append({'id': each_news_category.id, 'name': each_news_category.name})
+    return news_category_list
+
+
+@view_config(route_name='backend_api_link_category_list', renderer='json', permission='view')
+def backend_api_link_category_list_view(request):
+    """回傳好站連結分類的列表"""
+    link_category_list = []
+    for each_link_category in DAL.get_link_category_list():
+        link_category_list.append({'id': each_link_category.id, 'name': each_link_category.name})
+    return link_category_list

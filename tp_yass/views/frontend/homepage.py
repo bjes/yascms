@@ -41,7 +41,7 @@ def homepage_view(request):
                 new_item['entities'] = DAL.get_link_list(quantity_per_page=new_item['params']['quantity'],
                                                          category_id=new_item['params']['sub_type'])
         else:
-            logger.critical('homepage_items_order 設定出現不合法的資料： %s', new_item)
+            logger.error('homepage_items_order 設定出現不合法的資料： %s', new_item)
             continue
         homepage_items.append(new_item)
     return {'navbar_trees': generate_navbar_trees(request, visible_only=True),

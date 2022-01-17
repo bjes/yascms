@@ -142,6 +142,9 @@ def includeme(config):
     config.add_route('backend_api_page_list', '/backend/api/page/list', factory=admin_factory)
     config.add_route('backend_api_page_get', '/backend/api/page/get/{page_id:\d+}', factory=admin_factory)
 
+    config.add_route('backend_api_news_category_list', '/backend/api/news/category/list', factory=admin_factory)
+    config.add_route('backend_api_link_category_list', '/backend/api/link/category/list', factory=admin_factory)
+
     config.add_route('backend_oauth2_integration_list', '/backend/oauth2/integration/list', factory=admin_factory)
     config.add_route('backend_oauth2_integration_edit', '/backend/oauth2/integration/{provider_name}/edit',
                      factory=admin_factory)

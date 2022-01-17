@@ -9,7 +9,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
-from tp_yass.enum import ThemeConfigCustomType
+from tp_yass.enum import ThemeConfigCustomType, HomepageItemType, HomepageItemParamsSubType
 from tp_yass.helpers import get_project_abspath
 from tp_yass.helpers.file import save_file
 from tp_yass.helpers.backend.theme_config import ThemeController
@@ -17,6 +17,7 @@ from tp_yass.forms.backend.theme_config import (ThemeConfigGeneralForm,
                                                 ThemeConfigBannersEditForm,
                                                 ThemeConfigBannersUploadForm,
                                                 ThemeConfigUploadForm, ThemeConfigHomepageItemsOrderEditForm)
+
 
 logger = logging.getLogger(__name__)
 
@@ -85,8 +86,6 @@ class ThemeConfigUploadView:
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'form': form}
-
-
 
 
 @view_defaults(route_name='backend_theme_config_general_edit',
@@ -268,7 +267,10 @@ class ThemeConfigHomepageItemsOrderEditView:
     def get_view(self):
         theme_config = DAL.get_theme_config(self.request.matchdict['theme_name'])
         form = ThemeConfigHomepageItemsOrderEditForm(config=json.dumps(theme_config['settings']['homepage_items_order']['value'], ensure_ascii=False))
-        return {'theme_config': theme_config, 'form': form}
+        return {'theme_config': theme_config,
+                'HomepageItemType': HomepageItemType,
+                'HomepageItemParamsSubType': HomepageItemParamsSubType,
+                'form': form}
 
     @view_config(request_method='POST')
     def post_view(self):
@@ -280,6 +282,12 @@ class ThemeConfigHomepageItemsOrderEditView:
             DAL.update_theme_config(theme_config)
             if theme_name == self.request.cache.get_current_theme_name():
                 self.request.cache.delete_current_theme_config()
+            msg = f'樣板 {theme_name} 的首頁物件順序更新成功'
+            logger.info(msg)
+            self.request.session.flash(msg, 'success')
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
-            return {'theme_config': theme_config, 'form': form}
+            return {'theme_config': theme_config,
+                    'HomepageItemType': HomepageItemType,
+                    'HomepageItemParamsSubType': HomepageItemParamsSubType,
+                    'form': form}

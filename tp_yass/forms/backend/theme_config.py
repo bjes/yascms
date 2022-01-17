@@ -1,4 +1,5 @@
 import json
+import logging
 
 from pyramid_wtforms import (Form,
                              StringField,
@@ -20,6 +21,9 @@ from pyramid_wtforms.validators import (InputRequired,
 
 from tp_yass.dal import DAL
 from tp_yass.enum import ThemeConfigCustomType, HomepageItemType, HomepageItemParamsSubType
+
+
+logger = logging.getLogger(__name__)
 
 
 class ThemeConfigCustomForm(Form):
@@ -100,13 +104,13 @@ class ThemeConfigHomepageItemsOrderEditForm(Form):
 
     config = TextAreaField('設定值', [InputRequired('此欄位必填')])
 
-    submit = SubmitField('更新首頁物件順序')
+    submit = SubmitField('儲存')
 
     def validate_config(form, field):
         """
         TODO: 重構成物件導向，使用物件呈現設定值而非直接處理資料結構
         """
-        valid_keys = ['name', 'type', 'params', 'description']
+        valid_keys = ['name', 'type', 'params']
         try:
             for each_item in json.loads(field.data):
                 for key in valid_keys:
@@ -118,11 +122,12 @@ class ThemeConfigHomepageItemsOrderEditForm(Form):
                     if item_type == HomepageItemType.NEWS:
                         news_quantity = each_item['params'].get('quantity', None)
                         # TODO: 最新消息的顯示數量上限值應該要拉出來
-                        if not (isinstance(news_quantity, int) and news_quantity <= 50):
-                            raise ValidationError('最新消息顯示數量設定值不合法，需小於等於 50')
+                        if not (isinstance(news_quantity, int) and news_quantity <= 100):
+                            raise ValidationError('最新消息顯示數量設定值不合法，需小於等於 100')
                 elif item_type == HomepageItemType.PAGE:
                     page_id = each_item['params'].get('id', None)
                     if not (isinstance(page_id, int) and DAL.get_page(page_id)):
                         raise ValidationError('指涉的單一頁面不存在')
         except ValueError as err:
+            logger.error(err)
             raise ValidationError(f'類別或子類別含有不合法的設定值：{err}')
