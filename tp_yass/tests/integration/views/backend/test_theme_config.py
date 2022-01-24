@@ -36,19 +36,21 @@ def test_theme_config_banners_edit_view(webtest_admin_testapp):
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_edit',
                                                             theme_name='tp_yass2020'))
     form = response.form
-    # 一開始先全部 5 個橫幅都勾選，以便下面的測試
+
+    # 一開始 5 個橫幅都有勾選
+    # 測試全部取消勾選會失敗，至少要有一個有勾選
     for i in range(5):
         form[f'banners-{i}-is_visible'] = False
-    form.submit()
+    response = form.submit()
+    assert response.status_int == 200
+    assert '至少要選一個橫幅' in response.body.decode('utf8')
+    assert response.body.decode('utf8').count('checked') == 0  # 表單驗證失敗，此時全部都沒勾選
 
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_edit',
                                                             theme_name='tp_yass2020'))
-    assert response.status_int == 200
-    assert '橫幅設定' in response.body.decode('utf8')
-    assert response.body.decode('utf8').count('checked') == 5  # tp_yass 預設的設定檔啟用的橫幅有 5 個
+    assert response.body.decode('utf8').count('checked') == 5  # 沒有變動，仍然 5 個都勾選
 
     form = response.form
-
     # 取消 4 個勾選
     for i in range(4):
         form[f'banners-{i}-is_visible'] = False
@@ -115,6 +117,25 @@ def test_theme_config_upload_and_activate_and_delete_view(webtest_admin_testapp,
     response = form.submit()
     assert response.status_int == 302
 
+    # 如果沒有勾選覆寫，會顯示錯誤訊息
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_upload'))
+    form = response.form
+    form['theme'] = Upload(test_theme_file_name, open(datadir / test_theme_file_name, 'rb').read())
+    response = form.submit()
+    assert response.status_int == 302
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
+    assert '目錄已存在' in response.body.decode('utf8')
+
+    # 有勾選覆寫
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_upload'))
+    form = response.form
+    form['theme'] = Upload(test_theme_file_name, open(datadir / test_theme_file_name, 'rb').read())
+    form['is_overwrite'] = True
+    response = form.submit()
+    assert response.status_int == 302
+    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
+    assert f'匯入樣板 {test_theme_name} 成功' in response.body.decode('utf8')
+
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))
     assert response.body.decode('utf8').count('一般設定') == theme_count + 1
 
@@ -123,10 +144,3 @@ def test_theme_config_upload_and_activate_and_delete_view(webtest_admin_testapp,
                                                             theme_name=test_theme_name))
     assert response.status_int == 302
     assert DAL.get_current_theme_name() == test_theme_name
-
-    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_activate',
-                                                            theme_name='tp_yass2020'))
-    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_delete',
-                                                            theme_name=test_theme_name))
-    assert response.status_int == 302
-    response = webtest_admin_testapp.get(request.route_path('backend_theme_config_list'))

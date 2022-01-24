@@ -96,6 +96,9 @@ class ThemeConfigUploadForm(Form):
     theme = FileField('上傳樣板', [FileRequired('請上傳樣板'),
                                   FileAllowed(['zip']),
                                   FileSize(max=50, base='mb', message='檔案不能大於 50 MB')])
+
+    is_overwrite = BooleanField('是否覆寫現有樣板')
+
     submit = SubmitField('上傳')
 
 

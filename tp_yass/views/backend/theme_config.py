@@ -75,13 +75,25 @@ class ThemeConfigUploadView:
                 dest_file_name = f'{tmpdirname}/{form.theme.data.filename}'
                 with open(dest_file_name, 'wb') as dest_file:
                     save_file(form.theme.data, dest_file)
-                with zipfile.ZipFile(dest_file_name, 'r') as zip_fp:
-                    zip_fp.extractall(tmpdirname)
+                try:
+                    with zipfile.ZipFile(dest_file_name, 'r') as zip_fp:
+                        zip_fp.extractall(tmpdirname)
+                except zipfile.BadZipFile:
+                    self.request.session.flash('解壓縮失敗，請確認檔案格式為合格的 zip 壓縮格式', 'fail')
+                    return {'form': form}
                 pathlib.PosixPath(dest_file_name).unlink()
                 for each_theme in pathlib.PosixPath(tmpdirname).glob('*'):
-                    shutil.move(each_theme.as_posix(), (get_project_abspath() / 'themes').as_posix())
-                    theme_importer = ThemeController(each_theme.name)
-                    theme_importer.import_theme()
+                    dest_theme_dir = get_project_abspath() / 'themes' / each_theme.name
+                    if form.is_overwrite.data and dest_theme_dir.exists():
+                        shutil.rmtree(dest_theme_dir.as_posix())
+                        ThemeController(each_theme.name).delete_theme()
+                    else:
+                        if dest_theme_dir.exists():
+                            self.request.session.flash(f'樣板 {each_theme.name} 目錄已存在，請先刪除或上傳時勾選覆寫樣板', 'fail')
+                            continue
+                    shutil.move(each_theme.as_posix(), dest_theme_dir.as_posix())
+                    ThemeController(each_theme.name).import_theme()
+                    self.request.session.flash(f'匯入樣板 {each_theme.name} 成功', 'success')
             self.request.cache.delete_available_theme_name_list()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:

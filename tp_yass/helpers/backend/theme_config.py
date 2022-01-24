@@ -39,7 +39,8 @@ class ThemeController:
         theme_dir = self.base_dir / 'themes' / self.theme_name
         if theme_dir.exists():
             shutil.rmtree(theme_dir)
-        DAL.delete_theme_config(self.theme_name)
+        with transaction.manager:
+            DAL.delete_theme_config(self.theme_name)
 
 
     def import_theme_banners(self, src=None, dest=None):
