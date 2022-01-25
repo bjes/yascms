@@ -54,6 +54,8 @@ def includeme(config):
                      factory=admin_factory, pregenerator=preview_override_param)
     config.add_route('backend_theme_config_homepage_items_order_edit', '/backend/theme_config/{theme_name}/homepage_items_order/edit',
                      factory=admin_factory, pregenerator=preview_override_param)
+    config.add_route('backend_theme_config_download', '/backend/theme_config/{theme_name}/download',
+                     factory=admin_factory, pregenerator=preview_override_param)
 
     config.add_route('backend_navbar_create', '/backend/navbar/create', factory=admin_factory,
                      pregenerator=preview_override_param)

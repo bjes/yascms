@@ -1,3 +1,4 @@
+import os
 import json
 import pathlib
 import zipfile
@@ -6,6 +7,7 @@ import shutil
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 
 from pyramid.view import view_config, view_defaults
+from pyramid.response import Response
 from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
@@ -309,3 +311,17 @@ class ThemeConfigHomepageItemsOrderEditView:
                     'HomepageItemType': HomepageItemType,
                     'HomepageItemParamsSubType': HomepageItemParamsSubType,
                     'form': form}
+
+
+@view_config(route_name='backend_theme_config_download')
+def backend_theme_config_download_view(request):
+    """下載樣板"""
+    theme_name = request.matchdict['theme_name']
+    src_theme_dir = get_project_abspath() / 'themes'
+    temp_zip_file = NamedTemporaryFile()
+    shutil.make_archive(temp_zip_file.name, 'zip', root_dir=src_theme_dir.as_posix(), base_dir=theme_name)
+    response = Response(body=open(f'{temp_zip_file.name}.zip', 'rb').read())
+    response.headers['Content-Disposition'] = f'attachment;filename={theme_name}.zip'
+    temp_zip_file.close()
+    os.unlink(f'{temp_zip_file.name}.zip')
+    return response

@@ -44,6 +44,7 @@
                       <a class="btn btn-warning mx-1 disabled" href="#">預覽樣板</a>
                       <a class="btn btn-danger mx-1 disabled" href="#">刪除</a>
                     {% endif %}
+                    <a href="{{ request.route_url('backend_theme_config_download', theme_name=each_theme_config.name) }}" class="btn btn-primary mx1">下載</a>
                   </div>
                 </td>
               </tr>
