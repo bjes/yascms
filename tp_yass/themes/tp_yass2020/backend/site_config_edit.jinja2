@@ -2,18 +2,41 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>網站設定</h1></div>
     <div class="col-12">
-      <form action="" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        {% for each_config in config_list %}
-        <div class="form-group">
-          <label for="{{ each_config.name }}">{{ each_config.description }}</label>
-          <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">系統設定</li>
+          <li class="breadcrumb-item active" aria-current="page">網站設定</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">網站設定</div>
+        <div class="card-body">
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">儲存</button> <button type="reset" class="btn btn-danger">重設</button>
+            </div>
+            {% for each_config in config_list %}
+            <div class="form-group">
+              <label for="{{ each_config.name }}">{{ each_config.description }}</label>
+              <input type="text" class="form-control" name="{{ each_config.name }}" id="{{ each_config.name }}" aria-describedby="{{ each_config.name }}Help" value="{{ each_config.value }}">
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">儲存</button> <button type="reset" class="btn btn-danger">重設</button>
+          </form>
         </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary mb-3">更新</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
-      </form>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">系統設定</li>
+          <li class="breadcrumb-item active" aria-current="page">網站設定</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>

@@ -6,55 +6,75 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>使用者列表</h1></div>
     <div class="col-12">
-      <div class="card border-primary mb-3">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped text-center mb-0">
-            <thead>
-              <tr>
-                <th scope="col" class="d-none d-md-table-cell">編號</th>
-                <th scope="col" class="d-none d-sm-table-cell">姓名</th>
-                <th scope="col" class="d-none d-md-table-cell">帳號</th>
-                <th scope="col" class="d-none d-md-table-cell">Email</th>
-                <th scope="col" class="d-none d-sm-table-cell">群組</th>
-                <th scope="col" class="d-none d-sm-table-cell">動作</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for user in user_list %}
-              <tr>
-                <th scope="row">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
-                <td><a href="#">{{ user.last_name }}{{ user.first_name }}</a></td>
-                <td>{{ user.account }}</td>
-                <td>
-                {% for each_email in user.email %}
-                  {{ each_email.address }}
-                  {% if each_email.type == EmailType.USER_PRIMARY.value %}
-                    <span class="badge badge-primary">主要</span>
-                  {% endif %}
-                  <br>
-                {% endfor %}
-                </td>
-                <td>
-                {% for group in user.groups %}
-                  <a href="#">{{ group.name }}</a>{% if not loop.last %}, {% endif %}
-                {% endfor %}
-                </td>
-                <td>
-                  <a href="{{ request.route_url('backend_user_edit', user_id=user.id) }}" class="btn btn-primary">編輯</a>
-                  {% if user.id != 1 %}
-                    {# 管理者帳號不該顯示刪除按鈕 #}
-                    <a href="{{ request.route_url('backend_user_delete', user_id=user.id) }}" class="btn btn-danger">刪除</a>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">使用者管理</li>
+          <li class="breadcrumb-item active" aria-current="page">使用者列表</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">使用者列表</div>
+        <div class="card-body">
+          <a href="{{ request.route_url('backend_user_create') }}" class="btn btn-primary mb-3">建立使用者</a>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped text-center table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" class="d-none d-md-table-cell">編號</th>
+                  <th scope="col" class="d-none d-sm-table-cell">姓名</th>
+                  <th scope="col" class="d-none d-md-table-cell">帳號</th>
+                  <th scope="col" class="d-none d-md-table-cell">Email</th>
+                  <th scope="col" class="d-none d-sm-table-cell">群組</th>
+                  <th scope="col" class="d-none d-sm-table-cell">動作</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for user in user_list %}
+                <tr>
+                  <th scope="row" class="align-middle">{{ loop.index + (page_id - 1) * quantity_per_page }}</th>
+                  <td class="align-middle"><a href="#">{{ user.last_name }}{{ user.first_name }}</a></td>
+                  <td class="align-middle">{{ user.account }}</td>
+                  <td class="align-middle">
+                  {% for each_email in user.email %}
+                    {{ each_email.address }}
+                    {% if each_email.type == EmailType.USER_PRIMARY.value %}
+                      <span class="badge badge-primary">主要</span>
+                    {% endif %}
+                    <br>
+                  {% endfor %}
+                  </td>
+                  <td class="align-middle">
+                  {% for group in user.groups %}
+                    <a href="#">{{ group.name }}</a>{% if not loop.last %}, {% endif %}
+                  {% endfor %}
+                  </td>
+                  <td class="align-middle">
+                    <a href="{{ request.route_url('backend_user_edit', user_id=user.id) }}" class="btn btn-primary">編輯</a>
+                    {% if user.id != 1 %}
+                      {# 管理者帳號不該顯示刪除按鈕 #}
+                      <a href="{{ request.route_url('backend_user_delete', user_id=user.id) }}" class="btn btn-danger">刪除</a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <a href="{{ request.route_url('backend_user_create') }}" class="btn btn-primary">建立使用者</a>
         </div>
       </div>
-    {{ paginate("使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
+      {{ paginate("使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">使用者管理</li>
+          <li class="breadcrumb-item active" aria-current="page">使用者列表</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>

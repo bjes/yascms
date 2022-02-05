@@ -6,92 +6,93 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>導覽列 - 編輯{{ form.name.data }}</h1></div>
     <div class="col-12">
-      {% if form.errors %}
-        <div class="alert alert-danger" role="alert">
-            <ul>
-            {% for key in form.errors %}
-              {% for msg in form.errors[key] %}
-                <li>{{ msg }}</li>
-              {% endfor %}
-            {% endfor %}
-            </ul>
-        </div>
-      {% endif %}
-      <form action="" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        <div class="form-group">
-          {{ form.type() }}
-        </div>
-        <div class="form-group" id="name_group">
-          {{ form.name.label() }}
-          {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
-        </div>
-        <div class="form-group" id="aria_name_group">
-          {{ form.aria_name.label() }}
-          {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
-        </div>
-        {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
-          {{ form.leaf_type() }}
-          <div class="card mb-3" id="link-card">
-            <div class="card-header">選擇連結目的</div>
-            <div class="card-body">
-              <p class="card-text">
-                <div>類型：<span id="link_type">未指定</span></div>
-                <div>目的：<span id="link_target"></span></div>
-              </p>
-              <a href="#" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</a> <a href="#" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址 (含 http/https)">手動輸入網址</a>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">導覽列管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_navbar_list') }}">導覽列列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯導覽列 {{ form.name.data }}</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">編輯導覽列 {{ form.name.data }}</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+                </ul>
             </div>
-          </div>
-        {% endif %}
-        <div class="form-group" id="navbar_group">
-          {{ form.ancestor_id.label() }}
-          {{ generate_navbar_trees('ancestor_id', navbar_trees, False, True) }}
-        </div>
-        <div class="form-group" id="icon_group">
-          {{ form.icon.label() }}
-          {{ form.icon(class_='form-control') }}
-        </div>
-        <div class="form-group form-check" id="is_href_blank_group">
-          {{ form.is_href_blank(class_='form-check-input') }}
-          {{ form.is_href_blank.label(class_="form-check-label") }}
-        </div>
-        <div class="form-group">
-          {{ form.order.label() }}
-          {{ form.order(class_='form-control') }}
-        </div>
-        <div class="form-group form-check">
-          {{ form.is_visible(class_='form-check-input') }}
-          {{ form.is_visible.label(class_="form-check-label") }}
-        </div>
-        <button type="submit" class="btn btn-primary mb-3">更改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
-        {% if form.type.data in (NavbarType.TREE_NODE, NavbarType.LEAF_NODE, NavbarType.DROPDOWN_DIVIDER) %}<a class="btn btn-danger mb-3" href="{{ request.route_url('backend_navbar_delete', navbar_id=request.matchdict['navbar_id']) }}">刪除</a>{% endif %}
-        {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
-          <div class="modal" id="pageModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modal-title"></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="spinner-border text-primary" role="status" id="modal-loading-icon">
-                    <span class="sr-only">讀取中...</span>
-                  </div>
-                  <div class="d-none form-check" id="modal-content"></div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                  <button type="button" class="btn btn-primary" id="btn_modal_confirm">確認</button>
+          {% endif %}
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <button type="submit" class="btn btn-primary">儲存</button>
+            <div class="form-group">
+              {{ form.type() }}
+            </div>
+            <div class="form-group" id="name_group">
+              {{ form.name.label() }}
+              {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
+            </div>
+            <div class="form-group" id="aria_name_group">
+              {{ form.aria_name.label() }}
+              {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
+            </div>
+            {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
+              {{ form.leaf_type() }}
+              <div class="card mb-3" id="link-card">
+                <div class="card-header">選擇連結目的</div>
+                <div class="card-body">
+                  <p class="card-text">
+                    <div>類型：<span id="link_type">未指定</span></div>
+                    <div>目的：<span id="link_target"></span></div>
+                  </p>
+                  <button type="button" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</button> <button type="button" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址 (含 http/https)">手動輸入網址</button>
                 </div>
               </div>
+            {% endif %}
+            <div class="form-group" id="navbar_group">
+              {{ form.ancestor_id.label() }}
+              {{ generate_navbar_trees('ancestor_id', navbar_trees, False, True) }}
             </div>
-          </div>
-        {% endif %}
-      </form>
+            <div class="form-group" id="icon_group">
+              {{ form.icon.label() }}
+              {{ form.icon(class_='form-control') }}
+            </div>
+            <div class="form-group form-check" id="is_href_blank_group">
+              {{ form.is_href_blank(class_='form-check-input') }}
+              {{ form.is_href_blank.label(class_="form-check-label") }}
+            </div>
+            <div class="form-group">
+              {{ form.order.label() }}
+              {{ form.order(class_='form-control') }}
+            </div>
+            <div class="form-group form-check">
+              {{ form.is_visible(class_='form-check-input') }}
+              {{ form.is_visible.label(class_="form-check-label") }}
+            </div>
+            <button type="submit" class="btn btn-primary">儲存</button>
+            {% if not form.type.data in (NavbarType.BUILTIN_NEWS, NavbarType.BUILTIN_TELEXT, NavbarType.BUILTIN_LINKS) %}
+              {% include 'page_modal.jinja2' %}
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">導覽列管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_navbar_list') }}">導覽列列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯導覽列 {{ form.name.data }}</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>

@@ -30,8 +30,8 @@
             <i class="bi bi-person"></i> 使用者管理
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-            <li><a class="dropdown-item" href="{{ request.route_path('backend_user_create') }}">建立帳號</a></li>
-            <li><a class="dropdown-item" href="{{ request.route_path('backend_user_list') }}">帳號列表</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_path('backend_user_list') }}">使用者列表</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_path('backend_user_create') }}">建立使用者</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -39,8 +39,8 @@
             <i class="bi bi-people-fill"></i> 群組管理
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarGroupDropdown">
-            <li><a class="dropdown-item" href="{{ request.route_path('backend_group_create') }}">建立群組</a></li>
             <li><a class="dropdown-item" href="{{ request.route_path('backend_group_list') }}">群組列表</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_path('backend_group_create') }}">建立群組</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

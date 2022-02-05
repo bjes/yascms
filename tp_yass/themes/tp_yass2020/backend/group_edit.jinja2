@@ -6,61 +6,84 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>使用者群組 - 編輯</h1></div>
     <div class="col-12">
-      {% if form.errors %}
-        <div class="alert alert-danger" role="alert">
-            <ul>
-            {% for key in form.errors %}
-              {% for msg in form.errors[key] %}
-                <li>{{ msg }}</li>
-              {% endfor %}
-            {% endfor %}
-            </ul>
-        </div>
-      {% endif %}
-      <form action="" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        <div class="form-group">
-          {{ form.name.label() }}
-          {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
-        </div>
-        <div class="form-group">
-          {{ form.type.label() }}
-          {{ form.type(class_='form-control') }}
-        </div>
-        <div id="email-form-group" class="mb-3">
-          {% for each_email in form.email %}
-            <div class="form-group">
-              {{ each_email.form.address.label() }}
-              <div class="d-flex">
-                <div>{{ each_email.form.address(class_='form-control mb-2', placeholder='group@example.org') }}</div>
-                <div class="form-check form-check-inline mx-2">
-                  {% if each_email.address.data == form.primary_email.data %}
-                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
-                  {% else %}
-                    <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
-                  {% endif %}
-                  <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
-                </div>
-                <div class="d-flex justify-content-end align-items-center mx-2">
-                  <a href="#" class="btn btn-danger">移除</a>
-                </div>
-              </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">群組管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_group_list') }}">群組列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯群組 {{ form.name.data }}</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">編輯群組 {{ form.name.data }}</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
             </div>
-          {% endfor %}
-          <a href="#" class="btn btn-primary">新增電子郵件</a>
+          {% endif %}
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <button type="submit" class="btn btn-primary mb-3">儲存</button>
+            <div class="form-group">
+              {{ form.name.label() }}
+              {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
+            </div>
+            <div class="form-group">
+              {{ form.type.label() }}
+              {{ form.type(class_='form-control') }}
+            </div>
+            <div id="email-form-group" class="mb-3">
+              {% for each_email in form.email %}
+                <div class="form-group">
+                  {{ each_email.form.address.label() }}
+                  <div class="d-flex">
+                    <div>{{ each_email.form.address(class_='form-control mb-2', placeholder='group@example.org') }}</div>
+                    <div class="form-check form-check-inline mx-2">
+                      {% if each_email.address.data == form.primary_email.data %}
+                        <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}" checked>
+                      {% else %}
+                        <input type="radio" class="form-check-input" name="primary_email" id="primary_email_{{ loop.index }}" value="{{ each_email.address.data }}">
+                      {% endif %}
+                      <label for="primary_email_{{ loop.index }}" class="form-check-label">設為主要</label>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center mx-2">
+                      <button type="button" class="btn btn-danger">移除</button>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <button type="button" class="btn btn-primary">新增電子郵件</button>
+            </div>
+            <div class="form-group">
+              {{ form.order.label() }}
+              {{ form.order(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.ancestor_id.label() }}
+              {{ generate_group_trees('ancestor_id', group_trees, use_link=False) }}
+            </div>
+            <button type="submit" class="btn btn-primary">儲存</button>
+          </form>
         </div>
-        <div class="form-group">
-          {{ form.order.label() }}
-          {{ form.order(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.ancestor_id.label() }}
-          {{ generate_group_trees('ancestor_id', group_trees, use_link=False) }}
-        </div>
-        <button type="submit" class="btn btn-primary mb-3">修改</button>
-      </form>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">群組管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_group_list') }}">群組列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯群組 {{ form.name.data }}</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>
@@ -89,11 +112,10 @@
       } else {
         $(this).parent().parent().parent().remove();
       }
-      e.preventDefault();
     };
-    $('#email-form-group a.btn.btn-danger').click(remove_email_event);
+    $('#email-form-group button.btn.btn-danger').click(remove_email_event);
     // 可以新增 Email 欄位
-    $('#email-form-group>a.btn-primary').click(function(e) {
+    $('#email-form-group>button.btn-primary').click(function(e) {
       let email_list_length = $('#email-form-group>div').length;
       let new_node = `
         <div class="form-group">
@@ -105,7 +127,7 @@
               <label for="primary_email_${email_list_length + 1}" class="form-check-label">設為主要</label>
             </div>
             <div class="d-flex justify-content-end align-items-center mx-2">
-              <a href="#" class="btn btn-danger">移除</a>
+              <button type="button" class="btn btn-danger">移除</button>
             </div>
           </div>
         </div>
@@ -113,11 +135,10 @@
       if ($('#email-form-group>div').length > 0) {
         $('#email-form-group>div').last().after(new_node);
       } else {
-        $('#email-form-group a.btn-primary').before(new_node);
+        $('#email-form-group button.btn-primary').before(new_node);
         $('#email-form-group input[type=radio]').prop('checked', true);
       }
-      $('#email-form-group a.btn.btn-danger').last().click(remove_email_event);
-      e.preventDefault();
+      $('#email-form-group button.btn.btn-danger').last().click(remove_email_event);
     });
     // 表單送出前，讓每個對應的 email radio 其 value 值更新為使用者輸入的 email 位址
     $('#group-create-form').submit(function() {

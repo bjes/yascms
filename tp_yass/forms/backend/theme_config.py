@@ -70,8 +70,6 @@ class ThemeConfigBannersEditForm(Form):
 
     banners = FieldList(FormField(ThemeConfigBannerVisibleForm))
 
-    submit = SubmitField('儲存顯示設定')
-
     def validate_banners(form, field):
         all_disabled = True
         for each_element in field.entries:
@@ -87,7 +85,6 @@ class ThemeConfigBannersUploadForm(Form):
     banners = MultipleFilesField('上傳橫幅', [FileRequired('請上傳橫幅檔案'),
                                              FileAllowed(['png', 'jpg', 'jpeg']),
                                              FileSize(max=20, base='mb', message='檔案不能大於 20 MB')])
-    submit = SubmitField('上傳')
 
 
 class ThemeConfigUploadForm(Form):
@@ -99,15 +96,11 @@ class ThemeConfigUploadForm(Form):
 
     is_overwrite = BooleanField('是否覆寫現有樣板')
 
-    submit = SubmitField('上傳')
-
 
 class ThemeConfigHomepageItemsOrderEditForm(Form):
     """設定首頁元件順序的表單"""
 
     config = TextAreaField('設定值', [InputRequired('此欄位必填')])
-
-    submit = SubmitField('儲存')
 
     def validate_config(form, field):
         """

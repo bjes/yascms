@@ -5,28 +5,39 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>導覽列列表</h1></div>
     <div class="col-12">
-      <ul class="list-group" id="root-navbar">
-      {% for navbar in navbar_trees.descendants recursive %}
-        {% if loop.first %}
-          <ul class="list-group">
-        {% endif %}
-        {# 這是分隔線，只有分隔線的樣式要特別處理 #}
-        {% if navbar.type == 3 %}
-          {% if navbar.id == -1 %}
-            {# 最新消息的分隔線不需超連結 #}
-            <li class="my-1">{{ navbar.name }}
-          {% else %}
-            <li class="my-1"><a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}">{{ navbar.name }}</a>
-          {% endif %}
-        {% else %}
-          {% if navbar.type == 5 %}
-            <li class="list-group-item">{{ navbar.name }}
-          {% elif navbar.type == 6 %}
-            <li class="list-group-item">顯示全部
-          {% else %}
-            <li class="list-group-item">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">導覽列管理</li>
+          <li class="breadcrumb-item active" aria-current="page">導覽列列表</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">導覽列列表</div>
+        <div class="card-body">
+          <a href="{{ request.route_url('backend_navbar_create') }}" class="btn btn-primary mb-3">建立導覽列</a>
+          <ul class="list-group" id="root-navbar">
+            {% for navbar in navbar_trees.descendants recursive %}
+              {% if loop.first %}
+                <ul class="list-group">
+              {% endif %}
+            {# 這是分隔線，只有分隔線的樣式要特別處理 #}
+            {% if navbar.type == 3 %}
+              {% if navbar.id == -1 %}
+                {# 最新消息的分隔線不需超連結 #}
+                <li class="my-1">{{ navbar.name }}
+                  {% else %}
+                <li class="my-1"><a href="{{ request.route_url('backend_navbar_edit', navbar_id=navbar.id) }}">{{ navbar.name }}</a>
+              {% endif %}
+            {% else %}
+            {% if navbar.type == 5 %}
+              <li class="list-group-item">{{ navbar.name }}
+                {% elif navbar.type == 6 %}
+              <li class="list-group-item">顯示全部
+                {% else %}
+              <li class="list-group-item">
               <div class="d-flex justify-content-between align-content-center">
                 <a href="#"{% if navbar.is_href_blank %} target="_blank"{% endif %}>{% if navbar.icon %}<i class="bi {{ navbar.icon }}"></i> {% endif %}{{ navbar.name }}{% if navbar.is_href_blank %} <i class="bi bi-box-arrow-up-right"></i>{% endif %}</a>
                 {% if navbar.module_name != 'root' %}
@@ -36,17 +47,28 @@
                   </span>
                 {% endif %}
               </div>
-          {% endif %}
-        {% endif %}
+            {% endif %}
+            {% endif %}
             {% if navbar.descendants %}
               {{ loop(navbar.descendants) }}
             {% endif %}
-          </li>
-        {% if loop.last %}
-        </ul>
-        {% endif %}
-      {% endfor %}
-      </ul>
+            </li>
+            {% if loop.last %}
+              </ul>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          <a href="{{ request.route_url('backend_navbar_create') }}" class="btn btn-primary mt-3">建立導覽列</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">導覽列管理</li>
+          <li class="breadcrumb-item active" aria-current="page">導覽列列表</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>
