@@ -12,7 +12,7 @@
     <div class="col-12">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active">樣板管理</li>
+          <li class="breadcrumb-item">樣板管理</li>
           <li class="breadcrumb-item"><a href="{{ request.route_url('backend_theme_config_list') }}">樣板列表</a></li>
           <li class="breadcrumb-item active" aria-current="page">{{ theme_config['name'] }} 樣板設定</li>
         </ol>
@@ -70,32 +70,32 @@
             <div class="form-group">
               <div>{{ form.custom.label.text }}</div>
               <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <th scope="col">序號</th>
-                  <th scope="col">變數名稱</th>
-                  <th scope="col">類型</th>
-                  <th scope="col">變數內容</th>
-                  <th scope="col">變數說明</th>
-                </thead>
-                <tbody id="custom_tbody">
-                {% if form.custom.entries %}
-                  {% for each_setting in form.custom %}
+                <table class="table">
+                  <thead>
+                    <th scope="col">序號</th>
+                    <th scope="col">變數名稱</th>
+                    <th scope="col">類型</th>
+                    <th scope="col">變數內容</th>
+                    <th scope="col">變數說明</th>
+                  </thead>
+                  <tbody id="custom_tbody">
+                  {% if form.custom.entries %}
+                    {% for each_setting in form.custom %}
+                      <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ each_setting.form.name(class_="form-control") }}</td>
+                        <td>{{ each_setting.form.type(class_="form-control") }}</td>
+                        <td>{{ each_setting.form.value(class_="form-control") }}</td>
+                        <td>{{ each_setting.form.description(class_="form-control") }}</td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
                     <tr>
-                      <th scope="row">{{ loop.index }}</th>
-                      <td>{{ each_setting.form.name(class_="form-control") }}</td>
-                      <td>{{ each_setting.form.type(class_="form-control") }}</td>
-                      <td>{{ each_setting.form.value(class_="form-control") }}</td>
-                      <td>{{ each_setting.form.description(class_="form-control") }}</td>
+                      <td colspan="5" class="text-center">此樣板沒有開放自訂設定</td>
                     </tr>
-                  {% endfor %}
-                {% else %}
-                  <tr>
-                    <td colspan="5" class="text-center">此樣板沒有開放自訂設定</td>
-                  </tr>
-                {% endif %}
-                </tbody>
-              </table>
+                  {% endif %}
+                  </tbody>
+                </table>
               </div>
             </div>
             <button type="submit" class="btn btn-primary">儲存</button>
@@ -106,7 +106,7 @@
     <div class="col-12">
       <nav aria-label="breadcrumb" class="mt-3">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active">樣板管理</li>
+          <li class="breadcrumb-item">樣板管理</li>
           <li class="breadcrumb-item"><a href="{{ request.route_url('backend_theme_config_list') }}">樣板列表</a></li>
           <li class="breadcrumb-item active" aria-current="page">{{ theme_config['name'] }} 樣板設定</li>
         </ol>

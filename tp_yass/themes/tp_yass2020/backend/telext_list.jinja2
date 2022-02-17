@@ -2,35 +2,55 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>分機列表</h1></div>
     <div class="col-12">
-      <div class="card border-primary mb-3">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped text-center mb-0">
-            <thead>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">分機表</li>
+          <li class="breadcrumb-item active" aria-current="page">分機列表</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">分機列表</div>
+        <div class="card-body">
+          <a href="{{ request.route_url('backend_telext_create') }}" class="btn btn-primary mb-3">建立分機</a>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped text-center mb-0">
+              <thead>
               <tr>
                 <th scope="col" class="d-none d-md-table-cell">編號</th>
                 <th scope="col" class="d-none d-sm-table-cell">標題</th>
                 <th scope="col" class="d-none d-md-table-cell">分機</th>
                 <th scope="col" class="d-none d-sm-table-cell">動作</th>
               </tr>
-            </thead>
-            <tbody>
-            {% for each_telext in telext_list %}
-              <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td><a href="#">{% if each_telext.is_pinned %}<i class="bi bi-pin"></i> {% endif %}{{ each_telext.title }}</a></td>
-                <td><a href="#">{{ each_telext.ext }}</a></td>
-                <td>
-                  <a class="btn btn-primary" href="{{ request.route_url('backend_telext_edit', telext_id=each_telext.id) }}">編輯</a>
-                  <a class="btn btn-danger" href="{{ request.route_url('backend_telext_delete', telext_id=each_telext.id) }}">刪除</a>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              {% for each_telext in telext_list %}
+                <tr>
+                  <th scope="row">{{ loop.index }}</th>
+                  <td><a href="#">{% if each_telext.is_pinned %}<i class="bi bi-pin"></i> {% endif %}{{ each_telext.title }}</a></td>
+                  <td><a href="#">{{ each_telext.ext }}</a></td>
+                  <td>
+                    <a class="btn btn-primary" href="{{ request.route_url('backend_telext_edit', telext_id=each_telext.id) }}">編輯</a>
+                    <a class="btn btn-danger" href="{{ request.route_url('backend_telext_delete', telext_id=each_telext.id) }}">刪除</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <a href="{{ request.route_url('backend_telext_create') }}" class="btn btn-primary mt-3">建立分機</a>
         </div>
       </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">分機表</li>
+          <li class="breadcrumb-item active" aria-current="page">分機列表</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>

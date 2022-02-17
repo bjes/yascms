@@ -3,34 +3,56 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>好站連結分類列表</h1></div>
     <div class="col-12">
-      <div class="card border-primary mb-3">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped text-center mb-0">
-            <thead>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">好站連結</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立好站連結分類</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">建立好站連結分類</div>
+        <div class="card-body">
+          <a href="{{ request.route_url('backend_link_create') }}" class="btn btn-primary mb-3">建立好站連結分類</a>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped text-center mb-0">
+              <thead>
               <tr>
                 <th scope="col" class="d-none d-md-table-cell">編號</th>
                 <th scope="col" class="d-none d-md-table-cell">名稱</th>
                 <th scope="col" class="d-none d-sm-table-cell">動作</th>
               </tr>
-            </thead>
-            <tbody>
-            {% for each_link_category in link_category_list %}
-              <tr>
-                <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
-                <td>{{ each_link_category.name }}</td>
-                <td>
-                  <a class="btn btn-primary" href="{{ request.route_url('backend_link_category_edit', link_category_id=each_link_category.id) }}">編輯</a>
-                  <a class="btn btn-danger" href="{{ request.route_url('backend_link_category_delete', link_category_id=each_link_category.id) }}">刪除</a>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              {% for each_link_category in link_category_list %}
+                <tr>
+                  <th scope="row">{{ loop.index + (page_number - 1) * quantity_per_page }}</th>
+                  <td>{{ each_link_category.name }}</td>
+                  <td>
+                    <a class="btn btn-primary" href="{{ request.route_url('backend_link_category_edit', link_category_id=each_link_category.id) }}">編輯</a>
+                    <a class="btn btn-danger" href="{{ request.route_url('backend_link_category_delete', link_category_id=each_link_category.id) }}">刪除</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {{ paginate('好站連結分類列表分頁', 'backend_link_category_list', page_quantity_of_total_link_categories, page_number, quantity_per_page) }}
+          <a href="{{ request.route_url('backend_link_create') }}" class="btn btn-primary mt-3">建立好站連結分類</a>
         </div>
       </div>
-    {{ paginate('好站連結分類列表分頁', 'backend_link_category_list', page_quantity_of_total_link_categories, page_number, quantity_per_page) }}
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">好站連結</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立好站連結分類</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>

@@ -58,11 +58,11 @@
           <i class="bi bi-megaphone"></i> 最新消息
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_create') }}">發佈文章</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_list') }}">文章列表</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_list') }}">最新消息列表</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_create') }}">建立最新消息</a></li>
           {% if request.session['is_admin'] %}
-            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_create') }}">建立分類</a></li>
-            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_list') }}">分類管理</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_list') }}">最新消息分類列表</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_create') }}">建立最新消息分類</a></li>
           {% endif %}
         </ul>
       </li>
@@ -71,10 +71,10 @@
           <i class="bi bi-card-text"></i> 單一頁面
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarPageDropdown">
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_page_list') }}">單一頁面列表</a></li>
           {% if request.session['is_admin'] %}
-            <li><a class="dropdown-item" href="{{ request.route_url('backend_page_create') }}">建立頁面</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_page_create') }}">建立單一頁面</a></li>
           {% endif %}
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_page_list') }}">頁面列表</a></li>
         </ul>
       </li>
       {% if request.session['is_admin'] %}
@@ -83,8 +83,8 @@
           <i class="bi bi-telephone"></i> 分機表
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarTelExtDropdown">
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_telext_list') }}">分機列表</a></li>
           <li><a class="dropdown-item" href="{{ request.route_url('backend_telext_create') }}">建立分機</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_telext_list') }}">分機管理</a></li>
         </ul>
       </li>
       {% endif %}
@@ -93,21 +93,10 @@
           <i class="bi bi-link-45deg"></i> 好站連結
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarLinkDropdown">
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_create') }}">建立連結</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_list') }}">連結管理</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_create') }}">建立分類</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_list') }}">分類管理</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarTagsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          <i class="bi bi-tags"></i> 標籤管理
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarTagsDropdown">
-          {% if request.session['is_admin'] %}
-            <li><a class="dropdown-item" href="#">建立標籤</a></li>
-          {% endif %}
-          <li><a class="dropdown-item" href="#">標籤列表</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_list') }}">好站連結列表</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_create') }}">建立好站連結</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_create') }}">建立好站連結分類</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown">

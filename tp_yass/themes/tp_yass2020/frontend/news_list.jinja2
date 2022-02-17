@@ -6,7 +6,7 @@
     <li class="breadcrumb-item"><a href="{{ request.route_url('homepage') }}">首頁</a></li>
     {% if news_category %}
       <li class="breadcrumb-item"><a href="{{ request.route_url('news_list') }}">最新消息</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ news_category.name }}</li>
+      <li class="breadcrumb-item">{{ news_category.name }}</li>
     {% else %}
       <li class="breadcrumb-item active" aria-current="page">最新消息</li>
     {% endif %}

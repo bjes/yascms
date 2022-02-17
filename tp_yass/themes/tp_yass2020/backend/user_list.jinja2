@@ -9,7 +9,7 @@
     <div class="col-12">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active">使用者管理</li>
+          <li class="breadcrumb-item">使用者管理</li>
           <li class="breadcrumb-item active" aria-current="page">使用者列表</li>
         </ol>
       </nav>
@@ -63,15 +63,15 @@
               </tbody>
             </table>
           </div>
+          {{ paginate("使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
           <a href="{{ request.route_url('backend_user_create') }}" class="btn btn-primary">建立使用者</a>
         </div>
       </div>
-      {{ paginate("使用者列表分頁", "backend_user_list", page_quantity_of_total_users, page_id, quantity_per_page) }}
     </div>
     <div class="col-12">
       <nav aria-label="breadcrumb" class="mt-3">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active">使用者管理</li>
+          <li class="breadcrumb-item">使用者管理</li>
           <li class="breadcrumb-item active" aria-current="page">使用者列表</li>
         </ol>
       </nav>

@@ -2,32 +2,56 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>好站連結分類 - 建立</h1></div>
     <div class="col-12">
-      {% if form.errors %}
-        <div class="alert alert-danger" role="alert">
-          <ul>
-            {% for key in form.errors %}
-              {% for msg in form.errors[key] %}
-                <li>{{ msg }}</li>
-              {% endfor %}
-            {% endfor %}
-          </ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">好站連結</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立好站連結分類</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">建立好站連結分類</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+            </div>
+            <div class="form-group">
+              {{ form.name.label() }}
+              {{ form.name(class_='form-control', placeholder='請輸入分類名稱') }}
+            </div>
+            <div class="form-group">
+              {{ form.order.label() }}
+              {{ form.order(class_='form-control') }}
+            </div>
+            <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+          </form>
         </div>
-      {% endif %}
-      <form action="" method="POST">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        <div class="form-group">
-          {{ form.name.label() }}
-          {{ form.name(class_='form-control', placeholder='請輸入分類名稱') }}
-        </div>
-        <div class="form-group">
-          {{ form.order.label() }}
-          {{ form.order(class_='form-control') }}
-        </div>
-
-        <button type="submit" class="btn btn-primary mb-3">建立</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
-      </form>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">好站連結</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立好站連結分類</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>
