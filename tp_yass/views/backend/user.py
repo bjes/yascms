@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.forms.backend.account import UserCreateForm, UserEditForm
+from tp_yass.forms.backend.account import AdminUserCreateForm, AdminUserEditForm
 from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import EmailType
 
@@ -44,13 +44,13 @@ class UserCreateView:
 
     @view_config(request_method='GET')
     def get_view(self):
-        form = UserCreateForm()
+        form = AdminUserCreateForm()
         return {'form': form,
                 'group_trees': generate_group_trees()}
 
     @view_config(request_method='POST')
     def post_view(self):
-        form = UserCreateForm()
+        form = AdminUserCreateForm()
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
         form.primary_email.choices = [each_email['address'] for each_email in form.email.data]
@@ -109,7 +109,7 @@ class UserEditView:
         user = DAL.get_user(user_id)
         if user:
             primary_email = DAL.get_user_primary_email(user_id)
-            form = UserEditForm(obj=user)
+            form = AdminUserEditForm(obj=user)
             form.primary_email.data = primary_email
             group_ids = [each_group.id for each_group in user.groups]
             return {'form': form,
@@ -119,7 +119,7 @@ class UserEditView:
 
     @view_config(request_method='POST')
     def post_view(self):
-        form = UserEditForm()
+        form = AdminUserEditForm()
         form.group_ids.choices = [(each_group.id, each_group.name) for each_group in DAL.get_group_list()]
         form.process(self.request.POST)
         form.primary_email.choices = [each_email['address'] for each_email in form.email.data]

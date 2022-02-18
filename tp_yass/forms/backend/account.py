@@ -17,18 +17,27 @@ from pyramid_wtforms.validators import (InputRequired,
 from tp_yass.enum import GroupType
 
 
+class UserEditForm(Form):
+    """使用者基礎欄位的表單，一般使用者可以自訂的欄位都放在這"""
+
+    first_name = StringField('名*', [InputRequired('名為必填'), Length(max=20)])
+
+    last_name = StringField('姓*', [InputRequired('姓為必填'), Length(max=20)])
+
+    # 密碼不一定要設定
+    password = PasswordField('密碼*', [Length(max=50)])
+
+    password_confirm = PasswordField('再次輸入密碼*', [Length(max=50), EqualTo('password', message='兩次密碼輸入需相符')])
+
+
 class EmailForm(Form):
     """處理關聯至帳號與群組的 Email"""
 
     address = StringField('電子郵件位址*', [InputRequired('電子郵件為必填'), Length(max=100), Email('需為合法的電子郵件位址')])
 
 
-class UserCreateForm(Form):
-    """建立使用者的表單"""
-
-    first_name = StringField('名*', [InputRequired('名為必填'), Length(max=20)])
-
-    last_name = StringField('姓*', [InputRequired('姓為必填'), Length(max=20)])
+class AdminUserCreateForm(UserEditForm):
+    """管理者建立使用者的表單"""
 
     email = FieldList(FormField(EmailForm), min_entries=1)
 
@@ -42,6 +51,7 @@ class UserCreateForm(Form):
 
     account = StringField('帳號*', [InputRequired('帳號為必填'), Length(max=50)])
 
+    # 建立使用者時強制要設定密碼
     password = PasswordField('密碼*', [InputRequired('密碼為必填'), Length(max=50)])
 
     password_confirm = PasswordField('再次輸入密碼*', [InputRequired('需再次輸入密碼'),
@@ -52,8 +62,8 @@ class UserCreateForm(Form):
     group_ids = MultipleCheckboxField('群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
 
-class UserEditForm(UserCreateForm):
-    """編輯使用者的表單，密碼欄位因為允許使用者不用更改，所以移除 validator"""
+class AdminUserEditForm(AdminUserCreateForm):
+    """管理者編輯使用者的表單，密碼欄位因為允許使用者不用更改，所以移除 validator"""
 
     password = PasswordField('密碼*', [Length(max=50)])
 
