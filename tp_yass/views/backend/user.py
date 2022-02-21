@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from tp_yass.dal import DAL
 from tp_yass.helpers import sanitize_input
-from tp_yass.forms.backend.account import AdminUserCreateForm, AdminUserEditForm
+from tp_yass.forms.backend.account import AdminUserCreateForm, AdminUserEditForm, UserSelfEditForm
 from tp_yass.helpers.backend.group import generate_group_trees
 from tp_yass.enum import EmailType
 
@@ -36,7 +36,7 @@ class UserListView:
                renderer='',
                permission='edit')
 class UserCreateView:
-    """新增使用者的 view"""
+    """管理者新增使用者的 view"""
 
     def __init__(self, request):
         self.request = request
@@ -97,7 +97,7 @@ class UserCreateView:
                renderer='',
                permission='edit')
 class UserEditView:
-    """編輯使用者的 view"""
+    """管理者編輯使用者的 view"""
 
     def __init__(self, request):
         self.request = request
@@ -184,3 +184,42 @@ class UserDeleteView:
         if user:
             DAL.delete_user(user)
         return HTTPFound(location=self.request.route_url('backend_user_list'))
+
+
+@view_defaults(route_name='backend_user_self_edit',
+               renderer='',
+               permission='view')
+class UserSelfView:
+    """與使用者自己相關的 view"""
+
+    def __init__(self, request):
+        self.request = request
+        self.request.override_renderer = f'themes/{self.request.effective_theme_name}/backend/user_self_edit.jinja2'
+
+    @view_config(request_method='GET')
+    def get_view(self):
+        user = DAL.get_user(self.request.session['user_id'])
+        form = UserSelfEditForm(None, None, first_name=user.first_name, last_name=user.last_name)
+        return {'form': form}
+
+    @view_config(request_method='POST')
+    def post_view(self):
+        form = UserSelfEditForm(self.request.POST)
+        if form.validate():
+            user = DAL.get_user(self.request.session['user_id'])
+
+            # 使用者只允許改自己的名字與密碼
+            user.first_name = form.first_name.data
+            user.last_name = form.last_name.data
+            if form.old_password.data:
+                if user.verify_password(form.old_password.data):
+                    user.password = form.password.data
+                else:
+                    self.request.session.flash('舊密碼不符合，請重新輸入', 'fail')
+                    return {'form': form}
+
+            DAL.save_user(user)
+            self.request.session.flash('更新資料成功', 'success')
+            return HTTPFound(location=self.request.route_url('backend_user_self_edit'))
+        else:
+            return {'form': form}

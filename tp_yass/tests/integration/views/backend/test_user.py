@@ -77,3 +77,41 @@ def test_user_edit_view_should_change_user_attributes(webtest_admin_testapp):
     response = webtest_admin_testapp.get(request.route_path('backend_user_list'))
     assert new_email in response.body.decode('utf8')
 
+
+def test_user_self_edit_view_should_change_user_attributes(webtest_testapp):
+    request = DummyRequest()
+    account = 'user1'
+    old_first_name = '小明'
+    new_first_name = '小王'
+    old_password = 'user1'
+    new_password = 'bar'
+
+    response = webtest_testapp.get(request.route_path('login'))
+    form = response.form
+    form['account'] = account
+    form['password'] = old_password
+    form.submit()
+
+    response = webtest_testapp.get(request.route_path('backend_user_self_edit'))
+    assert new_first_name not in response.body.decode('utf8')
+    form = response.form
+    form['first_name'] = new_first_name
+    form['old_password'] = old_password
+    form['password'] = new_password
+    form['password_confirm'] = new_password
+    form.submit()
+
+    response = webtest_testapp.get(request.route_path('backend_user_self_edit'))
+    assert new_first_name in response.body.decode('utf8')
+
+    response = webtest_testapp.get(request.route_path('logout'))
+    response = webtest_testapp.get(request.route_path('login'))
+    form = response.form
+    form['account'] = account
+    form['password'] = new_password
+    response = form.submit()
+
+    assert response.status_int == 302
+    response = webtest_testapp.get(request.route_path('backend_user_self_edit'))
+    assert new_first_name in response.body.decode('utf8')
+

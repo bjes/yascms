@@ -1,7 +1,7 @@
 from .resources import (auth_user_factory,
                         admin_factory,
                         page_edit_factory,
-                        staff_group_factory,
+                        staff_factory,
                         news_edit_factory,
                         link_edit_factory)
 
@@ -75,6 +75,9 @@ def includeme(config):
     config.add_route('backend_user_edit', '/backend/user/edit/{user_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
 
+    config.add_route('backend_user_self_edit', '/backend/user/self/edit', factory=auth_user_factory,
+                     pregenerator=preview_override_param)
+
     config.add_route('backend_group_create', '/backend/group/create', factory=admin_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_group_list', '/backend/group/list', factory=admin_factory,
@@ -93,7 +96,7 @@ def includeme(config):
     config.add_route('backend_page_edit', '/backend/page/edit/{page_id:\d+}', factory=page_edit_factory,
                      pregenerator=preview_override_param)
 
-    config.add_route('backend_news_create', '/backend/news/create', factory=staff_group_factory,
+    config.add_route('backend_news_create', '/backend/news/create', factory=staff_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_news_list', '/backend/news/list', factory=auth_user_factory,
                      pregenerator=preview_override_param)
@@ -111,9 +114,9 @@ def includeme(config):
     config.add_route('backend_news_category_edit', '/backend/news/category/edit/{news_category_id:\d+}',
                      factory=admin_factory, pregenerator=preview_override_param)
 
-    config.add_route('backend_link_create', '/backend/link/create', factory=staff_group_factory,
+    config.add_route('backend_link_create', '/backend/link/create', factory=staff_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_link_list', '/backend/link/list', factory=staff_group_factory,
+    config.add_route('backend_link_list', '/backend/link/list', factory=staff_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_link_delete', '/backend/link/delete/{link_id:\d+}',
                      factory=link_edit_factory, pregenerator=preview_override_param)

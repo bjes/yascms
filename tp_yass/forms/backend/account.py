@@ -17,7 +17,7 @@ from pyramid_wtforms.validators import (InputRequired,
 from tp_yass.enum import GroupType
 
 
-class UserEditForm(Form):
+class UserEssentialFieldsForm(Form):
     """使用者基礎欄位的表單，一般使用者可以自訂的欄位都放在這"""
 
     first_name = StringField('名*', [InputRequired('名為必填'), Length(max=20)])
@@ -25,9 +25,15 @@ class UserEditForm(Form):
     last_name = StringField('姓*', [InputRequired('姓為必填'), Length(max=20)])
 
     # 密碼不一定要設定
-    password = PasswordField('密碼*', [Length(max=50)])
+    password = PasswordField('密碼 (留空代表不更動)', [Length(max=50)])
 
-    password_confirm = PasswordField('再次輸入密碼*', [Length(max=50), EqualTo('password', message='兩次密碼輸入需相符')])
+    password_confirm = PasswordField('再次輸入密碼 (留空代表不更動)', [Length(max=50), EqualTo('password', message='兩次密碼輸入需相符')])
+
+
+class UserSelfEditForm(UserEssentialFieldsForm):
+    """使用者可以自己更改設定的表單"""
+
+    old_password = PasswordField('舊密碼 (留空代表不更動)', [Length(max=50)])
 
 
 class EmailForm(Form):
@@ -36,7 +42,7 @@ class EmailForm(Form):
     address = StringField('電子郵件位址*', [InputRequired('電子郵件為必填'), Length(max=100), Email('需為合法的電子郵件位址')])
 
 
-class AdminUserCreateForm(UserEditForm):
+class AdminUserCreateForm(UserEssentialFieldsForm):
     """管理者建立使用者的表單"""
 
     email = FieldList(FormField(EmailForm), min_entries=1)

@@ -9,7 +9,7 @@ from tp_yass.enum import GroupType
 
 def test_admin_factory_with_request_should_return_acl():
     request = testing.DummyRequest()
-    
+
     # anonymous and normal user
     acl = resources.admin_factory(request)
     assert acl.__acl__ == []
@@ -22,7 +22,7 @@ def test_admin_factory_with_request_should_return_acl():
 
 def test_auth_user_factory_with_request_should_return_acl():
     request = testing.DummyRequest()
-    
+
     # anonymous
     acl = resources.admin_factory(request)
     assert acl.__acl__ == []
@@ -35,31 +35,31 @@ def test_auth_user_factory_with_request_should_return_acl():
 
 def test_staff_group_factory_with_request_should_return_acl():
     request = testing.DummyRequest()
-    
+
     # anonymous
-    acl = resources.staff_group_factory(request)
+    acl = resources.staff_factory(request)
     assert acl.__acl__ == []
 
     # non staff groups
     request.session['groups'] = [[{'type': GroupType.NORMAL}]]
-    acl = resources.staff_group_factory(request)
+    acl = resources.staff_factory(request)
     assert acl.__acl__ == []
 
     # staff groups
     request.session['groups'] = [[{'type': GroupType.STAFF}]]
-    acl = resources.staff_group_factory(request)
+    acl = resources.staff_factory(request)
     assert acl.__acl__ == [(Allow, Everyone, ALL_PERMISSIONS)]
 
     # admin groups
     request.session['groups'] = [[{'type': GroupType.ADMIN}]]
-    acl = resources.staff_group_factory(request)
+    acl = resources.staff_factory(request)
     assert acl.__acl__ == [(Allow, Everyone, ALL_PERMISSIONS)]
 
 
 def test_page_edit_factory_with_request_should_return_acl(mocker):
     request = testing.DummyRequest()
     request.matchdict['page_id'] = 999
-    
+
     # page not found
     mocker.patch.object(resources.DAL, "get_page", return_value=None)
     acl = resources.page_edit_factory(request)
@@ -87,7 +87,7 @@ def test_page_edit_factory_with_request_should_return_acl(mocker):
 def test_news_edit_factory_with_request_should_return_acl(mocker):
     request = testing.DummyRequest()
     request.matchdict['news_id'] = 999
-    
+
     # news not found
     mocker.patch.object(resources.DAL, "get_news", return_value=None)
     acl = resources.news_edit_factory(request)
@@ -113,7 +113,7 @@ def test_news_edit_factory_with_request_should_return_acl(mocker):
 def test_link_edit_factory_with_request_should_return_acl(mocker):
     request = testing.DummyRequest()
     request.matchdict['link_id'] = 999
-    
+
     # link not found
     mocker.patch.object(resources.DAL, "get_link", return_value=None)
     acl = resources.link_edit_factory(request)

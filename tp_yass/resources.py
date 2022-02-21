@@ -36,7 +36,7 @@ def auth_user_factory(request):
     return acl
 
 
-def staff_group_factory(request):
+def staff_factory(request):
     """只有管理者或使用者擁有行政群組才有權限"""
     acl = ACL()
     acl.__acl__ = []
