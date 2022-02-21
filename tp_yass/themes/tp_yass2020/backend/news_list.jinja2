@@ -47,7 +47,7 @@
                             <span class="badge badge-warning">超過置頂時間</span>
                           {% endif %}
                           {% if each_news.visible_start_datetime and now < each_news.visible_start_datetime or each_news.visible_end_datetime and now >= each_news.visible_end_datetime %}
-                              <span class="badge badge-warning">超過顯示時間</span>
+                              <span class="badge badge-danger">超過顯示時間</span>
                           {% endif %}
                         </span>
                         <span class="badge badge-pill badge-primary d-md-none">{{ each_news.publication_datetime.strftime('%Y-%m-%d %H:%M') }}</span>

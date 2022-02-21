@@ -95,8 +95,10 @@
         <ul class="dropdown-menu" aria-labelledby="navbarLinkDropdown">
           <li><a class="dropdown-item" href="{{ request.route_url('backend_link_list') }}">好站連結列表</a></li>
           <li><a class="dropdown-item" href="{{ request.route_url('backend_link_create') }}">建立好站連結</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_create') }}">建立好站連結分類</a></li>
+          {% if request.session['is_admin'] %}
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_list') }}">好站連結分類列表</a></li>
+            <li><a class="dropdown-item" href="{{ request.route_url('backend_link_category_create') }}">建立好站連結分類</a></li>
+          {% endif %}
         </ul>
       </li>
       <li class="nav-item dropdown">

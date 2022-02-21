@@ -15,7 +15,9 @@
       <div class="card">
         <div class="card-header">單一頁面列表</div>
         <div class="card-body">
-          <a href="{{ request.route_url('backend_page_create') }}" class="btn btn-primary mb-3">建立單一頁面</a>
+          {% if request.session['is_admin'] %}
+            <a href="{{ request.route_url('backend_page_create') }}" class="btn btn-primary mb-3">建立單一頁面</a>
+          {% endif %}
           <div class="table-responsive">
             <table class="table table-hover table-striped text-center mb-0">
               <thead>
@@ -61,7 +63,9 @@
             </table>
           </div>
           {{ paginate("單一頁面列表分頁", "backend_page_list", page_quantity_of_total_pages, page_number, quantity_per_page) }}
-          <a href="{{ request.route_url('backend_page_create') }}" class="btn btn-primary mt-3">建立單一頁面</a>
+          {% if request.session['is_admin'] %}
+            <a href="{{ request.route_url('backend_page_create') }}" class="btn btn-primary mt-3">建立單一頁面</a>
+          {% endif %}
         </div>
       </div>
     </div>
