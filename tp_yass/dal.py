@@ -5,7 +5,7 @@
 import json
 import math
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import or_, and_, func
 from sqlalchemy.exc import IntegrityError
@@ -22,7 +22,7 @@ from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.models.account import EmailModel
-from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType
+from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType, AuthLogType
 
 
 logger = logging.getLogger(__name__)
@@ -341,6 +341,15 @@ class DAL:
                                                           EmailModel.type==EmailType.USER_PRIMARY.value).scalar()
 
     @staticmethod
+    def get_users_qty():
+        """取得使用者總數並回傳
+
+        Returns:
+            回傳使用者總數
+        """
+        return DBSession.query(func.count(UserModel.id)).scalar()
+
+    @staticmethod
     def sync_user_email(user, email_list, primary_email):
         """將傳入的 email_list 同步至該使用者的 email
 
@@ -448,6 +457,15 @@ class DAL:
             回傳群組物件或 None
         """
         return DBSession.query(GroupModel).get(group_id)
+
+    @staticmethod
+    def get_groups_qty():
+        """取得群組總數並回傳
+
+        Returns:
+            回傳群組總數
+        """
+        return DBSession.query(func.count(GroupModel.id)).scalar()
 
     @staticmethod
     def get_group_primary_email(group_id):
@@ -942,6 +960,15 @@ class DAL:
         return DBSession.query(NewsCategoryModel).get(category_id)
 
     @staticmethod
+    def get_news_qty():
+        """取得最新消息總數並回傳
+
+        Returns:
+            回傳最新消息總數
+        """
+        return DBSession.query(func.count(NewsModel.id)).scalar()
+
+    @staticmethod
     def create_news(form_data):
         """建立最新消息
 
@@ -1152,6 +1179,15 @@ class DAL:
             回傳 LinkModel 物件
         """
         return DBSession.query(LinkModel).get(link_id)
+
+    @staticmethod
+    def get_links_qty():
+        """取得好站連結總數並回傳
+
+        Returns:
+            回傳好站連結總數
+        """
+        return DBSession.query(func.count(LinkModel.id)).scalar()
 
     @staticmethod
     def get_link_category_list():
@@ -1366,6 +1402,15 @@ class DAL:
         return DBSession.query(TelExtModel).order_by(TelExtModel.order)
 
     @staticmethod
+    def get_telext_qty():
+        """取得分機表總數並回傳
+
+        Returns:
+            回傳分機表總數
+        """
+        return DBSession.query(func.count(TelExtModel.id)).scalar()
+
+    @staticmethod
     def get_pinned_telext_list():
         """回傳根據 order 排序指定顯示在首頁的分機表"""
         return (DBSession.query(TelExtModel)
@@ -1436,6 +1481,30 @@ class DAL:
             results = results.filter_by(user_id=user_id)
         return (results.order_by(AuthLogModel.id.desc())
                    [(page_number-1)*quantity_per_page : (page_number-1)*quantity_per_page+quantity_per_page])
+
+    @staticmethod
+    def get_today_successful_auth_qty():
+        """傳回本日登入成功的數量
+
+        Returns:
+            回傳本日登入成功的數量
+        """
+        return (DBSession.query(func.count(AuthLogModel.id))
+                         .filter(AuthLogModel.datetime+timedelta(days=1)>datetime.now(),
+                                 AuthLogModel.type==AuthLogType.LOGIN.value)
+                         .scalar())
+
+    @staticmethod
+    def get_today_wrong_password_auth_qty():
+        """傳回本日登入密碼錯誤的數量
+
+        Returns:
+            回傳本日登入密碼錯誤的數量
+        """
+        return (DBSession.query(func.count(AuthLogModel.id))
+                .filter(AuthLogModel.datetime+timedelta(days=1)>datetime.now(),
+                        AuthLogModel.type==AuthLogType.WRONG_PASSWORD.value)
+                .scalar())
 
     @staticmethod
     def get_page_quantity_of_total_auth_logs(quantity_per_page, user_id=None):

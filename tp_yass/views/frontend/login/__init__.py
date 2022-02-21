@@ -91,7 +91,7 @@ class LoginView:
             else:
                 user = DAL.get_user_account(login_form.account.data)
                 if user:
-                    DAL.log_auth(AuthLogType.WRONG_PASSWORD, user.id, self.request.client_addr)
+                    DAL.log_auth(AuthLogType.WRONG_PASSWORD, user.id, self.request.client_addr, 'local')
                 else:
                     logger.warning('帳號 "%s" 不存在', login_form.account.data)
                 self.request.session.flash('登入失敗，請檢查帳號密碼是否有誤', 'fail')

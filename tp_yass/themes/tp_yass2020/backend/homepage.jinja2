@@ -1,4 +1,49 @@
 {% extends 'layouts/master.jinja2' %}
 {% block content %}
-<h1>這是後台</h1>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">本日成功登入次數</div>
+          <div class="card-body"><span class="h1">{{ today_successful_auth_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">本日密碼錯誤登入次數</div>
+          <div class="card-body"><span class="h1">{{ today_wrong_password_auth_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">使用者總數</div>
+          <div class="card-body"><span class="h1">{{ users_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">群組總數</div>
+          <div class="card-body"><span class="h1">{{ groups_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">最新消息文章總數</div>
+          <div class="card-body"><span class="h1">{{ news_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header">分機表總數</div>
+          <div class="card-body"><span class="h1">{{ telext_qty }}</span></div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+        <div class="card mb-3 text-center">
+          <div class="card-header text-center">好站連結總數</div>
+          <div class="card-body"><span class="h1">{{ links_qty }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
