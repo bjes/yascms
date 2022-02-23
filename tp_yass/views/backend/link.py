@@ -24,8 +24,12 @@ class LinkCreateView:
     def get_view(self):
         """產生建立好站連結表單"""
         form = LinkForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                     DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                         DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_link_category_list()]
         return {'form': form}
 
@@ -33,8 +37,12 @@ class LinkCreateView:
     def post_view(self):
         """處理建立好站連結的表單"""
         form = LinkForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_link_category_list()]
         form.process(self.request.POST)
         if form.validate():
@@ -123,8 +131,12 @@ class LinkEditView:
     @view_config(request_method='GET')
     def get_view(self):
         form = LinkForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.group_id.default = self.context.group.id
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_link_category_list()]
         form.category_id.default = self.context.category.id
@@ -137,8 +149,12 @@ class LinkEditView:
     @view_config(request_method='POST')
     def post_view(self):
         form = LinkForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_link_category_list()]
         form.process(self.request.POST)
         if form.validate():

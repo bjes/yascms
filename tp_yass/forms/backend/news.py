@@ -69,7 +69,7 @@ class NewsForm(Form):
 
     tags = StringField('標籤（以逗號分隔）')
 
-    group_id = SelectField('張貼群組', coerce=int)
+    group_id = SelectField('張貼管理群組', coerce=int)
 
     category_id = SelectField('分類群組', coerce=int)
 

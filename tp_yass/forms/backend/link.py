@@ -24,7 +24,7 @@ class LinkForm(Form):
 
     is_pinned = BooleanField('是否於首頁顯示')
 
-    group_id = SelectField('張貼群組', coerce=int)
+    group_id = SelectField('張貼管理群組', coerce=int)
 
     category_id = SelectField('分類群組', coerce=int)
 

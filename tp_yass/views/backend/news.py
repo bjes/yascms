@@ -25,8 +25,12 @@ class NewsCreateView:
     def get_view(self):
         """產生建立最新消息表單"""
         form = NewsForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                     DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                        for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                         DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
         return {'form': form}
 
@@ -34,8 +38,12 @@ class NewsCreateView:
     def post_view(self):
         """處理建立最新消息的表單"""
         form = NewsForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
         form.process(self.request.POST)
         if form.validate():
@@ -133,8 +141,12 @@ class NewsEditView:
         form = NewsEditForm()
         form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in self.context.attachments]
         form.uploaded_attachments.default = [each_attachment.id for each_attachment in self.context.attachments]
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                        for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.group_id.default = self.context.group.id
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
         form.category_id.default = self.context.category.id
@@ -152,8 +164,12 @@ class NewsEditView:
     @view_config(request_method='POST')
     def post_view(self):
         form = NewsEditForm()
-        form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
-                                 DAL.get_staff_group_list(self.request.session['user_id'])]
+        if self.request.session['is_admin']:
+            form.group_id.choices = [(each_group.id, f'{each_group.name} (上層 {each_group.ancestor.name})')
+                                     for each_group in DAL.get_group_list() if each_group.ancestor]
+        else:
+            form.group_id.choices = [(each_staff_group.id, each_staff_group.name) for each_staff_group in
+                                     DAL.get_staff_group_list(self.request.session['user_id'])]
         form.category_id.choices = [(category.id, category.name) for category in DAL.get_news_category_list()]
         form.uploaded_attachments.choices = [(each_attachment.id, each_attachment.original_name) for each_attachment in
                                              self.context.attachments]
