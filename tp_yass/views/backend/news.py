@@ -147,7 +147,7 @@ class NewsEditView:
                      visible_start_datetime=self.context.visible_start_datetime,
                      visible_end_datetime=self.context.visible_end_datetime,
                      tags=', '.join([each_tag.name for each_tag in self.context.tags]))
-        return {'form': form}
+        return {'form': form, 'news': self.context}
 
     @view_config(request_method='POST')
     def post_view(self):
