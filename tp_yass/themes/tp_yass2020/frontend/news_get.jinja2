@@ -1,4 +1,11 @@
 {% extends 'layouts/master.jinja2' %}
+{% block page_css %}
+  <style>
+    p {
+      margin-bottom: 0px;
+    }
+  </style>
+{% endblock %}
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -11,24 +18,42 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div class="card border-info">
-        <div class="card-header">
-          <h5 class="mb-0">{{ news.title }}</h5>
+      <div class="card">
+        <div class="card-header h5">
+          <div class="d-flex justify-content-between">
+            <div>標題：{{ news.title }}</div>
+            {% if news.is_pinned %}
+              <div><i class="bi bi-pin text-primary"></i></div>
+            {% endif %}
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>時間：{{ news.viewable_datetime }}</div>
+            <div>發佈者：資訊組</div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>類別：{{ news.category.name }}</div>
+            <div>標籤：{{ news.tags|join(', ') }}</div>
+          </div>
         </div>
         <div class="card-body">
-          <h5>{{ news.content|safe }}</h5>
+          <span class="h5">{{ news.content|safe }}</span>
         </div>
-        <div class="card-footer text-muted">
-          {% if news.attachments %}
-            <ul class="mb-0">
-              {% for each_attachment in news.attachments %}
-                <li><a href="{{ request.static_path('tp_yass:uploads/news/'
-                                                    ~ news.publication_datetime.strftime('%Y/%m/'))
+        {% if news.attachments %}
+          <div class="card-footer">
+            <div class="card">
+              <div class="card-header">附件</div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  {% for each_attachment in news.attachments %}
+                    <li><a href="{{ request.static_path('tp_yass:uploads/news/'
+                                                    ~ news.viewable_datetime.strftime('%Y/%m/'))
                                                     ~ each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        </div>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

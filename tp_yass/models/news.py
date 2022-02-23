@@ -62,6 +62,11 @@ class NewsModel(BaseObject):
     # 發佈時間，建立這篇最新消息當下的時間
     publication_datetime = Column(DateTime, nullable=False, default=datetime.now)
 
+    # 前台的顯示邏輯是
+    # 如果有指定 visible_start_datetime 就以此欄位作為排序依據，否則就是依據 publication_datetime 欄位排序。
+    # 試想：如果我在年初就先建立了一個最新消息，並把它排程到年底顯示，那等到年底時，我應該會期待這篇文章會出現在最上面才對
+    viewable_datetime = Column(DateTime, nullable=False, default=datetime.now)
+
     # 最後更新時間
     last_updated_datetime = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 

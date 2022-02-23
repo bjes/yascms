@@ -107,7 +107,8 @@
       let day = date.getDate().toString().padStart(2, '0');
       let hours = date.getHours().toString().padStart(2, 0)
       let minutes = date.getMinutes().toString().padStart(2, '0')
-      return `${year}-${month}-${day} ${hours}:${minutes}`
+      let seconds = date.getSeconds().toString().padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
     }
     $(function (){
       $('#content').summernote({
@@ -116,7 +117,7 @@
       });
       $.datetimepicker.setLocale('zh-TW');
       $('#pinned_start_datetime, #pinned_end_datetime, #visible_start_datetime, #visible_end_datetime').datetimepicker({
-        format: 'Y-m-d H:i'
+        format: 'Y-m-d H:i:s'
       });
       let pinned_checkbox = $('#is_pinned');
       let pinned_inputs = $('#pinned_start_datetime, #pinned_end_datetime');

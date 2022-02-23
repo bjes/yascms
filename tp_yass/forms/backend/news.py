@@ -27,13 +27,13 @@ class NewsForm(Form):
 
     is_pinned = BooleanField('是否置頂')
 
-    pinned_start_datetime = DateTimeField('置頂開始時間', format='%Y-%m-%d %H:%M')
+    pinned_start_datetime = DateTimeField('置頂開始時間', format='%Y-%m-%d %H:%M:%S')
 
-    pinned_end_datetime = DateTimeField('置頂結束時間', format='%Y-%m-%d %H:%M')
+    pinned_end_datetime = DateTimeField('置頂結束時間', format='%Y-%m-%d %H:%M:%S')
 
     def check_visible_start_datetime(form, field):
         """檢查 visible_start_datetime 欄位
-        
+
         其值必須是 None 或是 datetime.datetime 實體，且值要小於等於 visible_end_datetime
         """
         if field.data:
@@ -47,11 +47,11 @@ class NewsForm(Form):
 
     visible_start_datetime = DateTimeField('顯示開始時間（未指定則代表馬上顯示）',
                                            [check_visible_start_datetime, Optional()],
-                                           format='%Y-%m-%d %H:%M')
+                                           format='%Y-%m-%d %H:%M:%S')
 
     def check_visible_end_datetime(form, field):
         """檢查 visible_end_datetime 欄位
-        
+
         其值必須是 None 或是 datetime.datetime 實體，且值要大於等於 visible_end_datetime
         """
         if field.data:
@@ -65,7 +65,7 @@ class NewsForm(Form):
 
     visible_end_datetime = DateTimeField('顯示結束時間（未指定則代表永遠顯示）',
                                          [check_visible_end_datetime, Optional()],
-                                         format='%Y-%m-%d %H:%M')
+                                         format='%Y-%m-%d %H:%M:%S')
 
     tags = StringField('標籤（以逗號分隔）')
 

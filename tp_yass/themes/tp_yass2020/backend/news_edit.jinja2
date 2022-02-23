@@ -6,73 +6,95 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-12"><h1>最新消息 - 修改</h1></div>
     <div class="col-12">
-      {% if form.errors %}
-        <div class="alert alert-danger"  role="alert">
-            <ul>
-            {% for key in form.errors %}
-              {% for msg in form.errors[key] %}
-                <li>{{ msg }}</li>
-              {% endfor %}
-            {% endfor %}
-            </ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">最新消息</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_news_list') }}">最新消息列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯最新消息</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">編輯最新消息</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger"  role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <form action="" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <div class="form-group">
+              {{ form.title.label() }}
+              {{ form.title(class_='form-control', placeholder='請輸入標題') }}
+            </div>
+            <div class="form-group">
+              {{ form.content.label() }}
+              {{ form.content(class_='form-control', placeholder='請輸入內容') }}
+            </div>
+            <div class="form-group">
+              {{ form.group_id.label() }}
+              {{ form.group_id(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.category_id.label() }}
+              {{ form.category_id(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.attachments.label() }}
+              {{ form.attachments() }}
+            </div>
+            <div class="form-group form-check">
+              {{ form.is_pinned(class_='form-check-input') }}
+              {{ form.is_pinned.label(class_="form-check-label") }}
+            </div>
+            <div class="form-group">
+              {{ form.pinned_start_datetime.label() }}
+              {{ form.pinned_start_datetime(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.pinned_end_datetime.label() }}
+              {{ form.pinned_end_datetime(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.visible_start_datetime.label() }}
+              {{ form.visible_start_datetime(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.visible_end_datetime.label() }}
+              {{ form.visible_end_datetime(class_='form-control') }}
+            </div>
+            <div class="form-group">
+              {{ form.tags.label() }}
+              {{ form.tags(class_='form-control', placeholder='請輸入標籤名稱（使用逗號分隔）') }}
+            </div>
+            {% if form.uploaded_attachments.choices %}
+              <div class="form-group">
+                {{ form.uploaded_attachments.label(class_='mt-2') }}<span class="text-danger">（若要刪除請取消勾選）</span>
+                {{ form.uploaded_attachments() }}
+              </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary mb-3">修改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
+          </form>
         </div>
-      {% endif %}
-      <form action="" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
-        <div class="form-group">
-          {{ form.title.label() }}
-          {{ form.title(class_='form-control', placeholder='請輸入標題') }}
-        </div>
-        <div class="form-group">
-          {{ form.content.label() }}
-          {{ form.content(class_='form-control', placeholder='請輸入內容') }}
-        </div>
-        <div class="form-group">
-          {{ form.group_id.label() }}
-          {{ form.group_id(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.category_id.label() }}
-          {{ form.category_id(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.attachments.label() }}
-          {{ form.attachments() }}
-        </div>
-        <div class="form-group form-check">
-          {{ form.is_pinned(class_='form-check-input') }}
-          {{ form.is_pinned.label(class_="form-check-label") }}
-        </div>
-        <div class="form-group">
-          {{ form.pinned_start_datetime.label() }}
-          {{ form.pinned_start_datetime(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.pinned_end_datetime.label() }}
-          {{ form.pinned_end_datetime(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.visible_start_datetime.label() }}
-          {{ form.visible_start_datetime(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.visible_end_datetime.label() }}
-          {{ form.visible_end_datetime(class_='form-control') }}
-        </div>
-        <div class="form-group">
-          {{ form.tags.label() }}
-          {{ form.tags(class_='form-control', placeholder='請輸入標籤名稱（使用逗號分隔）') }}
-        </div>
-        {% if form.uploaded_attachments.choices %}
-          <div class="form-group">
-            {{ form.uploaded_attachments.label(class_='mt-2') }}<span class="text-danger">（若要刪除請取消勾選）</span>
-            {{ form.uploaded_attachments() }}
-          </div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary mb-3">修改</button> <button type="reset" class="btn btn-danger mb-3">重設</button>
-      </form>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">最新消息</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_news_list') }}">最新消息列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編輯最新消息</li>
+        </ol>
+      </nav>
     </div>
   </div>
 </div>
@@ -88,12 +110,8 @@
         height: 300
       });
       $.datetimepicker.setLocale('zh-TW');
-      $('#visible_start_datetime, #visible_end_datetime').datetimepicker({
-        format: 'Y-m-d H:i'
-      });
-      $('#pinned_start_datetime, #pinned_end_datetime').datetimepicker({
-        timepicker: false,
-        format: 'Y-m-d'
+      $('#pinned_start_datetime, #pinned_end_datetime, #visible_start_datetime, #visible_end_datetime').datetimepicker({
+        format: 'Y-m-d H:i:s'
       });
       let pinned_checkbox = $('#is_pinned');
       let pinned_inputs = $('#pinned_start_datetime, #pinned_end_datetime');

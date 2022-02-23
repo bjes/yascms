@@ -78,6 +78,7 @@ def import_test_db_data(ini_file_path):
     # 普通最新消息，超過時間已無法顯示
     news2 = NewsModel(id=2, title='無法顯示的最新消息', content='前台看不到後台看得到', group_id=6, category=category1,
                       visible_start_datetime=now-datetime.timedelta(days=2),
+                      viewable_datetime=now-datetime.timedelta(days=2),
                       visible_end_datetime=now-datetime.timedelta(days=1))
     # 置頂最新消息，今天最後一天置頂，永遠顯示
     news3 = NewsModel(id=3, title='暑假第一天將重灌電腦', content='請老師及早備份資料', group_id=7,
@@ -92,19 +93,27 @@ def import_test_db_data(ini_file_path):
                       is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now,
                       pinned_end_datetime=now+datetime.timedelta(days=1),
                       visible_start_datetime=now-datetime.timedelta(days=2),
+                      viewable_datetime=now-datetime.timedelta(days=2),
                       visible_end_datetime=now-datetime.timedelta(days=1), category=category2)
     # 置頂最新消息，但置頂時間已超過，顯示時間也已超過
     news6 = NewsModel(id=6, title='超過置頂時間的置頂最新消息，且顯示時間已過', content='只有後台看得到', group_id=7,
                       is_pinned=PinnedType.IS_PINNED.value, pinned_start_datetime=now-datetime.timedelta(days=2),
                       pinned_end_datetime=now+datetime.timedelta(days=1),
                       visible_start_datetime=now-datetime.timedelta(days=2),
+                      viewable_datetime=now-datetime.timedelta(days=2),
                       visible_end_datetime=now-datetime.timedelta(days=1), category=category2)
+    # 預約未來才會顯示的最新消息
+    news7 = NewsModel(id=7, title='未來才看得到的最新消息', content='未來才看得到', group_id=7,
+                      visible_start_datetime=now+datetime.timedelta(days=30),
+                      viewable_datetime=now+datetime.timedelta(days=30),
+                      visible_end_datetime=now+datetime.timedelta(days=40), category=category2)
     session.add(news1)
     session.add(news2)
     session.add(news3)
     session.add(news4)
     session.add(news5)
     session.add(news6)
+    session.add(news7)
 
     # 因為跑 initialize_db.py 預先建立了幾個 page，所以這邊測試的 page id 從 13 開始
     calendar_page = PageModel(id=13, title='學校行事曆', content='<iframe src="https://calendar.google.com/calendar/embed?src=mail.bjes.tp.edu.tw_p5np58k8dbekppa6utlb8pbkek%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>')
