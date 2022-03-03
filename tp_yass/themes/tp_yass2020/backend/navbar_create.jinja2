@@ -138,7 +138,7 @@
       let button_id = button.prop('id');
       if (button_id === 'btn-choose-page') {
         $('#modal-loading-icon').show();
-        $.getJSON('{{ request.route_url('backend_api_page_list') }}', function (data) {
+        $.getJSON('{{ request.route_url('backend_json_page_list') }}', function (data) {
           let page_html_list = [];
           $.each(data, function (key, val) {
             page_html_list.push(`<div class="form-group form-check">

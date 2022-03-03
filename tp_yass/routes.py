@@ -144,11 +144,11 @@ def includeme(config):
     config.add_route('backend_auth_log_list', '/backend/auth_log/list', factory=auth_user_factory,
                      pregenerator=preview_override_param)
 
-    config.add_route('backend_api_page_list', '/backend/api/page/list', factory=admin_factory)
-    config.add_route('backend_api_page_get', '/backend/api/page/get/{page_id:\d+}', factory=admin_factory)
-
-    config.add_route('backend_api_news_category_list', '/backend/api/news/category/list', factory=admin_factory)
-    config.add_route('backend_api_link_category_list', '/backend/api/link/category/list', factory=admin_factory)
+    # 給後台 ajax 撈資料用的
+    config.add_route('backend_json_page_list', '/backend/json/page/list', factory=admin_factory)
+    config.add_route('backend_json_page_get', '/backend/json/page/get/{page_id:\d+}', factory=admin_factory)
+    config.add_route('backend_json_news_category_list', '/backend/json/news/category/list', factory=admin_factory)
+    config.add_route('backend_json_link_category_list', '/backend/json/link/category/list', factory=admin_factory)
 
     config.add_route('backend_oauth2_integration_list', '/backend/oauth2/integration/list', factory=admin_factory)
     config.add_route('backend_oauth2_integration_edit', '/backend/oauth2/integration/{provider_name}/edit',

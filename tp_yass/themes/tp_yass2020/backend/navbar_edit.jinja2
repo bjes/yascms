@@ -139,7 +139,7 @@
       let button_id = button.prop('id');
       if (button_id === 'btn-choose-page') {
         $('#modal-loading-icon').show();
-        $.getJSON('{{ request.route_url('backend_api_page_list') }}', function (data) {
+        $.getJSON('{{ request.route_url('backend_json_page_list') }}', function (data) {
           let page_html_list = [];
           $.each(data, function (key, val) {
             page_html_list.push(`<div class="form-group form-check">
@@ -180,7 +180,7 @@
       case 1:
         $('#link_type').text('單一頁面');
         $('#modal-content').html('<input type="hidden" name="page_id" value="{{ form.page_id.data }}">');
-        $.getJSON('{{ request.route_url('backend_api_page_get', page_id=form.page_id.data) }}', function (data) {
+        $.getJSON('{{ request.route_url('backend_json_page_get', page_id=form.page_id.data) }}', function (data) {
           $('#link_target').html(`<a href="${data['url']}" target="_blank">${data['title']}</a>`);
         })
         break;

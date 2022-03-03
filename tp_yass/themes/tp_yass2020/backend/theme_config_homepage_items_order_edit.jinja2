@@ -251,7 +251,7 @@
             <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>`;
 
         $.ajax({
-          url: '{{ request.route_url('backend_api_news_category_list') }}',
+          url: '{{ request.route_url('backend_json_news_category_list') }}',
           type: 'GET',
           success: function (data) {
             $.each(data, function (key, val) {
@@ -279,7 +279,7 @@
               <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">未選擇</option>`;
 
         $.ajax({
-          url: '{{ request.route_url('backend_api_page_list') }}',
+          url: '{{ request.route_url('backend_json_page_list') }}',
           type: 'GET',
           success: function (data) {
             $.each(data, function (key, val) {
@@ -304,7 +304,7 @@
         `;
 
         $.ajax({
-          url: '{{ request.route_url('backend_api_link_category_list') }}',
+          url: '{{ request.route_url('backend_json_link_category_list') }}',
           type: 'GET',
           success: function (data) {
             $.each(data, function (key, val) {
