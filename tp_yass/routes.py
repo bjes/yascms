@@ -144,6 +144,11 @@ def includeme(config):
     config.add_route('backend_auth_log_list', '/backend/auth_log/list', factory=auth_user_factory,
                      pregenerator=preview_override_param)
 
+    config.add_route('backend_api_token_list', '/backend/api_token/list', factory=admin_factory,
+                     pregenerator=preview_override_param)
+    config.add_route('backend_api_token_create', '/backend/api_token/create', factory=admin_factory,
+                     pregenerator=preview_override_param)
+
     # 給後台 ajax 撈資料用的
     config.add_route('backend_json_page_list', '/backend/json/page/list', factory=admin_factory)
     config.add_route('backend_json_page_get', '/backend/json/page/get/{page_id:\d+}', factory=admin_factory)

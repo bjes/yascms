@@ -4,6 +4,8 @@
 """
 import json
 import math
+import string
+import random
 import logging
 from datetime import datetime, timedelta
 
@@ -22,6 +24,7 @@ from tp_yass.models.telext import TelExtModel
 from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.models.account import EmailModel
+from tp_yass.models.api_token import APITokenModel
 from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType, AuthLogType
 
 
@@ -1529,3 +1532,38 @@ class DAL:
         if user_id:
             results = results.filter_by(user_id=user_id)
         return math.ceil(results.scalar()/quantity_per_page)
+
+    @staticmethod
+    def get_api_token_list():
+        """回傳 api token 列表
+
+        Returns:
+            APIToken model 的列表
+        """
+        return DBSession.query(APITokenModel)
+
+    @staticmethod
+    def create_api_token():
+        """產生一個 APITokenModel 並回傳
+
+        Returns:
+            APITokenModel
+        """
+        return APITokenModel()
+
+    @staticmethod
+    def save_api_token(api_token):
+        """儲存 api token
+
+        Args:
+            api_token: APITokenModel 實體
+
+        Returns:
+            成功回傳 True
+        """
+        available_characters = string.ascii_letters + string.digits
+        key_length = 32
+        token = 'token-' + ''.join(random.choice(available_characters) for i in range(key_length))
+        api_token.value = token
+        DBSession.add(api_token)
+        return True

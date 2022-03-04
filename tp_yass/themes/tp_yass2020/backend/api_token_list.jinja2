@@ -1,0 +1,61 @@
+{% extends 'layouts/master.jinja2' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">系統設定</li>
+          <li class="breadcrumb-item active" aria-current="page">API 金鑰設定</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">API 金鑰設定</div>
+        <div class="card-body">
+          <a href="{{ request.route_url('backend_api_token_create') }}" class="btn btn-primary mb-3">建立 API 金鑰</a>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped text-center mb-0">
+              <thead>
+              <tr>
+                <th scope="col" class="d-none d-md-table-cell">編號</th>
+                <th scope="col">名稱</th>
+                <th scope="col" class="d-none d-sm-table-cell">值</th>
+                <th scope="col" class="d-none d-sm-table-cell">是否啟用</th>
+                <th scope="col" class="d-none d-md-table-cell">說明</th>
+                <th scope="col">動作</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for each_api_token in api_token_list %}
+                <tr>
+                  <th scope="row" class="d-none d-md-table-cell">{{ loop.index }}</th>
+                  <td>{{ each_api_token.name }}</td>
+                  <td class="d-none d-sm-table-cell">{{ each_api_token.value }}</td>
+                  <td class="d-none d-sm-table-cell">{% if each_api_token.is_enabled %}是{% else %}否{% endif %}</td>
+                  <td class="d-none d-md-table-cell">{{ each_api_token.description }}</td>
+                  <td>
+                    <a href="#" class="btn btn-primary">編輯</a>
+                    <a href="#" class="btn btn-danger">刪除</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <a href="{{ request.route_url('backend_api_token_create') }}" class="btn btn-primary mt-3">建立 API 金鑰</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">系統設定</li>
+          <li class="breadcrumb-item active" aria-current="page">API 金鑰設定</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock content %}

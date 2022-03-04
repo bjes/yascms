@@ -115,3 +115,13 @@ class PinnedType(IntEnum):
 
     # 有置頂
     IS_PINNED = 1
+
+
+class EnabledType(IntEnum):
+    """啟用的類型"""
+
+    # 沒有啟用
+    IS_NOT_ENABLED = 0
+
+    # 已啟用
+    IS_ENABLED = 1

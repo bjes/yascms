@@ -1,0 +1,62 @@
+{% extends 'layouts/master.jinja2' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">系統設定</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_api_token_list') }}">API 金鑰設定</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立 API 金鑰</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">建立 API 金鑰</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+            </div>
+            <div class="form-group">
+              {{ form.name.label() }}
+              {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
+            </div>
+            <div class="form-group">
+              {{ form.description.label() }}
+              {{ form.description(class_='form-control', placeholder='請輸入說明', rows='10') }}
+            </div>
+            <div class="form-group form-check">
+              {{ form.is_enabled(class_='form-check-input') }}
+              {{ form.is_enabled.label(class_="form-check-label") }}
+            </div>
+            <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item">系統設定</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_api_token_list') }}">API 金鑰設定</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立 API 金鑰</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock content %}
