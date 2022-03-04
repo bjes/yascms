@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import transaction
 
 from tp_yass.dal import DAL
+from tp_yass.enum import EnabledType
 from tp_yass.tests.integration.conftest import init_test_data
 
 
@@ -57,3 +58,13 @@ def test_get_frontend_news_should_return_news_if_visible(init_db_session):
     frontend_news_list = DAL.get_frontend_news_list()
     # 因為把 visible 設成昨天，所以應該會變成最後一筆最新消息（其他的最新消息都是以今天的日期建立）
     assert frontend_news_list[-1].id == news_id
+
+def test_api_tokens_methods_should_manipulate_api_tokens(init_db_session):
+    init_test_data()
+
+    assert len(DAL.get_api_token_list().all()) == 0
+    api_token = DAL.create_api_token()
+    api_token.name = 'foo'
+    api_token.is_enabled = EnabledType.IS_ENABLED.value
+    assert DAL.save_api_token(api_token)
+    assert len(DAL.get_api_token_list().all()) == 1
