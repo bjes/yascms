@@ -16,7 +16,7 @@ class APITokenModel(BaseObject):
     description = Column(Text)
 
     # 設定值
-    value = Column(Text, nullable=False)
+    value = Column(String(50), nullable=False, unique=True)
 
     # 是否啟用
     is_enabled = Column(Integer, nullable=False, default=1, server_default='1')

@@ -115,3 +115,19 @@ def link_edit_factory(request):
         logger.error('找不到 link_id 為 %d 的最新消息，群組權限比對異常', link_id)
         acl.__acl__ = []
     return link or acl
+
+
+def api_token_factory(request):
+    """檢查有無合法的 api token"""
+    acl = ACL()
+    api_token = request.headers.get('Authorization', None)
+    if api_token:
+        logger.debug('api token 為 %d', api_token)
+        if DAL.get_api_token(api_token):
+            acl.__acl__ = [(Allow, Everyone, ALL_PERMISSIONS)]
+        else:
+            acl.__acl__ = []
+    else:
+        logger.warning('request headers 中找不到 Authorization')
+        acl.__acl__ = []
+    return acl

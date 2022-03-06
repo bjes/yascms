@@ -1552,7 +1552,7 @@ class DAL:
         return APITokenModel()
 
     @staticmethod
-    def save_api_token(api_token):
+    def save_api_token(api_token, value=None):
         """儲存 api token
 
         Args:
@@ -1561,9 +1561,16 @@ class DAL:
         Returns:
             成功回傳 True
         """
-        available_characters = string.ascii_letters + string.digits
-        key_length = 32
-        token = 'token-' + ''.join(random.choice(available_characters) for i in range(key_length))
-        api_token.value = token
+        if value is None:
+            available_characters = string.ascii_letters + string.digits
+            key_length = 32
+            token = 'token-' + ''.join(random.choice(available_characters) for i in range(key_length))
+            api_token.value = token
+        else:
+            api_token.value = value
         DBSession.add(api_token)
         return True
+
+    @staticmethod
+    def get_api_token(token):
+        return DBSession.query(APITokenModel).filter_by(value=token).one_or_none()

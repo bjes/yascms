@@ -134,3 +134,18 @@ def test_link_edit_factory_with_request_should_return_acl(mocker):
     request.session['is_admin'] = True
     acl = resources.link_edit_factory(request)
     assert acl.__acl__ == [(Allow, Everyone, ALL_PERMISSIONS)]
+
+
+def test_api_token_factory_should_return_proper_acl(mocker):
+    request = testing.DummyRequest()
+    # 測試沒有 Authorization header
+    assert resources.api_token_factory(request).__acl__ == []
+
+    # 測試有 Authorization header 但驗證沒過
+    request.headers['Authorization'] = 'foo'
+    mocker.patch.object(resources.DAL, 'get_api_token', return_value=False)
+    assert resources.api_token_factory(request).__acl__ == []
+
+    # 測試有正常的 Authorization header 且驗證通過
+    mocker.patch.object(resources.DAL, 'get_api_token', return_value=True)
+    assert resources.api_token_factory(request).__acl__ == [(Allow, Everyone, ALL_PERMISSIONS)]

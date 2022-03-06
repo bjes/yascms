@@ -61,10 +61,13 @@ def test_get_frontend_news_should_return_news_if_visible(init_db_session):
 
 def test_api_tokens_methods_should_manipulate_api_tokens(init_db_session):
     init_test_data()
+    api_token_value = 'bar'
 
     assert len(DAL.get_api_token_list().all()) == 0
     api_token = DAL.create_api_token()
     api_token.name = 'foo'
     api_token.is_enabled = EnabledType.IS_ENABLED.value
-    assert DAL.save_api_token(api_token)
+    api_token.value = api_token_value
+    assert DAL.save_api_token(api_token, api_token_value)
     assert len(DAL.get_api_token_list().all()) == 1
+    assert DAL.get_api_token(api_token_value).value == api_token_value
