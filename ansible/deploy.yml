@@ -20,9 +20,9 @@
             src: "https://webcode.tp.edu.tw/tcenc/tp_yass_arts/raw/branch/master/webroot.tar.gz"
             dest: "{{ project_base_dir }}/tp_yass/webroot/"
             remote_src: yes
-        - name: 確認 uploads/themes/tp_yass2020/banner 目錄存在
+        - name: 確認 uploads/themes/tp_yass2020/banners 目錄存在
           ansible.builtin.file:
-            name: "{{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
+            name: "{{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banners/"
             owner: www-data
             group: www-data
             state: directory
@@ -30,8 +30,8 @@
           ansible.builtin.shell:
             cmd: "{{ item }}"
           loop:
-            - "cp {{ project_base_dir }}/tp_yass/themes/tp_yass2020/static/img/banner/* {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
-            - "chown www-data:www-data -R {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banner/"
+            - "cp {{ project_base_dir }}/tp_yass/themes/tp_yass2020/static/img/banners/* {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banners/"
+            - "chown www-data:www-data -R {{ project_base_dir }}/tp_yass/uploads/themes/tp_yass2020/banners/"
         - name: 使用 poetry 安裝專案相依套件
           ansible.builtin.command: .venv/bin/poetry install
           args:
