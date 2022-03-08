@@ -38,14 +38,15 @@ class SiteConfigView:
         for key, value in post_data.items():
             for each_config in db_site_config_list:
                 if key == each_config.name:
-                    if not value:
-                        logger.error('系統設定 %s 其值為空', key)
-                        return False
                     if each_config.type == 'int' and not value.isdigit():
-                        logger.error('系統設定 %s 其值 %s 不合法 int', key, value)
+                        msg = f'系統設定 {key} 其值 {value} 不合法 int'
+                        logger.error(msg)
+                        self.request.session.flash(msg, 'fail')
                         return False
                     if each_config.type == 'bool' and value not in ('true', 'false'):
-                        logger.error('系統設定 %s 其值 %s 不是合法 bool', key, value)
+                        msg = f'系統設定 {key} 其值 {value} 不合法 bool'
+                        logger.error(msg)
+                        self.request.session.flash(msg, 'fail')
                         return False
                     if value != each_config.value:
                         updated_config_list.append({'id': each_config.id, 'name': key, 'value': value})
@@ -65,7 +66,9 @@ class SiteConfigView:
             self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
-            msg = '網站設定無異動'
-            logger.info(msg)
-            self.request.session.flash(msg, 'fail')
-            return HTTPFound(location=self.request.current_route_url())
+            if not self.request.session.peek_flash():
+                msg = '網站設定無異動'
+                logger.info(msg)
+                self.request.session.flash(msg, 'fail')
+            config_list = DAL.get_site_config_list()
+            return {'config_list': config_list}
