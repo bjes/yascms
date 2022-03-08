@@ -23,3 +23,8 @@ body {
 .sidebar {
   flex-grow: 0;
 }
+
+.navbar-min-width {
+  width: 170px;
+}
+
