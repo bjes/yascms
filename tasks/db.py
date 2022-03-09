@@ -28,7 +28,7 @@ def db_create(c, ini_file=None):
 
 @task(name='delete', optional=['ini_file'])
 def db_delete(c, ini_file=None):
-    """刪除資料庫"""
+    """刪除資料庫與快取"""
 
     if ini_file is None:
         ini_file = find_ini_file()
@@ -36,6 +36,7 @@ def db_delete(c, ini_file=None):
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
     c.run(f"sudo mysql -uroot -e 'DROP DATABASE IF EXISTS `{db_name}`'")
+    c.run(f"sudo redis-cli FLUSHDB")
 
 
 @task(db_create, name='init', optional=['ini_file'])

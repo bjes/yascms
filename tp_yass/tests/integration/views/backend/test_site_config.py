@@ -32,3 +32,4 @@ def test_site_config_view(webtest_admin_testapp):
     assert response.status_int == 302
     response = webtest_admin_testapp.get(request.route_path('backend_site_config_edit'))
     assert changed_name in response.body.decode('utf8')
+

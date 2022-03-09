@@ -960,7 +960,7 @@ class DAL:
         Returns:
             回傳 NewsCategory 物件
         """
-        return DBSession.query(NewsCategoryModel).get(category_id)
+        return DBSession.query(NewsCategoryModel).filter_by(id=category_id).one_or_none()
 
     @staticmethod
     def get_news_qty():
