@@ -55,7 +55,7 @@
             </table>
           </div>
           {{ paginate("好站連結列表分頁", "backend_link_list", page_quantity_of_total_links, page_number, quantity_per_page) }}
-          <a href="{{ request.route_url('backend_telext_create') }}" class="btn btn-primary mt-3">建立好站連結</a>
+          <a href="{{ request.route_url('backend_link_create') }}" class="btn btn-primary mt-3">建立好站連結</a>
         </div>
       </div>
     </div>
