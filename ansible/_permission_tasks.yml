@@ -1,0 +1,11 @@
+---
+- name: 設定目錄權限
+  ansible.builtin.file:
+    path: "{{ project_base_dir  }}/tp_yass/{{ item }}"
+    owner: "www-data"
+    group: "www-data"
+    mode: "o-rwx"
+    recurse: yes
+  loop:
+    - logs
+    - uploads

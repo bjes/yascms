@@ -1,0 +1,22 @@
+---
+- name: 建立專案的 nginx log 檔並設定權限
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "www-data"
+    group: "adm"
+    mode: "0640"
+    state: touch
+  loop:
+    - "/var/log/nginx/{{ project_domain_name }}-access.log"
+    - "/var/log/nginx/{{ project_domain_name }}-error.log"
+- name: 佈署 nginx 設定檔
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ project_domain_name }}"
+  notify: reload nginx
+- name: 啟用 nginx 設定檔
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ project_domain_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ project_domain_name }}"
+    state: link
+  notify: reload nginx

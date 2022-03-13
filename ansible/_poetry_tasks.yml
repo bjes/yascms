@@ -1,0 +1,5 @@
+---
+- name: 使用 poetry 安裝專案相依套件
+  ansible.builtin.command: .venv/bin/poetry install
+  args:
+    chdir: "{{ project_base_dir }}"

@@ -1,0 +1,8 @@
+---
+- name: 佈署 uwsgi 設定檔 (uwsgi emperor 會自動重啟這個服務)
+  ansible.builtin.template:
+    src: "uwsgi.ini.j2"
+    dest: "/opt/uwsgi/etc/{{ project_domain_name }}.ini"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0600"
