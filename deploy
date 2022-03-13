@@ -38,9 +38,9 @@ def main():
         subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_deps.sh'", shell=True)
         # 如果只下 ./deploy 後面沒加上任何參數，代表要走單機佈署模式，會將整個系統環境與相依的系統套件都一並安裝設定
         if args.project_packages == "default":
-            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf'", shell=True)
+            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/production.yml --extra-vars='@ansible/production.conf'", shell=True)
         else:
-            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/deploy.yml --extra-vars='@ansible/deploy.conf' --tags deploy_project", shell=True)
+            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/production.yml --extra-vars='@ansible/production.conf' --tags deploy_project", shell=True)
 
 
 def check_perm():

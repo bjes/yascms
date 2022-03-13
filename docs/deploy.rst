@@ -23,8 +23,8 @@ tp_yass 支援單一佈署，但目前支援的作業系統只有 Debian Buster 
    cd /srv/www
    git clone https://webcode.tp.edu.tw/tcenc/tp_yass tpyass-demo.fossn.io
    cd tpyass-demo.fossn.io
-   cp ansible/deploy.conf.sample ansible/deploy.conf
-   # 修改完 ansible/deploy.conf 的設定值後執行佈署
+   cp ansible/production.conf.sample ansible/production.conf
+   # 修改完 ansible/production.conf 的設定值後執行佈署
    # 由於會產生 dhparam.pem 會需要一點時間請耐心等候
    ./deploy
 
