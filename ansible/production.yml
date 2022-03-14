@@ -18,29 +18,29 @@
         - name: import theme tp_yass2020 tasks
           import_tasks: _theme_tp_yass2020_tasks.yml
           tags:
-            - deploy_project_theme_tp_yass2020
+            - install_project_theme_tp_yass2020
         - name: 使用 poetry 安裝專案相依套件
           import_tasks: _poetry_tasks.yml
           tags:
-            - deploy_project_poetry
+            - install_project_poetry
         - name: import db tasks
           import_tasks: _db_tasks.yml
           tags:
-            - deploy_project_db
+            - install_project_db
         - name: 設定目錄權限
           import_tasks: _permission_tasks.yml
           tags:
-            - deploy_project_permission
+            - install_project_permission
         - name: import nginx tasks
           import_tasks: _nginx_tasks.yml
           tags:
-            - deploy_project_nginx_config
+            - install_project_nginx_config
         - name: import uwsgi tasks
           import_tasks: _uwsgi_tasks.yml
           tags:
-            - deploy_project_uwsgi_config
+            - install_project_uwsgi_config
       tags:
-        - deploy_project
+        - install_project
   handlers:
     - name: restart redis-server
       ansible.builtin.systemd:

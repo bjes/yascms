@@ -7,7 +7,7 @@
 
    intro
    enroll
-   deploy
+   install
    develop
 
 API References

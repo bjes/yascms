@@ -14,7 +14,7 @@
 
 若貴校想要參與第一批次的移轉，可填寫申請表單：
 
-h<ttps://forms.gle/kG1uoH7mK9TEdYHa6>
+<ttps://forms.gle/kG1uoH7mK9TEdYHa6>
 
 有任何問題，可聯繫本專案的窗口：
 
