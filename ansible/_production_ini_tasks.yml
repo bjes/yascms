@@ -1,0 +1,8 @@
+---
+- name: 佈署 production 環境的設定檔
+  ansible.builtin.template:
+    src: "production.ini.j2"
+    dest: "{{ project_base_dir }}/production.ini"
+    owner: "www-data"
+    group: "www-data"
+    mode: "0600"

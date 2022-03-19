@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import subprocss
+
+
+def main():
+    subprocss.run(".venv/bin/poetry run ansible-playbook ansible/production.yml "
+                      "--extra-vars='@ansible/production.conf' --tags "
+                      "install_project_production_ini_config,"
+                      "install_project_poetry_install_packages,"
+                      "upgrade_db_schema,"
+                      "install_project_permission"
+                  shell=True)
+
+
+if __name__ == '__main__':
+    main()

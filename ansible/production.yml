@@ -8,26 +8,28 @@
     - pylabs.percona # for ngram support. MariaDB 目前還不支援
   tasks:
     - block:
-        - name: 佈署 production 環境的設定檔
-          ansible.builtin.template:
-            src: "production.ini.j2"
-            dest: "{{ project_base_dir }}/production.ini"
-            owner: "www-data"
-            group: "www-data"
-            mode: "0600"
+        - name: import production ini tasks
+          import_tasks: _production_ini_tasks.yml
+          tags:
+            - install_project_production_ini_config
         - name: import theme tp_yass2020 tasks
           import_tasks: _theme_tp_yass2020_tasks.yml
           tags:
             - install_project_theme_tp_yass2020
         - name: 使用 poetry 安裝專案相依套件
-          import_tasks: _poetry_tasks.yml
+          import_tasks: _poetry_install_packages_tasks.yml
           tags:
-            - install_project_poetry
+            - install_project_poetry_install_packages
         - name: import db tasks
           import_tasks: _db_tasks.yml
           tags:
             - install_project_db
-        - name: 設定目錄權限
+        # 只有更新專案時才需要執行 db schema upgrade
+        - name: upgrade db schema
+          ansible.builtin.command: ".venv/bin/poetry run inv db.upgrade"
+          tags:
+            - upgrade_db_schema
+        - name: import permission tasks
           import_tasks: _permission_tasks.yml
           tags:
             - install_project_permission

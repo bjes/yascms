@@ -27,20 +27,24 @@ def main():
 
     if args.system_packages:
         check_perm()
-        subprocess.call("apt install build-essential python3-dev python3-venv -y", shell=True)
+        subprocess.run("apt install build-essential python3-dev python3-venv -y", shell=True)
     if args.deploy_packages:
         if not pathlib.Path('.venv').exists():
-            subprocess.call("python3 -m venv .venv --system-site-packages", shell=True)
-        subprocess.call(f".venv/bin/pip install 'pip=={PIP_VERSION}' -U", shell=True)
-        subprocess.call(f".venv/bin/pip install 'wheel=={WHEEL_VERSION}' 'setuptools=={SETUPTOOLS_VERSION}' 'ansible=={ANSIBLE_VERSION}' 'poetry=={POETRY_VERSION}' -U", shell=True)
+            subprocess.run("python3 -m venv .venv --system-site-packages", shell=True)
+        subprocess.run(f".venv/bin/pip install 'pip=={PIP_VERSION}' -U", shell=True)
+        subprocess.run(f".venv/bin/pip install 'wheel=={WHEEL_VERSION}' 'setuptools=={SETUPTOOLS_VERSION}' 'ansible=={ANSIBLE_VERSION}' 'poetry=={POETRY_VERSION}' -U", shell=True)
     if args.project_packages:
-        check_perm()
-        subprocess.call(".venv/bin/poetry run bash -c 'cd ansible && ./download_deps.sh'", shell=True)
+        subprocess.run(".venv/bin/poetry run bash -c 'cd ansible && ./download_deps.sh'", shell=True)
         # 如果只下 ./deploy 後面沒加上任何參數，代表要走單機佈署模式，會將整個系統環境與相依的系統套件都一並安裝設定
         if args.project_packages == "default":
-            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/production.yml --extra-vars='@ansible/production.conf'", shell=True)
+            check_perm()
+            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml --skip-tags upgrade_db_schema "
+                               "--extra-vars='@ansible/production.conf'",
+                           shell=True)
         else:
-            subprocess.call(".venv/bin/poetry run ansible-playbook ansible/production.yml --extra-vars='@ansible/production.conf' --tags deploy_project", shell=True)
+            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml --skip-tags upgrade_db_schema "
+                               "--extra-vars='@ansible/production.conf' --tags install_project",
+                           shell=True)
 
 
 def check_perm():

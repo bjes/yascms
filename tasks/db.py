@@ -41,17 +41,23 @@ def db_delete(c, ini_file=None):
 
 @task(db_create, name='init', optional=['ini_file'])
 def init_db(c, ini_file=None):
+    """建立資料庫的 schema"""
+
+    if ini_file is None:
+        ini_file = find_ini_file()
+
+    c.run(f'alembic -c {ini_file} upgrade head')
+
+
+@task(init_db, name='import-init-data', optional=['ini_file'])
+def import_init_data(c, ini_file=None):
     """匯入初始資料至資料庫"""
 
     if ini_file is None:
         ini_file = find_ini_file()
 
-    # Find database name via ini file
-    sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
-    db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
-
-    c.run(f'alembic -c {ini_file} upgrade head')
     c.run(f'initialize_tp_yass_db {ini_file}')
+
 
 @task(db_delete, db_create, init_db, name='init-test', optional=['ini_file'])
 def init_test_db(c, ini_file=None):
@@ -60,13 +66,12 @@ def init_test_db(c, ini_file=None):
     if ini_file is None:
         ini_file = find_ini_file()
 
-    c.run(f'alembic -c {ini_file} upgrade head')
     import_test_db_data(ini_file)
 
 
 @task(name='upgrade', optional=['ini_file'])
 def db_upgrade(c, ini_file=None):
-    """將資料庫 migrate 至最新版"""
+    """將資料庫 schema migrate 至最新版"""
 
     if ini_file is None:
         ini_file = find_ini_file()
@@ -82,3 +87,4 @@ def db_downgrade(c, ini_file=None):
         ini_file = find_ini_file()
 
     c.run(f'alembic -c {ini_file} downgrade -1')
+

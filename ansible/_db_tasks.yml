@@ -1,5 +1,5 @@
 ---
 - name: 執行資料庫初始化
-  ansible.builtin.command: .venv/bin/poetry run .venv/bin/inv db.init
+  ansible.builtin.command: .venv/bin/poetry run inv db.init
   args:
     chdir: "{{ project_base_dir }}"
