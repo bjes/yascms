@@ -3,25 +3,30 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: 建立專案 .venv 目錄
-      ansible.builtin.command: python3 -m venv .venv
-    - name: 更新專案 pip 套件
-      ansible.builtin.command: .venv/bin/pip install --upgrade pip
-    - name: 更新專案 setuptools 和 poetry 套件
-      ansible.builtin.command: .venv/bin/pip install --upgrade setuptools poetry
+    # $PWD 會在 tp_yass/ansible 這個目錄，所以所有的路徑要記得指定回上一層
+    - name: 建立專案環境
+      ansible.builtin.shell: ./install -d
+      args:
+        chdir: ".."
     - name: 使用 poetry 安裝專案相依套件
-      ansible.builtin.command: .venv/bin/poetry install
+      ansible.builtin.shell: .venv/bin/poetry install
+      args:
+        chdir: ".."
     - name: 建立 development.ini ，若檔案已存在則不覆蓋
       ansible.builtin.command:
         cmd: cp development.ini.sample development.ini
+      args:
+        chdir: ".."
         creates: development.ini
     - name: 設定資料庫連線
       ansible.builtin.lineinfile:
-        path: development.ini
+        path: "../development.ini"
         regexp: "^sqlalchemy.url =$"
         line: "sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@localhost/{{ db_name }}?charset=utf8mb4"
     - name: 建立測試資料庫並建立測試資料
-      ansible.builtin.command: .venv/bin/poetry run .venv/bin/inv db.init-test
+      ansible.builtin.shell: .venv/bin/poetry run inv db.delete db.init-test
+      args:
+        chdir: ".."
     - name: "顯示提示資訊"
       ansible.builtin.debug:
         msg: "執行 .venv/bin/pserve development.ini --reload 以啟動開發伺服器"
