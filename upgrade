@@ -8,7 +8,7 @@ def main():
                       "install_project_production_ini_config,"
                       "install_project_poetry_install_packages,"
                       "upgrade_db_schema,"
-                      "install_project_permission"
+                      "install_project_permission",
                   shell=True)
 
 
