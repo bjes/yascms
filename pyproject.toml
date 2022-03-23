@@ -23,6 +23,7 @@ email_validator = "*"
 pillow = "*"
 pyramid-session-redis = "*"
 Authlib = "*"
+pyramid_exclog = "*"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "*"
