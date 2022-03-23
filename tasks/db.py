@@ -59,7 +59,7 @@ def import_init_data(c, ini_file=None):
     c.run(f'initialize_tp_yass_db {ini_file}')
 
 
-@task(db_delete, db_create, init_db, name='init-test', optional=['ini_file'])
+@task(import_init_data, name='init-test', optional=['ini_file'])
 def init_test_db(c, ini_file=None):
     """匯入開發測試用的初始資料"""
 
