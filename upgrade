@@ -3,6 +3,7 @@ import subprocess
 
 
 def main():
+    subprocess.run("./install -d", shell=True)
     subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml "
                        "--extra-vars='@ansible/production.conf' --tags "
                        "letsencrypt_auth,"
