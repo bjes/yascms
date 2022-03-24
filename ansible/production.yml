@@ -24,13 +24,6 @@
           import_tasks: _db_tasks.yml
           tags:
             - install_project_db
-        # 只有更新專案時才需要執行 db schema upgrade
-        - name: upgrade db schema
-          ansible.builtin.command: ".venv/bin/poetry run inv db.upgrade"
-          args:
-            chdir: "{{ project_base_dir }}"
-          tags:
-            - upgrade_db_schema
         - name: import permission tasks
           import_tasks: _permission_tasks.yml
           tags:
