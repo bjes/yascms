@@ -41,12 +41,21 @@ def db_delete(c, ini_file=None):
 
 @task(db_create, name='init', optional=['ini_file'])
 def init_db(c, ini_file=None):
-    """建立資料庫的 schema 並匯入初始資料"""
+    """建立資料庫的 schema"""
 
     if ini_file is None:
         ini_file = find_ini_file()
 
     c.run(f'alembic -c {ini_file} upgrade head')
+
+
+@task(init_db, name='import-init-data', optional=['ini_file'])
+def import_init_data(c, ini_file=None):
+    """匯入初始資料至資料庫"""
+
+    if ini_file is None:
+        ini_file = find_ini_file()
+
     c.run(f'initialize_tp_yass_db {ini_file}')
 
 
