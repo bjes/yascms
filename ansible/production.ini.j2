@@ -98,7 +98,7 @@ handlers = rotating_file, mattermost
 {% else %}
 handlers = rotating_file
 {% endif %}
-qualname = tp_yass_{{ project_abbr_name }}
+qualname = tp_yass
 
 [logger_exc_logger]
 level = ERROR
@@ -107,7 +107,7 @@ handlers = exc_handler, mattermost
 {% else %}
 handlers = exc_handler
 {% endif %}
-qualname = exc_logger_{{ project_abbr_name }}
+qualname = exc_logger
 
 [logger_sqlalchemy]
 level = WARN
@@ -129,7 +129,7 @@ formatter = generic
 class = handlers.RotatingFileHandler
 args = ('%(here)s/tp_yass/logs/exceptions.log', 'a', 102400, 5)
 level = ERROR
-formatter = exc_formatter
+formatter = generic
 
 {% if mattermost_logging_enabled %}
 [handler_mattermost]
@@ -140,7 +140,4 @@ formatter = generic
 {% endif %}
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s:%(lineno)s][%(threadName)s] %(message)s
-
-[formatter_exc_formatter]
-format = %(asctime)s %(message)s
+format = %(asctime)s %(levelname)-5.5s [{{ project_abbr_name }}:%(name)s:%(lineno)s][%(threadName)s] %(message)s
