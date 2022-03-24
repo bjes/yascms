@@ -24,7 +24,7 @@
         regexp: "^sqlalchemy.url =$"
         line: "sqlalchemy.url = mysql+pymysql://{{ db_user }}:{{ db_pass }}@localhost/{{ db_name }}?charset=utf8mb4"
     - name: 建立測試資料庫並建立測試資料
-      ansible.builtin.shell: .venv/bin/poetry run inv db.delete db.init-test
+      ansible.builtin.shell: .venv/bin/poetry run inv db.delete db.import-test-data
       args:
         chdir: ".."
     - name: "顯示提示資訊"

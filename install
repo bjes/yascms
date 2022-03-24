@@ -38,11 +38,11 @@ def main():
         # 如果只下 ./install 後面沒加上任何參數，代表要走單機佈署模式，會將整個系統環境與相依的系統套件都一並安裝設定
         if args.project_packages == "default":
             check_perm()
-            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml --skip-tags upgrade_db_schema "
+            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml "
                                "--extra-vars='@ansible/production.conf'",
                            shell=True)
         else:
-            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml --skip-tags upgrade_db_schema "
+            subprocess.run(".venv/bin/poetry run ansible-playbook ansible/production.yml "
                                "--extra-vars='@ansible/production.conf' --tags install_project",
                            shell=True)
 

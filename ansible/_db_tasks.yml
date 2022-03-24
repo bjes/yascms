@@ -1,5 +1,13 @@
 ---
-- name: 執行資料庫初始化
-  ansible.builtin.command: .venv/bin/poetry run inv db.init
+- name: 執行資料庫 schema migration
+  ansible.builtin.command: .venv/bin/poetry run inv db.upgrade
   args:
     chdir: "{{ project_base_dir }}"
+  tags:
+    - install_project_db_upgrade
+- name: 匯入初始資料庫資料
+  ansible.builtin.command: .venv/bin/poetry run inv db.import-init-data
+  args:
+    chdir: "{{ project_base_dir }}"
+  tags:
+    - install_project_db_import_init_data

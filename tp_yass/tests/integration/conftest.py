@@ -91,5 +91,5 @@ def init_test_data():
             each_theme.unlink()
     for each_banner in pathlib.Path(HERE / 'tp_yass/uploads/themes/tp_yass2020/banners/').glob('*'):
         each_banner.unlink()
-    subprocess.run(['inv', 'db.delete', 'file.delete', 'db.init-test'])
+    subprocess.run(['inv', 'db.delete', 'file.delete', 'db.import-test-data'])
     os.chdir(cwd)

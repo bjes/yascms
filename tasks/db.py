@@ -39,9 +39,9 @@ def db_delete(c, ini_file=None):
     c.run(f"sudo redis-cli FLUSHDB")
 
 
-@task(db_create, name='init', optional=['ini_file'])
-def init_db(c, ini_file=None):
-    """建立資料庫的 schema"""
+@task(db_create, name='upgrade', optional=['ini_file'])
+def upgrade_db(c, ini_file=None):
+    """將資料庫的 schema 更新至最新"""
 
     if ini_file is None:
         ini_file = find_ini_file()
@@ -49,7 +49,7 @@ def init_db(c, ini_file=None):
     c.run(f'alembic -c {ini_file} upgrade head')
 
 
-@task(init_db, name='import-init-data', optional=['ini_file'])
+@task(upgrade_db, name='import-init-data', optional=['ini_file'])
 def import_init_data(c, ini_file=None):
     """匯入初始資料至資料庫"""
 
@@ -59,24 +59,14 @@ def import_init_data(c, ini_file=None):
     c.run(f'initialize_tp_yass_db {ini_file}')
 
 
-@task(import_init_data, name='init-test', optional=['ini_file'])
-def init_test_db(c, ini_file=None):
+@task(import_init_data, name='import-test-data', optional=['ini_file'])
+def import_test_data(c, ini_file=None):
     """匯入開發測試用的初始資料"""
 
     if ini_file is None:
         ini_file = find_ini_file()
 
     import_test_db_data(ini_file)
-
-
-@task(name='upgrade', optional=['ini_file'])
-def db_upgrade(c, ini_file=None):
-    """將資料庫 schema migrate 至最新版"""
-
-    if ini_file is None:
-        ini_file = find_ini_file()
-
-    c.run(f'alembic -c {ini_file} upgrade head')
 
 
 @task(name='downgrade', optional=['ini_file'])

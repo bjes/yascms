@@ -93,7 +93,7 @@ cp development.ini.sample development.ini
 # 至少要修改 development.ini 的 sqlalchemy.url 設定，
 # 以對應實際的資料庫設定。請參考檔案內相關註解。
 # 修改完成後再執行以下指令
-.venv/bin/inv db.init-test file.delete
+.venv/bin/inv db.file.delete db.import-test-data
 ```
 
 
