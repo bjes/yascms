@@ -39,12 +39,12 @@ class SiteConfigView:
             for each_config in db_site_config_list:
                 if key == each_config.name:
                     if each_config.type == 'int' and not value.isdigit():
-                        msg = f'系統設定 {key} 其值 {value} 不合法 int'
+                        msg = f'系統設定 {key} 其值 {value} 不合法，必須為整數'
                         logger.error(msg)
                         self.request.session.flash(msg, 'fail')
                         return False
                     if each_config.type == 'bool' and value not in ('true', 'false'):
-                        msg = f'系統設定 {key} 其值 {value} 不合法 bool'
+                        msg = f'系統設定 {key} 其值 {value} 不合法，必須為 true/yes 或 false/no'
                         logger.error(msg)
                         self.request.session.flash(msg, 'fail')
                         return False
