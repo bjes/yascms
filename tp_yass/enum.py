@@ -29,6 +29,16 @@ class NavbarType(IntEnum):
     BUILTIN_LINKS = 8
 
 
+class NavbarLeafNodeType(IntEnum):
+    """用來表示 navbar 類型或是 leaf node 時其指涉的連結類型"""
+
+    # 1 代表指涉的是單一頁面
+    PAGE = 1
+
+    # 2 代表指涉的是 URL 連結
+    URL = 2
+
+
 class AuthLogType(IntEnum):
     """用來表示 auth log 的類型"""
 
