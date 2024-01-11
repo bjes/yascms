@@ -22,7 +22,7 @@ class NavbarForm(Form):
                                 (NavbarType.DROPDOWN_DIVIDER.value, '分隔線')],
                        coerce=int)
 
-    aria_name = StringField('無障礙導覽列英文名稱 (導覽列選單必須設定)')
+    aria_name = StringField('無障礙導覽列英文名稱*')
 
     def validate_aria_name(form, field):
         if field.data:
