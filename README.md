@@ -82,7 +82,7 @@ python3 -m venv .venv
 * 同步開發專案需要安裝的套件
 
 ```shell
-poetry install
+.venv/bin/poetry install
 ```
 
 
@@ -93,20 +93,20 @@ cp development.ini.sample development.ini
 # 至少要修改 development.ini 的 sqlalchemy.url 設定，
 # 以對應實際的資料庫設定。請參考檔案內相關註解。
 # 修改完成後再執行以下指令
-.venv/bin/inv db.file.delete db.import-test-data
+.venv/bin/poetry run inv file.delete db.import-test-data
 ```
 
 
 * 執行測試
 
 ```shell
-.venv/bin/inv test.all
+.venv/bin/poetry run inv test.all
 ```
 
 * 於本機開發環境啟動專案
 
 ```shell
-.venv/bin/pserve development.ini --reload
+.venv/bin/poetry run pserve development.ini --reload
 ```
 
 ## 相關投影片
