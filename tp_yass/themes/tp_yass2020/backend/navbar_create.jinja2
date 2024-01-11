@@ -117,15 +117,17 @@
     }
     $('#type').change(function() {
       switch (parseInt($(this).val())) {
-        case 1:
+        case {{ NavbarType.TREE_NODE.value }}:
+          $('#name').val('');
           $('#is_href_blank_group, #link-card').hide();
           $('#aria_name_group, #name_group').show();
           break;
-        case 2:
+        case {{ NavbarType.LEAF_NODE.value }}:
+          $('#name').val('');
           $('#is_href_blank_group, #name_group, #link-card').show();
           $('#aria_name_group').hide();
           break;
-        case 3:
+        case {{ NavbarType.DROPDOWN_DIVIDER.value }}:
           $('#name_group, #aria_name_group, #icon_group, #is_href_blank_group, #link-card').hide();
           $('#name').val('分隔線');
           break;
