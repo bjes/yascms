@@ -3,9 +3,11 @@ name = "tp_yass"
 version = "0.0.1"
 description = "臺北市高國中小網站集中化系統"
 authors = ["William Wu <william@pylabs.org>"]
+readme = "README.md"
+packages = [{include = "tp_yass"}]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.11"
 invoke = "*"
 pyramid = "*"
 pyramid_mailer = "*"
@@ -45,8 +47,8 @@ pytest-datadir = "*"
 Cython = "*"
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."paste.app_factory"]
 main = "tp_yass:main"
