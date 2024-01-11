@@ -25,7 +25,8 @@ from tp_yass.models.theme_config import ThemeConfigModel
 from tp_yass.models.auth_log import AuthLogModel
 from tp_yass.models.account import EmailModel
 from tp_yass.models.api_token import APITokenModel
-from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType, AuthLogType
+from tp_yass.enum import GroupType, NavbarType, EmailType, PinnedType, AuthLogType, NavbarLeafNodeType
+from tp_yass.exceptions import TpYassError
 
 
 logger = logging.getLogger(__name__)
@@ -687,13 +688,16 @@ class DAL:
             if form_data.aria_name.data:
                 navbar.aria_name = form_data.aria_name.data
             else:
-                logger.error('intermediate node 應該設定無障礙英文名稱')
+                logger.error('tree node 應該設定無障礙英文名稱')
                 return False
         elif form_data.type.data == NavbarType.LEAF_NODE.value:
             # leaf node
             navbar.type = NavbarType.LEAF_NODE.value
             navbar.name = form_data.name.data
-            if int(form_data.leaf_type.data) == 1:
+            if not form_data.leaf_type.data.isdigit():
+                logger.error('leaf node type 值應為數值')
+                return False
+            if int(form_data.leaf_type.data) == NavbarLeafNodeType.PAGE:
                 if form_data.page_id.data:
                     page = DAL.get_page(int(form_data.page_id.data))
                     if page:
@@ -705,13 +709,16 @@ class DAL:
                 else:
                     logger.error('沒有指定連結的 page id')
                     return False
-            elif int(form_data.leaf_type.data) == 2:
+            elif int(form_data.leaf_type.data) == NavbarLeafNodeType.URL:
                 if form_data.url.data:
                     navbar.url = form_data.url.data
                     navbar.page = None
                 else:
                     logger.error('沒有指定連結的網址')
                     return False
+            else:
+                logger.error(f'leaf node type 為非法數值 {form_data.leaf_type.data}')
+                return False
             navbar.is_href_blank = 1 if form_data.is_href_blank.data else 0
             if form_data.icon.data:
                 navbar.icon = form_data.icon.data
