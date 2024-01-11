@@ -14,7 +14,7 @@ def convert_image_file(file_path, destination_path) -> bool:
     im = Image.open(file_path)
     if im.mode in ('RGBA', 'P'):
         im = im.convert('RGB')
-    new_im = im.resize((120, 60), Image.ANTIALIAS)
+    new_im = im.resize((120, 60), Image.LANCZOS)
     new_im.save(destination_path, quality=100)
     return destination_path.split('/')[-1]
 

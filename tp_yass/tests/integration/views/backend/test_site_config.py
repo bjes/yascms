@@ -21,7 +21,7 @@ def test_site_config_view(webtest_admin_testapp):
     form['site_zip'] = 'foo'
     response = form.submit()
     assert response.status_int == 200
-    assert '不合法 int' in response.body.decode('utf8')
+    assert '系統設定 site_zip 其值 foo 不合法，必須為整數' in response.body.decode('utf8')
 
     # 成功修改
     changed_name = 'foobar'
