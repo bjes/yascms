@@ -4,7 +4,7 @@
 
 <http://demo.bjes.tp.edu.tw>
 
-最高管理者帳號密碼為 admin / admin
+最高管理者帳號密碼為 admin / admin4tp_yass
 
 一般使用者有兩組帳號，一組是 user1 / user1 ，另一組是 user2 / user2 。
 
