@@ -123,6 +123,9 @@ def setup_models(dbsession):
     dbsession.add(models.news.NewsCategoryModel(name='學校榮譽'))
     dbsession.add(models.news.NewsCategoryModel(name='教師甄試'))
 
+    # 建立預設的好站連結群組
+    dbsession.add(models.link.LinkCategoryModel(name='未分類'))
+
     dbsession.commit()
 
 
