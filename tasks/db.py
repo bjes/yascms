@@ -3,7 +3,7 @@ import subprocess
 
 from invoke import Collection, task
 
-from tp_yass.tests.helper import get_ini_settings, import_test_db_data
+from yascms.tests.helper import get_ini_settings, import_test_db_data
 from .helper import find_ini_file
 
 
@@ -56,7 +56,7 @@ def import_init_data(c, ini_file=None):
     if ini_file is None:
         ini_file = find_ini_file()
 
-    c.run(f'initialize_tp_yass_db {ini_file}')
+    c.run(f'initialize_yascms_db {ini_file}')
 
 
 @task(import_init_data, name='import-test-data', optional=['ini_file'])

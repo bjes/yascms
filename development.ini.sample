@@ -4,7 +4,7 @@
 ###
 
 [app:main]
-use = egg:tp_yass
+use = egg:yascms
 
 pyramid.reload_templates = true
 pyramid.debug_authorization = false
@@ -23,16 +23,16 @@ jinja2.filters =
 jinja2.lstrip_blocks = true
 jinja2.trim_blocks = true
 
-project_abbr_name = tp_yass
+project_abbr_name = yascms
 
 # secret key for pyramid security framework
 auth.secret = CHANGE_ME
 
 # pyramid_session_redis settings
-redis.sessions.prefix = tp_yass-
+redis.sessions.prefix = yascms-
 redis.sessions.secret = COOKIE_SIGNING_SECRET
 redis.sessions.timeout = 86400
-redis.sessions.cookie_name = tp_yass
+redis.sessions.cookie_name = yascms
 redis.sessions.cookie_max_age = 86400
 redis.sessions.cookie_path = /
 redis.sessions.cookie_domain =
@@ -59,7 +59,7 @@ retry.attempts = 3
 
 [alembic]
 # path to migration scripts
-script_location = tp_yass/alembic
+script_location = yascms/alembic
 file_template = %%(year)d%%(month).2d%%(day).2d_%%(rev)s
 # file_template = %%(rev)s_%%(slug)s
 
@@ -73,7 +73,7 @@ listen = localhost:6543
 ###
 
 [loggers]
-keys = root, tp_yass, sqlalchemy, alembic
+keys = root, yascms, sqlalchemy, alembic
 
 [handlers]
 keys = console
@@ -85,10 +85,10 @@ keys = generic
 level = INFO
 handlers = console
 
-[logger_tp_yass]
+[logger_yascms]
 level = DEBUG
 handlers =
-qualname = tp_yass
+qualname = yascms
 
 [logger_sqlalchemy]
 level = INFO

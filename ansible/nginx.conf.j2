@@ -51,23 +51,23 @@ server {
     }
 
     location /css {
-        alias {{ project_base_dir }}/tp_yass/themes/default/static/css;
+        alias {{ project_base_dir }}/yascms/themes/default/static/css;
     }
 
     location /js {
-        alias {{ project_base_dir }}/tp_yass/themes/default/static/js;
+        alias {{ project_base_dir }}/yascms/themes/default/static/js;
     }
     
     location /img {
-        alias {{ project_base_dir }}/tp_yass/themes/default/static/img;
+        alias {{ project_base_dir }}/yascms/themes/default/static/img;
     }
     
     location /uploads {
-        alias {{ project_base_dir }}/tp_yass/uploads;
+        alias {{ project_base_dir }}/yascms/uploads;
     }
     
     location ~ ^/[a-zA-Z0-9-_]+\.[a-zA-Z0-9]+$ {
-        alias {{ project_base_dir }}/tp_yass/uploads/webroot;
+        alias {{ project_base_dir }}/yascms/uploads/webroot;
     }
 
     location /.well-known {

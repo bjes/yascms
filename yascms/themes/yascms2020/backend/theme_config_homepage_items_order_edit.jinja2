@@ -1,0 +1,395 @@
+{% extends 'layouts/master.jinja2' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">樣板管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_theme_config_list') }}">樣板列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ theme_config['name'] }} 樣板設定</li>
+        </ol>
+      </nav>
+    </div>
+
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_general_edit', theme_name=theme_config['name']) }}">一般設定</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ request.route_url('backend_theme_config_homepage_items_order_edit', theme_name=theme_config['name']) }}">首頁物件順序設定</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_edit', theme_name=theme_config['name']) }}">橫幅設定</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('backend_theme_config_banners_upload', theme_name=theme_config['name']) }}">上傳橫幅</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <form action="" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <input type="hidden" name="config" id="json_config">
+            <div class="alert alert-info" role="alert">拖曳下方區塊 <i class="bi bi-arrows-move"></i> 處以調整首頁的顯示順序</div>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-primary">儲存</button>
+              <div>
+                <button type="button" class="btn btn-primary" id="top-add-news-block-button" data-title="最新消息區塊"><i class="bi bi-arrow-up-circle"></i> 新增最新消息區塊</button>
+                <button type="button" class="btn btn-primary" id="top-add-page-block-button" data-title="單一頁面區塊"><i class="bi bi-arrow-up-circle"></i> 新增單一頁面區塊</button>
+                <button type="button" class="btn btn-primary" id="top-add-link-block-button" data-title="好站連結區塊"><i class="bi bi-arrow-up-circle"></i> 新增好站連結區塊</button>
+                <button type="button" class="btn btn-primary" id="top-add-telext-block-button" data-title="分機表區塊"><i class="bi bi-arrow-up-circle"></i> 新增分機表區塊</button>
+              </div>
+            </div>
+            <div id="sortable-cards">
+            {% for each_homepage_item in theme_config['settings']['homepage_items_order']['value'] %}
+              <div class="card border-dark my-3">
+                <div class="card-header">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <i class="bi bi-arrows-move"></i>
+                      {% if each_homepage_item['type'] == HomepageItemType.NEWS.value %}
+                        最新消息區塊
+                      {% elif each_homepage_item['type'] == HomepageItemType.PAGE.value %}
+                        單一頁面區塊
+                      {% elif each_homepage_item['type'] == HomepageItemType.TELEXT.value %}
+                        分機表區塊
+                      {% elif each_homepage_item['type'] == HomepageItemType.LINKS.value %}
+                        好站連結區塊
+                      {% endif %}
+                    </div>
+                    <div><button type="button" class="btn btn-danger">刪除</button></div>
+                  </div>
+                </div>
+                {% if each_homepage_item['type'] == HomepageItemType.NEWS.value %}
+                  <div class="card-body text-dark" data-type="news">
+                {% elif each_homepage_item['type'] == HomepageItemType.PAGE.value %}
+                  <div class="card-body text-dark" data-type="page">
+                {% elif each_homepage_item['type'] == HomepageItemType.TELEXT.value %}
+                  <div class="card-body text-dark" data-type="telext">
+                {% elif each_homepage_item['type'] == HomepageItemType.LINKS.value %}
+                  <div class="card-body text-dark" data-type="link">
+                {% endif %}
+                  <div class="form-group">
+                    <label for="block_name_{{ loop.index }}">區塊名稱</label>
+                    <input type="text" class="form-control" name="block_name" id="block_name_{{ loop.index }}" value="{{ each_homepage_item['name'] }}">
+                    <small class="form-text text-muted">自訂這個區塊的名稱以方便記憶</small>
+                  </div>
+                  {% if each_homepage_item['type'] == HomepageItemType.NEWS.value %}
+                    <div class="form-group">
+                      <label for="news_sub_type_{{ loop.index }}">顯示分類</label>
+                      <select name="news_sub_type" id="news_sub_type_{{ loop.index }}" class="form-control">
+                        <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+                        {% for each_news_category in news_category_list %}
+                          {% if each_news_category.id == each_homepage_item['params']['sub_type'] %}
+                            <option value="{{ each_news_category.id }}" selected>{{ each_news_category.name }}</option>
+                          {% else %}
+                            <option value="{{ each_news_category.id }}">{{ each_news_category.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                      <small class="form-text text-muted">顯示指定分類的最新消息</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="news_quantity_{{ loop.index }}">顯示數量</label>
+                      <input type="text" class="form-control" name="news_quantity" id="news_quantity_{{ loop.index }}" value="{{ each_homepage_item['params']['quantity'] }}">
+                    </div>
+                    <div class="form-group">
+                      <label for="news_icon_{{ loop.index }}">區塊圖示</label>
+                      <input type="text" class="form-control" name="news_icon" id="news_icon_{{ loop.index }}" value="{{ each_homepage_item['params']['icon'] }}">
+                    </div>
+                  {% elif each_homepage_item['type'] == HomepageItemType.PAGE.value %}
+                    <div class="form-group">
+                      <label for="page_id_{{ loop.index }}">選擇單一頁面</label>
+                      <select name="page_id" id="page_id_{{ loop.index }}" class="form-control">
+                        <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">未選擇</option>
+                        {% for each_page in page_list %}
+                          {% if each_page.id == each_homepage_item['params']['id'] %}
+                            <option value="{{ each_page.id }}" selected>{{ each_page.title }}</option>
+                          {% else %}
+                            <option value="{{ each_page.id }}">{{ each_page.title }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                      <small class="form-text text-muted">選擇顯示的單一頁面</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="page_icon_{{ loop.index }}">區塊圖示</label>
+                      <input type="text" class="form-control" name="page_icon" id="page_icon_{{ loop.index }}" value="{{ each_homepage_item['params']['icon'] }}">
+                    </div>
+                  {% elif each_homepage_item['type'] == HomepageItemType.TELEXT.value %}
+                    <div class="form-group">
+                      <label for="telext_icon_{{ loop.index }}">區塊圖示</label>
+                      <input type="text" class="form-control" name="telext_icon" id="telext_icon_{{ loop.index }}" value="{{ each_homepage_item['params']['icon'] }}">
+                    </div>
+                  {% elif each_homepage_item['type'] == HomepageItemType.LINKS.value %}
+                    <div class="form-group">
+                      <label for="link_sub_type">顯示分類</label>
+                      <select name="link_sub_type" id="link_sub_type_{{ loop.index }}" class="form-control">
+                        <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+                        {% for each_link_category in link_category_list %}
+                          {% if each_link_category.id == each_homepage_item['params']['sub_type'] %}
+                            <option value="{{ each_link_category.id }}" selected>{{ each_link_category.name }}</option>
+                          {% else %}
+                            <option value="{{ each_link_category.id }}">{{ each_link_category.title }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                      <small class="form-text text-muted">顯示指定分類的好站連結</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="link_icon_{{ loop.index }}">區塊圖示</label>
+                      <input type="text" class="form-control" name="link_icon" id="link_icon_{{ loop.index }}" value="{{ each_homepage_item['params']['icon'] }}">
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-primary">儲存</button>
+              <div>
+                <button type="button" class="btn btn-primary" id="bottom-add-news-block-button" data-title="最新消息區塊"><i class="bi bi-arrow-down-circle"></i> 新增最新消息區塊</button>
+                <button type="button" class="btn btn-primary" id="bottom-add-page-block-button" data-title="單一頁面區塊"><i class="bi bi-arrow-down-circle"></i> 新增單一頁面區塊</button>
+                <button type="button" class="btn btn-primary" id="bottom-add-link-block-button" data-title="好站連結區塊"><i class="bi bi-arrow-down-circle"></i> 新增好站連結區塊</button>
+                <button type="button" class="btn btn-primary" id="bottom-add-telext-block-button" data-title="分機表區塊"><i class="bi bi-arrow-down-circle"></i> 新增分機表區塊</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">樣板管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_theme_config_list') }}">樣板列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ theme_config['name'] }} 樣板設定</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/js/sortable-1.14.0.min.js') }}"></script>
+<script>
+  $(function () {
+    // 讓順序可以排序
+    let sortable_cards = document.getElementById('sortable-cards');
+    let sortable = Sortable.create(sortable_cards, {
+      handle: '.bi-arrows-move',
+      animation: 150
+    });
+
+    // 刪除按鈕的功能
+    function delete_card_block(e) {
+      $(this).parent().parent().parent().parent().remove();
+    }
+
+    $('div.card-header button.btn-danger').click(delete_card_block);
+
+    $('#top-add-news-block-button, #top-add-page-block-button, #top-add-link-block-button, ' +
+      '#top-add-telext-block-button, #bottom-add-news-block-button, #bottom-add-page-block-button, ' +
+      '#bottom-add-link-block-button, #bottom-add-telext-block-button').click(function (e) {
+
+      let button_id = $(this).prop('id');
+      let title = $(this).data('title');
+      let block_content = '';
+      let new_block_id = $('#sortable-cards>div.card').length + 1;
+      let block_type = '';
+
+      if (button_id.includes('add-news-block')) {
+        block_type = 'news';
+      } else if (button_id.includes('add-page-block')) {
+        block_type = 'page';
+      } else if (button_id.includes('add-link-block')) {
+        block_type = 'link';
+      } else if (button_id.includes('add-telext-block')) {
+        block_type = 'telext';
+      }
+
+      block_content += `
+        <div class="card border-success my-3">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <i class="bi bi-arrows-move"></i> ${title} <span class="badge badge-success">未儲存</span>
+              </div>
+              <div><button type="button" class="btn btn-danger">刪除</button></div>
+            </div>
+          </div>
+          <div class="card-body text-dark" data-type="${block_type}">
+            <div class="form-group">
+            <label for="block_name_${new_block_id}">區塊名稱</label>
+            <input type="text" class="form-control" name="block_name" id="block_name_${new_block_id}">
+            <small class="form-text text-muted">自訂這個區塊的名稱以方便記憶</small>
+          </div>
+      `;
+
+      if (button_id === 'top-add-news-block-button' || button_id === 'bottom-add-news-block-button') {
+        block_content += `
+        <div class="form-group">
+          <label for="news_sub_type_${new_block_id}">顯示分類</label>
+          <select name="news_sub_type" id="news_sub_type_${new_block_id}" class="form-control">
+            <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>`;
+
+        $.ajax({
+          url: '{{ request.route_url('backend_json_news_category_list') }}',
+          type: 'GET',
+          success: function (data) {
+            $.each(data, function (key, val) {
+              block_content += `<option value="${val['id']}">${val['name']}</option>`;
+            });
+          },
+          error: function () {alert('讀取最新消息分類 api 失敗');},
+          async: false
+        });
+
+        block_content += `
+            </select>
+            <small class="form-text text-muted">顯示指定分類的最新消息</small>
+          </div>
+          <div class="form-group">
+            <label for="news_quantity_${new_block_id}">顯示數量</label>
+            <input type="text" class="form-control" name="news_quantity" id="news_quantity_${new_block_id}">
+          </div>
+        `;
+      } else if (button_id === 'top-add-page-block-button' || button_id === 'bottom-add-page-block-button') {
+        block_content += `
+          <div class="form-group">
+            <label for="page_id_${new_block_id}">選擇單一頁面</label>
+            <select name="page_id" id="page_id_${new_block_id}" class="form-control">
+              <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">未選擇</option>`;
+
+        $.ajax({
+          url: '{{ request.route_url('backend_json_page_list') }}',
+          type: 'GET',
+          success: function (data) {
+            $.each(data, function (key, val) {
+              block_content += `<option value="${val['id']}">${val['title']}</option>`;
+            });
+          },
+          error: function () {alert('讀取單一頁面列表 api 失敗');},
+          async: false
+        });
+
+        block_content += `
+            </select>
+            <small class="form-text text-muted">選擇顯示的單一頁面</small>
+          </div>
+        `;
+      } else if (button_id === 'top-add-link-block-button' || button_id === 'bottom-add-link-block-button') {
+        block_content += `
+          <div class="form-group">
+            <label for="link_sub_type">顯示分類</label>
+            <select name="link_sub_type" id="link_sub_type_${new_block_id}" class="form-control">
+              <option value="{{ HomepageItemParamsSubType.UNSPECIFIED.value }}">不指定</option>
+        `;
+
+        $.ajax({
+          url: '{{ request.route_url('backend_json_link_category_list') }}',
+          type: 'GET',
+          success: function (data) {
+            $.each(data, function (key, val) {
+              block_content += `<option value="${val['id']}">${val['name']}</option>`;
+            });
+          },
+          error: function () {alert('讀取好站連結分類 api 失敗');},
+          async: false
+        });
+
+        block_content += `
+            </select>
+            <small class="form-text text-muted">顯示指定分類的好站連結</small>
+          </div>
+        `;
+      }
+
+      block_content += `
+            <div class="form-group">
+              <label for="${block_type}_icon_${new_block_id}">區塊圖示</label>
+              <input type="text" class="form-control" name="${block_type}_icon" id="${block_type}_icon_${new_block_id}">
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 插入新的 block 並讓刪除按鈕可以運作
+      if (button_id.includes('top')) {
+        $('#sortable-cards>div.card').first().before(block_content).prev().find('.card-header button.btn-danger').click(delete_card_block);
+      } else if (button_id.includes('bottom')) {
+        $('#sortable-cards>div.card').last().after(block_content).next().find('.card-header button.btn-danger').click(delete_card_block);
+      }
+
+    });
+
+    $('form').submit(function() {
+      let post_data = [];
+      $('div.card-body[data-type]').each(function() {
+        switch ($(this).data('type')) {
+          case 'news':
+            post_data.push({
+              name: $(this).find('input[name="block_name"]').val(),
+              type: {{ HomepageItemType.NEWS.value }},
+              params: {
+                sub_type: parseInt($(this).find('select[name="news_sub_type"]').val()),
+                quantity: parseInt($(this).find('input[name="news_quantity"]').val()),
+                icon: $(this).find('input[name="news_icon"]').val()
+              }
+            });
+            break;
+          case 'page':
+            post_data.push({
+              name: $(this).find('input[name="block_name"]').val(),
+              type: {{ HomepageItemType.PAGE.value }},
+              params: {
+                id: parseInt($(this).find('select[name="page_id"]').val()),
+                icon: $(this).find('input[name="page_icon"]').val()
+              }
+            });
+            break;
+          case 'link':
+            post_data.push({
+              name: $(this).find('input[name="block_name"]').val(),
+              type: {{ HomepageItemType.LINKS.value }},
+              params: {
+                sub_type: parseInt($(this).find('select[name="link_sub_type"]').val()),
+                icon: $(this).find('input[name="link_icon"]').val()
+              }
+            });
+            break;
+          case 'telext':
+            post_data.push({
+              name: $(this).find('input[name="block_name"]').val(),
+              type: {{ HomepageItemType.TELEXT.value }},
+              params: {
+                icon: $(this).find('input[name="telext_icon"]').val()
+              }
+            });
+            break;
+          default:
+            alert('程式異常，請聯繫開發人員');
+        }
+      });
+      $('#json_config').val(JSON.stringify(post_data));
+    });
+  });
+</script>
+{% endblock %}

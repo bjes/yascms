@@ -1,0 +1,185 @@
+{% extends 'layouts/master.jinja2' %}
+{% from 'macros.jinja2' import generate_navbar_trees %}
+{% block page_css %}
+<link href="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/css/jquery.bonsai-2.1.1.css') }}" rel="stylesheet">
+{% endblock page_css %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">導覽列管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_navbar_list') }}">導覽列列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立導覽列</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">建立導覽列</div>
+        <div class="card-body">
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for key in form.errors %}
+                  {% for msg in form.errors[key] %}
+                    <li>{{ msg }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+            </div>
+            <div class="form-group">
+              {{ form.type.label() }}
+              {{ form.type(class_='form-control') }}
+            </div>
+            <div class="form-group" id="name_group">
+              {{ form.name.label() }}
+              {{ form.name(class_='form-control', placeholder='請輸入名稱') }}
+            </div>
+            <div class="form-group" id="aria_name_group">
+              {{ form.aria_name.label() }}
+              {{ form.aria_name(class_='form-control', placeholder='請輸入無障礙英文名稱') }}
+            </div>
+            {{ form.leaf_type() }}
+            <div class="card mb-3" id="link-card">
+              <div class="card-header">選擇連結目的</div>
+              <div class="card-body">
+                <p class="card-text">
+                <div>類型：<span id="link_type">未指定</span></div>
+                <div>目的：<span id="link_target"></span></div>
+                </p>
+                <button type="button" class="btn btn-primary" id="btn-choose-page" data-toggle="modal" data-target="#pageModal" data-title="選擇單一頁面">選擇單一頁面</button> <button type="button" class="btn btn-primary" id="btn-choose-url" data-toggle="modal" data-target="#pageModal" data-title="手動輸入網址">手動輸入網址</button>
+              </div>
+            </div>
+            <div class="form-group" id="navbar_group">
+              {{ form.ancestor_id.label() }}
+              {{ generate_navbar_trees('ancestor_id', navbar_trees, False, True) }}
+            </div>
+            <div class="form-group" id="icon_group">
+              {{ form.icon.label() }}
+              {{ form.icon(class_='form-control') }}
+            </div>
+            <div class="form-group form-check" id="is_href_blank_group">
+              {{ form.is_href_blank(class_='form-check-input') }}
+              {{ form.is_href_blank.label(class_="form-check-label") }}
+            </div>
+            <div class="form-group">
+              {{ form.order.label() }}
+              {{ form.order(class_='form-control') }}
+            </div>
+            <div class="form-group form-check">
+              {{ form.is_visible(class_='form-check-input') }}
+              {{ form.is_visible.label(class_="form-check-label") }}
+            </div>
+            <button type="submit" class="btn btn-primary">建立</button> <button type="reset" class="btn btn-danger">重設</button>
+            {% include 'page_modal.jinja2' %}
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">導覽列管理</li>
+          <li class="breadcrumb-item"><a href="{{ request.route_url('backend_navbar_list') }}">導覽列列表</a></li>
+          <li class="breadcrumb-item active" aria-current="page">建立導覽列</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+<script src="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/js/jquery.qubit-2.0.9.js') }}"></script>
+<script src="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/js/jquery.bonsai-2.1.1.js') }}"></script>
+<script>
+  $(function() {
+    let type_value = parseInt($('#type').val());
+    if (type_value === {{ NavbarType.TREE_NODE.value }}) {
+      // 可新增子選單
+      $('#is_href_blank_group, #link-card').hide();
+      $('#aria_name_group, #name_group').show();
+    } else if (type_value === {{ NavbarType.LEAF_NODE.value }}) {
+      // 不可新增子選單
+      $('#is_href_blank_group, #name_group, #link-card').show();
+      $('#aria_name_group').hide();
+    } else if (type_value === {{ NavbarType.DROPDOWN_DIVIDER.value }}) {
+      // 分隔線
+      $('#name_group, #aria_name_group, #icon_group, #is_href_blank_group, #link-card').hide();
+      $('#name').val('分隔線');
+    }
+    $('#type').change(function() {
+      switch (parseInt($(this).val())) {
+        case {{ NavbarType.TREE_NODE.value }}:
+          $('#name').val('');
+          $('#is_href_blank_group, #link-card').hide();
+          $('#aria_name_group, #name_group').show();
+          break;
+        case {{ NavbarType.LEAF_NODE.value }}:
+          $('#name').val('');
+          $('#is_href_blank_group, #name_group, #link-card').show();
+          $('#aria_name_group').hide();
+          break;
+        case {{ NavbarType.DROPDOWN_DIVIDER.value }}:
+          $('#name_group, #aria_name_group, #icon_group, #is_href_blank_group, #link-card').hide();
+          $('#name').val('分隔線');
+          break;
+      }
+    });
+
+    $('#pageModal').on('shown.bs.modal', function (event){
+      let button = $(event.relatedTarget);
+      $('#modal-title').text(button.data('title'));
+      let button_id = button.prop('id');
+      if (button_id === 'btn-choose-page') {
+        $('#modal-loading-icon').show();
+        $.getJSON('{{ request.route_url('backend_json_page_list') }}', function (data) {
+          let page_html_list = [];
+          $.each(data, function (key, val) {
+            page_html_list.push(`<div class="form-group form-check">
+                                <input class="form-check-input" type="radio" name="page_id" id="page_id_${val['id']}" value="${val['id']}">
+                                <label class="form-check-label" for="page_id_${val['id']}"><a href="${val['url']}" target="_blank">${val['title']}</a></label></div>`);
+          });
+          $('#modal-content').html(page_html_list.join(''));
+          $('#modal-loading-icon').hide();
+          $('#modal-content').removeClass('d-none')
+          $('#leaf_type').val(1);
+        });
+      } else if (button_id === 'btn-choose-url') {
+        $('#modal-content').html('<input type="text" class="form-control" name="url" id="url">');
+        $('#modal-loading-icon').hide();
+        $('#modal-content').removeClass('d-none');
+        $('#leaf_type').val(2);
+      }
+    });
+
+    $('#btn_modal_confirm').click(function () {
+      switch (parseInt($('#leaf_type').val())) {
+        case 1:
+          $('#link_type').text('單一頁面');
+          $('#link_target').html($('input[name=page_id]:checked+label>a'));
+          $('#pageModal').modal('hide');
+          break;
+        case 2:
+          $('#link_type').text('自訂網址');
+          let custom_url = $('#url').val();
+          $('#link_target').html(`<a href="${custom_url}" target="_blank">${custom_url}</a>`);
+          $('#pageModal').modal('hide');
+          break;
+      }
+    });
+
+    $('#root-navbar').bonsai({
+      expandAll: true,
+      createInputs: 'radio'
+    });
+  });
+</script>
+{% endblock page_js %}

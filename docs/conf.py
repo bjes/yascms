@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'tp_yass'
+project = 'yascms'
 copyright = '2020, William Wu'
 author = 'William Wu'
 autoclass_content = 'both'

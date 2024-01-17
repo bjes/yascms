@@ -4,7 +4,7 @@
 ###
 
 [app:main]
-use = egg:tp_yass
+use = egg:yascms
 
 pyramid.reload_templates = false
 pyramid.debug_authorization = false
@@ -61,7 +61,7 @@ retry.attempts = 3
 
 [alembic]
 # path to migration scripts
-script_location = tp_yass/alembic
+script_location = yascms/alembic
 file_template = %%(year)d%%(month).2d%%(day).2d_%%(rev)s
 # file_template = %%(rev)s_%%(slug)s
 
@@ -75,7 +75,7 @@ listen = *:6543
 ###
 
 [loggers]
-keys = root, tp_yass, sqlalchemy, alembic, exc_logger
+keys = root, yascms, sqlalchemy, alembic, exc_logger
 
 [handlers]
 {%if mattermost_logging_enabled %}
@@ -91,14 +91,14 @@ keys = generic
 level = WARN
 handlers = rotating_file
 
-[logger_tp_yass]
+[logger_yascms]
 level = WARN
 {%if mattermost_logging_enabled %}
 handlers = rotating_file, mattermost
 {% else %}
 handlers = rotating_file
 {% endif %}
-qualname = tp_yass
+qualname = yascms
 
 [logger_exc_logger]
 level = ERROR
@@ -121,19 +121,19 @@ qualname = alembic
 
 [handler_rotating_file]
 class = handlers.RotatingFileHandler
-args = ('%(here)s/tp_yass/logs/logs.log', 'a', 102400, 5)
+args = ('%(here)s/yascms/logs/logs.log', 'a', 102400, 5)
 level = NOTSET
 formatter = generic
 
 [handler_exc_handler]
 class = handlers.RotatingFileHandler
-args = ('%(here)s/tp_yass/logs/exceptions.log', 'a', 102400, 5)
+args = ('%(here)s/yascms/logs/exceptions.log', 'a', 102400, 5)
 level = ERROR
 formatter = generic
 
 {% if mattermost_logging_enabled %}
 [handler_mattermost]
-class = tp_yass.logging.MattermostHandler
+class = yascms.logging.MattermostHandler
 args = ("{{ mattermost_channel_name }}", "{{ mattermost_channel_url }}")
 level = NOTSET
 formatter = generic

@@ -10,5 +10,5 @@ def test_all(c):
 @task(name='gen-cov')
 def test_gen_cov(c):
     """Generate test coverage"""
-    c.run('pytest --cov=tp_yass')
+    c.run('pytest --cov=yascms')
 

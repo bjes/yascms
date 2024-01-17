@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "tp_yass"
+name = "yascms"
 version = "0.0.1"
-description = "臺北市高國中小網站集中化系統"
+description = "又來一個學校內容管理系統"
 authors = ["William Wu <william@pylabs.org>"]
 readme = "README.md"
-packages = [{include = "tp_yass"}]
+packages = [{include = "yascms"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -51,7 +51,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."paste.app_factory"]
-main = "tp_yass:main"
+main = "yascms:main"
 
 [tool.poetry.plugins."console_scripts"]
-initialize_tp_yass_db = "tp_yass.scripts.initialize_db:main"
+initialize_yascms_db = "yascms.scripts.initialize_db:main"

@@ -12,10 +12,10 @@
           import_tasks: _production_ini_tasks.yml
           tags:
             - install_project_production_ini_config
-        - name: import theme tp_yass2020 tasks
-          import_tasks: _theme_tp_yass2020_tasks.yml
+        - name: import theme yascms2020 tasks
+          import_tasks: _theme_yascms2020_tasks.yml
           tags:
-            - install_project_theme_tp_yass2020
+            - install_project_theme_yascms2020
         - name: 使用 poetry 安裝專案相依套件
           import_tasks: _poetry_install_packages_tasks.yml
           tags:

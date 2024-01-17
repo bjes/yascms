@@ -11,14 +11,14 @@ __pycache__
 .idea/workspace.xml
 .idea/dataSources/
 .idea/dataSources.local.xml
-tp_yass/uploads/
-tp_yass/logs/
-tp_yass/themes/*
-!tp_yass/themes/tp_yass2020
-tp_yass/static/*
-!tp_yass/static/tp_yass2020
+yascms/uploads/
+yascms/logs/
+yascms/themes/*
+!yascms/themes/yascms2020
+yascms/static/*
+!yascms/static/yascms2020
 docs/_build/
-docs/tp_yass/
+docs/yascms/
 docs/images/uml_class_diagram.png
 docs/images/package_import_diagram.png
 

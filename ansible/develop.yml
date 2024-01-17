@@ -3,7 +3,7 @@
   connection: local
   gather_facts: no
   tasks:
-    # $PWD 會在 tp_yass/ansible 這個目錄，所以所有的路徑要記得指定回上一層
+    # $PWD 會在 yascms/ansible 這個目錄，所以所有的路徑要記得指定回上一層
     - name: 建立專案環境
       ansible.builtin.shell: ./install -d
       args:

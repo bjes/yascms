@@ -17,7 +17,7 @@ API References
    :maxdepth: 3
 
    architecture_diagrams
-   tp_yass/modules
+   yascms/modules
 
 
 索引表與搜尋

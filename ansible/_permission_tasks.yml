@@ -1,7 +1,7 @@
 ---
 - name: 設定目錄權限
   ansible.builtin.file:
-    path: "{{ project_base_dir  }}/tp_yass/{{ item }}"
+    path: "{{ project_base_dir  }}/yascms/{{ item }}"
     owner: "www-data"
     group: "www-data"
     mode: "o-rwx"

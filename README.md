@@ -4,7 +4,7 @@
 
 <http://demo.bjes.tp.edu.tw>
 
-最高管理者帳號密碼為 admin / admin4tp_yass
+最高管理者帳號密碼為 admin / admin4yascms
 
 一般使用者有兩組帳號，一組是 user1 / user1 ，另一組是 user2 / user2 。
 
@@ -23,7 +23,7 @@
 
 ## 如何回報問題
 
-若您對網站的功能有各種功能上的建議，或是發現 bugs，都歡迎回報讓我們知道！ 回報的網址在 <https://github.com/tcenc/tp_yass/issues> ，您需要先申請 [GitHub](https://github.com) 的帳號才能上去建立 issue 回報。
+若您對網站的功能有各種功能上的建議，或是發現 bugs，都歡迎回報讓我們知道！ 回報的網址在 <https://github.com/tcenc/yascms/issues> ，您需要先申請 [GitHub](https://github.com) 的帳號才能上去建立 issue 回報。
 
 ## 如何開發
 
@@ -41,7 +41,7 @@
 export GIT_BASE_DIR=~/git
 mkdir -p $GIT_BASE_DIR
 cd $GIT_BASE_DIR
-git clone https://webcode.tp.edu.tw/tcenc/tp_yass.git
+git clone https://webcode.tp.edu.tw/tcenc/yascms.git
 ```
 
 ### 建立開發環境
@@ -68,7 +68,7 @@ ansible-playbook develop.yml
 * 建立專案運行的 venv 環境
 
 ```shell
-cd tp_yass
+cd yascms
 # 在 Debian 上需要安裝 python3-venv 套件
 python3 -m venv .venv
 ```

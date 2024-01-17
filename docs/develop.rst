@@ -49,7 +49,7 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   git clone https://webcode.tp.edu.tw/tcenc/tp_yass.git
+   git clone https://webcode.tp.edu.tw/tcenc/yascms.git
 
 建立開發環境
 ------------
@@ -71,7 +71,7 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   cd tp_yass
+   cd yascms
    ~/.local/bin/ansible-playbook ansible/development.yml --extra-vars "db_name=資料庫名稱 db_user=資料庫帳號 db_pass=資料庫密碼"
 
 
@@ -83,7 +83,7 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   cd tp_yass
+   cd yascms
    python3 -m venv .venv
 
 更新套件管理工具
