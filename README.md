@@ -23,7 +23,7 @@
 
 ## 如何回報問題
 
-若您對網站的功能有各種功能上的建議，或是發現 bugs，都歡迎回報讓我們知道！ 回報的網址在 <https://github.com/tcenc/yascms/issues> ，您需要先申請 [GitHub](https://github.com) 的帳號才能上去建立 issue 回報。
+若您對網站的功能有各種功能上的建議，或是發現 bugs，都歡迎回報讓我們知道！ 回報的網址在 <https://github.com/fossnio/yascms/issues> ，您需要先申請 [GitHub](https://github.com) 的帳號才能上去建立 issue 回報。
 
 ## 如何開發
 
