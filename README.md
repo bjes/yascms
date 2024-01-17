@@ -41,7 +41,7 @@
 export GIT_BASE_DIR=~/git
 mkdir -p $GIT_BASE_DIR
 cd $GIT_BASE_DIR
-git clone https://webcode.tp.edu.tw/tcenc/yascms.git
+git clone https://github.com/fossnio/yascms.git
 ```
 
 ### 建立開發環境

@@ -1,7 +1,7 @@
 ---
 - name: 下載益教網製作的圖示作為 favicon
   ansible.builtin.unarchive:
-    src: "https://webcode.tp.edu.tw/tcenc/yascms_arts/raw/branch/master/webroot.tar.gz"
+    src: "https://github.com/fossnio/yascms_arts/raw/master/webroot.tar.gz"
     dest: "{{ project_base_dir }}/yascms/webroot/"
     remote_src: yes
 - name: 確認 uploads/themes/yascms2020/banners 目錄存在

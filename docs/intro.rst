@@ -6,7 +6,7 @@
 
 本專案為臺北市教育局為因應教育部向上集中政策，自主開發的集中化網站系統。
 
-本專案的原始碼採 AGPL 3.0 開放原始碼授權釋出，原始碼託管網站為 https://webcode.tp.edu.tw/tcenc/yascms ，
+本專案的原始碼採 AGPL 3.0 開放原始碼授權釋出，原始碼託管網站為 https://github.com/fossnio/yascms ，
 patches welcome!
 
 

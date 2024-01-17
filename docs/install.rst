@@ -21,7 +21,7 @@ yascms 支援單一佈署，但目前支援的作業系統只有 Debian Buster 1
    # 比方把專案都放到 /srv/www 目錄下，網站網域為 tpyass-demo.fossn.io
    mkdir -p /srv/www
    cd /srv/www
-   git clone https://webcode.tp.edu.tw/tcenc/yascms tpyass-demo.fossn.io
+   git clone https://github.com/fossnio/yascms tpyass-demo.fossn.io
    cd tpyass-demo.fossn.io
    cp ansible/production.conf.sample ansible/production.conf
    # 修改完 ansible/production.conf 的設定值後執行佈署

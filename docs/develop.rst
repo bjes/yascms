@@ -49,7 +49,7 @@ MariaDB 卻不支援。所以我們要另外安裝 MySQL 的分支 `Percona Serv
 .. code-block:: bash
    :linenos:
 
-   git clone https://webcode.tp.edu.tw/tcenc/yascms.git
+   git clone https://github.com/fossnio/yascms.git
 
 建立開發環境
 ------------
