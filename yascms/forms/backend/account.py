@@ -85,8 +85,8 @@ class GroupCreateForm(Form):
     type = SelectField('類別*',
                        [InputRequired('群組類別為必填')],
                        choices=[(GroupType.STAFF.value, '行政群組'),
-                                (GroupType.NORMAL.value, '普通群組'),
-                                (GroupType.ADMIN.value, '管理者')],
+                                (GroupType.NORMAL.value, '一般群組'),
+                                (GroupType.ADMIN.value, '管理群組')],
                        coerce=int)
 
     email = FieldList(FormField(EmailForm))
