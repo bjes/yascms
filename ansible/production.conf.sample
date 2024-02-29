@@ -69,9 +69,6 @@ mattermost_channel_name:
 # mattermost 的 incoming hook 的網址
 mattermost_channel_url:
 
-# uwsgi 的版本
-uwsgi_version: "2.0.20"
-
 # uwsgi 的 socket host
 uwsgi_socket_host: localhost
 
