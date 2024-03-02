@@ -190,12 +190,12 @@ class GroupDeleteView:
     @view_config(request_method='GET')
     def get_view(self):
         group_id = int(self.request.matchdict['group_id'])
-        invalid_check = self._check_if_invalid_group_editing(group_id)
-        if invalid_check:
-            return invalid_check
+        invalid_permission = check_editing_permission(group_id)
+        if invalid_permission:
+            return invalid_permission
         group = DAL.get_group(group_id)
         if group:
-            DAL.change_group_ancestor_id(group_id, group.ancestor_id)
+            DAL.move_group_descendants_to_upper_level(group)
             DAL.delete_group(group)
             msg = f'{group.name} 群組刪除成功'
             logger.info(msg)
@@ -204,3 +204,4 @@ class GroupDeleteView:
         else:
             logger.error('找不到群組 ID %d', group_id)
             return HTTPNotFound()
+

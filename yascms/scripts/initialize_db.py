@@ -19,7 +19,7 @@ def setup_models(dbsession):
     """
 
     # 建立根群組
-    root_group = models.account.GroupModel(name='根群組', type=2)
+    root_group = models.account.GroupModel(name='根群組', type=2, depth=1)
     dbsession.add(root_group)
 
     # 建立管理者 Email
@@ -27,7 +27,7 @@ def setup_models(dbsession):
 
 
     # 建立管理者帳號
-    group = models.account.GroupModel(name='最高管理者群組', type=0, ancestor=root_group)
+    group = models.account.GroupModel(name='最高管理者群組', type=0, ancestor=root_group, depth=2)
     user = models.account.UserModel(first_name='管理者',
                                  last_name='最高',
                                  email=[admin_email],

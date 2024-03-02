@@ -93,6 +93,9 @@ class GroupModel(BaseObject):
     type = Column('type', Integer, nullable=False, default=GroupType.STAFF.value,
                   server_default=str(GroupType.STAFF.value))
 
+    # 巢狀深度，最上層的群組為根群組， depth 值為 1，下一層的群組 depth 值為 2，以此類推
+    depth = Column(Integer, nullable=False, default=2, server_default='2')
+
     # 排序的依據，數字愈小排越前面
     order = Column(Integer, nullable=False, default=0, server_default='0')
 

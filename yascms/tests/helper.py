@@ -41,12 +41,12 @@ def import_test_db_data(ini_file_path):
     session.commit()
 
     # 建群組。初始化資料庫時會先建立 root group (id 為 1) 與 admin (id 為 2) 這邊從 3 開始
-    group1 = GroupModel(id=3, name='測試國小', type=2, ancestor_id=1)
-    group2 = GroupModel(id=4, name='教務處', type=1, ancestor_id=3)
-    group3 = GroupModel(id=5, name='自然領域科任', type=2, ancestor_id=3)
-    group4 = GroupModel(id=6, name='藝文領域科任', type=2, ancestor_id=3)
-    group5 = GroupModel(id=7, name='資訊組', type=1, ancestor_id=4)
-    group6 = GroupModel(id=8, name='系管師', type=1, ancestor_id=4)
+    group1 = GroupModel(id=3, name='測試國小', type=2, ancestor_id=1, depth=2)
+    group2 = GroupModel(id=4, name='教務處', type=1, ancestor_id=3, depth=3)
+    group3 = GroupModel(id=5, name='自然領域科任', type=2, ancestor_id=3, depth=3)
+    group4 = GroupModel(id=6, name='藝文領域科任', type=2, ancestor_id=3, depth=3)
+    group5 = GroupModel(id=7, name='資訊組', type=1, ancestor_id=4, depth=4)
+    group6 = GroupModel(id=8, name='系管師', type=1, ancestor_id=4, depth=4)
     # 建帳號。初始化資料庫時會先建立 admin (所以其 id 為 1) 這邊從 2 開始
     user1_email = EmailModel(address='user1@example.org', type=EmailType.USER_PRIMARY.value)
     user1 = UserModel(id=2, first_name='小明', last_name='陳', email=[user1_email],

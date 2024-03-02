@@ -419,9 +419,10 @@ class DAL:
     def get_group_list():
         """傳回使用者的群組列表
 
-        排序的依據讓同一個父群組的群組排在一起，再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
+        排序的依據讓上層的群組排序在前面，然後同一個父群組的群組排在一起，
+        再來才是以 order 為排序依據，這樣在 view 的階段就不用再特別處理排序
         """
-        return DBSession.query(GroupModel).order_by(GroupModel.ancestor_id, GroupModel.order).all()
+        return DBSession.query(GroupModel).order_by(GroupModel.depth, GroupModel.ancestor_id, GroupModel.order).all()
 
     @staticmethod
     def get_staff_group_list(user_id):
@@ -568,22 +569,22 @@ class DAL:
         Returns:
             None
         """
+        group.depth = DBSession.query(GroupModel).get(group.ancestor_id).depth + 1
         DBSession.add(group)
 
     @staticmethod
-    def change_group_ancestor_id(old_ancestor_id, new_ancestor_id):
-        """將原本 ancestor_id 為 old_ancestor_id 的 records 改成新的 new_ancestor_id
+    def move_group_descendants_to_upper_level(group):
+        """將原本 group 的子群組往上移一層
 
         Args:
-            old_ancestor_id: 作為篩選條件，找出 ancestor_id 為此值的 records
-            new_ancestor_id: 將找到的 records 其 ancestor_id 改成此值
+            group: GroupModel 實體
 
         Returns:
             None
         """
         (DBSession.query(GroupModel)
-                  .filter_by(ancestor_id=old_ancestor_id)
-                  .update({GroupModel.ancestor_id: new_ancestor_id}))
+                  .filter_by(ancestor_id=group.id)
+                  .update({GroupModel.ancestor_id: group.ancestor_id, GroupModel.depth: group.depth}))
 
     @staticmethod
     def delete_group(group):
