@@ -599,9 +599,9 @@ class DAL:
         for each_descendant in group.descendants:
             each_descendant.ancestor_id = group.ancestor_id
             DBSession.add(each_descendant)
-        # 因為當前的 group 即將被刪掉，要將所有樹狀子群組的 depth - 1 才符合子群組被上移一層的狀態
-        DAL._update_depth_recursively(group, group.depth - 1)
-
+            # 因為當前的 group 即將被刪掉，要將所有樹狀子群組的 depth - 1 才符合子群組被上移一層的狀態
+            DAL._update_depth_recursively(each_descendant, group.depth)
+        DBSession.flush()
         DBSession.delete(group)
 
     @staticmethod
