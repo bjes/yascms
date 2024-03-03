@@ -195,7 +195,6 @@ class GroupDeleteView:
             return invalid_permission
         group = DAL.get_group(group_id)
         if group:
-            DAL.move_group_descendants_to_upper_level(group)
             DAL.delete_group(group)
             msg = f'{group.name} 群組刪除成功'
             logger.info(msg)

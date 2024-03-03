@@ -560,6 +560,23 @@ class DAL:
         return GroupModel()
 
     @staticmethod
+    def _update_depth_recursively(group, depth):
+        """將傳入的 group 群組其 depth 值更新
+        並遞迴地處理其下的所有樹狀子群組 depth 值
+        
+        Args:
+            group: GroupModel 實體
+
+        Returns:
+            成功更新完成則回傳 True
+        """
+        group.depth = depth
+        DBSession.add(group)
+        for each_descendant in group.descendants:
+            DAL._update_depth_recursively(each_descendant, depth + 1)
+        return True
+
+    @staticmethod
     def save_group(group):
         """將 GroupModel 物件存至 DB
 
@@ -569,22 +586,7 @@ class DAL:
         Returns:
             None
         """
-        group.depth = DBSession.query(GroupModel).get(group.ancestor_id).depth + 1
-        DBSession.add(group)
-
-    @staticmethod
-    def move_group_descendants_to_upper_level(group):
-        """將原本 group 的子群組往上移一層
-
-        Args:
-            group: GroupModel 實體
-
-        Returns:
-            None
-        """
-        (DBSession.query(GroupModel)
-                  .filter_by(ancestor_id=group.id)
-                  .update({GroupModel.ancestor_id: group.ancestor_id, GroupModel.depth: group.depth}))
+        DAL._update_depth_recursively(group, DBSession.query(GroupModel).get(group.ancestor_id).depth + 1)
 
     @staticmethod
     def delete_group(group):
@@ -593,6 +595,13 @@ class DAL:
         Args:
             group: group 物件
         """
+        # 將原本 group 的子群組往上移一層
+        for each_descendant in group.descendants:
+            each_descendant.ancestor_id = group.ancestor_id
+            DBSession.add(each_descendant)
+        # 因為當前的 group 即將被刪掉，要將所有樹狀子群組的 depth - 1 才符合子群組被上移一層的狀態
+        DAL._update_depth_recursively(group, group.depth - 1)
+
         DBSession.delete(group)
 
     @staticmethod
