@@ -2,8 +2,8 @@ from pyramid_sqlalchemy import BaseObject
 from sqlalchemy import (Column,
                         String,
                         Integer,
-                        Text,
                         ForeignKey)
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
 
 from yascms.models.association import pages_tags_association, groups_pages_association
@@ -36,7 +36,7 @@ class PageModel(BaseObject):
     title = Column(String(100), nullable=False)
 
     # 內容
-    content = Column(Text, nullable=False, default='')
+    content = Column(LONGTEXT, nullable=False, default='')
 
     # 上傳附件
     attachments = relationship('PageAttachmentModel', backref='page', cascade='all, delete-orphan')

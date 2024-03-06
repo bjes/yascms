@@ -5,8 +5,8 @@ from sqlalchemy import (Column,
                         String,
                         DateTime,
                         Date,
-                        Text,
                         ForeignKey)
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
 from pyramid_sqlalchemy import BaseObject
 
@@ -39,7 +39,7 @@ class NewsModel(BaseObject):
     title = Column(String(100), nullable=False, index=True)
 
     # 內容
-    content = Column(Text, nullable=False, default='')
+    content = Column(LONGTEXT, nullable=False, default='')
 
     # 上傳附件
     attachments = relationship('NewsAttachmentModel', backref='news', cascade='all, delete-orphan')
