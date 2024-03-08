@@ -38,7 +38,7 @@ server {
     access_log /var/log/nginx/{{ project_domain_name }}-access.log;
     error_log /var/log/nginx/{{ project_domain_name }}-error.log;
 
-    client_max_body_size 50m;
+    client_max_body_size 100m;
 
     location / {
         uwsgi_cache uwsgi_cache;
