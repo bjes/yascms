@@ -11,6 +11,20 @@
     <div class="col-12">
       {{ page.content|safe }}
     </div>
+    {% if page.attachments %}
+      <div class="col-12">
+        <div class="card">
+	  <div class="card-header">附件</div>
+          <div class="card-body">
+            <ul class="mb-0">
+              {% for each_attachment in page.attachments %}
+	        <li><a href="{{ request.static_path('yascms:uploads/pages/' ~ each_attachment.real_name) }}">{{ each_attachment.original_name }}</a></li>
+	      {% endfor %}
+	    </ul>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock content %}
