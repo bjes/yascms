@@ -27,7 +27,7 @@
             {% endif %}
           </div>
           <div class="d-flex justify-content-between">
-            <div>時間：{{ news.viewable_datetime }}</div>
+            <div>時間：{{ news.viewable_datetime.strftime('%Y-%m-%d %H:%M') }}</div>
             <div>發佈者：{{ news.group.name }}</div>
           </div>
           <div class="d-flex justify-content-between">
