@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "yascms"
 version = "0.0.1"
-description = "又來一個學校內容管理系統"
+description = "又一個學校內容管理系統"
 authors = ["William Wu <william@pylabs.org>"]
 readme = "README.md"
 packages = [{include = "yascms"}]
