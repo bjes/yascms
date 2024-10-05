@@ -329,7 +329,7 @@ class DAL:
         Returns:
             回傳使用者物件
         """
-        return DBSession.query(UserModel).get(user_id)
+        return DBSession.get(UserModel, user_id)
 
     @staticmethod
     def get_user_primary_email(user_id):
@@ -461,7 +461,7 @@ class DAL:
         Returns:
             回傳群組物件或 None
         """
-        return DBSession.query(GroupModel).get(group_id)
+        return DBSession.get(GroupModel, group_id)
 
     @staticmethod
     def get_groups_qty():
@@ -586,7 +586,7 @@ class DAL:
         Returns:
             None
         """
-        DAL._update_depth_recursively(group, DBSession.query(GroupModel).get(group.ancestor_id).depth + 1)
+        DAL._update_depth_recursively(group, DBSession.get(GroupModel, group.ancestor_id).depth + 1)
         DBSession.add(group)
 
     @staticmethod
@@ -758,7 +758,7 @@ class DAL:
         Returns:
             回傳導覽列物件
         """
-        return DBSession.query(NavbarModel).get(navbar_id)
+        return DBSession.get(NavbarModel, navbar_id)
 
     @staticmethod
     def change_navbar_ancestor_id(old_ancestor_id, new_ancestor_id):
@@ -834,7 +834,7 @@ class DAL:
         Returns:
             回傳單一頁面
         """
-        return DBSession.query(PageModel).get(page_id)
+        return DBSession.get(PageModel, page_id)
 
     @staticmethod
     def create_page(form_data):
@@ -897,7 +897,7 @@ class DAL:
     @staticmethod
     def get_page(page_id):
         """取得單一頁面"""
-        return DBSession.query(PageModel).get(page_id)
+        return DBSession.get(PageModel, page_id)
 
     @staticmethod
     def save_page(page):
@@ -1061,7 +1061,7 @@ class DAL:
         Returns:
             回傳 NewsModel
         """
-        return DBSession.query(NewsModel).get(news_id)
+        return DBSession.get(NewsModel, news_id)
 
     @staticmethod
     def get_frontend_news(news_id):
@@ -1207,7 +1207,7 @@ class DAL:
         Returns:
             回傳 LinkModel 物件
         """
-        return DBSession.query(LinkModel).get(link_id)
+        return DBSession.get(LinkModel, link_id)
 
     @staticmethod
     def get_links_qty():
@@ -1395,7 +1395,7 @@ class DAL:
         Returns:
             回傳 LinkCategory 物件
         """
-        return DBSession.query(LinkCategoryModel).get(category_id)
+        return DBSession.get(LinkCategoryModel, category_id)
 
     @staticmethod
     def get_page_quantity_of_total_links(quantity_per_page, category_id=None):
@@ -1463,7 +1463,7 @@ class DAL:
             telext_id: 分機表 TelExtModel 的 primary key
             form_data: wtforms.forms.Form
         """
-        telext = DBSession.query(TelExtModel).get(telext_id)
+        telext = DBSession.get(TelExtModel, telext_id)
         if telext:
             form_data.populate_obj(telext)
             telext.is_pinned = PinnedType.IS_PINNED.value if form_data.is_pinned.data else PinnedType.IS_NOT_PINNED.value
@@ -1478,7 +1478,7 @@ class DAL:
         Args:
             telext_id: 分機表 TelExtModel 的 primary key
         """
-        return DBSession.query(TelExtModel).get(telext_id)
+        return DBSession.get(TelExtModel, telext_id)
 
     @staticmethod
     def log_auth(auth_log_type, user_id, client_addr, source):
