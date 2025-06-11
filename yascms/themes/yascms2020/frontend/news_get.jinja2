@@ -6,6 +6,8 @@
     }
   </style>
 {% endblock %}
+{% block page_title %}{{ news.title }} | {{ news.category.name }} | {{ request.site_config['site_name'] }}{% endblock page_title %}
+{% block page_meta_description %}{{ news.content }}{% endblock page_meta_description %}
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
