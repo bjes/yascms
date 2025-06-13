@@ -135,3 +135,11 @@ class EnabledType(IntEnum):
 
     # 已啟用
     IS_ENABLED = 1
+
+
+class DBIntSize(IntEnum):
+
+    MIN = 0
+
+    MAX = 2147483647
+
