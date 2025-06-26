@@ -144,3 +144,12 @@ class DBIntSize(IntEnum):
 
     MAX = 2147483647
 
+
+class PageSize(IntEnum):
+    """用來設定每個分頁顯示內容的數量"""
+
+    # 最少顯示一筆
+    MIN = 1
+
+    # 最多顯示 50 筆
+    MAX = 50
