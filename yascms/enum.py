@@ -138,6 +138,7 @@ class EnabledType(IntEnum):
 
 
 class DBIntSize(IntEnum):
+    """資料庫整數欄位的限制"""
 
     MIN = 0
 
