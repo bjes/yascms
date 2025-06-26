@@ -74,11 +74,12 @@
         </li>
       {% endif %}
     </ul>
-    <form class="form-inline my-2 my-lg-0">
+    <form class="form-inline my-2 my-lg-0" action="{{ 'search_results'|route_path }}" method="get">
+      <input type="hidden" name="key" value="content">
       <div class="input-group">
-        <input class="form-control py-2" type="text" placeholder="搜尋內容" id="search-text">
+        <input class="form-control py-2" type="text" placeholder="搜尋內容" id="search-text" name="value">
         <span class="input-group-append bg-white">
-          <button class="btn btn-outline-secondary border-0 search-btn-icon" type="button"><i class="bi bi-search"></i></button>
+          <input type="submit" value="搜尋" class="btn btn-outline-secondary border-0 search-btn-icon">
         </span>
       </div>
     </form>

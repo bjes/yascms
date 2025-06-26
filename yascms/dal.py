@@ -1592,3 +1592,13 @@ class DAL:
     @staticmethod
     def get_api_token(token):
         return DBSession.query(APITokenModel).filter_by(value=token).one_or_none()
+
+    @staticmethod
+    def get_search_results(key, value):
+        if key == 'publisher':
+            return DBSession.query(NewsModel).join(GroupModel).filter(GroupModel.name.like(f'%{value}%')).order_by(NewsModel.id.desc())
+        elif key == 'title':
+            return DBSession.query(NewsModel).filter(NewsModel.title.like(f'%{value}%')).order_by(NewsModel.id.desc())
+        else:
+            return DBSession.query(NewsModel).filter(NewsModel.content.like(f'%{value}%')).order_by(NewsModel.id.desc())
+

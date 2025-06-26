@@ -1,0 +1,33 @@
+{% extends 'layouts/master.jinja2' %}
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ request.route_url('homepage') }}">首頁</a></li>
+    <li class="breadcrumb-item active" aria-current="page">搜尋</li>
+  </ol>
+</nav>
+
+<div class="container">
+  <form action="/search_results" method="get">
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="searchType">搜尋類型</label>
+        <select class="form-control mb-2" id="searchType" name="key">
+          <option value="content" selected>內容</option>
+          <option value="title">標題</option>
+          <option value="publisher">發布單位</option>
+        </select>
+      </div>
+
+      <div class="col-auto">
+        <label class="sr-only" for="searchInput">搜尋關鍵字</label>
+        <input type="text" class="form-control mb-2" id="searchInput" name="value" placeholder="請輸入關鍵字">
+      </div>
+
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2">送出</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock content %}
