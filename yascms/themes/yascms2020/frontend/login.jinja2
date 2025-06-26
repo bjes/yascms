@@ -9,6 +9,29 @@
         {% endfor %}
       {% endif %}
     </div>
+    <div class="col-12">
+      <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-12 col-lg-10">
+            <label for="account">帳號</label>
+            {{ login_form.account(class_='form-control', placeholder='帳號', maxlength='50', required='required', autofocus='autofo    cus') }}
+          </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-12 col-lg-10">
+            <label for="password">密碼</label>
+            {{ login_form.password(class_='form-control', placeholder='密碼', maxlength='130', required='required') }}
+          </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-12 col-lg-10 d-flex">
+            <input type="submit" class="btn btn-primary" value="登入"><input type="reset" class="btn btn-danger ml-1" value="重設">
+            <a href="{{ request.route_url('homepage') }}" class="btn btn-info ml-auto">回首頁</a>
+          </div>
+        </div>
+      </form>
+    </div>
     {% if oauth2_provider_info_list %}
       <div class="col-12"><hr></div>
       {% for each_provider_info in oauth2_provider_info_list %}
