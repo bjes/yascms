@@ -3,7 +3,7 @@ import datetime
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
 
-from yascms.enum import NavbarType, DBIntSize
+from yascms.enum import NavbarType, PageSize
 from yascms.helpers import sanitize_input
 from yascms.helpers.navbar import generate_navbar_trees
 from yascms.dal import DAL
@@ -14,13 +14,13 @@ def news_list_view(request):
     """前台顯示最新消息列表"""
     request.override_renderer = f'themes/{request.effective_theme_name}/frontend/news_list.jinja2'
     quantity_per_page = sanitize_input(request.GET.get('q', 20), int, 20)
-    if not (DBIntSize.MIN < quantity_per_page < DBIntSize.MAX):
+    if not (PageSize.MIN < quantity_per_page < PageSize.MAX):
         return HTTPNotFound()
     category_id = sanitize_input(request.GET.get('c'), int, None)
-    if (category_id is not None) and not (DBIntSize.MIN < category_id < DBIntSize.MAX):
+    if (category_id is not None) and not (PageSize.MIN < category_id < PageSize.MAX):
         return HTTPNotFound()
     page_number = sanitize_input(request.GET.get('p', 1), int, 1)
-    if not (DBIntSize < page_number < DBIntSize.MAX):
+    if not (PageSize < page_number < PageSize.MAX):
         return HTTPNotFound()
 
     news_list = DAL.get_frontend_news_list(page_number=page_number,

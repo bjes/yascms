@@ -137,14 +137,6 @@ class EnabledType(IntEnum):
     IS_ENABLED = 1
 
 
-class DBIntSize(IntEnum):
-    """資料庫整數欄位的限制"""
-
-    MIN = 0
-
-    MAX = 2147483647
-
-
 class PageSize(IntEnum):
     """用來設定每個分頁顯示內容的數量"""
 
