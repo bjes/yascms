@@ -25,6 +25,8 @@ def includeme(config):
     config.add_route('page_get', '/page/get/{page_id:\d+}', pregenerator=preview_override_param)
     config.add_route('login', '/login', pregenerator=preview_override_param)
     config.add_route('logout', '/logout', pregenerator=preview_override_param)
+    config.add_route('search', '/search', pregenerator=preview_override_param)
+    config.add_route('search_results', '/search_results', pregenerator=preview_override_param)
 
     config.add_route('oauth2_provider_login', '/oauth2/{provider_name}/login')
     config.add_route('oauth2_provider_callback', '/oauth2/{provider_name}/callback')
