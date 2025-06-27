@@ -563,7 +563,7 @@ class DAL:
     def _update_depth_recursively(group, depth):
         """將傳入的 group 群組其 depth 值更新
         並遞迴地處理其下的所有樹狀子群組 depth 值
-        
+
         Args:
             group: GroupModel 實體
 
@@ -1592,6 +1592,27 @@ class DAL:
     @staticmethod
     def get_api_token(token):
         return DBSession.query(APITokenModel).filter_by(value=token).one_or_none()
+
+    @staticmethod
+    def get_page_quantity_of_total_search_results(quantity_per_page, key, value):
+        """回傳搜尋結果共有幾頁
+
+        Args:
+            quantity_per_page: 每頁幾筆最新消息
+            key: 搜尋的欄位
+            value: 搜尋的內容
+
+        Returns:
+            回傳總共頁數
+        """
+        results = DBSession.query(func.count(NewsModel.id))
+        if key == 'publisher':
+            results = results.join(GroupModel).filter(GroupModel.name.like(f'%{value}%'))
+        elif key == 'title':
+            results = results.filter(NewsModel.title.like(f'%{value}%'))
+        else:
+            results = results.filter(NewsModel.content.like(f'%{value}%'))
+        return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
     def get_search_results(key, value):
