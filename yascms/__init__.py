@@ -20,7 +20,7 @@ def main(global_config, **settings):
 
         config.set_security_policy(SecurityPolicy())
 
-        config.add_request_method(CacheController(settings['redis.sessions.url'], settings['project_abbr_name']),
+        config.add_request_method(CacheController(settings['redis.sessions.redis_url'], settings['project_abbr_name']),
                                   'cache', reify=True)
 
         config.include('.routes')

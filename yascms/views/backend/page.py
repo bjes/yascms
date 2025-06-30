@@ -50,7 +50,7 @@ class PageCreateView:
             self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_page_list'))
         else:
-            return {'form': form}
+            return {'form': form, 'group_trees': generate_group_trees()}
 
 
 @view_defaults(route_name='backend_page_list',

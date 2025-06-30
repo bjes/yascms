@@ -27,7 +27,7 @@ pyramid-session-redis = "*"
 Authlib = "*"
 pyramid_exclog = "*"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 autopep8 = "*"
 flake8 = "*"
 mixer = "*"
