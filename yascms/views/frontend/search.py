@@ -35,7 +35,7 @@ def search_results_view(request):
         if value.strip() == '':
             return HTTPNotFound()
 
-        results = DAL.get_search_results(key, value)
+        results = DAL.get_search_results(key, value, quantity_per_page, page_number)
         return {'navbar_trees': generate_navbar_trees(request, visible_only=True),
                 'NavbarType': NavbarType,
                 'page_quantity_of_total_results': DAL.get_page_quantity_of_total_search_results(quantity_per_page, key, value),

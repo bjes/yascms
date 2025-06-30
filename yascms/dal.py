@@ -1615,11 +1615,12 @@ class DAL:
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
-    def get_search_results(key, value):
+    def get_search_results(key, value, quantity_per_page, page_number):
         if key == 'publisher':
-            return DBSession.query(NewsModel).join(GroupModel).filter(GroupModel.name.like(f'%{value}%')).order_by(NewsModel.id.desc())
+            results = DBSession.query(NewsModel).join(GroupModel).filter(GroupModel.name.like(f'%{value}%')).order_by(NewsModel.id.desc())
         elif key == 'title':
-            return DBSession.query(NewsModel).filter(NewsModel.title.like(f'%{value}%')).order_by(NewsModel.id.desc())
+            results = DBSession.query(NewsModel).filter(NewsModel.title.like(f'%{value}%')).order_by(NewsModel.id.desc())
         else:
-            return DBSession.query(NewsModel).filter(NewsModel.content.like(f'%{value}%')).order_by(NewsModel.id.desc())
+            results = DBSession.query(NewsModel).filter(NewsModel.content.like(f'%{value}%')).order_by(NewsModel.id.desc())
+        return results.limit(quantity_per_page).offset((page_number-1)*quantity_per_page))
 
