@@ -31,11 +31,7 @@
             <tbody>
               {% for each_news in news_list %}
                 <tr>
-                  {% if page_number > 1 %}
-                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_number * quantity_per_page }}</th>
-                  {% else %}
-                    <th class="d-none d-md-table-cell" scope="row">{{ loop.index * page_number }}</th>
-                  {% endif %}
+                  <th class="d-none d-md-table-cell" scope="row">{{ (page_number - 1) * quantity_per_page + loop.index }}</th>
                   <td class="d-none d-md-table-cell">{{ each_news.viewable_datetime.strftime('%Y-%m-%d') }}</td>
                   <td class="d-none d-sm-table-cell">{{ each_news.group.name }}</td>
                   <td class="d-none d-sm-table-cell">{{ each_news.category.name }}</td>
