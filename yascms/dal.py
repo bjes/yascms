@@ -1622,5 +1622,5 @@ class DAL:
             results = DBSession.query(NewsModel).filter(NewsModel.title.like(f'%{value}%')).order_by(NewsModel.id.desc())
         else:
             results = DBSession.query(NewsModel).filter(NewsModel.content.like(f'%{value}%')).order_by(NewsModel.id.desc())
-        return results.limit(quantity_per_page).offset((page_number-1)*quantity_per_page))
+        return results.limit(quantity_per_page).offset((page_number-1)*quantity_per_page)
 
