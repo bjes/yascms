@@ -16,6 +16,27 @@
         <div class="card-header">最新消息列表</div>
         <div class="card-body">
           <a href="{{ request.route_url('backend_news_create') }}" class="btn btn-primary mb-3">建立最新消息</a>
+	        <div class="col-12">
+            <form action="" method="get">
+              <div class="form-row align-items-center">
+                <div class="col-auto">
+                  <label class="sr-only" for="searchType">搜尋類型</label>
+                  <select class="form-control mb-2" id="searchType" name="search_key">
+                    <option value="content" selected>內容</option>
+                    <option value="title">標題</option>
+                    <option value="publisher">發布單位</option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <label class="sr-only" for="searchInput">搜尋關鍵字</label>
+                  <input type="text" class="form-control mb-2" id="searchInput" name="search_value" placeholder="請輸入關鍵字">
+                </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-2">搜尋</button>
+                </div>
+              </div>
+            </form>
+	        </div>
           <div class="table-responsive">
             <table class="table table-hover table-striped text-center">
               <thead>

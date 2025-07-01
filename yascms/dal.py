@@ -108,18 +108,27 @@ class DAL:
         return results
 
     @staticmethod
-    def get_backend_news_list(page_number=1, quantity_per_page=20, category_id=None):
+    def get_backend_news_list(page_number=1, quantity_per_page=20, category_id=None, search_key=None, search_value=None):
         """傳回 backend 會用到的最新消息列表，置頂的不用特別放在最上面，按照 id 反向排序即可
 
         Args:
             page_number: 指定頁數，若沒指定則回傳第一頁
             quantity_per_page: 指定每頁的筆數，預設為 20 筆
             category_id: 指定要撈取的最新消息分類，None 代表不指定
+            search_key: 搜尋條件
+            search_value: 搜尋內容
 
         Returns:
             回傳最新消息列表
         """
         results = DBSession.query(NewsModel)
+        if search_key and search_value:
+            if key == 'publisher':
+                results = results.join(GroupModel).filter(GroupModel.name.like(f'%{search_value}%'))
+            elif key == 'title':
+                results = results.filter(NewsModel.title.like(f'%{search_value}%'))
+            else:
+                results = results.filter(NewsModel.content.like(f'%{search_value}%'))
         if category_id:
             results.filter_by(category_id=category_id)
         return results.order_by(NewsModel.id.desc()).limit(quantity_per_page).offset((page_number-1)*quantity_per_page)
@@ -130,18 +139,28 @@ class DAL:
         return DBSession.query(NewsCategoryModel).order_by(NewsCategoryModel.order)
 
     @staticmethod
-    def get_page_quantity_of_total_news(quantity_per_page, category_id=None, unpinned_only=True):
+    def get_page_quantity_of_total_news(quantity_per_page, category_id=None, unpinned_only=True,
+                                        search_key=None, search_value=None):
         """回傳最新消息總共有幾頁
 
         Args:
             quantity_per_page: 每頁幾筆最新消息
             category_id: 若有指定，則只會傳回符合此分類的最新消息頁數
             unpinned_only: 是否只計算非有效置頂期限的最新消息筆數，若為 False 則計算 "所有" 最新消息的筆數
+            search_key: 搜尋條件
+            search_value: 搜尋內容
 
         Returns:
             回傳總共頁數
         """
         results = DBSession.query(func.count(NewsModel.id))
+        if search_key and search_value:
+            if search_key == 'publisher':
+                results = results.join(GroupModel).filter(GroupModel.name.like(f'%{search_value}%'))
+            elif search_key == 'title':
+                results = results.filter(NewsModel.title.like(f'%{search_value}%'))
+            else:
+                results = results.filter(NewsModel.content.like(f'%{search_value}%'))
         now = datetime.now()
         if category_id:
             results = results.filter_by(category_id=category_id)
