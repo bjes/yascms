@@ -80,8 +80,8 @@ class NewsListView:
         quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
         category_id = sanitize_input(self.request.GET.get('c'), int, None)
         page_number = sanitize_input(self.request.GET.get('p', 1), int, 1)
-        search_key = sanitize_input(self.request.GET.get('k'), int, None)
-        search_value = sanitize_input(self.request.GET.get('v'), int, None)
+        search_key = sanitize_input(self.request.GET.get('k', None), str, None)
+        search_value = sanitize_input(self.request.GET.get('v', None), str, None)
         if search_key is not None and search_key not in ('publisher', 'title', 'content'):
             return HTTPNotFound()
         if search_value is not None and search_value.strip() == '':

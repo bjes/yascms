@@ -1,5 +1,5 @@
 {% extends 'layouts/master.jinja2' %}
-{% from 'yascms:themes/' ~ request.effective_theme_name ~ '/macros.jinja2' import paginate with context %}
+{% from 'news_list_macros.jinja2' import paginate with context %}
 {% block content %}
 <div class="container-fluid">
   <div class="row">
@@ -21,7 +21,7 @@
               <div class="form-row align-items-center">
                 <div class="col-auto">
                   <label class="sr-only" for="searchType">搜尋類型</label>
-                  <select class="form-control mb-2" id="searchType" name="search_key">
+                  <select class="form-control mb-2" id="searchType" name="k">
                     <option value="content" selected>內容</option>
                     <option value="title">標題</option>
                     <option value="publisher">發布單位</option>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-auto">
                   <label class="sr-only" for="searchInput">搜尋關鍵字</label>
-                  <input type="text" class="form-control mb-2" id="searchInput" name="search_value" placeholder="請輸入關鍵字">
+                  <input type="text" class="form-control mb-2" id="searchInput" name="v" placeholder="請輸入關鍵字">
                 </div>
                 <div class="col-auto">
                   <button type="submit" class="btn btn-primary mb-2">搜尋</button>
