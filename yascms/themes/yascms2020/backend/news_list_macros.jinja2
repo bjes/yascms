@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block next_page_url %}
-  {{ request.route_url('backend_news_list', _query={'p': current_page_number+1, 'q': quantity_per_page, 'k': request.GET['key'], 'v': request.GET['v']}) }}
+  {{ request.route_url('backend_news_list', _query={'p': current_page_number+1, 'q': quantity_per_page, 'k': request.GET['k'], 'v': request.GET['v']}) }}
 {% endblock %}
 
 {% block prev_page_url %}

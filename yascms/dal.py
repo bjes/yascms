@@ -123,9 +123,9 @@ class DAL:
         """
         results = DBSession.query(NewsModel)
         if search_key and search_value:
-            if key == 'publisher':
+            if search_key == 'publisher':
                 results = results.join(GroupModel).filter(GroupModel.name.like(f'%{search_value}%'))
-            elif key == 'title':
+            elif search_key == 'title':
                 results = results.filter(NewsModel.title.like(f'%{search_value}%'))
             else:
                 results = results.filter(NewsModel.content.like(f'%{search_value}%'))

@@ -80,12 +80,13 @@ class NewsListView:
         quantity_per_page = sanitize_input(self.request.GET.get('q', 20), int, 20)
         category_id = sanitize_input(self.request.GET.get('c'), int, None)
         page_number = sanitize_input(self.request.GET.get('p', 1), int, 1)
-        search_key = sanitize_input(self.request.GET.get('k', None), str, None)
-        search_value = sanitize_input(self.request.GET.get('v', None), str, None)
-        if search_key is not None and search_key not in ('publisher', 'title', 'content'):
-            return HTTPNotFound()
-        if search_value is not None and search_value.strip() == '':
-            return HTTPNotFound()
+        search_key = sanitize_input(self.request.GET.get('k', ''), str, '')
+        search_value = sanitize_input(self.request.GET.get('v', ''), str, '')
+        if search_key.strip() != '':
+            if search_key not in ('publisher', 'title', 'content'):
+                return HTTPNotFound()
+            if search_value.strip() == '':
+                return HTTPNotFound()
         news_list = DAL.get_backend_news_list(page_number, quantity_per_page, category_id, search_key, search_value)
         return {'news_list': news_list,
                 'today': datetime.date.today(),
