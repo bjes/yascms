@@ -18,28 +18,11 @@ class SiteConfigView:
         self.request = request
         self.request.override_renderer = f'themes/{request.effective_theme_name}/backend/site_config_edit.jinja2'
 
-    def _normalize(self, config_list):
-        """將整數或布林值的欄位轉成對應的型態"""
-        results = []
-        for each_config in config_list:
-            if each_config.type == 'int':
-                normalized_value = int(each_config.value)
-            elif each_config.type == 'bool':
-                if each_config.value == 'True':
-                    normalized_value = True
-                else:
-                    normalized_value = False
-            else:
-                normalized_value = each_config.value
-            results.append({'id': each_config.id, 'name': each_config.name, 'value': normalized_value,
-                            'type': each_config.type, 'description': each_config.description})
-        return results
-
     @view_config(request_method='GET')
     def get_view(self):
         """列出 site config 列表"""
 
-        config_list = self._normalize(DAL.get_site_config_list())
+        config_list = DAL.get_site_config_list()
         return {'config_list': config_list}
 
     def _validate(self, post_data):
@@ -65,7 +48,7 @@ class SiteConfigView:
                         logger.error(msg)
                         self.request.session.flash(msg, 'fail')
                         return False
-                    if value != each_config.value:
+                    if value != str(each_config.value):
                         updated_config_list.append({'id': each_config.id, 'name': key, 'value': value})
                         break
         return updated_config_list

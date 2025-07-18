@@ -8,6 +8,7 @@ import string
 import random
 import logging
 from datetime import datetime, timedelta
+from types import SimpleNamespace
 
 from sqlalchemy import or_, and_, func
 from sqlalchemy.exc import IntegrityError
@@ -182,9 +183,23 @@ class DAL:
     @staticmethod
     def get_site_config_list():
         """傳回系統相關的設定檔，都是以 site_ 開頭的"""
-        return (DBSession.query(GlobalConfigModel)
-                         .filter(GlobalConfigModel.name.startswith('site_'))
-                         .all())
+        config_list = (DBSession.query(GlobalConfigModel)
+                                .filter(GlobalConfigModel.name.startswith('site_'))
+                                .all())
+        results = []
+        for each_config in config_list:
+            if each_config.type == 'int':
+                normalized_value = int(each_config.value)
+            elif each_config.type == 'bool':
+                if each_config.value == 'True':
+                    normalized_value = True
+                else:
+                    normalized_value = False
+            else:
+                normalized_value = each_config.value
+            results.append(SimpleNamespace(id=each_config.id, name=each_config.name, value=normalized_value,
+                                           type=each_config.type, description=each_config.description))
+        return results
 
     @staticmethod
     def get_oauth2_integration_config():
