@@ -53,6 +53,9 @@ class NewsModel(BaseObject):
     # 置頂結束時間
     pinned_end_datetime = Column(Date)
 
+    # 是否讓這篇最新消息顯示。若為 False 則不會顯示在前台，不管下面的其他設定。
+    is_visible = Column(Integer, nullable=False, default=1, server_default='1')
+
     # 顯示開始時間，時間到了才會顯示在網頁上。若沒指定（null）則代表馬上顯示
     visible_start_datetime = Column(DateTime)
 
