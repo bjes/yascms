@@ -85,7 +85,7 @@ class DAL:
                                                         now >= NewsModel.visible_start_datetime))
                               .filter(or_(NewsModel.visible_end_datetime.is_(None),
                                           now < NewsModel.visible_end_datetime)))
-            results.extend(pinned_results.order_by(NewsModel.viewable_datetime.desc(), NewsModel.id.desc()).all())
+            results.extend(pinned_results.order_by(NewsModel.display_datetime.desc(), NewsModel.id.desc()).all())
 
         # 撈出沒有設定置頂的、或是有設定置頂但置頂時間已經超過的最新消息
         unpinned_results = DBSession.query(NewsModel)
@@ -103,7 +103,7 @@ class DAL:
                                                                 now >= NewsModel.visible_start_datetime),
                                                             or_(NewsModel.visible_end_datetime.is_(None),
                                                                 now < NewsModel.visible_end_datetime))))
-        results.extend(unpinned_results.order_by(NewsModel.viewable_datetime.desc(), NewsModel.id.desc())
+        results.extend(unpinned_results.order_by(NewsModel.display_datetime.desc(), NewsModel.id.desc())
                                        .limit(quantity_per_page)
                                        .offset((page_number-1)*quantity_per_page))
         return results
@@ -1048,7 +1048,7 @@ class DAL:
         news.visible_end_datetime = form_data.visible_end_datetime.data
 
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
@@ -1082,7 +1082,7 @@ class DAL:
             page: 最新消息物件
         """
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
         DBSession.add(news)
 
     @staticmethod
@@ -1153,7 +1153,7 @@ class DAL:
         news.visible_end_datetime = form_data.visible_end_datetime.data
 
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}

@@ -29,7 +29,7 @@
             {% endif %}
           </div>
           <div class="d-flex justify-content-between">
-            <div>時間：{{ news.viewable_datetime.strftime('%Y-%m-%d %H:%M') }}</div>
+            <div>時間：{{ news.display_datetime.strftime('%Y-%m-%d %H:%M') }}</div>
             <div>發佈者：{{ news.group.name }}</div>
           </div>
           <div class="d-flex justify-content-between">
@@ -48,7 +48,7 @@
                 <ul class="mb-0">
                   {% for each_attachment in news.attachments %}
                     <li><a href="{{ request.static_path('yascms:uploads/news/'
-                                                    ~ news.viewable_datetime.strftime('%Y/%m/'))
+                                                    ~ news.display_datetime.strftime('%Y/%m/'))
                                                     ~ each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
                   {% endfor %}
                 </ul>
