@@ -7,7 +7,7 @@
   </style>
 {% endblock %}
 {% block page_title %}{{ news.title }} | {{ news.category.name }} | {{ request.site_config['site_name'] }}{% endblock page_title %}
-{% block page_meta_description %}{{ news.content }}{% endblock page_meta_description %}
+{% block page_meta_description %}{{ news.content|replace('\n', ' ') }}{% endblock page_meta_description %}
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -38,7 +38,15 @@
           </div>
         </div>
         <div class="card-body">
-          <span class="h5">{{ news.content|safe }}</span>
+          <span class="h5">
+            {% if news.is_html %}
+              {{ news.content|safe }}
+            {% else %}
+              {% autoescape false %}
+              {{ news.content | e | replace('\n', '<br>') }}
+              {% endautoescape %}
+            {% endif %}
+          </span>
         </div>
         {% if news.attachments %}
           <div class="card-footer">

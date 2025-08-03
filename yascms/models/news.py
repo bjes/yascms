@@ -56,6 +56,10 @@ class NewsModel(BaseObject):
     # 是否讓這篇最新消息顯示。若為 False 則不會顯示在前台，不管下面的其他設定。
     is_visible = Column(Integer, nullable=False, default=1, server_default='1')
 
+    # 內容是否為 html ，因為要往無障礙的方向去修正，未來新的最新消息只能貼純文字，
+    # 等到全部的最新消息都是純文字後此欄位可移除
+    is_html = Column(Integer, nullable=False, default=0, server_default='0')
+
     # 顯示開始時間，時間到了才會顯示在網頁上。若沒指定（null）則代表馬上顯示
     visible_start_datetime = Column(DateTime)
 
