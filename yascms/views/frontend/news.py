@@ -30,7 +30,9 @@ def news_list_view(request):
             'news_category': DAL.get_news_category(category_id),
             'navbar_trees': generate_navbar_trees(request, visible_only=True),
             'today': datetime.date.today(),
-            'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page, category_id),
+            'page_quantity_of_total_news': DAL.get_page_quantity_of_total_news(quantity_per_page,
+                                                                               category_id,
+                                                                               visible_only=True),
             'page_number': page_number,
             'quantity_per_page': quantity_per_page,
             'NavbarType': NavbarType}
