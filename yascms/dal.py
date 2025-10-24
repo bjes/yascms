@@ -8,6 +8,7 @@ import string
 import random
 import logging
 from datetime import datetime, timedelta
+from types import SimpleNamespace
 
 from sqlalchemy import or_, and_, func
 from sqlalchemy.exc import IntegrityError
@@ -83,14 +84,15 @@ class DAL:
                               .filter(or_(NewsModel.visible_start_datetime.is_(None),
                                                         now >= NewsModel.visible_start_datetime))
                               .filter(or_(NewsModel.visible_end_datetime.is_(None),
-                                          now < NewsModel.visible_end_datetime)))
-            results.extend(pinned_results.order_by(NewsModel.viewable_datetime.desc(), NewsModel.id.desc()).all())
+                                          now < NewsModel.visible_end_datetime))
+                              .filter(NewsModel.is_visible))
+            results.extend(pinned_results.order_by(NewsModel.display_datetime.desc(), NewsModel.id.desc()).all())
 
         # 撈出沒有設定置頂的、或是有設定置頂但置頂時間已經超過的最新消息
         unpinned_results = DBSession.query(NewsModel)
         if category_id:
             unpinned_results = unpinned_results.filter_by(category_id=category_id)
-        unpinned_results = unpinned_results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
+        unpinned_results = (unpinned_results.filter(or_(and_(NewsModel.is_pinned == PinnedType.IS_NOT_PINNED.value,
                                                             or_(NewsModel.visible_start_datetime.is_(None),
                                                                 now >= NewsModel.visible_start_datetime),
                                                             or_(NewsModel.visible_end_datetime.is_(None),
@@ -102,24 +104,34 @@ class DAL:
                                                                 now >= NewsModel.visible_start_datetime),
                                                             or_(NewsModel.visible_end_datetime.is_(None),
                                                                 now < NewsModel.visible_end_datetime))))
-        results.extend(unpinned_results.order_by(NewsModel.viewable_datetime.desc(), NewsModel.id.desc())
+                                           .filter(NewsModel.is_visible))
+        results.extend(unpinned_results.order_by(NewsModel.display_datetime.desc(), NewsModel.id.desc())
                                        .limit(quantity_per_page)
                                        .offset((page_number-1)*quantity_per_page))
         return results
 
     @staticmethod
-    def get_backend_news_list(page_number=1, quantity_per_page=20, category_id=None):
+    def get_backend_news_list(page_number=1, quantity_per_page=20, category_id=None, search_key=None, search_value=None):
         """傳回 backend 會用到的最新消息列表，置頂的不用特別放在最上面，按照 id 反向排序即可
 
         Args:
             page_number: 指定頁數，若沒指定則回傳第一頁
             quantity_per_page: 指定每頁的筆數，預設為 20 筆
             category_id: 指定要撈取的最新消息分類，None 代表不指定
+            search_key: 搜尋條件
+            search_value: 搜尋內容
 
         Returns:
             回傳最新消息列表
         """
         results = DBSession.query(NewsModel)
+        if search_key and search_value:
+            if search_key == 'publisher':
+                results = results.join(GroupModel).filter(GroupModel.name.like(f'%{search_value}%'))
+            elif search_key == 'title':
+                results = results.filter(NewsModel.title.like(f'%{search_value}%'))
+            else:
+                results = results.filter(NewsModel.content.like(f'%{search_value}%'))
         if category_id:
             results.filter_by(category_id=category_id)
         return results.order_by(NewsModel.id.desc()).limit(quantity_per_page).offset((page_number-1)*quantity_per_page)
@@ -130,18 +142,30 @@ class DAL:
         return DBSession.query(NewsCategoryModel).order_by(NewsCategoryModel.order)
 
     @staticmethod
-    def get_page_quantity_of_total_news(quantity_per_page, category_id=None, unpinned_only=True):
+    def get_page_quantity_of_total_news(quantity_per_page, category_id=None, unpinned_only=True,
+                                        search_key=None, search_value=None, visible_only=False):
         """回傳最新消息總共有幾頁
 
         Args:
             quantity_per_page: 每頁幾筆最新消息
             category_id: 若有指定，則只會傳回符合此分類的最新消息頁數
             unpinned_only: 是否只計算非有效置頂期限的最新消息筆數，若為 False 則計算 "所有" 最新消息的筆數
+            search_key: 搜尋條件
+            search_value: 搜尋內容
+            visible_only: 預設為 False 代表計算資料庫中最新消息總數量
+                          若為 True 則只計算 is_visible 為 True 的最新消息總數
 
         Returns:
-            回傳總共頁數
+            回傳符合條件的總共頁數
         """
         results = DBSession.query(func.count(NewsModel.id))
+        if search_key and search_value:
+            if search_key == 'publisher':
+                results = results.join(GroupModel).filter(GroupModel.name.like(f'%{search_value}%'))
+            elif search_key == 'title':
+                results = results.filter(NewsModel.title.like(f'%{search_value}%'))
+            else:
+                results = results.filter(NewsModel.content.like(f'%{search_value}%'))
         now = datetime.now()
         if category_id:
             results = results.filter_by(category_id=category_id)
@@ -158,14 +182,30 @@ class DAL:
                                                   now >= NewsModel.visible_start_datetime),
                                               or_(NewsModel.visible_end_datetime.is_(None),
                                                   now < NewsModel.visible_end_datetime))))
+        if visible_only:
+            results = results.filter(NewsModel.is_visible)
         return math.ceil(results.scalar()/quantity_per_page)
 
     @staticmethod
     def get_site_config_list():
         """傳回系統相關的設定檔，都是以 site_ 開頭的"""
-        return (DBSession.query(GlobalConfigModel)
-                         .filter(GlobalConfigModel.name.startswith('site_'))
-                         .all())
+        config_list = (DBSession.query(GlobalConfigModel)
+                                .filter(GlobalConfigModel.name.startswith('site_'))
+                                .all())
+        results = []
+        for each_config in config_list:
+            if each_config.type == 'int':
+                normalized_value = int(each_config.value)
+            elif each_config.type == 'bool':
+                if each_config.value == 'True':
+                    normalized_value = True
+                else:
+                    normalized_value = False
+            else:
+                normalized_value = each_config.value
+            results.append(SimpleNamespace(id=each_config.id, name=each_config.name, value=normalized_value,
+                                           type=each_config.type, description=each_config.description))
+        return results
 
     @staticmethod
     def get_oauth2_integration_config():
@@ -1014,7 +1054,7 @@ class DAL:
         news.visible_end_datetime = form_data.visible_end_datetime.data
 
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}
@@ -1048,7 +1088,7 @@ class DAL:
             page: 最新消息物件
         """
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
         DBSession.add(news)
 
     @staticmethod
@@ -1082,7 +1122,8 @@ class DAL:
             if news.visible_end_datetime:
                 if not now < news.visible_end_datetime:
                     return None
-            return news
+            if news.is_visible:
+                return news
 
     @staticmethod
     def delete_news(news):
@@ -1119,7 +1160,7 @@ class DAL:
         news.visible_end_datetime = form_data.visible_end_datetime.data
 
         if news.visible_start_datetime:
-            news.viewable_datetime = news.visible_start_datetime
+            news.display_datetime = news.visible_start_datetime
 
         # 處理 tags
         tags = {each_tag.strip() for each_tag in form_data.tags.data.split(',')}

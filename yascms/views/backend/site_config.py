@@ -43,12 +43,12 @@ class SiteConfigView:
                         logger.error(msg)
                         self.request.session.flash(msg, 'fail')
                         return False
-                    if each_config.type == 'bool' and value not in ('true', 'false'):
-                        msg = f'系統設定 {key} 其值 {value} 不合法，必須為 true/yes 或 false/no'
+                    if each_config.type == 'bool' and value not in ('True', 'False'):
+                        msg = f'系統設定 {key} 其值 {value} 不合法，必須為 True 或 False'
                         logger.error(msg)
                         self.request.session.flash(msg, 'fail')
                         return False
-                    if value != each_config.value:
+                    if value != str(each_config.value):
                         updated_config_list.append({'id': each_config.id, 'name': key, 'value': value})
                         break
         return updated_config_list

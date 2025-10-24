@@ -50,7 +50,7 @@ def setup_models(dbsession):
     dbsession.add(models.global_config.GlobalConfigModel(name='site_map_embedded_url', value='', type='str', description='設定地圖的嵌入網址'))
 
     # 此唯讀設定用來後台備份或升級用，不該顯示在畫面上讓使用者可以調整
-    dbsession.add(models.global_config.GlobalConfigModel(name='sys_maint_mode', value='0', type='bool', description='設定全站是否唯讀'))
+    dbsession.add(models.global_config.GlobalConfigModel(name='sys_maint_mode', value='False', type='bool', description='設定全站是否唯讀'))
 
     # oauth2 整合的設定，以 json 格式存放
     oauth2_config = {'google': {'canonical_name': 'Google',
@@ -60,6 +60,8 @@ def setup_models(dbsession):
                                              'client_id': '',
                                              'client_secret': ''}}}
     dbsession.add(models.global_config.GlobalConfigModel(name='oauth2_integration', value=json.dumps(oauth2_config, ensure_ascii=False), type='str', description='OAuth2 整合設定'))
+
+    dbsession.add(models.global_config.GlobalConfigModel(name='site_builtin_auth', value='True', type='bool', description='設定是否啟用內建的帳號認證'))
 
 
     # 匯入預設樣板 yascms2020 的佈景主題設定檔

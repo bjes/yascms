@@ -7,7 +7,7 @@
   </style>
 {% endblock %}
 {% block page_title %}{{ news.title }} | {{ news.category.name }} | {{ request.site_config['site_name'] }}{% endblock page_title %}
-{% block page_meta_description %}{{ news.content }}{% endblock page_meta_description %}
+{% block page_meta_description %}{{ news.content|replace('\n', ' ') }}{% endblock page_meta_description %}
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -29,7 +29,7 @@
             {% endif %}
           </div>
           <div class="d-flex justify-content-between">
-            <div>時間：{{ news.viewable_datetime.strftime('%Y-%m-%d %H:%M') }}</div>
+            <div>時間：{{ news.display_datetime.strftime('%Y-%m-%d %H:%M') }}</div>
             <div>發佈者：{{ news.group.name }}</div>
           </div>
           <div class="d-flex justify-content-between">
@@ -38,7 +38,15 @@
           </div>
         </div>
         <div class="card-body">
-          <span class="h5">{{ news.content|safe }}</span>
+          <span class="h5">
+            {% if news.is_html %}
+              {{ news.content|safe }}
+            {% else %}
+              {% autoescape false %}
+              {{ news.content | e | replace('\n', '<br>') }}
+              {% endautoescape %}
+            {% endif %}
+          </span>
         </div>
         {% if news.attachments %}
           <div class="card-footer">
@@ -48,7 +56,7 @@
                 <ul class="mb-0">
                   {% for each_attachment in news.attachments %}
                     <li><a href="{{ request.static_path('yascms:uploads/news/'
-                                                    ~ news.viewable_datetime.strftime('%Y/%m/'))
+                                                    ~ news.display_datetime.strftime('%Y/%m/'))
                                                     ~ each_attachment.real_name }}">{{ each_attachment.original_name }}</a></li>
                   {% endfor %}
                 </ul>

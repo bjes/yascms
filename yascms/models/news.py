@@ -53,6 +53,13 @@ class NewsModel(BaseObject):
     # 置頂結束時間
     pinned_end_datetime = Column(Date)
 
+    # 是否讓這篇最新消息顯示。若為 False 則不會顯示在前台，不管下面的其他設定。
+    is_visible = Column(Integer, nullable=False, default=1, server_default='1')
+
+    # 內容是否為 html ，因為要往無障礙的方向去修正，未來新的最新消息只能貼純文字，
+    # 等到全部的最新消息都是純文字後此欄位可移除
+    is_html = Column(Integer, nullable=False, default=0, server_default='0')
+
     # 顯示開始時間，時間到了才會顯示在網頁上。若沒指定（null）則代表馬上顯示
     visible_start_datetime = Column(DateTime)
 
@@ -65,7 +72,7 @@ class NewsModel(BaseObject):
     # 前台的顯示邏輯是
     # 如果有指定 visible_start_datetime 就以此欄位作為排序依據，否則就是依據 publication_datetime 欄位排序。
     # 試想：如果我在年初就先建立了一個最新消息，並把它排程到年底顯示，那等到年底時，我應該會期待這篇文章會出現在最上面才對
-    viewable_datetime = Column(DateTime, nullable=False, default=datetime.now)
+    display_datetime = Column(DateTime, nullable=False, default=datetime.now)
 
     # 最後更新時間
     last_updated_datetime = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
