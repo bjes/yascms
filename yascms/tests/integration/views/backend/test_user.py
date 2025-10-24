@@ -36,9 +36,9 @@ def fill_form(form, account, primary_email='primary@example.org', secondary_emai
 
 def test_user_create_view_and_list_view_should_create_and_show_user(webtest_admin_testapp):
     request = DummyRequest()
-    account_name = 'foo'
+    account_name = 'foouser'
 
-    # 測試可以建立本來不存在的使用者
+    # 可以建立帳號不存在的使用者
     response = webtest_admin_testapp.get(request.route_path('backend_user_create'))
     assert account_name not in response.body.decode('utf8')
     form = fill_form(response.form, account_name)
@@ -47,7 +47,7 @@ def test_user_create_view_and_list_view_should_create_and_show_user(webtest_admi
     response = webtest_admin_testapp.get(request.route_path('backend_user_list'))
     assert account_name in response.body.decode('utf8')
 
-    # 不可以建立同名的使用者
+    # 不可以建立帳號同樣的使用者
     response = webtest_admin_testapp.get(request.route_path('backend_user_create'))
     form = fill_form(response.form, account_name, primary_email='oops@example.org', secondary_email='oops2@example.org')
     response = form.submit()

@@ -80,9 +80,8 @@ def test_theme_config_banners_upload_view(webtest_admin_testapp):
 
     response = webtest_admin_testapp.get(request.route_path('backend_theme_config_banners_upload',
                                                             theme_name='yascms2020'))
-    test_banner_file_name = 'test_banner.jpg'
     form = response.form
-    form['banners'] = Upload(test_banner_file_name, b'')
+    form['banners'] = [Upload('test_banner.jpg', b'fake image data', 'image/jpeg')]
     response = form.submit()
     assert response.status_int == 302
 

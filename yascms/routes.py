@@ -22,7 +22,7 @@ def includeme(config):
     config.add_route('news_get', r'/news/get/{news_id:\d+}', pregenerator=preview_override_param)
     config.add_route('telext', '/telext', pregenerator=preview_override_param)
     config.add_route('links', '/links', pregenerator=preview_override_param)
-    config.add_route('page_get', '/page/get/{page_id:\d+}', pregenerator=preview_override_param)
+    config.add_route('page_get', r'/page/get/{page_id:\d+}', pregenerator=preview_override_param)
     config.add_route('login', '/login', pregenerator=preview_override_param)
     config.add_route('logout', '/logout', pregenerator=preview_override_param)
     config.add_route('search', '/search', pregenerator=preview_override_param)
@@ -63,18 +63,18 @@ def includeme(config):
                      pregenerator=preview_override_param)
     config.add_route('backend_navbar_list', '/backend/navbar/list', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_navbar_delete', '/backend/navbar/delete/{navbar_id:\d+}', factory=admin_factory,
+    config.add_route('backend_navbar_delete', r'/backend/navbar/delete/{navbar_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_navbar_edit', '/backend/navbar/edit/{navbar_id:\d+}', factory=admin_factory,
+    config.add_route('backend_navbar_edit', r'/backend/navbar/edit/{navbar_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_user_create', '/backend/user/create', factory=admin_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_user_list', '/backend/user/list', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_user_delete', '/backend/user/delete/{user_id:\d+}', factory=admin_factory,
+    config.add_route('backend_user_delete', r'/backend/user/delete/{user_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_user_edit', '/backend/user/edit/{user_id:\d+}', factory=admin_factory,
+    config.add_route('backend_user_edit', r'/backend/user/edit/{user_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_user_self_edit', '/backend/user/self/edit', factory=auth_user_factory,
@@ -84,63 +84,63 @@ def includeme(config):
                      pregenerator=preview_override_param)
     config.add_route('backend_group_list', '/backend/group/list', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_group_delete', '/backend/group/delete/{group_id:\d+}', factory=admin_factory,
+    config.add_route('backend_group_delete', r'/backend/group/delete/{group_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_group_edit', '/backend/group/edit/{group_id:\d+}', factory=admin_factory,
+    config.add_route('backend_group_edit', r'/backend/group/edit/{group_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_page_create', '/backend/page/create', factory=admin_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_page_list', '/backend/page/list', factory=auth_user_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_page_delete', '/backend/page/delete/{page_id:\d+}', factory=admin_factory,
+    config.add_route('backend_page_delete', r'/backend/page/delete/{page_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_page_edit', '/backend/page/edit/{page_id:\d+}', factory=page_edit_factory,
+    config.add_route('backend_page_edit', r'/backend/page/edit/{page_id:\d+}', factory=page_edit_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_news_create', '/backend/news/create', factory=staff_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_news_list', '/backend/news/list', factory=auth_user_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_news_delete', '/backend/news/delete/{news_id:\d+}', factory=news_edit_factory,
+    config.add_route('backend_news_delete', r'/backend/news/delete/{news_id:\d+}', factory=news_edit_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_news_edit', '/backend/news/edit/{news_id:\d+}', factory=news_edit_factory,
+    config.add_route('backend_news_edit', r'/backend/news/edit/{news_id:\d+}', factory=news_edit_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_news_category_create', '/backend/news/category/create', factory=admin_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_news_category_list', '/backend/news/category/list', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_news_category_delete', '/backend/news/category/delete/{news_category_id:\d+}',
+    config.add_route('backend_news_category_delete', r'/backend/news/category/delete/{news_category_id:\d+}',
                      factory=admin_factory, pregenerator=preview_override_param)
-    config.add_route('backend_news_category_edit', '/backend/news/category/edit/{news_category_id:\d+}',
+    config.add_route('backend_news_category_edit', r'/backend/news/category/edit/{news_category_id:\d+}',
                      factory=admin_factory, pregenerator=preview_override_param)
 
     config.add_route('backend_link_create', '/backend/link/create', factory=staff_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_link_list', '/backend/link/list', factory=staff_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_link_delete', '/backend/link/delete/{link_id:\d+}',
+    config.add_route('backend_link_delete', r'/backend/link/delete/{link_id:\d+}',
                      factory=link_edit_factory, pregenerator=preview_override_param)
-    config.add_route('backend_link_edit', '/backend/link/edit/{link_id:\d+}',
+    config.add_route('backend_link_edit', r'/backend/link/edit/{link_id:\d+}',
                      factory=link_edit_factory, pregenerator=preview_override_param)
 
     config.add_route('backend_link_category_create', '/backend/link/category/create',
                      factory=admin_factory, pregenerator=preview_override_param)
     config.add_route('backend_link_category_list', '/backend/link/category/list',
                      factory=admin_factory, pregenerator=preview_override_param)
-    config.add_route('backend_link_category_delete', '/backend/link/category/delete/{link_category_id:\d+}',
+    config.add_route('backend_link_category_delete', r'/backend/link/category/delete/{link_category_id:\d+}',
                      factory=admin_factory, pregenerator=preview_override_param)
-    config.add_route('backend_link_category_edit', '/backend/link/category/edit/{link_category_id:\d+}',
+    config.add_route('backend_link_category_edit', r'/backend/link/category/edit/{link_category_id:\d+}',
                      factory=admin_factory, pregenerator=preview_override_param)
 
     config.add_route('backend_telext_create', '/backend/telext/create', factory=admin_factory,
                      pregenerator=preview_override_param)
     config.add_route('backend_telext_list', '/backend/telext/list', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_telext_delete', '/backend/telext/delete/{telext_id:\d+}', factory=admin_factory,
+    config.add_route('backend_telext_delete', r'/backend/telext/delete/{telext_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
-    config.add_route('backend_telext_edit', '/backend/telext/edit/{telext_id:\d+}', factory=admin_factory,
+    config.add_route('backend_telext_edit', r'/backend/telext/edit/{telext_id:\d+}', factory=admin_factory,
                      pregenerator=preview_override_param)
 
     config.add_route('backend_auth_log_list', '/backend/auth_log/list', factory=auth_user_factory,
@@ -153,7 +153,7 @@ def includeme(config):
 
     # 給後台 ajax 撈資料用的
     config.add_route('backend_json_page_list', '/backend/json/page/list', factory=admin_factory)
-    config.add_route('backend_json_page_get', '/backend/json/page/get/{page_id:\d+}', factory=admin_factory)
+    config.add_route('backend_json_page_get', r'/backend/json/page/get/{page_id:\d+}', factory=admin_factory)
     config.add_route('backend_json_news_category_list', '/backend/json/news/category/list', factory=admin_factory)
     config.add_route('backend_json_link_category_list', '/backend/json/link/category/list', factory=admin_factory)
 

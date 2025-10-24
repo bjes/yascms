@@ -24,7 +24,7 @@ def test_site_config_view(webtest_admin_testapp):
     assert '系統設定 site_zip 其值 foo 不合法，必須為整數' in response.body.decode('utf8')
 
     # 成功修改
-    changed_name = 'foobar'
+    changed_name = 'foo_site_name'
     response = webtest_admin_testapp.get(request.route_path('backend_site_config_edit'))
     form = response.form
     form['site_name'] = changed_name

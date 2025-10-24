@@ -32,7 +32,7 @@ def test_modify_page_should_change_the_page_content(webtest_admin_testapp):
     response = webtest_admin_testapp.get(request.route_path('backend_page_create'))
     form = fill_form(response.form, test_title, test_content, test_group_ids)
     response = form.submit()
-    breakpoint()
+    response_content = response.body.decode('utf8')
     assert response.status_int == 302
     response = webtest_admin_testapp.get(request.route_path('backend_page_list'))
     assert test_title in response.body.decode('utf8')

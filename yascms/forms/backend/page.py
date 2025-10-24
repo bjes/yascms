@@ -4,6 +4,7 @@ from pyramid_wtforms import (Form,
                              MultipleFilesField,
                              MultipleCheckboxField)
 from pyramid_wtforms.validators import (InputRequired,
+                                        Optional,
                                         Length,
                                         FileSize)
 
@@ -19,7 +20,7 @@ class PageForm(Form):
     group_ids = MultipleCheckboxField('管理群組*', [InputRequired('至少要選一個群組')], coerce=int)
 
     # TODO: 要讓系統可以設定上傳的檔案大小限制，目前寫死必須小於 200 MB
-    attachments = MultipleFilesField('附件', [FileSize(max=200, base='mb')])
+    attachments = MultipleFilesField('附件', [Optional(), FileSize(max=200, base='mb')])
 
     tags = StringField('標籤（以逗號分隔）')
 
