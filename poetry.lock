@@ -1601,14 +1601,14 @@ ssh = ["paramiko", "sshtunnel"]
 
 [[package]]
 name = "openai"
-version = "2.6.0"
+version = "2.6.1"
 description = "The official Python library for the openai API"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "openai-2.6.0-py3-none-any.whl", hash = "sha256:f33fa12070fe347b5787a7861c8dd397786a4a17e1c3186e239338dac7e2e743"},
-    {file = "openai-2.6.0.tar.gz", hash = "sha256:f119faf7fc07d7e558c1e7c32c873e241439b01bd7480418234291ee8c8f4b9d"},
+    {file = "openai-2.6.1-py3-none-any.whl", hash = "sha256:904e4b5254a8416746a2f05649594fa41b19d799843cd134dac86167e094edef"},
+    {file = "openai-2.6.1.tar.gz", hash = "sha256:27ae704d190615fca0c0fc2b796a38f8b5879645a3a52c9c453b23f97141bb49"},
 ]
 
 [package.dependencies]
@@ -1817,14 +1817,14 @@ xmp = ["defusedxml"]
 
 [[package]]
 name = "pip"
-version = "25.2"
+version = "25.3"
 description = "The PyPA recommended tool for installing Python packages."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pip-25.2-py3-none-any.whl", hash = "sha256:6d67a2b4e7f14d8b31b8b52648866fa717f45a1eb70e83002f4331d07e953717"},
-    {file = "pip-25.2.tar.gz", hash = "sha256:578283f006390f85bb6282dffb876454593d637f5d1be494b5202ce4877e71f2"},
+    {file = "pip-25.3-py3-none-any.whl", hash = "sha256:9655943313a94722b7774661c21049070f6bbb0a1516bf02f7c8d5d9201514cd"},
+    {file = "pip-25.3.tar.gz", hash = "sha256:8d0538dbbd7babbd207f261ed969c65de439f6bc9e5dbd3b3b9a77f25d95f343"},
 ]
 
 [[package]]
@@ -3385,14 +3385,14 @@ files = [
 
 [[package]]
 name = "tox"
-version = "4.31.0"
+version = "4.32.0"
 description = "tox is a generic virtualenv management and test command line tool"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "tox-4.31.0-py3-none-any.whl", hash = "sha256:328f392e6567e46cb0f9b625679456744dde940287dd1b39117627dc4b21d5da"},
-    {file = "tox-4.31.0.tar.gz", hash = "sha256:266381ffef35615ec0d40ae4969a9e43b506017597c0413d6545a603cc8c7561"},
+    {file = "tox-4.32.0-py3-none-any.whl", hash = "sha256:451e81dc02ba8d1ed20efd52ee409641ae4b5d5830e008af10fe8823ef1bd551"},
+    {file = "tox-4.32.0.tar.gz", hash = "sha256:1ad476b5f4d3679455b89a992849ffc3367560bbc7e9495ee8a3963542e7c8ff"},
 ]
 
 [package.dependencies]
