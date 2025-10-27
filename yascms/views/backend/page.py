@@ -45,7 +45,7 @@ class PageCreateView:
                     saved_file_name = upload_attachment(each_upload, 'pages', f'{created_page.id}_')
                     created_page.attachments.append(DAL.create_page_attachment(each_upload.filename, saved_file_name))
             DAL.save_page(created_page)
-            msg = f'單一頁面 {form.title.name} 建立成功'
+            msg = f'單一頁面 {form.title.data} 建立成功'
             logger.info(msg)
             self.request.session.flash(msg, 'success')
             return HTTPFound(self.request.route_url('backend_page_list'))
