@@ -60,8 +60,8 @@
           <i class="bi bi-megaphone"></i> 最新消息
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarNewsDropdown">
-          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_list') }}">最新消息列表</a></li>
           <li><a class="dropdown-item" href="{{ request.route_url('backend_news_create') }}">建立最新消息</a></li>
+          <li><a class="dropdown-item" href="{{ request.route_url('backend_news_list') }}">最新消息列表</a></li>
           {% if request.session['is_admin'] %}
             <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_list') }}">最新消息分類列表</a></li>
             <li><a class="dropdown-item" href="{{ request.route_url('backend_news_category_create') }}">建立最新消息分類</a></li>
