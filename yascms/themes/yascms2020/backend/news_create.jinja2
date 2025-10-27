@@ -1,6 +1,6 @@
 {% extends 'layouts/master.jinja2' %}
 {% block page_css %}
-  <link rel="stylesheet" href="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/css/jquery.datetimepicker-2.5.11.min.css') }}">
+  <link rel="stylesheet" href="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/css/jquery.datetimepicker-2.5.20.min.css') }}">
 {% endblock page_css %}
 {% block content %}
 <div class="container">
@@ -96,7 +96,7 @@
 </div>
 {% endblock content %}
 {% block page_js %}
-  <script src="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/js/jquery.datetimepicker.full-2.5.11.min.js') }}"></script>
+  <script src="{{ request.static_path('yascms:static/' ~ request.effective_theme_name ~ '/js/jquery.datetimepicker.full-2.5.20.min.js') }}"></script>
   <script>
     function generate_pinned_input_format(date) {
       let year = date.getFullYear();

@@ -6,7 +6,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarContent">
-    <ul class="navbar-nav flex-column" data-sm-options="{noMouseOver: true}">
+    <ul class="navbar-nav flex-column" data-sm-options='{"noMouseOver": true}'>
       {% for navbar in navbar_trees['descendants'] recursive %}
         {# 有子選單的類型 #}
         {% if navbar.type == NavbarType.TREE_NODE or navbar.type == NavbarType.BUILTIN_NEWS %}
