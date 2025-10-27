@@ -21,8 +21,8 @@ docs/_build/
 docs/yascms/
 docs/images/uml_class_diagram.png
 docs/images/package_import_diagram.png
-
 *.dot
 ansible/ansible.log
 ansible/roles/*
 ansible/deploy.conf
+sessions/
