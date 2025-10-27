@@ -28,18 +28,13 @@ project_abbr_name = yascms
 # secret key for pyramid security framework
 auth.secret = CHANGE_ME
 
-# pyramid_session_redis settings
-redis.sessions.prefix = yascms-
-redis.sessions.secret = COOKIE_SIGNING_SECRET
-redis.sessions.timeout = 86400
-redis.sessions.cookie_name = yascms
-redis.sessions.cookie_max_age = 86400
-redis.sessions.cookie_path = /
-redis.sessions.cookie_domain =
-redis.sessions.cookie_secure = False
-redis.sessions.cookie_httponly = True
-redis.sessions.cookie_on_exception = True
-redis.sessions.url = redis://localhost:6379/0
+# pyramid_beaker settings
+session.type = file
+session.data_dir = %(here)s/sessions/data
+session.lock_dir = %(here)s/sessions/lock
+session.key = mykey
+session.secret = mysecret
+session.cookie_on_exception = true
 
 # 以下範例假設資料庫帳號是 user，密碼是 pass，目標資料庫為 localhost，
 # 資料庫名稱為 foo，charset 為 utf8mb4:
