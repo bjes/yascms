@@ -36,7 +36,6 @@ def db_delete(c, ini_file=None):
     sqlalchemy_url = get_ini_settings(ini_file)['sqlalchemy.url']
     db_name = re.findall(r'@.+?/([^\?]+)', sqlalchemy_url)[0]
     c.run(f"sudo mysql -uroot -e 'DROP DATABASE IF EXISTS `{db_name}`'")
-    c.run(f"sudo redis-cli FLUSHDB")
 
 
 @task(db_create, name='upgrade', optional=['ini_file'])

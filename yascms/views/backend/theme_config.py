@@ -36,10 +36,8 @@ def theme_config_list_view(request):
 def theme_config_activate_view(request):
     """將預設的樣板設定成指定的樣板"""
     theme_name = request.matchdict['theme_name']
-    if theme_name in request.cache.get_available_theme_name_list():
+    if theme_name in DAL.get_available_theme_name_list():
         DAL.set_current_theme_name(theme_name)
-        request.cache.delete_current_theme_name()
-        request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_list'))
 
 
@@ -47,7 +45,7 @@ def theme_config_activate_view(request):
 def theme_config_delete_view(request):
     """刪除指定的樣板"""
     theme_name = request.matchdict['theme_name']
-    if (theme_name in request.cache.get_available_theme_name_list() and
+    if (theme_name in DAL.get_available_theme_name_list() and
         theme_name != request.current_theme_name):
 
         ThemeController(theme_name).delete_theme()
@@ -96,7 +94,6 @@ class ThemeConfigUploadView:
                     shutil.move(each_theme.as_posix(), dest_theme_dir.as_posix())
                     ThemeController(each_theme.name).import_theme()
                     self.request.session.flash(f'匯入樣板 {each_theme.name} 成功', 'success')
-            self.request.cache.delete_available_theme_name_list()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'form': form}
@@ -151,7 +148,6 @@ class ThemeConfigGeneralEditView:
             except ValueError as e:
                 pass
             DAL.update_theme_config(theme_config)
-            self.request.cache.delete_current_theme_config()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         return {'theme_config': theme_config,
                 'form': form}
@@ -199,7 +195,6 @@ class ThemeConfigBannersEditView:
                         theme_config_changed = True
             if theme_config_changed:
                 DAL.update_theme_config(theme_config)
-                self.request.cache.delete_current_theme_config()
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         else:
             return {'theme_config': theme_config, 'form': form, 'banners_dict': banners_dict}
@@ -266,7 +261,6 @@ def theme_config_banners_delete_view(request):
             theme_config_changed = True
     if theme_config_changed:
         DAL.update_theme_config(theme_config)
-        request.cache.delete_current_theme_config()
     return HTTPFound(location=request.route_url('backend_theme_config_banners_edit', theme_name=theme_name))
 
 
@@ -297,8 +291,6 @@ class ThemeConfigHomepageItemsOrderEditView:
         if form.validate():
             theme_config['settings']['homepage_items_order']['value'] = json.loads(form.config.data)
             DAL.update_theme_config(theme_config)
-            if theme_name == self.request.cache.get_current_theme_name():
-                self.request.cache.delete_current_theme_config()
             msg = f'樣板 {theme_name} 的首頁物件順序更新成功'
             logger.info(msg)
             self.request.session.flash(msg, 'success')

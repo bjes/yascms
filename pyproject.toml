@@ -23,9 +23,9 @@ pyramid_wtforms = "*"
 wtforms = {extras = ["email"], version = "*"}
 email_validator = "*"
 pillow = "*"
-pyramid-session-redis = "*"
 Authlib = "*"
 pyramid_exclog = "*"
+pyramid-beaker = "*"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "*"

@@ -63,7 +63,6 @@ class SiteConfigView:
             msg = '設定更新成功'
             logger.info(msg)
             self.request.session.flash(msg, 'success')
-            self.request.cache.delete_site_config()
             return HTTPFound(location=self.request.current_route_url())
         else:
             if not self.request.session.peek_flash():
