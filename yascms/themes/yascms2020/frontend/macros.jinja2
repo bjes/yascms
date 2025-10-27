@@ -30,7 +30,7 @@
                   <td class="p-0">
                     <a class="d-block" style="padding: .75rem;" href="{{ request.route_url('news_get', news_id=each_news.id) }}">
                       <div class="d-flex justify-content-between align-items-center">
-                        <span>{% if each_news.is_pinned and today >= each_news.pinned_start_datetime and today < each_news.pinned_end_datetime %}<i class="bi bi-pin"></i> {% endif %}{{ each_news.title }}</span>
+                        <span>{% if each_news.is_pinned and today >= each_news.pinned_start_datetime and today < each_news.pinned_end_datetime %}<i class="bi bi-pin"></i> {% endif %}{{ each_news.title|truncate(40) }}</span>
                         <span class="badge badge-pill badge-primary d-md-none">{{ each_news.display_datetime.strftime('%Y-%m-%d') }}</span>
                       </div>
                     </a>
