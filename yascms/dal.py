@@ -4,8 +4,7 @@
 """
 import json
 import math
-import string
-import random
+import secrets
 import logging
 from datetime import datetime, timedelta
 from types import SimpleNamespace
@@ -1621,10 +1620,7 @@ class DAL:
             成功回傳 True
         """
         if value is None:
-            available_characters = string.ascii_letters + string.digits
-            key_length = 32
-            token = 'token-' + ''.join(random.choice(available_characters) for i in range(key_length))
-            api_token.value = token
+            api_token.value = 'token-' + secrets.token_urlsafe(32)
         else:
             api_token.value = value
         DBSession.add(api_token)

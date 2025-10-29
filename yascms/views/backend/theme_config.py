@@ -146,7 +146,7 @@ class ThemeConfigGeneralEditView:
                         each_setting['value'] = int(each_setting['value'])
                 theme_config['settings']['custom']['value'] = custom_value
             except ValueError as e:
-                pass
+                logger.exception('更新樣板設定發生錯誤')
             DAL.update_theme_config(theme_config)
             return HTTPFound(location=self.request.route_url('backend_theme_config_list'))
         return {'theme_config': theme_config,
