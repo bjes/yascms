@@ -1,4 +1,4 @@
-import random
+import secrets
 
 from yascms.dal import DAL
 
@@ -16,7 +16,7 @@ def get_current_theme_config(request):
 
 
 def get_banner(request):
-    banner_name = random.choice(request.current_theme_config['settings']['banners']['value'])
+    banner_name = secrets.choice(request.current_theme_config['settings']['banners']['value'])
     return request.static_url(f'yascms:uploads/themes/{request.current_theme_name}/banners/{banner_name}')
 
 
